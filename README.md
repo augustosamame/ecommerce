@@ -1,8 +1,8 @@
 # Ecommerce
-Short description and motivation.
+This engine will add ecommerce capabilities to any of DevTechPeru´s projects.
 
 ## Usage
-How to use my plugin.
+After following installation instructions, a new online store will be available at selected endpoint (ex. /tienda). The main application's Devise user will be available, as well as all main Application Controller methods (and soon helpers). CanCanCan Roles can also be added to Engines own Ability class and they will be merged into main app's Ability class.
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -19,6 +19,12 @@ $ bundle
 Or install it yourself as:
 ```bash
 $ gem install ecommerce
+```
+
+Mount the engine in your routes:
+
+```
+mount Ecommerce::Engine, at: "/tienda", as: "ecommerce"
 ```
 
 ## Contributing
