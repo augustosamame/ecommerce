@@ -1,3 +1,5 @@
+require_dependency "ecommerce/application_controller"
+
 module Ecommerce
   #class StoreController < ActionController::Base
   class StoreController < ApplicationController
@@ -7,7 +9,6 @@ module Ecommerce
 
     def main
       puts current_user
-      head :ok
     end
   end
 end

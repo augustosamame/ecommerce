@@ -1,9 +1,11 @@
-require_dependency "ecommerce/application_controller"
+#require_dependency "ecommerce/application_controller"
 
 module Ecommerce
 
   class ApplicationController < ::ApplicationController
     before_action :merge_abilities
+
+    layout "ecommerce/#{Ecommerce.ecommerce_layout}"
 
     private
 
