@@ -17,7 +17,13 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 5.1.4"
+  s.add_dependency 'dotenv-rails'
   s.add_dependency 'kaminari', "~> 1.1.1"
+  s.add_dependency 'friendly_id', '~> 5.1.0'
+  s.add_dependency 'carrierwave', '~> 1.2.1'
+  s.add_dependency 'fog-aws', '~> 1.4.1'
+  s.add_dependency 'mini_magick', '~> 4.8.0'
+  s.add_dependency 'social-share-button'
 
   s.add_development_dependency "pg"
 end

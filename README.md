@@ -27,6 +27,23 @@ Mount the engine in your routes:
 mount Ecommerce::Engine, at: "/tienda", as: "ecommerce"
 ```
 
+User Model
+
+The Ecommerce engine expects the following User model schema to be present:
+
+t.string :email (Devise default)
+t.string :password (Devise default)
+t.integer :role, default: 0, null: false (for CanCanCan authorizations)
+t.string :first_name, null: false
+t.string :last_name, null: false
+t.string :phone
+t.string :username
+t.string :address
+t.string :doc_id
+t.string :avatar
+t.integer :status
+
+
 ## Contributing
 Contribution directions go here.
 
