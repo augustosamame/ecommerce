@@ -4,6 +4,7 @@ require 'carrierwave'
 require 'carrierwave/storage/fog'
 require 'mini_magick'
 require 'social-share-button'
+require 'bootstrap-generators'
 
 module Ecommerce
 
@@ -16,7 +17,7 @@ module Ecommerce
   mattr_accessor :aws_secret_key
   mattr_accessor :aws_access_key
   mattr_accessor :s3_bucket
-  
+
   mattr_accessor :address_requires_doc_id # :boolean, default: true # should state/state_name be required
   mattr_accessor :address_requires_phone # :boolean, default: true # Determines whether we require phone in address
   mattr_accessor :backoffice_interface_logo # :string, default: 'admin/logo.png'
