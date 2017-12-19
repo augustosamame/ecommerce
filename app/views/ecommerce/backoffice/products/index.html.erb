@@ -1,0 +1,33 @@
+<div class="page-header">
+  <%= link_to new_backoffice_product_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Product
+  <% end %>
+  <h1>Listing backoffice_products</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @backoffice_products) do |backoffice_product| %>
+            <td><%= backoffice_product.name %></td>
+            <td><%= backoffice_product.description %></td>
+            <td><%= backoffice_product.image %></td>
+            <td><%= link_to 'Show', backoffice_product %></td>
+        <td><%= link_to 'Edit', edit_backoffice_product_path(backoffice_product) %></td>
+        <td><%= link_to 'Destroy', backoffice_product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
