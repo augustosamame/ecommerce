@@ -1,0 +1,15 @@
+<%= simple_form_for(@backoffice_product_sku) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :product %>
+    <%= f.association :product_variant %>
+    <%= f.input :sku %>
+    <%= f.input :price_cents %>
+    <%= f.input :status %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: "btn btn-primary" %>
+  </div>
+<% end %>

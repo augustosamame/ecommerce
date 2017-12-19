@@ -1,0 +1,29 @@
+<div class="page-header">
+  <%= link_to backoffice_product_skus_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_product_sku_path(@backoffice_product_sku), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show backoffice_product_sku</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Product:</dt>
+  <dd><%= @backoffice_product_sku.product %></dd>
+
+  <dt>Product variant:</dt>
+  <dd><%= @backoffice_product_sku.product_variant %></dd>
+
+  <dt>Sku:</dt>
+  <dd><%= @backoffice_product_sku.sku %></dd>
+
+  <dt>Price cents:</dt>
+  <dd><%= @backoffice_product_sku.price_cents %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @backoffice_product_sku.status %></dd>
+
+</dl>

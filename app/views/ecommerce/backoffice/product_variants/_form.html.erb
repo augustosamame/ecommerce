@@ -1,10 +1,9 @@
-<%= simple_form_for(@backoffice_product) do |f| %>
+<%= simple_form_for(@backoffice_product_variant) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :description %>
-    <%= f.input :image %>
+    <%= f.association :product %>
+    <%= f.input :variant_name %>
   </div>
 
   <div class="form-actions">

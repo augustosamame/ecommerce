@@ -4,7 +4,10 @@ require 'carrierwave'
 require 'carrierwave/storage/fog'
 require 'mini_magick'
 require 'social-share-button'
-require 'bootstrap-generators'
+require 'simple_form'
+require 'material_icons'
+require 'jquery-rails'
+require 'jquery-ui-rails'
 
 module Ecommerce
 
