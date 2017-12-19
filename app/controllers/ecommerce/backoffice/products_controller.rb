@@ -1,8 +1,9 @@
 require_dependency "ecommerce/application_controller"
 
 module Ecommerce
-  class Backoffice::ProductsController < ApplicationController
+  class Backoffice::ProductsController < Backoffice::BaseController
     before_action :set_backoffice_product, only: [:show, :edit, :update, :destroy]
+    authorize_resource
 
     # GET /backoffice/products
     def index
