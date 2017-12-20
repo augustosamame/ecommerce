@@ -26,9 +26,9 @@
             <td><%= backoffice_product_sku_property.product_variant.variant_name %></td>
             <td><%= backoffice_product_sku_property.value %></td>
             <td><%= backoffice_product_sku_property.status %></td>
-            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_sku_property %></td>
+            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_sku_property_path(backoffice_product_sku_property) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_product_sku_property_path(backoffice_product_sku_property) %></td>
-        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_product_sku_property, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_product_sku_property_path(backoffice_product_sku_property), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>
     </tbody>
   </table>

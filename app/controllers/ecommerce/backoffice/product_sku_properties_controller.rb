@@ -3,7 +3,7 @@ require_dependency "ecommerce/application_controller"
 module Ecommerce
   class Backoffice::ProductSkuPropertiesController < Backoffice::BaseController
     before_action :set_backoffice_product_sku_property, only: [:show, :edit, :update, :destroy]
-    authorize_resource
+    authorize_resource :class => "Ecommerce::ProductSkuProperty"
 
     # GET /backoffice/product_variant_values
     def index
@@ -28,7 +28,7 @@ module Ecommerce
       @backoffice_product_sku_property = ProductSkuProperty.new(backoffice_product_sku_property_params)
 
       if @backoffice_product_sku_property.save
-        redirect_to @backoffice_product_sku_property, notice: 'Product SKU property was successfully created.'
+        redirect_to backoffice_product_sku_property_path(@backoffice_product_sku_property), notice: 'Product SKU property was successfully created.'
       else
         render :new
       end
@@ -37,7 +37,7 @@ module Ecommerce
     # PATCH/PUT /backoffice/product_variant_values/1
     def update
       if @backoffice_product_sku_property.update(backoffice_product_sku_property_params)
-        redirect_to @backoffice_product_sku_property, notice: 'Product SKU property was successfully updated.'
+        redirect_to backoffice_product_sku_property_path(@backoffice_product_sku_property), notice: 'Product SKU property was successfully updated.'
       else
         render :edit
       end
@@ -57,7 +57,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_sku_property_params
-        params.require(:backoffice_product_sku_property).permit(:product_sku_id, :product_variant_id, :value, :status)
+        params.require(:product_sku_property).permit(:product_sku_id, :product_variant_id, :value, :status)
       end
   end
 end

@@ -24,9 +24,9 @@
             <td><%= backoffice_product.name %></td>
             <td><%= backoffice_product.description %></td>
             <td><%= backoffice_product.image %></td>
-            <td><%= link_to 'Show', backoffice_product %></td>
+            <td><%= link_to 'Show', backoffice_product_path(backoffice_product) %></td>
         <td><%= link_to 'Edit', edit_backoffice_product_path(backoffice_product) %></td>
-        <td><%= link_to 'Destroy', backoffice_product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', backoffice_product_path(backoffice_product), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>
     </tbody>
   </table>

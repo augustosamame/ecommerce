@@ -26,9 +26,9 @@
             <td><%= backoffice_product_sku.sku %></td>
             <td><%= backoffice_product_sku.price_cents %></td>
             <td><%= backoffice_product_sku.status %></td>
-            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_sku %></td>
+            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_sku_path(backoffice_product_sku) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_product_sku_path(backoffice_product_sku) %></td>
-        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_product_sku, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_product_sku_path(backoffice_product_sku), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>
     </tbody>
   </table>

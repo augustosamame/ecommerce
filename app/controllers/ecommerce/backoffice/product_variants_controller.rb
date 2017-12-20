@@ -3,7 +3,7 @@ require_dependency "ecommerce/application_controller"
 module Ecommerce
   class Backoffice::ProductVariantsController < Backoffice::BaseController
     before_action :set_backoffice_product_variant, only: [:show, :edit, :update, :destroy]
-    authorize_resource
+    authorize_resource :class => "Ecommerce::ProductVariant"
 
     # GET /backoffice/product_variants
     def index
@@ -28,7 +28,7 @@ module Ecommerce
       @backoffice_product_variant = ProductVariant.new(backoffice_product_variant_params)
 
       if @backoffice_product_variant.save
-        redirect_to @backoffice_product_variant, notice: 'Product variant was successfully created.'
+        redirect_to backoffice_product_variant_path(@backoffice_product_variant), notice: 'Product variant was successfully created.'
       else
         render :new
       end
@@ -37,7 +37,7 @@ module Ecommerce
     # PATCH/PUT /backoffice/product_variants/1
     def update
       if @backoffice_product_variant.update(backoffice_product_variant_params)
-        redirect_to @backoffice_product_variant, notice: 'Product variant was successfully updated.'
+        redirect_to backoffice_product_variant_path(@backoffice_product_variant), notice: 'Product variant was successfully updated.'
       else
         render :edit
       end
@@ -57,7 +57,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_variant_params
-        params.require(:backoffice_product_variant).permit(:product_id, :variant_name)
+        params.require(:product_variant).permit(:product_id, :variant_name)
       end
   end
 end
