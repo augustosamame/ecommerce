@@ -1,0 +1,122 @@
+<!-- BEGIN SIDEBAR -->
+<div class="page-sidebar " id="main-menu">
+  <!-- BEGIN MINI-PROFILE -->
+  <div class="page-sidebar-wrapper scrollbar-dynamic" id="main-menu-wrapper">
+    <div class="user-info-wrapper sm">
+      <div class="profile-wrapper sm">
+        <img src= "<%= current_user.avatar %>" alt= "" width="69" height="69" />
+        <div class="availability-bubble online"></div>
+      </div>
+      <div class="user-info sm">
+        <div class="username"><%= current_user.name %></div>
+        <!--<div class="status">Life goes on...</div>-->
+      </div>
+    </div>
+    <!-- END MINI-PROFILE -->
+    <!-- BEGIN SIDEBAR MENU -->
+    <p class="menu-title sm">BACKOFFICE <span class="pull-right"><a href="javascript:;"><i class="material-icons">refresh</i></a></span></p>
+    <ul>
+      <li class="<%= class_string({ start: true, active: controller.controller_name == 'dashboard'}) %>" >
+        <%= link_to "<i class='material-icons'>adjust</i>Dashboard".html_safe, backoffice_dashboard_path %>
+      </li>
+
+      <li class="<%= class_string({ active: (['products'].include? controller.controller_name) }) %>">
+        <a href="javascript:;"> <i class="material-icons">store</i> <span class="title">Productos</span> <span class=" arrow"></span> </a>
+        <ul class="sub-menu">
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'backoffice_products' && controller.action_name == 'index')}) %>">
+            <%= link_to "Todos", backoffice_products_path %>
+          </li>
+        </ul>
+      </li>
+
+      <li class="<%= class_string({ active: (['orders'].include? controller.controller_name) }) %>">
+        <a href="javascript:;"> <i class="material-icons">store</i> <span class="title">Pedidos</span> <span class=" arrow"></span> </a>
+        <ul class="sub-menu">
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Order.where.not(stage: 'Delivered').count %></span>
+            <%= link_to "Todos los Pedidos", backoffice_orders_path %>
+          </li>
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Order.where(stage: "Delivered").count %></span>
+            <%= link_to "Pedidos Entregados", backoffice_orders_path(stage: "Entregado") %>
+          </li>
+        </ul>
+      </li>
+
+      <li class="<%= class_string({ active: (['users'].include? controller.controller_name) }) %>">
+        <a href="javascript:;"> <i class="material-icons">face</i> <span class="title">Usuarios</span> <span class=" badge badge-disable pull-right "><%= User.where(status: "active").count %></span>
+        </a>
+        <ul class="sub-menu">
+          <li> <%= link_to "Todos los Usuarios", backoffice_users_path %></li>
+          <li> <%= link_to "Sólo Usuarios Registrados", backoffice_users_path(user: "regular") %></li>
+        </ul>
+      </li>
+      <li class="<%= class_string({ active: (['orders'].include? controller.controller_name) }) %>">
+        <a href="javascript:;"> <i class="material-icons">autorenew</i> <span class="title">Tablas de Control</span> <span class=" arrow"></span> </a>
+        <ul class="sub-menu">
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'controls' && controller.action_name == 'index')}) %>">
+            <%= link_to "Tabla de Control", backoffice_controls_path %>
+          </li>
+        </ul>
+      </li>
+      <li class="">
+        <a href="javascript:;"> <i class="material-icons">autorenew</i> <span class="title">Integraciones</span> <span class=" arrow"></span> </a>
+        <ul class="sub-menu">
+          <li> <a href="javascript:;">Integración con ERP</a> </li>
+          <li>
+            <a href="javascript:;"> <span class="title">Generar Comprobantes de Pago</span> <span class=" arrow"></span> </a>
+          </li>
+        </ul>
+      </li>
+      <li class="hidden-lg hidden-md hidden-xs" id="more-widgets">
+        <a href="javascript:;"> <i class="material-icons"></i></a>
+        <ul class="sub-menu">
+          <li class="side-bar-widgets">
+            <p class="menu-title sm">FOLDER <span class="pull-right"><a href="#" class="create-folder"><i class="material-icons">add</i></a></span></p>
+            <ul class="folders">
+              <li>
+                <a href="#">
+                  <div class="status-icon green"></div>
+                  My quick tasks </a>
+              </li>
+            </ul>
+            <p class="menu-title">PROJECTS </p>
+            <div class="status-widget">
+              <div class="status-widget-wrapper">
+                <div class="title">Freelancer<a href="#" class="remove-widget"><i class="material-icons">close</i></a></div>
+                <p>Redesign home page</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="side-bar-widgets">
+      <p class="menu-title sm">FOLDER <span class="pull-right"><a href="#" class="create-folder"> <i class="material-icons">add</i></a></span></p>
+      <ul class="folders">
+        <li>
+          <a href="#">
+            <div class="status-icon green"></div>
+            My quick tasks </a>
+        </li>
+      </ul>
+      <p class="menu-title">PROJECTS </p>
+      <div class="status-widget">
+        <div class="status-widget-wrapper">
+          <div class="title">Freelancer<a href="#" class="remove-widget"><i class="material-icons">close</i></a></div>
+          <p>Redesign home page</p>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- END SIDEBAR MENU -->
+  </div>
+</div>
+<a href="#" class="scrollup">Scroll</a>
+<div class="footer-widget">
+  <div class="progress transparent progress-small no-radius no-margin">
+    <div class="progress-bar progress-bar-success animate-progress-bar" data-percentage="79%" style="width: 79%;"></div>
+  </div>
+  <div class="pull-right">
+    <div class="details-status"> <span class="animate-number" data-value="86" data-animation-duration="560">86</span>% </div>
+    <a href="lockscreen.html"><i class="material-icons">power_settings_new</i></a></div>
+</div>
+<!-- END SIDEBAR -->

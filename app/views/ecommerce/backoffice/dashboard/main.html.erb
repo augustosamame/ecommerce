@@ -1,0 +1,114 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-5 well">
+			<h3>
+				Últimos Pedidos
+			</h3>
+			<table class="table table-condensed">
+				<thead>
+					<tr>
+						<th>
+							Fecha/Hora
+						</th>
+            <th>
+							Cliente
+						</th>
+						<th>
+							Distrito
+						</th>
+						<th>
+							Monto
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+          <% @last_orders.each do |order| %>
+          <tr class="clickable-row <%= order.is_pedido_express ? 'danger' : '' %>" onclick="location.href='<%= backoffice_order_path(order) %>';" style="cursor: pointer;">
+						<td>
+							<%= friendly_date(order.created_at) %>
+						</td>
+						<td>
+							<%= order.user.name  %>
+						</td>
+						<td>
+							<%= order.address.district  %>
+						</td>
+            <td>
+							S/. <%= order.total_price  %>
+						</td>
+					</tr>
+          <% end %>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-5 well">
+			<h3>
+				Útimos Usuarios
+			</h3>
+			<table class="table table-condensed">
+				<thead>
+					<tr>
+						<th>
+							Nombre
+						</th>
+						<th>
+							Móvil
+						</th>
+						<th>
+							Distrito
+						</th>
+						<th>
+							Pedidos
+						</th>
+            <th>
+							Pedido
+						</th>
+            <th>
+							Direcc
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+          <% @last_users.each do |user| %>
+					<tr onclick="location.href='<%= backoffice_user_path(user) %>';" style="cursor: pointer;">
+						<td>
+							<%= user.name  %>
+						</td>
+            <td>
+							<%= user.mobile  %>
+						</td>
+						<td>
+							<%= user.addresses.first.try(:district) %>
+						</td>
+						<td>
+							<%= user.orders.count  %>
+						</td>
+						<td style=" padding-top: 2px !important; padding-bottom: 2px !important;">
+							<%= link_to "+", new_backoffice_order_path(user_id: user.id), :class => 'btn btn-primary', style: "padding-top: 0px; padding-bottom: 0px;" %>
+						</td>
+            <td style=" padding-top: 2px !important; padding-bottom: 2px !important;">
+							<%= link_to "+", new_backoffice_address_path(user_id: user.id), :class => 'btn btn-primary', style: "padding-top: 0px; padding-bottom: 0px;" %>
+						</td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-2 well">
+			<button type="button" class="btn btn-primary btn-lg" style="width: 180px; margin-bottom: 10px;" onclick="location.href='<%= backoffice_orders_path %>';">
+				Todos los Pedidos
+			</button>
+			<button type="button" class="btn btn-primary btn-lg" style="width: 180px;" onclick="location.href='<%= backoffice_users_path %>';">
+				Todos los Usuarios
+			</button>
+		</div>
+	</div>
+	<div class="row">
+
+	</div>
+	<h3>Estadísticas de Ventas</h3>
+	<div class="row">
+
+	</div>
+
+</div>
