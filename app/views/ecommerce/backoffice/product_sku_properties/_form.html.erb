@@ -1,0 +1,14 @@
+<%= simple_form_for(@backoffice_product_sku_property) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :product_sku, :label_method => lambda { |sku| "#{sku.sku}" } %>
+    <%= f.association :product_variant, :label_method => lambda { |variant| "#{variant.variant_name}" }  %>
+    <%= f.input :value %>
+    <%= f.input :status %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: "btn btn-primary" %>
+  </div>
+<% end %>
