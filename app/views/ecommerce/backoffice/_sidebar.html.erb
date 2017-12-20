@@ -32,10 +32,10 @@
       <li class="<%= class_string({ active: (['orders'].include? controller.controller_name) }) %>">
         <a href="javascript:;"> <i class="material-icons">store</i> <span class="title">Pedidos</span> <span class=" arrow"></span> </a>
         <ul class="sub-menu">
-          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Order.where.not(stage: 'Delivered').count %></span>
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.where.not(stage: 'Delivered').count %></span>
             <%= link_to "Todos los Pedidos", backoffice_orders_path %>
           </li>
-          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Order.where(stage: "Delivered").count %></span>
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.where(stage: "Delivered").count %></span>
             <%= link_to "Pedidos Entregados", backoffice_orders_path(stage: "Entregado") %>
           </li>
         </ul>
