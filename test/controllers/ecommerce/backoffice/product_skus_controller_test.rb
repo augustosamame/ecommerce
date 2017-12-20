@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module Ecommerce
-  class Backoffice::ProductSkusControllerTest < ActionDispatch::IntegrationTest
+  class ProductSkusControllerTest < ActionDispatch::IntegrationTest
     include Engine.routes.url_helpers
 
     setup do
@@ -19,11 +19,11 @@ module Ecommerce
     end
 
     test "should create backoffice_product_sku" do
-      assert_difference('Backoffice::ProductSku.count') do
+      assert_difference('ProductSku.count') do
         post backoffice_product_skus_url, params: { backoffice_product_sku: { price_cents: @backoffice_product_sku.price_cents, product_id: @backoffice_product_sku.product_id, product_variant_id: @backoffice_product_sku.product_variant_id, sku: @backoffice_product_sku.sku, status: @backoffice_product_sku.status } }
       end
 
-      assert_redirected_to backoffice_product_sku_url(Backoffice::ProductSku.last)
+      assert_redirected_to backoffice_product_sku_url(ProductSku.last)
     end
 
     test "should show backoffice_product_sku" do
@@ -42,7 +42,7 @@ module Ecommerce
     end
 
     test "should destroy backoffice_product_sku" do
-      assert_difference('Backoffice::ProductSku.count', -1) do
+      assert_difference('ProductSku.count', -1) do
         delete backoffice_product_sku_url(@backoffice_product_sku)
       end
 

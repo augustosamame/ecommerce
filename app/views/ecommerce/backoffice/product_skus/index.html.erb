@@ -11,7 +11,6 @@
     <thead>
       <tr>
         <th>Product</th>
-        <th>Product variant</th>
         <th>Sku</th>
         <th>Price cents</th>
         <th>Status</th>
@@ -23,13 +22,12 @@
 
     <tbody>
       <%= content_tag_for(:tr, @backoffice_product_skus) do |backoffice_product_sku| %>
-            <td><%= backoffice_product_sku.product %></td>
-            <td><%= backoffice_product_sku.product_variant %></td>
+            <td><%= backoffice_product_sku.product.name %></td>
             <td><%= backoffice_product_sku.sku %></td>
             <td><%= backoffice_product_sku.price_cents %></td>
             <td><%= backoffice_product_sku.status %></td>
             <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_sku %></td>
-        <td><%= link_to "<i class='material-icons'>edit</i>", edit_backoffice_product_sku_path(backoffice_product_sku) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_product_sku_path(backoffice_product_sku) %></td>
         <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_product_sku, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>
     </tbody>

@@ -2,8 +2,7 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :product %>
-    <%= f.association :product_variant %>
+    <%= f.association :product, :label_method => lambda { |product| "#{product.name}" }  %>
     <%= f.input :sku %>
     <%= f.input :price_cents %>
     <%= f.input :status %>

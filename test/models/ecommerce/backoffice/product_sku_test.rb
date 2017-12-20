@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module Ecommerce
-  class Backoffice::ProductSkuTest < ActiveSupport::TestCase
+  class ProductSkuTest < ActiveSupport::TestCase
     # test "the truth" do
     #   assert true
     # end

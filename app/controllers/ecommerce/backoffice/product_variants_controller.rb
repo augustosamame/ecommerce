@@ -7,7 +7,7 @@ module Ecommerce
 
     # GET /backoffice/product_variants
     def index
-      @backoffice_product_variants = Backoffice::ProductVariant.all
+      @backoffice_product_variants = ProductVariant.all
     end
 
     # GET /backoffice/product_variants/1
@@ -16,7 +16,7 @@ module Ecommerce
 
     # GET /backoffice/product_variants/new
     def new
-      @backoffice_product_variant = Backoffice::ProductVariant.new
+      @backoffice_product_variant = ProductVariant.new
     end
 
     # GET /backoffice/product_variants/1/edit
@@ -25,7 +25,7 @@ module Ecommerce
 
     # POST /backoffice/product_variants
     def create
-      @backoffice_product_variant = Backoffice::ProductVariant.new(backoffice_product_variant_params)
+      @backoffice_product_variant = ProductVariant.new(backoffice_product_variant_params)
 
       if @backoffice_product_variant.save
         redirect_to @backoffice_product_variant, notice: 'Product variant was successfully created.'
@@ -52,7 +52,7 @@ module Ecommerce
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_backoffice_product_variant
-        @backoffice_product_variant = Backoffice::ProductVariant.find(params[:id])
+        @backoffice_product_variant = ProductVariant.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.

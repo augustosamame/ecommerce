@@ -7,7 +7,7 @@ module Ecommerce
 
     # GET /backoffice/products
     def index
-      @backoffice_products = Backoffice::Product.all
+      @backoffice_products = Product.all
     end
 
     # GET /backoffice/products/1
@@ -16,7 +16,7 @@ module Ecommerce
 
     # GET /backoffice/products/new
     def new
-      @backoffice_product = Backoffice::Product.new
+      @backoffice_product = Product.new
     end
 
     # GET /backoffice/products/1/edit
@@ -25,7 +25,7 @@ module Ecommerce
 
     # POST /backoffice/products
     def create
-      @backoffice_product = Backoffice::Product.new(backoffice_product_params)
+      @backoffice_product = Product.new(backoffice_product_params)
 
       if @backoffice_product.save
         redirect_to @backoffice_product, notice: 'Product was successfully created.'
@@ -52,7 +52,7 @@ module Ecommerce
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_backoffice_product
-        @backoffice_product = Backoffice::Product.find(params[:id])
+        @backoffice_product = Product.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.

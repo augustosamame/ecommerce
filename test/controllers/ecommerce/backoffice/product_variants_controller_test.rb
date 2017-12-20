@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module Ecommerce
-  class Backoffice::ProductVariantsControllerTest < ActionDispatch::IntegrationTest
+  class ProductVariantsControllerTest < ActionDispatch::IntegrationTest
     include Engine.routes.url_helpers
 
     setup do
@@ -19,11 +19,11 @@ module Ecommerce
     end
 
     test "should create backoffice_product_variant" do
-      assert_difference('Backoffice::ProductVariant.count') do
+      assert_difference('ProductVariant.count') do
         post backoffice_product_variants_url, params: { backoffice_product_variant: { product_id: @backoffice_product_variant.product_id, variant_name: @backoffice_product_variant.variant_name } }
       end
 
-      assert_redirected_to backoffice_product_variant_url(Backoffice::ProductVariant.last)
+      assert_redirected_to backoffice_product_variant_url(ProductVariant.last)
     end
 
     test "should show backoffice_product_variant" do
@@ -42,7 +42,7 @@ module Ecommerce
     end
 
     test "should destroy backoffice_product_variant" do
-      assert_difference('Backoffice::ProductVariant.count', -1) do
+      assert_difference('ProductVariant.count', -1) do
         delete backoffice_product_variant_url(@backoffice_product_variant)
       end
 

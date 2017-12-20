@@ -20,7 +20,7 @@
 
     <tbody>
       <%= content_tag_for(:tr, @backoffice_product_variants) do |backoffice_product_variant| %>
-            <td><%= backoffice_product_variant.product %></td>
+            <td><%= backoffice_product_variant.product.name %></td>
             <td><%= backoffice_product_variant.variant_name %></td>
             <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_variant %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_product_variant_path(backoffice_product_variant) %></td>

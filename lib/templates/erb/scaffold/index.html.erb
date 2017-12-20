@@ -25,7 +25,7 @@
         <td><%%= <%= singular_table_name %>.<%= attribute.name %> %></td>
     <% end -%>
         <td><%%= link_to "<i class='material-icons'>visibility</i>".html_safe, <%= singular_table_name %> %></td>
-        <td><%%= link_to "<i class='material-icons'>edit</i>", edit_<%= singular_table_name %>_path(<%= singular_table_name %>) %></td>
+        <td><%%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_<%= singular_table_name %>_path(<%= singular_table_name %>) %></td>
         <td><%%= link_to "<i class='material-icons'>delete</i>".html_safe, <%= singular_table_name %>, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <%% end %>
     </tbody>

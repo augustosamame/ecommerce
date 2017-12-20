@@ -1,12 +1,13 @@
 require_dependency "ecommerce/application_controller"
 
 module Ecommerce
-  class Backoffice::ProductSkusController < ApplicationController
+  class Backoffice::ProductSkusController < Backoffice::BaseController
     before_action :set_backoffice_product_sku, only: [:show, :edit, :update, :destroy]
+    authorize_resource
 
     # GET /backoffice/product_skus
     def index
-      @backoffice_product_skus = Backoffice::ProductSku.all
+      @backoffice_product_skus = ProductSku.all
     end
 
     # GET /backoffice/product_skus/1
@@ -15,7 +16,7 @@ module Ecommerce
 
     # GET /backoffice/product_skus/new
     def new
-      @backoffice_product_sku = Backoffice::ProductSku.new
+      @backoffice_product_sku = ProductSku.new
     end
 
     # GET /backoffice/product_skus/1/edit
@@ -24,7 +25,7 @@ module Ecommerce
 
     # POST /backoffice/product_skus
     def create
-      @backoffice_product_sku = Backoffice::ProductSku.new(backoffice_product_sku_params)
+      @backoffice_product_sku = ProductSku.new(backoffice_product_sku_params)
 
       if @backoffice_product_sku.save
         redirect_to @backoffice_product_sku, notice: 'Product sku was successfully created.'
@@ -51,12 +52,12 @@ module Ecommerce
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_backoffice_product_sku
-        @backoffice_product_sku = Backoffice::ProductSku.find(params[:id])
+        @backoffice_product_sku = ProductSku.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_sku_params
-        params.require(:backoffice_product_sku).permit(:product_id, :product_variant_id, :sku, :price_cents, :status)
+        params.require(:backoffice_product_sku).permit(:product_id, :product_variant_value_id, :sku, :price_cents, :status)
       end
   end
 end
