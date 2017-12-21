@@ -5,12 +5,12 @@
 <%= javascript_include_tag 'ecommerce/backoffice' %>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
 <!-- AQUI VAN LOS CSS Y JS SOLO DE BACKOFFICE -->
 
 <% end %>
 
-<body class="<%=  controller.controller_name  %>">
   BACKOFFICE LAYOUT PRESENT
 <!-- AQUI VA EL BODY SOLO DE BACKOFFICE -->
 
@@ -42,9 +42,6 @@
   <!-- END CONTENT -->
   <% # Javascript at the bottom for fast page loading %>
 
-</body>
-
-</html>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -65,21 +62,30 @@ $(function(){
 //tags = <%= raw @users_array %>
 $(document).ready(function(){
 users_tags = jQuery.parseJSON(<%=raw @users_array.to_json.inspect %>);
-services_tags = jQuery.parseJSON(<%=raw @services_array.to_json.inspect %>);
-$( ".search_user" ).autocomplete({
+products_tags = jQuery.parseJSON(<%=raw @products_array.to_json.inspect %>);
+orders_tags = jQuery.parseJSON(<%=raw @orders_array.to_json.inspect %>);
+$( ".search_users" ).autocomplete({
   autoFocus: true,
-  minLength: 1,
+  minLength: 0,
   source: users_tags,
   select: function (e, ui) {
-        window.location.href = ("/backoffice/users/" + ui.item.id);
+        window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/users/" + ui.item.id);
     },
 });
-$( ".search_service" ).autocomplete({
+$( ".search_products" ).autocomplete({
   autoFocus: false,
   minLength: 1,
-  source: services_tags,
+  source: products_tags,
   select: function (e, ui) {
-        window.location.href = ("/backoffice/services/" + ui.item.id);
+        window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/products/" + ui.item.id);
+    },
+});
+$( ".search_orders" ).autocomplete({
+  autoFocus: false,
+  minLength: 1,
+  source: orders_tags,
+  select: function (e, ui) {
+        window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/orders/" + ui.item.id);
     },
 });
 });

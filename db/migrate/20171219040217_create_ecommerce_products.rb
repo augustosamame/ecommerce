@@ -4,6 +4,7 @@ class CreateEcommerceProducts < ActiveRecord::Migration[5.1]
       t.string :name
       t.text :description
       t.string :image
+      t.integer :price_cents
 
       t.timestamps
     end

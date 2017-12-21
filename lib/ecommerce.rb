@@ -18,6 +18,7 @@ module Ecommerce
   mattr_accessor :use_main_app_javascripts
   mattr_accessor :use_engine_header
   mattr_accessor :use_engine_footer
+  mattr_accessor :engine_alias_endpoint
 
   mattr_accessor :address_requires_doc_id # :boolean, default: true # should state/state_name be required
   mattr_accessor :address_requires_phone # :boolean, default: true # Determines whether we require phone in address

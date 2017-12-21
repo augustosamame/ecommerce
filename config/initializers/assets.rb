@@ -1,3 +1,5 @@
 Rails.application.config.assets.precompile += %w( ecommerce/backoffice.css )
 Rails.application.config.assets.precompile += %w( ecommerce/backoffice.js )
 Rails.application.config.assets.precompile += %w( ecommerce/img/* )
+Rails.application.config.assets.precompile += %w( ecommerce/canvas_ecommerce.css )
+Rails.application.config.assets.precompile += %w( ecommerce/canvas_ecommerce.js )

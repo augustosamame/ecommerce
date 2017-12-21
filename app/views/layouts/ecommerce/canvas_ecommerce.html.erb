@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
+<% content_for :head do %>
   <title>Canvas Ecommerce</title>
   <%= stylesheet_link_tag    "ecommerce/canvas_ecommerce", media: "all" %>
   <%= javascript_include_tag "ecommerce/canvas_ecommerce" %>
   <%= csrf_meta_tags %>
-</head>
-<body>
+<% end %>
+
   You are now using the Canvas Ecommerce Layout
 
 <%= yield %>
 
-</body>
-</html>
 
 <% parent_layout "ecommerce/base" %>
