@@ -24,12 +24,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'fog-aws', '~> 1.4.1'
   s.add_dependency 'mini_magick', '~> 4.8.0'
   s.add_dependency 'social-share-button'
-  s.add_dependency 'bootstrap-sass'
   s.add_dependency 'sass-rails'
+  s.add_dependency 'bootstrap-sass'
   s.add_dependency 'simple_form'
-  s.add_dependency 'jquery-rails'
-  s.add_dependency 'jquery-ui-rails'
   s.add_dependency 'material_icons'
+  s.add_dependency 'record_tag_helper', '~> 1.0'
 
   s.add_development_dependency "pg"
 end

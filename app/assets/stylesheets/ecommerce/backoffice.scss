@@ -1,0 +1,49 @@
+// Place all the styles related to the Backoffice controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+/*
+*=
+*/
+
+// These both need to be imported before bootstrap:
+@import 'ecommerce/backoffice/globals/fonts';
+@import 'ecommerce/backoffice/globals/variables';
+
+
+// --------------Bootstrap-----------------------------
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+
+// Uncomment if you want to use the default bootstrap theme
+// @import 'bootstrap/theme';
+
+
+// --------------Global definitions--------------------
+// For example (add your own!!):
+@import 'ecommerce/backoffice/globals/mixins';
+
+
+// --------------Shared styles-------------------------
+// Common base CSS modifications. For example:
+@import 'ecommerce/backoffice/shared/buttons';
+@import 'ecommerce/backoffice/shared/grid';
+
+
+// --------------Components----------------------------
+// Create your own and modify/extend Bootstrap's. For example:
+@import 'ecommerce/backoffice/components/panel';
+//@import 'ecommerce/backoffice/components/profile_panels';
+
+
+// --------------Sections------------------------------
+// Page-specific styles. These should *only* be used as a last
+// resort if you really truly can't style your content more generally.
+// @import 'sections/profile_page';
+
+@import 'material_icons';
+@import 'ecommerce/backoffice/pace/pace-theme-flash';
+@import 'ecommerce/backoffice/animate.min';
+@import 'ecommerce/backoffice/jquery-scrollbar/jquery.scrollbar';
+@import 'ecommerce/backoffice/webarch';
+@import 'jquery-ui/autocomplete';
+@import 'ecommerce/backoffice/custom_ecommerce'

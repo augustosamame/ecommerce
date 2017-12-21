@@ -1,0 +1,38 @@
+<div class="page-header">
+  <%= link_to backoffice_orders_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_order_path(@backoffice_order), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show backoffice_order</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>User:</dt>
+  <dd><%= @backoffice_order.user.name %></dd>
+
+  <dt>Amount cents:</dt>
+  <dd><%= @backoffice_order.amount_cents %></dd>
+
+  <dt>Stage:</dt>
+  <dd><%= @backoffice_order.stage %></dd>
+
+  <dt>Shipping address:</dt>
+  <dd><%= @backoffice_order.shipping_address_id %></dd>
+
+  <dt>Billing address:</dt>
+  <dd><%= @backoffice_order.billing_address_id %></dd>
+
+  <dt>Coupon:</dt>
+  <dd><%= @backoffice_order.coupon_id %></dd>
+
+  <dt>Payment status:</dt>
+  <dd><%= @backoffice_order.payment_status %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @backoffice_order.status %></dd>
+
+</dl>

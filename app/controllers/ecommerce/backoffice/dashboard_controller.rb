@@ -5,7 +5,7 @@ module Ecommerce
 
     def main
       @last_users = User.where(role: "standard").order(id: :desc).first(10)
-      #@last_orders = Order.includes(:user, :address).order(id: :desc).first(10)
+      @last_orders = Order.includes(:user).order(id: :desc).first(10)
 
     end
 

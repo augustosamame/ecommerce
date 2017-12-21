@@ -23,18 +23,15 @@
 				</thead>
 				<tbody>
           <% @last_orders.each do |order| %>
-          <tr class="clickable-row <%= order.is_pedido_express ? 'danger' : '' %>" onclick="location.href='<%= backoffice_order_path(order) %>';" style="cursor: pointer;">
+          <tr class="clickable-row" onclick="location.href='<%= backoffice_order_path(order) %>';" style="cursor: pointer;">
 						<td>
 							<%= friendly_date(order.created_at) %>
 						</td>
 						<td>
 							<%= order.user.name  %>
 						</td>
-						<td>
-							<%= order.address.district  %>
-						</td>
             <td>
-							S/. <%= order.total_price  %>
+							S/. <%= order.amount_cents  %>
 						</td>
 					</tr>
           <% end %>

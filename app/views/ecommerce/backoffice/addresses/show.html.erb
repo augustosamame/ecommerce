@@ -1,0 +1,41 @@
+<div class="page-header">
+  <%= link_to backoffice_addresses_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_address_path(@backoffice_address), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show backoffice_address</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>User:</dt>
+  <dd><%= @backoffice_address.user %></dd>
+
+  <dt>Name:</dt>
+  <dd><%= @backoffice_address.name %></dd>
+
+  <dt>Street:</dt>
+  <dd><%= @backoffice_address.street %></dd>
+
+  <dt>Street2:</dt>
+  <dd><%= @backoffice_address.street2 %></dd>
+
+  <dt>State:</dt>
+  <dd><%= @backoffice_address.state %></dd>
+
+  <dt>City:</dt>
+  <dd><%= @backoffice_address.city %></dd>
+
+  <dt>Address type:</dt>
+  <dd><%= @backoffice_address.address_type %></dd>
+
+  <dt>Shipping or billing:</dt>
+  <dd><%= @backoffice_address.shipping_or_billing %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @backoffice_address.status %></dd>
+
+</dl>

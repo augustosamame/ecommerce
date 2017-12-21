@@ -1,0 +1,43 @@
+<div class="page-header">
+  <%= link_to new_backoffice_order_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Order
+  <% end %>
+  <h1>Listing backoffice_orders</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>User</th>
+            <th>Amount cents</th>
+            <th>Stage</th>
+            <th>Shipping address</th>
+            <th>Billing address</th>
+            <th>Coupon</th>
+            <th>Payment status</th>
+            <th>Status</th>
+            <th>Show</th>
+        <th>Edit</th>
+        <th>Destroy</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @backoffice_orders) do |backoffice_order| %>
+            <td><%= backoffice_order.user.name %></td>
+            <td><%= backoffice_order.amount_cents %></td>
+            <td><%= backoffice_order.stage %></td>
+            <td><%= backoffice_order.shipping_address_id %></td>
+            <td><%= backoffice_order.billing_address_id %></td>
+            <td><%= backoffice_order.coupon_id %></td>
+            <td><%= backoffice_order.payment_status %></td>
+            <td><%= backoffice_order.status %></td>
+            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_order_path(backoffice_order) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_order_path(backoffice_order), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

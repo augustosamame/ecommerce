@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  name: MyString
+  street: MyString
+  street2: MyString
+  state: MyString
+  city: MyString
+  address_type: 1
+  shipping_or_billing: 1
+  status: 1
+
+two:
+  user: two
+  name: MyString
+  street: MyString
+  street2: MyString
+  state: MyString
+  city: MyString
+  address_type: 1
+  shipping_or_billing: 1
+  status: 1

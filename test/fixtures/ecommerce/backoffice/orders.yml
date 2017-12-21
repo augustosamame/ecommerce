@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  amount_cents: 1
+  stage: 1
+  shipping_address_id: 1
+  billing_address_id: 1
+  coupon_id: 1
+  payment_status: 1
+  status: 1
+
+two:
+  user: two
+  amount_cents: 1
+  stage: 1
+  shipping_address_id: 1
+  billing_address_id: 1
+  coupon_id: 1
+  payment_status: 1
+  status: 1

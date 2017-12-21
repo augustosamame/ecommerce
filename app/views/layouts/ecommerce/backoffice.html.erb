@@ -2,15 +2,16 @@
 <% nofollow %>
 <% noindex %>
 <%= stylesheet_link_tag    'ecommerce/backoffice', media: 'all' %>
-<%= javascript_include_tag 'ecommerce/application' %>
 <%= javascript_include_tag 'ecommerce/backoffice' %>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
 <!-- AQUI VAN LOS CSS Y JS SOLO DE BACKOFFICE -->
 
 <% end %>
 
 <body class="<%=  controller.controller_name  %>">
+  BACKOFFICE LAYOUT PRESENT
 <!-- AQUI VA EL BODY SOLO DE BACKOFFICE -->
 
 <!-- BEGIN HEADER -->
@@ -84,4 +85,4 @@ $( ".search_service" ).autocomplete({
 });
 </script>
 
-<% parent_layout "application" %>
+<% parent_layout "ecommerce/base" %>

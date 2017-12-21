@@ -6,8 +6,9 @@ require 'mini_magick'
 require 'social-share-button'
 require 'simple_form'
 require 'material_icons'
-require 'jquery-rails'
-require 'jquery-ui-rails'
+require 'sass-rails'
+require 'bootstrap-sass'
+require 'record_tag_helper'
 
 module Ecommerce
 
@@ -17,9 +18,6 @@ module Ecommerce
   mattr_accessor :use_main_app_javascripts
   mattr_accessor :use_engine_header
   mattr_accessor :use_engine_footer
-  mattr_accessor :aws_secret_key
-  mattr_accessor :aws_access_key
-  mattr_accessor :s3_bucket
 
   mattr_accessor :address_requires_doc_id # :boolean, default: true # should state/state_name be required
   mattr_accessor :address_requires_phone # :boolean, default: true # Determines whether we require phone in address

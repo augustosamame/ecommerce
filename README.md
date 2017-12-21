@@ -27,6 +27,21 @@ Mount the engine in your routes:
 mount Ecommerce::Engine, at: "/tienda", as: "ecommerce"
 ```
 
+Main App Requirements:
+
+Gems:
+
+The following gems must be installed in main app:
+
+gem 'jquery-rails' #already includes gem 'jquery-ui-rails'
+gem 'jquery-ui-rails'
+gem 'bootstrap-sass'
+gem 'meta-tags', require: 'meta_tags'
+gem "responders"
+gem 'devise'
+gem 'devise-i18n'
+gem 'cancancan'
+
 User Model
 
 The Ecommerce engine expects the following User model schema to be present:
@@ -45,28 +60,41 @@ t.integer :status
 
 Assets
 
-for some reason, the application.scss and application.js are not being pulled, so all requires for js and scss should be also placed in main_app application.scss and application.js
+main_app application.scss and application.js must include:
 
 ex.
 
 ```
 application.scss
 
-*= require devise_bootstrap_views
-*= require bootstrap-datetimepicker
-*= require material_icons
-*= require custom_tododanza
+*
+*=
+*/
+
+@import 'ecommerce/backoffice/globals/fonts';
+@import 'ecommerce/backoffice/globals/variables';
+
+
+// --------------Bootstrap-----------------------------
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+
+@import 'bootstrap-datetimepicker';
+
+@import 'devise_bootstrap_views';
+@import 'bootstrap-datetimepicker';
+@import 'material_icons';
+@import 'custom_APP_NAME';
+
 
 application.js
 
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui
 //= require bootstrap-sprockets
 //= require moment
 //= require moment/es
 //= require bootstrap-datetimepicker
-//= require pickers
 
 
 ```
@@ -81,12 +109,25 @@ rails ecommerce:install:migrations
 rails db:migrate
 ```
 
-Note: special care needs to be taken when creating and copying over a migration with relations from the namespaced engine, since rails fails to recognize the namespace for the foreign keys. See create_ecommerce_backoffice_variants for a working example
+Note: special care needs to be taken when creating and copying over a migration with relations from the namespaced engine, since rails fails to recognize the namespace for the foreign keys. See create_ecommerce_product_skus for a working example
 Basically you have to remove the foreign_key: true from the field and add the foreign key manually by using:
 
 ```
-add_foreign_key :ecommerce_backoffice_product_variants, :ecommerce_backoffice_products, column: :product_id
+add_foreign_key :ecommerce_product_skus, :ecommerce_products, column: :product_id
 ```
+
+
+## Configuration
+The following configurations need to be set by creating ecommerce.rb in initializers/ecommerce.rb:
+
+Ecommerce.ecommerce_layout = "canvas_ecommerce"
+Ecommerce.use_main_app_header = true
+Ecommerce.use_main_app_footer = true
+Ecommerce.use_main_app_javascripts = true
+Ecommerce.use_engine_header = false
+Ecommerce.use_engine_footer = false
+Ecommerce.logo = "PATH_TO_LOGO"
+
 
 ## Contributing
 Contribution directions go here.

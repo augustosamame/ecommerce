@@ -1,0 +1,15 @@
+//= require bootstrap-sprockets
+//= require jquery-ui/widgets/autocomplete
+//= require ecommerce/backoffice/pace/pace.min
+//= require ecommerce/backoffice/plugins/jquery-block-ui/jqueryblockui.min
+//= require ecommerce/backoffice/plugins/jquery-unveil/jquery.unveil.min
+//= require ecommerce/backoffice/plugins/jquery-scrollbar/jquery.scrollbar.min
+//= require ecommerce/backoffice/plugins/jquery-numberAnimate/jquery.animateNumbers
+//= require ecommerce/backoffice/plugins/jquery-validation/js/jquery.validate.min
+//= require ecommerce/backoffice/plugins/bootstrap-select2/select2.min
+//= require ecommerce/backoffice/webarch
+//= require ecommerce/backoffice/jaaulde-cookies
+//= require ecommerce/backoffice/jaaulde-cookies.jquery
+//= require ecommerce/backoffice/rotador-rst
+//= require ecommerce/backoffice/scrollReveal
+//= require ecommerce/backoffice/back_autocomplete

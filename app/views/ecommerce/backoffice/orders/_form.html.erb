@@ -1,0 +1,18 @@
+<%= simple_form_for([:backoffice, @backoffice_order]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :user, :label_method => lambda { |user| "#{user.name}" }  %>
+    <%= f.input :amount_cents %>
+    <%= f.input :stage %>
+    <%= f.input :shipping_address_id %>
+    <%= f.input :billing_address_id %>
+    <%= f.input :coupon_id %>
+    <%= f.input :payment_status %>
+    <%= f.input :status %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: "btn btn-primary" %>
+  </div>
+<% end %>
