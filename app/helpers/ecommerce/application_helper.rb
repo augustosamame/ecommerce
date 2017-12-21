@@ -17,8 +17,11 @@ module Ecommerce
       end
     end
 
-    def body_class
-      [controller_name, action_name].join('-')
+    def body_css_class
+      @body_css_classes ||= []
+      view_css_class = [controller_name, action_name].join('-')
+
+      @body_css_classes.unshift(view_css_class).join(' ')
     end
 
   end

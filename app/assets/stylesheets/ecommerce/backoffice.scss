@@ -6,8 +6,8 @@
 */
 
 // These both need to be imported before bootstrap:
-@import 'ecommerce/backoffice/globals/fonts';
-@import 'ecommerce/backoffice/globals/variables';
+@import 'ecommerce/bootstrap/globals/fonts';
+@import 'ecommerce/bootstrap/globals/variables';
 
 
 // --------------Bootstrap-----------------------------
@@ -20,19 +20,19 @@
 
 // --------------Global definitions--------------------
 // For example (add your own!!):
-@import 'ecommerce/backoffice/globals/mixins';
+@import 'ecommerce/bootstrap/globals/mixins';
 
 
 // --------------Shared styles-------------------------
 // Common base CSS modifications. For example:
-@import 'ecommerce/backoffice/shared/buttons';
-@import 'ecommerce/backoffice/shared/grid';
+@import 'ecommerce/bootstrap/shared/buttons';
+@import 'ecommerce/bootstrap/shared/grid';
 
 
 // --------------Components----------------------------
 // Create your own and modify/extend Bootstrap's. For example:
-@import 'ecommerce/backoffice/components/panel';
-//@import 'ecommerce/backoffice/components/profile_panels';
+@import 'ecommerce/bootstrap/components/panel';
+//@import 'ecommerce/bootstrap/components/profile_panels';
 
 
 // --------------Sections------------------------------

@@ -3,3 +3,43 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 /*
 */
+// These both need to be imported before bootstrap:
+@import 'ecommerce/bootstrap/globals/fonts';
+@import 'ecommerce/bootstrap/globals/variables';
+
+
+// --------------Bootstrap-----------------------------
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+
+// Uncomment if you want to use the default bootstrap theme
+// @import 'bootstrap/theme';
+
+
+// --------------Global definitions--------------------
+// For example (add your own!!):
+@import 'ecommerce/bootstrap/globals/mixins';
+
+
+// --------------Shared styles-------------------------
+// Common base CSS modifications. For example:
+@import 'ecommerce/bootstrap/shared/buttons';
+@import 'ecommerce/bootstrap/shared/grid';
+
+
+// --------------Components----------------------------
+// Create your own and modify/extend Bootstrap's. For example:
+@import 'ecommerce/bootstrap/components/panel';
+
+@import 'ecommerce/canvas_ecommerce/style';
+@import 'ecommerce/canvas_ecommerce/dark';
+@import 'ecommerce/canvas_ecommerce/swiper';
+@import 'ecommerce/canvas_ecommerce/ecommerce';
+@import 'ecommerce/canvas_ecommerce/fonts';
+@import 'ecommerce/canvas_ecommerce/font-icons';
+@import 'ecommerce/canvas_ecommerce/animate';
+@import 'ecommerce/canvas_ecommerce/magnific-popup';
+@import 'ecommerce/canvas_ecommerce/responsive';
+@import 'ecommerce/canvas_ecommerce/include/rs-plugin/css/settings';
+@import 'ecommerce/canvas_ecommerce/include/rs-plugin/css/layers';
+@import 'ecommerce/canvas_ecommerce/include/rs-plugin/css/navigation';
