@@ -1,6 +1,3 @@
-//= require bootstrap-sprockets
-//= require ecommerce/canvas_ecommerce/plugins
-//= require ecommerce/canvas_ecommerce/functions
 //= require ecommerce/canvas_ecommerce/include/rs-plugin/js/jquery.themepunch.tools.min
 //= require ecommerce/canvas_ecommerce/include/rs-plugin/js/jquery.themepunch.revolution.min
 //= require ecommerce/canvas_ecommerce/include/rs-plugin/js/extensions/revolution.extension.actions.min
@@ -12,3 +9,6 @@
 //= require ecommerce/canvas_ecommerce/include/rs-plugin/js/extensions/revolution.extension.parallax.min
 //= require ecommerce/canvas_ecommerce/include/rs-plugin/js/extensions/revolution.extension.slideanims.min
 //= require ecommerce/canvas_ecommerce/include/rs-plugin/js/extensions/revolution.extension.video.min
+//= require ecommerce/canvas_ecommerce/plugins
+//= require ecommerce/canvas_ecommerce/functions
+//= require ecommerce/canvas_ecommerce/main

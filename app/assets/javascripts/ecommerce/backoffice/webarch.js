@@ -209,7 +209,7 @@
             timer= setTimeout(function(){
                 $('.page-sidebar').removeClass('visible');
             }, 300);
-            
+
         }
         else{
             clearTimeout(timer);
@@ -228,11 +228,11 @@
                 $('.chat-window-wrapper').removeClass('visible');
             }, 300);
         }
-        else{ 
+        else{
             clearTimeout(timer);
             $('.chat-window-wrapper').addClass('visible');
             $('body').addClass('open-menu-right');
-        }        
+        }
     }
     // Util Functions
     Webarch.prototype.initUtil = function(){
@@ -259,7 +259,7 @@
             var $table =  $el.closest('table');
             if ($el.is(':checked')) {
                 $table.find(':checkbox').attr('checked', true);
-                $table.find('tr').addClass('row_selected'); 
+                $table.find('tr').addClass('row_selected');
             } else {
                $table.find(':checkbox').attr('checked', false);
                $table.find('tr').removeClass('row_selected');
@@ -295,12 +295,12 @@
         $('#user-options').click(function () {
             $('#my-task-list').popover('hide');
         });
-        
+
         $('table th .checkall').on('click', function () {
             if ($(this).is(':checked')) {
                 $(this).closest('table').find(':checkbox').attr('checked', true);
                 $(this).closest('table').find('tr').addClass('row_selected');
-                //$(this).parent().parent().parent().toggleClass('row_selected');   
+                //$(this).parent().parent().parent().toggleClass('row_selected');
             } else {
                 $(this).closest('table').find(':checkbox').attr('checked', false);
                 $(this).closest('table').find('tr').removeClass('row_selected');
@@ -388,7 +388,7 @@
             },
             success: function (label, element) {
                 // var parent = $(element).parent('.input-with-icon');
-                // parent.removeClass('error-control').addClass('success-control'); 
+                // parent.removeClass('error-control').addClass('success-control');
             },
         });
 
@@ -472,11 +472,11 @@ $(document).ready(function () {
     }, 8000);
 
 
-    //***********************************END Grids*****************************				
+    //***********************************END Grids*****************************
 
 
 
-    //***********************************BEGIN Main Menu Toggle *****************************	
+    //***********************************BEGIN Main Menu Toggle *****************************
     $('#layout-condensed-toggle').click(function () {
         if ($('#main-menu').attr('data-inner-menu') == '1') {
             //Do nothing
@@ -555,7 +555,7 @@ $(document).ready(function () {
         $(this).removeClass('hide-top-content-header');
         if(!$('body').hasClass('extended-layout'))
         $(this).find('#main-menu').removeClass('mini');
-    };    
+    };
 
 })(jQuery);
 

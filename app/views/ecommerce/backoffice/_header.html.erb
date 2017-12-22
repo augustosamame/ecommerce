@@ -114,10 +114,10 @@
         </div>
         <ul class="nav quick-section ">
           <li class="quicklinks">
-            <a data-toggle="dropdown" class="dropdown-toggle  pull-right " href="#" id="user-options">
+            <a data-toggle="dropdown" class="dropdown-toggle  pull-right " href="#" id="user-menu">
               <i class="material-icons">tune</i>
             </a>
-            <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
+            <ul class="dropdown-menu dropdown-user-menu pull-right" role="menu" aria-labelledby="user-menu">
               <li>
                 <a href="user-profile.html"> My Account</a>
               </li>
@@ -164,3 +164,9 @@
   <!-- END TOP NAVIGATION BAR -->
 </div>
 <!-- END HEADER -->
+
+<script>
+$('#user-menu').click(function () {
+    $('.dropdown-user-menu').toggle();
+});
+</script>

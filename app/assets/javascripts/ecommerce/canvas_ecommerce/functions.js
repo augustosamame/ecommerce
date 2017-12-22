@@ -1031,7 +1031,12 @@ var SEMICOLON = SEMICOLON || {};
 
 			if( !$body.hasClass('sticky-footer') && $footer.length > 0 && $wrapper.has('#footer') ) {
 				if( windowH > wrapperH ) {
-					$footer.css({ 'margin-top': ( windowH - wrapperH ) });
+					if( windowH - wrapperH > 50 ) {
+						$footer.css({ 'margin-top': 50 });
+					}
+					else {
+						$footer.css({ 'margin-top': ( windowH - wrapperH ) });
+					}
 				}
 			}
 		},

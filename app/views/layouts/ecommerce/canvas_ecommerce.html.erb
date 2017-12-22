@@ -1,14 +1,16 @@
 <% content_for :head do %>
   <title>Canvas Ecommerce</title>
   <%= stylesheet_link_tag    "ecommerce/canvas_ecommerce", media: "all" %>
-  <%= javascript_include_tag "ecommerce/canvas_ecommerce" %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 <% end %>
 
-<% render 'header' %>
+<%= render 'ecommerce/store/header' %>
 
 <%= yield %>
 
+<%= render 'ecommerce/store/footer' %>
+
+<%= javascript_include_tag "ecommerce/canvas_ecommerce" %>
 
 <% parent_layout "ecommerce/base" %>

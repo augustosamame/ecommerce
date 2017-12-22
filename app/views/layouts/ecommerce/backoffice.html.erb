@@ -2,7 +2,6 @@
 <% nofollow %>
 <% noindex %>
 <%= stylesheet_link_tag    'ecommerce/backoffice', media: 'all' %>
-<%= javascript_include_tag 'ecommerce/backoffice' %>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
@@ -41,7 +40,7 @@
   </div>
   <!-- END CONTENT -->
   <% # Javascript at the bottom for fast page loading %>
-
+<%= javascript_include_tag 'ecommerce/backoffice' %>
 
 <script type="text/javascript">
 $(document).ready(function(){

@@ -11,8 +11,8 @@
       <!-- Logo
       ============================================= -->
       <div id="logo">
-        <a href="index.html" class="standard-logo"><img src="images/ecommerce/logo.png" alt="Canvas Logo"></a>
-        <a href="index.html" class="retina-logo"><img src="images/ecommerce/logo@2x.png" alt="Canvas Logo"></a>
+        <a href="index.html" class="standard-logo"><%= image_tag "ecommerce/img/logo.png", alt: "Canvas Logo" %></a>
+        <a href="index.html" class="retina-logo"><%= image_tag "ecommerce/img/logo@2x.png", alt: "Canvas Logo" %></a>
       </div><!-- #logo end -->
 
       <!-- Primary Navigation
@@ -91,14 +91,14 @@
           <!-- Mega Menu
           ============================================= -->
           <li class="mega-menu"><a href="#"><div>Men</div></a>
-            <div class="mega-menu-content style-2 clearfix" style="background-image: url('images/shop/shop-menu.jpg'); background-repeat: no-repeat; background-position: right bottom;">
+            <div class="mega-menu-content style-2 clearfix" style="background-image: url('https://s3.amazonaws.com/devtechperu-tododanza-prod/assets/images/shop-menu.jpg'); background-repeat: no-repeat; background-position: right bottom;">
               <ul class="mega-menu-column col-lg-2 col-md-3">
                 <li>
                   <div class="widget clearfix">
 
                     <div class="iportfolio clearfix">
                       <div class="portfolio-image clearfix">
-                        <a href="#"><img src="images/ecommerce/items/1-1.jpg" alt="Grey Bag"></a>
+                        <a href="#"><%= image_tag "ecommerce/img/items/1-1.jpg", alt: "Grey Bag" %></a>
                         <div class="product-cart"><a href="#"><i class="icon-shopping-cart"></i></a></div>
                         <div class="product-quickview"><a href="#" data-toggle="tooltip" data-placement="top" title="Available Sizes: S | M | L"><i class="icon-info"></i></a></div>
                       </div>
@@ -125,7 +125,7 @@
                     <div class="widget-last-view">
                       <div class="spost clearfix">
                         <div class="entry-image">
-                          <a href="#"><img src="images/ecommerce/items/2-1.jpg" alt="Image"></a>
+                          <a href="#"><%= image_tag "ecommerce/img/items/2-1.jpg", alt: "Image" %></a>
                         </div>
                         <div class="entry-c">
                           <div class="entry-title">
@@ -140,7 +140,7 @@
 
                       <div class="spost clearfix">
                         <div class="entry-image">
-                          <a href="#"><img src="images/ecommerce/items/3-1.jpg" alt="Image"></a>
+                          <a href="#"><%= image_tag "ecommerce/img/items/3-1.jpg", alt: "Image" %></a>
                         </div>
                         <div class="entry-c">
                           <div class="entry-title">
@@ -155,7 +155,7 @@
 
                       <div class="spost clearfix">
                         <div class="entry-image">
-                          <a href="#"><img src="images/ecommerce/items/4-1.jpg" alt="Image"></a>
+                          <a href="#"><%= image_tag "ecommerce/img/items/4-1.jpg", alt: "Image" %></a>
                         </div>
                         <div class="entry-c">
                           <div class="entry-title">
@@ -255,7 +255,7 @@
             <div class="top-cart-items">
               <div class="top-cart-item clearfix">
                 <div class="top-cart-item-image">
-                  <a href="#"><img src="images/ecommerce/featured/1.jpg" alt="Blue Shoulder Bag" /></a>
+                  <a href="#"><%= image_tag "ecommerce/img/featured/1.jpg", alt: "Blue Shoulder Bag" %></a>
                 </div>
                 <div class="top-cart-item-desc">
                   <a href="#" class="t400">Blue Shoulder Bag</a>
@@ -265,7 +265,7 @@
               </div>
               <div class="top-cart-item clearfix">
                 <div class="top-cart-item-image">
-                  <a href="#" class="t400"><img src="images/ecommerce/featured/6.jpg" alt="Leather Bag" /></a>
+                  <a href="#" class="t400"><%= image_tag "ecommerce/img/featured/6.jpg", alt: "Leather Bag" %></a>
                 </div>
                 <div class="top-cart-item-desc">
                   <a href="#" class="t400">Leather Bag</a>

@@ -9,7 +9,7 @@ module Ecommerce
 
     def main
 
-      add_body_css_class('stretched no-transition')
+      add_body_css_class('stretched')
       puts current_user
     end
   end
