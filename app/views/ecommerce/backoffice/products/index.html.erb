@@ -11,6 +11,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>Category</th>
         <th>Description</th>
         <th>Price</th>
         <th>Image</th>
@@ -23,6 +24,7 @@
     <tbody>
       <%= content_tag_for(:tr, @backoffice_products) do |backoffice_product| %>
             <td><%= backoffice_product.name %></td>
+            <td><%= backoffice_product.category.name %></td>
             <td><%= backoffice_product.description %></td>
             <td><%= backoffice_product.price_cents %></td>
             <td><%= backoffice_product.image %></td>

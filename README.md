@@ -116,6 +116,19 @@ Basically you have to remove the foreign_key: true from the field and add the fo
 add_foreign_key :ecommerce_product_skus, :ecommerce_products, column: :product_id
 ```
 
+## Seed Data
+
+Seed Data is required for engine configuration. To properly seed data from engine in main app add the following command to main_app seeds.rb:
+
+```
+Ecommerce::Engine.load_seed
+```
+
+and run in main_app terminal:
+
+```
+rails db:seed
+```
 
 ## Configuration
 The following configurations need to be set by creating ecommerce.rb in initializers/ecommerce.rb:

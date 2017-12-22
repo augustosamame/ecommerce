@@ -1,0 +1,16 @@
+<%= simple_form_for([:backoffice, @backoffice_control]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :localized_name, :readonly => true %>
+    <%= f.input :text_value if @backoffice_control.value_field_type == "text" %> 
+    <%= f.input :boolean_value if @backoffice_control.value_field_type == "boolean" %>
+    <%= f.input :integer_value if @backoffice_control.value_field_type == "integer" %>
+    <%= f.input :float_value if @backoffice_control.value_field_type == "float" %>
+    <%= f.input :date_value if @backoffice_control.value_field_type == "date" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: "btn btn-primary" %>
+  </div>
+<% end %>

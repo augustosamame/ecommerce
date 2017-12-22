@@ -4,6 +4,7 @@ Ecommerce::Engine.routes.draw do
     get 'dashboard', :to => "dashboard#main"
     resources :users
     resources :controls
+    resources :categories
     resources :products
     resources :product_variants
     resources :product_skus

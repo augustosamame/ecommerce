@@ -14,11 +14,17 @@
   <dt>Name:</dt>
   <dd><%= @backoffice_product.name %></dd>
 
+  <dt>Category:</dt>
+  <dd><%= @backoffice_product.category.name %></dd>
+
   <dt>Description:</dt>
   <dd><%= @backoffice_product.description %></dd>
 
   <dt>Price:</dt>
   <dd><%= @backoffice_product.price_cents %></dd>
+
+  <dt>Controlar Stock?:</dt>
+  <dd><%= @backoffice_product.stockable %></dd>
 
   <dt>Image:</dt>
   <dd><%= @backoffice_product.image %></dd>

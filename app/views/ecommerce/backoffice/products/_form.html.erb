@@ -2,9 +2,11 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
+    <%= f.association :category, :label_method => lambda { |category| "#{category.name}" }  %>
     <%= f.input :name %>
     <%= f.input :description %>
     <%= f.input :price_cents %>
+    <%= f.input :stockable %>
     <%= f.input :image %>
   </div>
 

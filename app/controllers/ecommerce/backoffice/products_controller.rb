@@ -17,6 +17,7 @@ module Ecommerce
     # GET /backoffice/products/new
     def new
       @backoffice_product = Product.new
+      @backoffice_product.stockable = true
     end
 
     # GET /backoffice/products/1/edit
@@ -57,7 +58,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_params
-        params.require(:product).permit(:name, :description, :price_cents, :image)
+        params.require(:product).permit(:category_id, :name, :description, :price_cents, :stockable, :image)
       end
   end
 end

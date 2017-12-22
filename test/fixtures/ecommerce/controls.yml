@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  text_value: MyString
+  integer_value: 1
+  float_value: 1.5
+  boolean_value: false
+  date_value: 2017-12-22 15:28:20
+
+two:
+  name: MyString
+  text_value: MyString
+  integer_value: 1
+  float_value: 1.5
+  boolean_value: false
+  date_value: 2017-12-22 15:28:20
