@@ -5,6 +5,22 @@
     <%= f.input :name %>
     <%= f.input :image %>
     <%= f.input :status %>
+    <%= f.input :popular_homepage, label: "Include in Popular HomePage Categories" %>
+
+    <%= f.label "HomePage Category Image" %>
+    <div class="form-group">
+      <% if f.object.image_popular_homepage? %>
+        <%= image_tag f.object.image_popular_homepage, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
+      <% end %>
+      <img alt="your image" class="img-thumbnail hidden" height="200" id="img_prev" src="#" width="200"/>
+      <br/>
+      <span class="btn btn-default btn-file">
+        <%= f.file_field :image_popular_homepage, id: "file-image-upload" %>
+      </span>
+      <%= f.hidden_field :image_popular_homepage_cache %>
+    </div>
+
+
   </div>
 
   <div class="form-actions">

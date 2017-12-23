@@ -7,3 +7,29 @@
 </div>
 
 <%= render 'form' %>
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", function(event) {
+  $(function() {
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          $('#img_prev').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $("#file-image-upload").change(function(){
+      $('#img_prev').removeClass('hidden');
+      $('#img_actual').addClass('hidden');
+      readURL(this);
+    });
+  });
+  });
+
+
+</script>
