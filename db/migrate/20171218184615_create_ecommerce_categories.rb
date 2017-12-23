@@ -7,6 +7,8 @@ class CreateEcommerceCategories < ActiveRecord::Migration[5.1]
       t.boolean :popular
       t.boolean :popular_homepage
       t.string :image_popular_homepage
+      t.decimal :homepage_cat_image_width
+      t.decimal :homepage_cat_image_height
 
       t.timestamps
     end

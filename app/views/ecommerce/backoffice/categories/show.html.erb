@@ -17,6 +17,12 @@
   <dt>Image:</dt>
   <dd><%= @backoffice_category.image %></dd>
 
+  <dt>Include in Popular HomePage Categories:</dt>
+  <dd><%= @backoffice_category.popular_homepage %></dd>
+
+  <dt>HomePage Popular Image:</dt>
+  <dd><%= image_tag @backoffice_category.image_popular_homepage_url(:homepage) %></dd>
+
   <dt>Status:</dt>
   <dd><%= @backoffice_category.status %></dd>
 

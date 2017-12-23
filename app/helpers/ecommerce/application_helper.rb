@@ -30,12 +30,27 @@ module Ecommerce
         array = mycookie.split(',')
 
 
-        array.each do |e|
-          key_value = e.split('=')
-          hash[key_value[0]] = key_value[1]
+          array.each do |e|
+            key_value = e.split('=')
+            hash[key_value[0]] = key_value[1]
+          end
         end
-      end
       return hash
+    end
+
+    def col_width_for_image_dimensions(category)
+      ratio = category.homepage_cat_image_width / category.homepage_cat_image_height
+      puts ratio
+      case
+      when ratio < 1.2
+        return "3"
+      when ratio < 1.4
+        return "4"
+      when ratio < 1.7
+        return "5"
+      else
+        return "6"
+      end
     end
 
   end

@@ -42,6 +42,14 @@ class Ecommerce::CategoryHomeImageUploader < CarrierWave::Uploader::Base
 
   version :homepage do
     process resize_to_limit: [400, 400]
+    process :store_dimensions
+  end
+
+  def store_dimensions
+    if file && model
+      #will store image_dimensions in new model fields
+      model.homepage_cat_image_width, model.homepage_cat_image_height = ::MiniMagick::Image.open(file.file)[:dimensions]
+    end
   end
 
   def default_url

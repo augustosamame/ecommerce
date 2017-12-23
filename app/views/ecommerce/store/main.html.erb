@@ -150,18 +150,23 @@
 
           <div class="heading-block nobottomborder center">
             <h3>Popular Categories</h3>
-            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit voluptas.</span>
+            <span>Browse our Products by Category</span>
           </div>
 
-          <div class="col-md-7">
-            <a href="#" style="background: url('https://s3.amazonaws.com/devtechperu-tododanza-prod/assets/images/types/1.jpg') no-repeat center center; background-size: cover;">
+          <% Ecommerce::Category.where(popular_homepage: true).each do |category| %>
+
+          <div class="col-md-<%= col_width_for_image_dimensions(category) %>">
+            <%= link_to '', root_path, style: "background: url(#{category.image_popular_homepage_url(:homepage)}) no-repeat center center; background-size: cover;" %>
               <div class="vertical-middle dark center">
                 <div class="heading-block nomargin noborder">
-                  <h3 class="capitalize font-secondary nott t500">Travel</h3>
+                  <h3 class="capitalize font-secondary nott t500"><%= category.name %></h3>
                 </div>
               </div>
             </a>
           </div>
+
+          <% end %>
+
           <div class="col-md-5">
             <a href="#" style="background: url('https://s3.amazonaws.com/devtechperu-tododanza-prod/assets/images/types/3.jpg') no-repeat center center; background-size: cover;">
               <div class="vertical-middle dark center">
