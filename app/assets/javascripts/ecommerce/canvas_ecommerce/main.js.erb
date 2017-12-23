@@ -1,5 +1,7 @@
   // Topbar Hide
+  top_bar_new_hash = $('meta[name=close_bar_hash]').attr('content');
   $('#top-bar').on('click','#close-bar',function(){
+    document.cookie="_tododanza_cookie=close_bar_hash=" + top_bar_new_hash;
     $(this).parents('#top-bar').slideUp(300);
     $('body').css('padding-top',0);
   })

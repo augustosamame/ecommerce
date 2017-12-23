@@ -7,7 +7,7 @@ module Ecommerce
 
     # GET /backoffice/controls
     def index
-      @backoffice_controls = Control.all.order(:id)
+      @backoffice_controls = Control.where(internal: false).order(:id)
     end
 
     def edit

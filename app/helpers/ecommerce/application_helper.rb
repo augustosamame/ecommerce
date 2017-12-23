@@ -24,5 +24,19 @@ module Ecommerce
       @body_css_classes.unshift(view_css_class).join(' ')
     end
 
+    def cookie_string_to_hash(mycookie)
+      hash = {}
+        if mycookie
+        array = mycookie.split(',')
+
+
+        array.each do |e|
+          key_value = e.split('=')
+          hash[key_value[0]] = key_value[1]
+        end
+      end
+      return hash
+    end
+
   end
 end

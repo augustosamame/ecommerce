@@ -141,6 +141,17 @@ Ecommerce.use_engine_header = false
 Ecommerce.use_engine_footer = false
 Ecommerce.logo = "PATH_TO_LOGO"
 
+## Features
+
+Completely customizable ecommerce module
+change layout and css to your custom design
+manage categories, products, products attributes
+Peruvian electronic invoicing
+Credit Card payments via Culqi
+integrates with 3rd party logistics partner (Olva, Urbaner)
+configure via Control.
+customizable marketing top-bar. If dismissed it won't appear again after new HTML top bar text is saved via backoffice
+
 
 ## Contributing
 Contribution directions go here.

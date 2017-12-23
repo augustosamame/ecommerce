@@ -10,7 +10,8 @@ module Ecommerce
     def main
 
       add_body_css_class('stretched')
-      puts current_user
+      @top_bar_new_hash = Ecommerce::Control.find_by(name: 'top_bar_cookie_read_hash').text_value #this will be set as a cookie via javascript if user closes top_bar
     end
+
   end
 end
