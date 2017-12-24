@@ -33,7 +33,7 @@ Gems:
 
 The following gems must be installed in main app:
 
-gem 'jquery-rails' #already includes gem 'jquery-ui-rails'
+gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'bootstrap-sass'
 gem 'meta-tags', require: 'meta_tags'

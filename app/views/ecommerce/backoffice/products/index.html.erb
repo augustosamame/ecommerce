@@ -27,7 +27,7 @@
             <td><%= backoffice_product.category.name %></td>
             <td><%= backoffice_product.description %></td>
             <td><%= backoffice_product.price_cents %></td>
-            <td><%= backoffice_product.image %></td>
+            <td><%= image_tag backoffice_product.image_url(:thumb_80), height: 80 %></td>
             <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_path(backoffice_product) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_product_path(backoffice_product) %></td>
         <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_product_path(backoffice_product), method: :delete, data: { confirm: 'Are you sure?' } %></td>

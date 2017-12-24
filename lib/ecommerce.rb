@@ -1,4 +1,5 @@
 require "ecommerce/engine"
+require 'decorators'
 require "friendly_id"
 require 'carrierwave'
 require 'carrierwave/storage/fog'
@@ -7,12 +8,12 @@ require 'social-share-button'
 require 'simple_form'
 require 'material_icons'
 require 'sass-rails'
-require 'bootstrap-sass'
 require 'record_tag_helper'
 
 module Ecommerce
 
-  mattr_accessor :ecommerce_layout #Can now reference this setting as Ecommerce.ecommerce_layout
+  mattr_accessor :user_class #Can now reference this setting as Ecommerce.user_class
+  mattr_accessor :ecommerce_layout
   mattr_accessor :use_main_app_header
   mattr_accessor :use_main_app_footer
   mattr_accessor :use_main_app_javascripts
@@ -41,5 +42,29 @@ module Ecommerce
   mattr_accessor :min_restock_inventory # :boolean, default: true # Determines if a return item is restocked automatically once it has been received
   mattr_accessor :shipping_instructions_text# , :text, instructions/info for shipping
   mattr_accessor :track_inventory_levels # :boolean, default: true # Determines whether to track on_hand values for variants / products.
+
+  class << self
+
+    #this lets us add functionality to main_app user model
+    def decorate_user_class!
+
+      Ecommerce.user_class.class_eval do
+        #examples of extending or including functionality through local engine gems to user model
+        #extend Ecommerce::Autocomplete
+        #include Ecommerce::DefaultPermissions
+
+        has_many :orders, :class_name => "Ecommerce::Order", :foreign_key => "user_id"
+        has_many :addresses, :class_name => "Ecommerce::Address", :foreign_key => "user_id"
+
+        #example of adding a method to User model
+        #def moderate_posts?
+        #  Ecommerce.moderate_first_post && !forem_approved_to_post?
+        #end
+        #alias_method :forem_needs_moderation?, :forem_moderate_posts?
+
+      end
+    end
+
+  end
 
 end

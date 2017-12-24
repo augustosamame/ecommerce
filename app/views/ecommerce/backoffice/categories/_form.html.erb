@@ -3,19 +3,32 @@
 
   <div class="form-inputs">
     <%= f.input :name %>
-    <%= f.input :image %>
+
+    <%= f.label "Category Image" %>
+    <div class="form-group">
+      <% if f.object.image? %>
+        <%= image_tag f.object.image, id: "image_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
+      <% end %>
+      <img alt="your image" class="img-thumbnail hidden" height="200" id="image_prev" src="#" width="200"/>
+      <br/>
+      <span class="btn btn-default btn-file">
+        <%= f.file_field :image, id: "file-image-upload" %>
+      </span>
+      <%= f.hidden_field :image_cache %>
+    </div>
+
     <%= f.input :status %>
     <%= f.input :popular_homepage, label: "Include in Popular HomePage Categories" %>
 
     <%= f.label "HomePage Category Image" %>
     <div class="form-group">
       <% if f.object.image_popular_homepage? %>
-        <%= image_tag f.object.image_popular_homepage, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
+        <%= image_tag f.object.image_popular_homepage, id: "image_popular_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
       <% end %>
-      <img alt="your image" class="img-thumbnail hidden" height="200" id="img_prev" src="#" width="200"/>
+      <img alt="your image" class="img-thumbnail hidden" height="200" id="image_popular_prev" src="#" width="200"/>
       <br/>
       <span class="btn btn-default btn-file">
-        <%= f.file_field :image_popular_homepage, id: "file-image-upload" %>
+        <%= f.file_field :image_popular_homepage, id: "file-image-popular-upload" %>
       </span>
       <%= f.hidden_field :image_popular_homepage_cache %>
     </div>
@@ -27,3 +40,47 @@
     <%= f.button :submit, class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", function(event) {
+  $(function() {
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          $('#image_prev').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $("#file-image-upload").change(function(){
+      $('#image_prev').removeClass('hidden');
+      $('#image_actual').addClass('hidden');
+      readURL(this);
+    });
+  });
+  $(function() {
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var popular_reader = new FileReader();
+
+        popular_reader.onload = function (e) {
+          $('#image_popular_prev').attr('src', e.target.result);
+        }
+        popular_reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $("#file-image-popular-upload").change(function(){
+      $('#image_popular_prev').removeClass('hidden');
+      $('#image_popular_actual').addClass('hidden');
+      readURL(this);
+    });
+  });
+  });
+
+
+</script>

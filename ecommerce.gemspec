@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.1.4"
   s.add_dependency 'dotenv-rails'
+  s.add_dependency 'decorators'
   s.add_dependency 'kaminari', "~> 1.1.1"
   s.add_dependency 'friendly_id', '~> 5.1.0'
   s.add_dependency 'carrierwave', '~> 1.2.1'

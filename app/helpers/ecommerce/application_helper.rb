@@ -24,6 +24,22 @@ module Ecommerce
       @body_css_classes.unshift(view_css_class).join(' ')
     end
 
+    def flash_class(level)
+      case level.to_sym
+        # allow either standard rails flash category symbols...
+        when :notice then "info"
+        when :success then "success"
+        when :alert then "warning"
+        when :error then "danger"
+        # ... or bootstrap class symbols
+        when :info then "info"
+        when :warning then "warning"
+        when :danger then "danger"
+        # and default to being alarming
+        else "danger"
+      end
+    end
+
     def cookie_string_to_hash(mycookie)
       hash = {}
         if mycookie

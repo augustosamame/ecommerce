@@ -24,7 +24,7 @@
     <tbody>
       <%= content_tag_for(:tr, @backoffice_categories) do |backoffice_category| %>
             <td><%= backoffice_category.name %></td>
-            <td><%= backoffice_category.image %></td>
+            <td><%= image_tag backoffice_category.image_url(:thumb_80), height: 80 %></td>
             <td><%= backoffice_category.popular_homepage %></td>
             <td><%= image_tag backoffice_category.image_popular_homepage_url(:homepage), height: 80 %></td>
             <td><%= backoffice_category.status %></td>

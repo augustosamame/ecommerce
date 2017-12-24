@@ -15,7 +15,7 @@
   <dd><%= @backoffice_category.name %></dd>
 
   <dt>Image:</dt>
-  <dd><%= @backoffice_category.image %></dd>
+  <dd><%= image_tag @backoffice_category.image_url(:medium_400) %></dd>
 
   <dt>Include in Popular HomePage Categories:</dt>
   <dd><%= @backoffice_category.popular_homepage %></dd>

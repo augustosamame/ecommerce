@@ -1,0 +1,7 @@
+<% if !flash.empty? %>
+  <div id="flash">
+    <% flash.each do |key, value| %>
+      <%= alert_box value, context: flash_class(key), dismissible: true %>
+    <% end %>
+  </div>
+<% end %>
