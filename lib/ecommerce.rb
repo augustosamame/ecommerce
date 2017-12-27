@@ -48,21 +48,23 @@ module Ecommerce
     #this lets us add functionality to main_app user model
     def decorate_user_class!
 
-      Ecommerce.user_class.class_eval do
-        #examples of extending or including functionality through local engine gems to user model
-        #extend Ecommerce::Autocomplete
-        #include Ecommerce::DefaultPermissions
+      #if Ecommerce.const_defined?(user_class) #required in dev mode when testing standalone engine
+        Ecommerce.user_class.class_eval do
+          #examples of extending or including functionality through local engine gems to user model
+          #extend Ecommerce::Autocomplete
+          #include Ecommerce::DefaultPermissions
 
-        has_many :orders, :class_name => "Ecommerce::Order", :foreign_key => "user_id"
-        has_many :addresses, :class_name => "Ecommerce::Address", :foreign_key => "user_id"
+          has_many :orders, :class_name => "Ecommerce::Order", :foreign_key => "user_id"
+          has_many :addresses, :class_name => "Ecommerce::Address", :foreign_key => "user_id"
 
-        #example of adding a method to User model
-        #def moderate_posts?
-        #  Ecommerce.moderate_first_post && !forem_approved_to_post?
-        #end
-        #alias_method :forem_needs_moderation?, :forem_moderate_posts?
+          #example of adding a method to User model
+          #def moderate_posts?
+          #  Ecommerce.moderate_first_post && !forem_approved_to_post?
+          #end
+          #alias_method :forem_needs_moderation?, :forem_moderate_posts?
 
-      end
+        end
+      #end
     end
 
   end

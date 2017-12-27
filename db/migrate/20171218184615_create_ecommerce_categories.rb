@@ -1,7 +1,8 @@
 class CreateEcommerceCategories < ActiveRecord::Migration[5.1]
   def change
     create_table :ecommerce_categories do |t|
-      t.string :name
+      t.string :name, :null => false
+      t.integer :parent_id
       t.string :image
       t.integer :status
       t.boolean :popular
@@ -12,5 +13,7 @@ class CreateEcommerceCategories < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+
+    add_index :ecommerce_categories, :parent_id
   end
 end
