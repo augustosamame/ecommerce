@@ -2,6 +2,7 @@ module Ecommerce
   class Product < ApplicationRecord
     belongs_to :category
     belongs_to :brand
+    belongs_to :supplier
 
     has_many :product_properties
     has_many :properties,         through: :product_properties

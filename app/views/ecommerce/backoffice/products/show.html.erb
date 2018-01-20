@@ -58,29 +58,3 @@ Product SKUs
     </tbody>
   </table>
 </div>
-
-Product Variants
-<div class="table-responsive">
-  <table class="table table-striped table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>Product Variant</th>
-        <th>Product Variant Value</th>
-        <th>Show</th>
-        <th>Edit</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-
-    <tbody>
-
-      <% @backoffice_product.product_variants.each do |p_variant| %>
-            <td><%= p_variant.variant_name %></td>
-            <td><%= p_variant.product_sku_properties.first.value %></td>
-            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_variant_path(p_variant) %></td>
-        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_product_variant_path(p_variant) %></td>
-        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_product_variant_path(p_variant), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      <% end %>
-    </tbody>
-  </table>
-</div>

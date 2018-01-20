@@ -3,6 +3,7 @@
 
   <div class="form-inputs">
     <%= f.input :name %>
+    <%= f.input :parent_id, collection: Ecommerce::Category.all, prompt: "Seleccione la Categoría Padre", label: "Categoría Padre (en blanco para raíz)" %>
 
     <%= f.label "Category Image" %>
     <div class="form-group">
@@ -18,6 +19,7 @@
     </div>
 
     <%= f.input :status %>
+    <%= f.input :main_menu, label: "Include as a Main Menu Item" %>
     <%= f.input :popular_homepage, label: "Include in Popular HomePage Categories" %>
 
     <%= f.label "HomePage Category Image" %>

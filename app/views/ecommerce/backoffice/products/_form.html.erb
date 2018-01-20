@@ -21,10 +21,6 @@
       <%= f.hidden_field :image_cache %>
     </div>
 
-    <%= f.simple_fields_for :product_variants do |g| %>
-      <%= g.input :variant_name %>
-    <% end %>
-
     <%= f.simple_fields_for :product_skus do |h| %>
       <%= h.input :sku %>
       <%= h.input :price_cents %>

@@ -1,0 +1,37 @@
+<div class="page-header">
+  <%= link_to new_backoffice_supplier_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    <%= t('.new_button') %>
+  <% end %>
+  <h1><%= t('.title') %></h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th><%= t('.name') %></th>
+        <th><%= t('.logo') %></th>
+        <th><%= t('.tax_id') %></th>
+        <th><%= t('.tax_id_type') %></th>
+        <th><%= t('.default_hours_lead_time') %></th>
+        <th><%= t('ecommerce.backoffice.views.show') %></th>
+        <th><%= t('ecommerce.backoffice.views.edit') %></th>
+        <th><%= t('ecommerce.backoffice.views.delete') %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @backoffice_suppliers) do |backoffice_supplier| %>
+            <td><%= backoffice_supplier.name %></td>
+            <td><%= backoffice_supplier.logo %></td>
+            <td><%= backoffice_supplier.tax_id %></td>
+            <td><%= backoffice_supplier.tax_id_type %></td>
+            <td><%= backoffice_supplier.default_hours_lead_time %></td>
+            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_supplier_path(backoffice_supplier) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_supplier_path(backoffice_supplier) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_supplier_path(backoffice_supplier), method: :delete, data: { confirm: t('are_you_sure') } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

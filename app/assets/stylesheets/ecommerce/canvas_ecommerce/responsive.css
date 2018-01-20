@@ -474,7 +474,7 @@
 
 	#primary-menu > ul > li.sub-menu > a,
 	#primary-menu > .container > ul > li.sub-menu > a {
-		background-image: url("../images/icons/submenu.png");
+		background-image: url("/images/icons/submenu.png");
 		background-position: right center;
 		background-repeat: no-repeat;
 	}
@@ -1863,4 +1863,3 @@ only screen and (                min-resolution: 2dppx) and (max-width: 991px) {
 	#logo a.standard-logo { display: none; }
 	#logo a.retina-logo { display: inline-block; }
 }
-

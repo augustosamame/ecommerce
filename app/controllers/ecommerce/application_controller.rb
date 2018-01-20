@@ -3,6 +3,8 @@
 module Ecommerce
 
   class ApplicationController < ::ApplicationController
+    protect_from_forgery with: :exception
+    
     before_action :merge_abilities
 
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"

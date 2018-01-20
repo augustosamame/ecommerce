@@ -64,7 +64,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_category_params
-        params.require(:category).permit(:name, :image, :image_cache, :status, :popular_homepage, :image_popular_homepage, :image_popular_homepage_cache)
+        params.require(:category).permit(:name, :parent_id, :image, :image_cache, :status, :main_menu, :popular_homepage, :image_popular_homepage, :image_popular_homepage_cache)
       end
   end
 end

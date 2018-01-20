@@ -1,0 +1,23 @@
+en-US:
+  ecommerce:
+    backoffice:
+      views:
+        show: 'Show'
+        edit: 'Edit'
+        delete: 'Delete'
+        are_you_sure: 'Are you sure?'
+      suppliers:
+        create:
+          created: 'Supplier was successfully created.'
+        update:
+          updated: 'Supplier was successfully updated.'
+        destroy:
+          destroyed: 'Supplier was successfully destroyed.'
+        index:
+          title: 'Listing Suppliers'
+          new_button: 'New Supplier'
+          name: 'Name'
+          logo: 'Logo'
+          tax_id: 'Tax Id'
+          tax_id_type: 'Tax Id Type'
+          default_hours_lead_time: 'Default Lead Time (hours)'

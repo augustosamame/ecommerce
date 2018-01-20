@@ -1,0 +1,24 @@
+<div class="page-header">
+  <%= link_to backoffice_suppliers_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_supplier_path(@backoffice_supplier), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show backoffice_supplier</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Name:</dt>
+  <dd><%= @backoffice_supplier.name %></dd>
+  <dt>Logo:</dt>
+  <dd><%= @backoffice_supplier.logo %></dd>
+  <dt>Tax Id:</dt>
+  <dd><%= @backoffice_supplier.tax_id %></dd>
+  <dt>Tax Id Type:</dt>
+  <dd><%= @backoffice_supplier.tax_id_type %></dd>
+  <dt>Default Lead Time (hours):</dt>
+  <dd><%= @backoffice_supplier.default_hours_lead_time %></dd>
+</dl>

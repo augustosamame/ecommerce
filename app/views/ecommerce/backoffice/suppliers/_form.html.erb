@@ -1,0 +1,15 @@
+<%= simple_form_for([:backoffice, @backoffice_supplier]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name %>
+    <%= f.input :logo %>
+    <%= f.input :tax_id, label: "Tax Id" %>
+    <%= f.input :tax_id_type %>
+    <%= f.input :default_hours_lead_time %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: "btn btn-primary" %>
+  </div>
+<% end %>

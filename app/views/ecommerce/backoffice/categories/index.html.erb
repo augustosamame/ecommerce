@@ -11,9 +11,11 @@
     <thead>
       <tr>
             <th>Name</th>
+            <th>Parent</th>
             <th>Image</th>
-            <th>HomePage?</th>
-            <th>HomePage Image</th>
+            <th>Main Menu?</th>
+            <th>Home Page?</th>
+            <th>Home Page Image</th>
             <th>Status</th>
             <th>Show</th>
         <th>Edit</th>
@@ -24,7 +26,9 @@
     <tbody>
       <%= content_tag_for(:tr, @backoffice_categories) do |backoffice_category| %>
             <td><%= backoffice_category.name %></td>
+            <td><%= backoffice_category.parent_id ? Ecommerce::Category.find(backoffice_category.parent_id).name : "Raíz" %></td>
             <td><%= image_tag backoffice_category.image_url(:thumb_80), height: 80 %></td>
+            <td><%= backoffice_category.main_menu %></td>
             <td><%= backoffice_category.popular_homepage %></td>
             <td><%= image_tag backoffice_category.image_popular_homepage_url(:homepage), height: 80 %></td>
             <td><%= backoffice_category.status %></td>

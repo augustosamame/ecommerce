@@ -29,7 +29,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_control_params
-        params.require(:control).permit(:name, :text_value, :boolean_value, :integer_value, :float_value, :date_value)
+        params.require(:control).permit(:name, :localized_name, :text_value, :boolean_value, :integer_value, :float_value, :date_value)
       end
   end
 end

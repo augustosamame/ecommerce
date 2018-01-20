@@ -3,10 +3,11 @@ require_dependency "ecommerce/application_controller"
 module Ecommerce
   class Backoffice::BrandsController < Backoffice::BaseController
     before_action :set_backoffice_brand, only: [:show, :edit, :update, :destroy]
+    authorize_resource :class => "Ecommerce::Brand"
 
     # GET /backoffice/brands
     def index
-      @backoffice_brands = Backoffice::Brand.all
+      @backoffice_brands = Brand.all
     end
 
     # GET /backoffice/brands/1
@@ -15,7 +16,7 @@ module Ecommerce
 
     # GET /backoffice/brands/new
     def new
-      @backoffice_brand = Backoffice::Brand.new
+      @backoffice_brand = Brand.new
     end
 
     # GET /backoffice/brands/1/edit
@@ -24,7 +25,7 @@ module Ecommerce
 
     # POST /backoffice/brands
     def create
-      @backoffice_brand = Backoffice::Brand.new(backoffice_brand_params)
+      @backoffice_brand = Brand.new(backoffice_brand_params)
 
       if @backoffice_brand.save
         redirect_to backoffice_brand_path(@backoffice_brand), notice: 'Brand was successfully created.'
@@ -51,7 +52,7 @@ module Ecommerce
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_backoffice_brand
-        @backoffice_brand = Backoffice::Brand.find(params[:id])
+        @backoffice_brand = Brand.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.
