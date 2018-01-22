@@ -4,5 +4,7 @@ module Ecommerce
 
     mount_uploader :image, Ecommerce::CategoryImageUploader
     mount_uploader :image_popular_homepage, Ecommerce::CategoryHomeImageUploader
+
+    enum status: {active: 0, inactive: 1}
   end
 end

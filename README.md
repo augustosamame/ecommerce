@@ -152,6 +152,11 @@ integrates with 3rd party logistics partner (Olva, Urbaner)
 configure via Control.
 customizable marketing top-bar. If dismissed it won't appear again after new HTML top bar text is saved via backoffice
 
+## v1.1 Planned Features
+
+Mega_menu option in category so that main_menu categories can look like this: https://ibb.co/d0g5Db
+Even better would be customizable menus (like Saga Falabella which can be chosen and completed with data)
+
 
 ## Contributing
 Contribution directions go here.

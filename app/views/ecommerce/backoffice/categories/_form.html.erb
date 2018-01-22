@@ -18,7 +18,7 @@
       <%= f.hidden_field :image_cache %>
     </div>
 
-    <%= f.input :status %>
+    <%= f.input :status, collection: Ecommerce::Category.statuses.keys %>
     <%= f.input :main_menu, label: "Include as a Main Menu Item" %>
     <%= f.input :popular_homepage, label: "Include in Popular HomePage Categories" %>
 

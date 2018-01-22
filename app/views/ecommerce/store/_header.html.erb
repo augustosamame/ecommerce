@@ -20,7 +20,20 @@
       <nav id="primary-menu" class="style-ecommerce">
 
         <ul>
-          <li class="current"><a href="#"><div>Home</div></a>
+          <% @home_menu_categories.each do |menu_item| %>
+            <li class=""><a href="#"><div><%= menu_item.name %></div></a>
+              <% unless Ecommerce::Category.where(parent_id: menu_item.id, status: "active").blank? %>
+                <ul>
+                  <% Ecommerce::Category.where(parent_id: menu_item.id, status: "active").each do |sub_menu_item| %>
+                    <li><a href="index-corporate.html"><div><%= sub_menu_item.name %></div></a></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </li>
+          <% end %>
+
+
+          <li class=""><a href="#"><div>Home</div></a>
             <ul>
               <li><a href="index-corporate.html"><div>Home - Corporate</div></a>
                 <ul>
