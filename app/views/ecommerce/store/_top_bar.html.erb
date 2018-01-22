@@ -1,0 +1,13 @@
+<!-- Top Bar
+============================================= -->
+<%= tag :meta, :name=> 'close_bar_hash', :content=> @top_bar_new_hash %>
+<% if (cookie_string_to_hash(cookies["_tododanza_cookie"])["close_bar_hash"] != Ecommerce::Control.find_by(name: "top_bar_cookie_read_hash").try(:text_value)) && Ecommerce::Control.find_by(name: "show_top_bar").try(:boolean_value) %>
+<div id="top-bar" class="dark">
+
+  <div class="container clearfix">
+    <p class="center"><%= Ecommerce::Control.find_by(name: "top_bar_html").try(:text_value).html_safe %><a href="#" id="close-bar"><i class="icon-line-cross fright"></i></a></p>
+  </div>
+
+</div>
+
+<% end %>

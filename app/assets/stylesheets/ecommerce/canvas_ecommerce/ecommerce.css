@@ -132,8 +132,8 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 	opacity: 1;
 }
 
-#slider-arrow-left,
-#slider-arrow-right {
+.slider-arrow-left,
+.slider-arrow-right {
 	top: auto;
 	bottom: 10px;
 	left: 185px;
@@ -144,8 +144,8 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 	border-radius: 50%;
 }
 
-#slider-arrow-left i,
-#slider-arrow-right i {
+.slider-arrow-left i,
+.slider-arrow-right i {
 	color: #333;
     width: auto;
     height: auto;
@@ -155,10 +155,10 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 }
 
 
-#slider-arrow-left:hover,
-#slider-arrow-right:hover { background-color: #EEE !important; }
+.slider-arrow-left:hover,
+.slider-arrow-right:hover { background-color: #EEE !important; }
 
-#slider-arrow-left { left: 140px; }
+.slider-arrow-left { left: 140px; }
 
 
 
@@ -342,18 +342,18 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 		line-height: 64px;
 	}
 
-	#slider-arrow-left,
-	#slider-arrow-right { bottom: 70px; }
+	.slider-arrow-left,
+	.slider-arrow-right { bottom: 70px; }
 
 }
 
-.device-xxs .swiper-caption-wrapper { display: none; }
+.device-xs .swiper-caption-wrapper { display: none; }
 
+.device-md #top-account,
 .device-sm #top-account,
-.device-xs #top-account,
-.device-xxs #top-account { margin: 39px 0 32px !important; }
+.device-xs #top-account { margin: 39px 0 32px !important; }
 
-.device-md #primary-menu > ul > li > a {
+.device-lg #primary-menu > ul > li > a {
 	margin: 30px 10px;
 	padding: 9px 0px;
 	font-size: 12px;
@@ -640,7 +640,7 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 
 .item-desc p {
 	margin-top: 20px;
-	font-size: 15px;
+	font-size: 1rem;
 	color: #888;
 	font-weight: 400;
 }

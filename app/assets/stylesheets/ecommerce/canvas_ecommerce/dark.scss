@@ -98,14 +98,14 @@ body #side-panel.dark { background-color: #383838; }
 .dark #header.full-header #header-wrap:not(.not-dark),
 #header.full-header.dark #header-wrap:not(.not-dark) { border-bottom-color: rgba(255,255,255,0.15); }
 
-.dark #slider + #header.full-header #header-wrap:not(.not-dark),
-#slider + #header.full-header.dark #header-wrap:not(.not-dark) { border-top-color: rgba(255,255,255,0.15); }
+.dark .slider-element + #header.full-header #header-wrap:not(.not-dark),
+.slider-element + #header.full-header.dark #header-wrap:not(.not-dark) { border-top-color: rgba(255,255,255,0.15); }
 
 .dark #header.transparent-header.full-header:not(.sticky-header) #header-wrap:not(.not-dark),
 #header.transparent-header.full-header.dark:not(.sticky-header) #header-wrap:not(.not-dark) { border-bottom-color: rgba(255,255,255,0.2); }
 
-.dark #slider + #header.transparent-header.full-header:not(.sticky-header) #header-wrap:not(.not-dark),
-#slider + #header.transparent-header.full-header.dark:not(.sticky-header) #header-wrap:not(.not-dark) { border-top-color: rgba(255,255,255,0.2); }
+.dark .slider-element + #header.transparent-header.full-header:not(.sticky-header) #header-wrap:not(.not-dark),
+.slider-element + #header.transparent-header.full-header.dark:not(.sticky-header) #header-wrap:not(.not-dark) { border-top-color: rgba(255,255,255,0.2); }
 
 .dark #header.semi-transparent,
 .dark #header.semi-transparent.floating-header .container,
@@ -351,7 +351,7 @@ body.top-search-open .dark #header-wrap:not(.not-dark) #top-search a,
 
 .dark .breadcrumb a:hover { color: #EEE; }
 
-.dark #page-title.page-title-pattern { background-image: image-url('ecommerce/img/pattern2.png'); }
+.dark #page-title.page-title-pattern { background-image: asset-url('img/pattern2.png'); }
 
 
 .dark .portfolio-filter { border-color: rgba(255,255,255,0.08); }
@@ -1311,7 +1311,7 @@ body #side-panel.dark #side-panel-trigger-close a {
 	background-color: rgba(255,255,255,0.1);
 }
 
-.dark .input-group-addon,
+.dark .input-group-text,
 .dark .input-group-btn .btn-default {
 	color: #999;
 	background-color: rgba(0,0,0,0.35);
@@ -1444,9 +1444,7 @@ body #side-panel.dark #side-panel-trigger-close a {
 .dark .navbar-default .navbar-link:hover { color: #EEE; }
 
 .dark .pagination > li > a,
-.dark .pagination > li > span,
-.dark .pager li > a,
-.dark .pager li > span {
+.dark .pagination > li > span {
 	color: #BBB;
 	background-color: rgba(255,255,255,0.1);
 	border-color: #666;
@@ -1455,9 +1453,7 @@ body #side-panel.dark #side-panel-trigger-close a {
 .dark .pagination > li > a:hover,
 .dark .pagination > li > span:hover,
 .dark .pagination > li > a:focus,
-.dark .pagination > li > span:focus,
-.dark .pager li > a:hover,
-.dark .pager li > a:focus {
+.dark .pagination > li > span:focus {
 	color: #EEE;
 	background-color: rgba(0,0,0,0.1);
 }
@@ -1467,11 +1463,7 @@ body #side-panel.dark #side-panel-trigger-close a {
 .dark .pagination > .disabled > span:focus,
 .dark .pagination > .disabled > a,
 .dark .pagination > .disabled > a:hover,
-.dark .pagination > .disabled > a:focus,
-.dark .pager .disabled > a,
-.dark .pager .disabled > a:hover,
-.dark .pager .disabled > a:focus,
-.dark .pager .disabled > span {
+.dark .pagination > .disabled > a:focus {
 	color: #999;
 	background-color: rgba(255,255,255,0.2);
 	border-color: #777;
@@ -1483,8 +1475,6 @@ body #side-panel.dark #side-panel-trigger-close a {
 .dark .label-default[href]:focus { background-color: rgba(0,0,0,0.2); }
 
 .dark .badge { background-color: rgba(255,255,255,0.2); }
-
-.btn .badge { background-color: #FFF; }
 
 .dark .jumbotron { background-color: rgba(255,255,255,0.15); }
 
@@ -1711,10 +1701,10 @@ body #side-panel.dark #side-panel-trigger-close a {
 	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content,
 	.dark #primary-menu:not(.not-dark) ul ul li,
 	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content ul ul,
-	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content.col-2 > ul,
-	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content.col-3 > ul,
-	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content.col-4 > ul,
-	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content.col-5 > ul,
+	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content.grid-2 > ul,
+	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content.grid-3 > ul,
+	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content.grid-4 > ul,
+	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content.grid-5 > ul,
 	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content.style-2 li { border-top-color: rgba(255,255,255,0.1) !important; }
 
 	.dark #primary-menu:not(.not-dark) > ul > li.sub-menu > a,
@@ -1725,10 +1715,10 @@ body #side-panel.dark #side-panel-trigger-close a {
 	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content,
 	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul ul li,
 	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content ul ul,
-	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content.col-2 > ul,
-	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content.col-3 > ul,
-	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content.col-4 > ul,
-	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content.col-5 > ul,
+	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content.grid-2 > ul,
+	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content.grid-3 > ul,
+	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content.grid-4 > ul,
+	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content.grid-5 > ul,
 	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul li .mega-menu-content.style-2 li { border-top-color: #EEE !important; }
 
 	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu > ul > li:hover a,
