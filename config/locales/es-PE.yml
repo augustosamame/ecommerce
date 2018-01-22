@@ -1,0 +1,35 @@
+en-US:
+  ecommerce:
+    store:
+      header:
+        home_menu: "Inicio"
+        blog_menu: "Blog"
+        contact_us_menu: "Contáctanos"
+        search_string: "Ingrese el término de búsqueda y presione Enter.."
+      main:
+        fresh_arrivals: "Recién Llegados"
+        popular_categories: 'Categorías Populares'
+        browse_categories: 'Mira nuestros productos por categoría'
+        best_selling_products: 'Nuestros Productos más Vendidos'
+        free_shipping: 'Envío sin costo para pedidos mayores a <strong>S/.199</strong>.'
+    backoffice:
+      views:
+        show: 'Ver'
+        edit: 'Editar'
+        delete: 'Eliminar'
+        are_you_sure: 'Está seguro?'
+      suppliers:
+        create:
+          created: 'Proveedor fue creado exitosamente.'
+        update:
+          updated: 'Proveedor fue editado exitosamente.'
+        destroy:
+          destroyed: 'Proveedor fue eliminado exitosamente.'
+        index:
+          title: 'Listado de Proveedores'
+          new_button: 'Nuevo Proveedor'
+          name: 'Nombre'
+          logo: 'Logo'
+          tax_id: 'RUC/DNI'
+          tax_id_type: 'RUC/DNI'
+          default_hours_lead_time: 'Tiempo de despacho (horas)'

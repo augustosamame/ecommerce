@@ -156,7 +156,11 @@ customizable marketing top-bar. If dismissed it won't appear again after new HTM
 
 Mega_menu option in category so that main_menu categories can look like this: https://ibb.co/d0g5Db
 Even better would be customizable menus (like Saga Falabella which can be chosen and completed with data)
+Multilanguage strings for both store and backoffice
 
+## v2.0 Planned Features
+
+All products, categories, etc.. can have multilanguage values so user-facing ecommerce is multilanguage
 
 ## Contributing
 Contribution directions go here.

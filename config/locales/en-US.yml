@@ -1,5 +1,17 @@
 en-US:
   ecommerce:
+    store:
+      header:
+        home_menu: "Home"
+        blog_menu: "Blog"
+        contact_us_menu: "Contact Us"
+        search_string: "Type &amp; Hit Enter.."
+      main:
+        fresh_arrivals: "Fresh Arrivals"
+        popular_categories: 'Popular Categories'
+        browse_categories: 'Browse our Products by Category'
+        best_selling_products: 'Best Selling Products'
+        free_shipping: 'Free Shipping on Orders of <strong>$199</strong> or above.'
     backoffice:
       views:
         show: 'Show'
