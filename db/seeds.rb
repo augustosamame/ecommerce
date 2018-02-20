@@ -3,3 +3,4 @@ Ecommerce::Control.create(name: 'invoice_terms_and_conditions', localized_name: 
 Ecommerce::Control.create(name: 'show_top_bar', localized_name: 'Show Top Bar', value_field_type: "boolean", boolean_value: true )
 Ecommerce::Control.create(name: 'top_bar_cookie_read_hash', localized_name: 'Top Bar Cookie Read Hash', internal: true, value_field_type: "text")
 Ecommerce::Control.create(name: 'top_bar_html', localized_name: 'Top Bar HTML', value_field_type: "text", text_value: "Back to the future of awesome Bags: Introducing the best bags in the world. <a href='#'>Shop Now</a>")
+Ecommerce::Control.create(name: 'store_title', value_field_type: "text", text_value: "Put Store Title Here")

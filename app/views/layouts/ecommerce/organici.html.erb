@@ -1,8 +1,13 @@
 <% content_for :head do %>
-  <title>Organici Ecommerce</title>
-  <%= stylesheet_link_tag    "ecommerce/organici", media: "all" %>
+  <title><%= Control.get_control_value('store_title') || "Organici Store" %></title>
+  <%= stylesheet_link_tag "ecommerce/organici", media: "all" %>
   <%= csrf_meta_tags %>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Lato:100,300,400,700,900,300italic,400italic,700italic,900italic' type='text/css' media='all'/>
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Pacifico:100,300,400,700,900,300italic,400italic,700italic,900italic' type='text/css' media='all'/>
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Anonymous+Pro:' type='text/css' media='all'/>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:700" type="text/css" media="all"/>
 <% end %>
 
 <!-- Document Wrapper
@@ -12,7 +17,6 @@
   <%= render 'ecommerce/application/flashes' %>
   <%= render 'ecommerce/application/spinner' %>
 
-  <%= render 'ecommerce/store//organici/top_bar' %>
   <%= render 'ecommerce/store/organici/header' %>
 
   <%= yield %>
