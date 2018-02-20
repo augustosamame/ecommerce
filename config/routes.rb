@@ -11,6 +11,7 @@ Ecommerce::Engine.routes.draw do
     resources :product_variants
     resources :product_skus
     resources :product_sku_properties
+    resources :properties
     resources :addresses
     resources :orders
   end

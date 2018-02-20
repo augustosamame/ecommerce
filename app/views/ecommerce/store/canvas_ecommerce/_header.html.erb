@@ -102,24 +102,25 @@
         <div id="top-account">
           <% if current_user %>
 
-          <a href="#" id="top-cart-trigger">Augusto Samamé<i class="icon-line2-user"></i><span></span></a>
+          <a href="#" id="top-cart-trigger"><i class="icon-line2-user"><%= "Hola, #{current_user.name}" %></i><span></span></a>
           <div class="top-cart-content">
+            <a href="<%= main_app.edit_user_registration_path %>">
             <div class="top-cart-title">
-              <h4>Mi Cuenta</h4>
+              <h4><%= t('.my_account') %></h4>
             </div>
+            </a>
+            <% if current_user.admin? %>
+            <a href="<%= backoffice_dashboard_path %>">
+              <div class="top-cart-title">
+                <h4><%= t('.backoffice') %></h4>
+              </div>
+            </a>
+            <% end %>
             <div class="top-cart-action clearfix">
-              <span class="fleft top-checkout-price t600 font-secondary" style="color: #333;"></span>
-              <button class="button button-dark button-circle button-small nomargin fright">Cerrar Sesión</button>
+              <%= link_to "<i class='material-icons'>power_settings_new</i> #{t('.log_out')}".html_safe, main_app.destroy_user_session_path, :method => :delete, :class => "button button-dark button-circle button-small nomargin" %>
+
             </div>
           </div>
-
-
-            <a href="#"><i class="icon-line2-user"></i></a>
-            <%= link_to "<i class='material-icons'>power_settings_new</i>Cerrar Sesión".html_safe, main_app.destroy_user_session_path, :method=>:delete %>
-
-
-
-
 
           <% else %>
             <%= link_to "", main_app.new_user_registration_path, class:"icon-line2-user" %>
@@ -129,7 +130,6 @@
       </nav><!-- #primary-menu end -->
 
     </div>
-
   </div>
 
 </header><!-- #header end -->

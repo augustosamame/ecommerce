@@ -32,6 +32,9 @@
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'suppliers' && controller.action_name == 'index')}) %>">
             <%= link_to t('.suppliers'), backoffice_suppliers_path %>
           </li>
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'properties' && controller.action_name == 'index')}) %>">
+            <%= link_to t('.properties'), backoffice_properties_path %>
+          </li>
         </ul>
       </li>
 

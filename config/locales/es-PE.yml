@@ -6,6 +6,9 @@ es-PE:
         blog_menu: "Blog"
         contact_us_menu: "Contáctanos"
         search_string: "Ingrese el término de búsqueda y presione Enter.."
+        my_account: "Mi Cuenta"
+        log_out: "Cerrar Sesión"
+        backoffice: "Backoffice"
       main:
         fresh_arrivals: "Recién Llegados"
         popular_categories: 'Categorías Populares'

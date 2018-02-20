@@ -6,6 +6,9 @@ en-US:
         blog_menu: "Blog"
         contact_us_menu: "Contact Us"
         search_string: "Type &amp; Hit Enter.."
+        my_account: "My Account"
+        log_out: "Log Out"
+        backoffice: "Backoffice"
       main:
         fresh_arrivals: "Fresh Arrivals"
         popular_categories: 'Popular Categories'

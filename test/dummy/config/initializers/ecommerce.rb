@@ -1,5 +1,5 @@
 Ecommerce.user_class = "User"
-Ecommerce.ecommerce_layout = "canvas_ecommerce"
+Ecommerce.ecommerce_layout = "organici"
 Ecommerce.use_main_app_header = true
 Ecommerce.use_main_app_footer = true
 Ecommerce.use_main_app_javascripts = true

@@ -1,6 +1,6 @@
 <% content_for :head do %>
-  <title>Canvas Ecommerce</title>
-  <%= stylesheet_link_tag    "ecommerce/canvas_ecommerce", media: "all" %>
+  <title>Organici Ecommerce</title>
+  <%= stylesheet_link_tag    "ecommerce/organici", media: "all" %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 <% end %>
@@ -12,12 +12,12 @@
   <%= render 'ecommerce/application/flashes' %>
   <%= render 'ecommerce/application/spinner' %>
 
-  <%= render 'ecommerce/store/canvas_ecommerce/top_bar' %>
-  <%= render 'ecommerce/store/canvas_ecommerce/header' %>
+  <%= render 'ecommerce/store//organici/top_bar' %>
+  <%= render 'ecommerce/store/organici/header' %>
 
   <%= yield %>
 
-  <%= render 'ecommerce/store/canvas_ecommerce/footer' %>
+  <%= render 'ecommerce/store/organici/footer' %>
 
 </div>
 
@@ -26,6 +26,6 @@
 <div id="gotoTop" class="icon-line-arrow-up"></div>
 
 
-<%= javascript_include_tag "ecommerce/canvas_ecommerce" %>
+<%= javascript_include_tag "ecommerce/organici" %>
 
 <% parent_layout "ecommerce/base" %>
