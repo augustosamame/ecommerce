@@ -18,8 +18,7 @@ module Ecommerce
     def new
       @backoffice_product = Product.new
       @backoffice_product.stockable = true
-      @backoffice_product.product_skus.build
-      @backoffice_product.product_variants.build
+      #@backoffice_product.product_skus.build
     end
 
     # GET /backoffice/products/1/edit
@@ -30,10 +29,11 @@ module Ecommerce
     def create
       byebug
       @backoffice_product = Product.new(backoffice_product_params)
-
+      @backoffice_product.permalink = @backoffice_product.name
       if @backoffice_product.save
         redirect_to backoffice_product_path(@backoffice_product), notice: 'Product was successfully created.'
       else
+        Rails.logger.error @backoffice_product.errors
         render :new
       end
     end
@@ -61,7 +61,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_params
-        params.require(:product).permit(:category_id, :name, :description, :price_cents, :stockable, :image, :image_cache, :product_variants => [:id, :variant_name], :product_variants_attributes => [:id, :variant_name, :_destroy], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
+        params.require(:product).permit(:category_id, :brand_id, :supplier_id, :name, :description, :price_cents, :stockable, :image, :image_cache, :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
       end
   end
 end

@@ -5,7 +5,7 @@ class ProductSkuProperty < ApplicationRecord
   belongs_to :property
 
   validates :product_sku_id, uniqueness: { scope: :property_id }
-  validates :property_id,  presence: true
+  #validates :property_id,  presence: true
   validates :description,  presence: true,       length: { maximum: 255 }
 
 

@@ -14,6 +14,7 @@ Ecommerce::Engine.routes.draw do
     resources :addresses
     resources :orders
   end
+  post 'locale', :to => 'application#locale'
 
   root to: 'store#main'
 

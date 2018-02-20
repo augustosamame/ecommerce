@@ -37,6 +37,18 @@
 
           <li><a href="#"><div><%= t('.blog_menu') %></div></a></li>
           <li><a href="#"><div><%= t('.contact_us_menu') %></div></a></li>
+          <!-- Select Language -->
+          <% if Ecommerce.locale_set_by_store %>
+            <li>
+            <div id="set-locale">
+              <a href="#" id="top-locale-trigger"><i class="icon-line2-flag"></i><span></span></a>
+              <%= form_tag locale_path do %>
+                <%= select_tag 'set_locale', options_for_select(['Español', 'English'], get_default_language_from_session) %>
+                <%= submit_tag 'submit' %>
+              <% end %>
+            </div>
+            </li>
+          <% end %>
         </ul>
 
         <!-- Top Search
@@ -89,8 +101,26 @@
         ============================================= -->
         <div id="top-account">
           <% if current_user %>
+
+          <a href="#" id="top-cart-trigger">Augusto Samamé<i class="icon-line2-user"></i><span></span></a>
+          <div class="top-cart-content">
+            <div class="top-cart-title">
+              <h4>Mi Cuenta</h4>
+            </div>
+            <div class="top-cart-action clearfix">
+              <span class="fleft top-checkout-price t600 font-secondary" style="color: #333;"></span>
+              <button class="button button-dark button-circle button-small nomargin fright">Cerrar Sesión</button>
+            </div>
+          </div>
+
+
             <a href="#"><i class="icon-line2-user"></i></a>
             <%= link_to "<i class='material-icons'>power_settings_new</i>Cerrar Sesión".html_safe, main_app.destroy_user_session_path, :method=>:delete %>
+
+
+
+
+
           <% else %>
             <%= link_to "", main_app.new_user_registration_path, class:"icon-line2-user" %>
           <% end %>

@@ -24,13 +24,12 @@ module Ecommerce
   class ProductSku < ApplicationRecord
 
     has_many :product_sku_properties
-    has_many :properties,        through: :product_sku_properties
+    has_many :properties, through: :product_sku_properties
 
     belongs_to :product
 
-    validates :price_cents,       presence: true
-    validates :product_id,  presence: true
-    validates :sku,         presence: true,       length: { maximum: 255 }
+    validates :price_cents, presence: true
+    validates :sku, presence: true,       length: { maximum: 255 }
 
     accepts_nested_attributes_for :product_sku_properties, reject_if: proc { |attributes| attributes['description'].blank? }, allow_destroy: true
 

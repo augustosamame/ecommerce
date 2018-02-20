@@ -24,6 +24,17 @@ module Ecommerce
       @body_css_classes.unshift(view_css_class).join(' ')
     end
 
+    def get_default_language_from_session
+      case session[:locale] || I18n.default_locale
+        when "es-PE"
+          return "Español"
+        when "en-PE"
+          return "English"
+        else
+          return "Español"
+      end
+    end
+
     def flash_class(level)
       case level.to_sym
         # allow either standard rails flash category symbols...

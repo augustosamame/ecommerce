@@ -4,7 +4,7 @@ class CreateEcommerceProductSkuProperties < ActiveRecord::Migration[5.1]
       t.references :product_sku, index: {name: "index_ecommerce_back_prod_sku_prop_on_prod_sku_id"}
       t.references :property, index: {name: "index_ecommerce_back_prod_sku_prop_on_prod_variant_id"}
       t.string :description, :null => false
-      t.boolean :primary,     :default => false
+      t.boolean :primary, :default => false
       t.integer :status
 
       t.timestamps

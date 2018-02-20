@@ -1,4 +1,4 @@
-en-US:
+es-PE:
   ecommerce:
     store:
       header:
@@ -13,6 +13,10 @@ en-US:
         best_selling_products: 'Nuestros Productos más Vendidos'
         free_shipping: 'Envío sin costo para pedidos mayores a <strong>S/.199</strong>.'
     backoffice:
+      sidebar:
+        products: 'Productos'
+        categories: 'Categorías'
+        suppliers: 'Proveedores'
       views:
         show: 'Ver'
         edit: 'Editar'

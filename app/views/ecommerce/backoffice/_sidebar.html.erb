@@ -21,16 +21,16 @@
       </li>
 
       <li class="<%= class_string({ active: (['products','categories','suppliers'].include? controller.controller_name) }) %>">
-        <a href="javascript:;"> <i class="material-icons">store</i> <span class="title">Productos</span> <span class=" arrow"></span> </a>
+        <a href="javascript:;"> <i class="material-icons">store</i> <span class="title"><%= t('.products') %></span> <span class=" arrow"></span> </a>
         <ul class="sub-menu">
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'products' && controller.action_name == 'index')}) %>">
-            <%= link_to "Productos", backoffice_products_path %>
+            <%= link_to t('.products'), backoffice_products_path %>
           </li>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'categories' && controller.action_name == 'index')}) %>">
-            <%= link_to "Categorías", backoffice_categories_path %>
+            <%= link_to t('.categories'), backoffice_categories_path %>
           </li>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'suppliers' && controller.action_name == 'index')}) %>">
-            <%= link_to "Proveedores", backoffice_suppliers_path %>
+            <%= link_to t('.suppliers'), backoffice_suppliers_path %>
           </li>
         </ul>
       </li>

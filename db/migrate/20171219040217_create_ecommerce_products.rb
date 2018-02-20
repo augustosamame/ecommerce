@@ -4,16 +4,18 @@ class CreateEcommerceProducts < ActiveRecord::Migration[5.1]
       t.references :category
       t.references :brand
       t.references :supplier
-      t.string :name
+      t.string :name, :null => false
       t.text :description
       t.string :image
-      t.string :permalink
+      t.string :permalink, :null => false
       t.integer :price_cents
       t.string  :meta_keywords
       t.string  :meta_description
       t.boolean :stockable, default: true
       t.boolean :home_featured, default: false
       t.boolean :category_featured, default: false
+      t.datetime :available_at
+      t.datetime :deleted_at
 
       t.timestamps
     end

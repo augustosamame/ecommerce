@@ -3,6 +3,8 @@
 
   <div class="form-inputs">
     <%= f.association :category, :label_method => lambda { |category| "#{category.name}" }  %>
+    <%= f.association :brand, :label_method => lambda { |brand| "#{brand.name}" }  %>
+    <%= f.association :supplier, :label_method => lambda { |supplier| "#{supplier.name}" }  %>
     <%= f.input :name %>
     <%= f.input :description %>
     <%= f.input :price_cents %>
@@ -20,11 +22,11 @@
       </span>
       <%= f.hidden_field :image_cache %>
     </div>
+    <%= link_to_add_association 'Add SKU Variant', f, :product_skus %>
 
     <%= f.simple_fields_for :product_skus do |h| %>
-      <%= h.input :sku %>
-      <%= h.input :price_cents %>
-      <%= h.input :status %>
+      <%= render 'product_sku_fields', :f => h %>
+      <%= link_to_add_association 'Add SKU Variant', f, :product_skus %>
     <% end %>
 
   </div>
