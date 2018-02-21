@@ -27,7 +27,6 @@ module Ecommerce
 
     # POST /backoffice/products
     def create
-      byebug
       @backoffice_product = Product.new(backoffice_product_params)
       @backoffice_product.permalink = @backoffice_product.name
       if @backoffice_product.save

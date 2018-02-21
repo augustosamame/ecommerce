@@ -1,0 +1,11 @@
+.payment-cards {
+	list-style: none;
+	text-align: right;
+	margin: 0;
+}
+
+.payment-cards li {
+	display: inline-block;
+	margin: 0 5px;
+	width: 66px;
+}

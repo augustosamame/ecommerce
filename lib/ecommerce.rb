@@ -10,6 +10,7 @@ require 'material_icons'
 require 'sass-rails'
 require 'record_tag_helper'
 require 'cocoon'
+require 'font-awesome-rails'
 
 module Ecommerce
 

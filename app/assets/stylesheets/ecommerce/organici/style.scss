@@ -102,7 +102,7 @@ a:hover {
     outline: 0;
 }
 
-.navbar-default .navbar-nav>li>a:focus, 
+.navbar-default .navbar-nav>li>a:focus,
 .navbar-default .navbar-nav>li>a:hover {
 	color: #79cba8;
 }
@@ -12372,13 +12372,13 @@ fieldset[disabled] .mailchimp-widget .mc-subscribe-form button.active {
 }
 
 .widget_noo_happyhours .widget-title:before {
-    background-image: url("../images/oliu-left.png");
+    background-image: image-url("ecommerce/img/oliu-left.png");
     top: 0;
     left: -20px;
 }
 
 .widget_noo_happyhours .widget-title:after {
-    background-image: url("../images/oliu-right.png");
+    background-image: image-url("ecommerce/img/oliu-right.png");
     top: 0;
     right: -20px;
 }
@@ -13621,8 +13621,8 @@ a.go-to-top:hover a.go-to-top:focus.on:hover {
 
 @font-face {
     font-family: star;
-    src: url(../fonts/star.eot);
-    src: url(../fonts/star.eot?#iefix) format("embedded-opentype"), url(../fonts/star.woff) format("woff"), url(../fonts/star.ttf) format("truetype"), url(../fonts/star.svg#star) format("svg");
+    src: font-url('star.eot');
+    src: font-url('star.eot') format("embedded-opentype"), font-url('star.woff') format("woff"), font-url('star.ttf') format("truetype"), font-url('star.svg') format("svg");
     font-weight: 400;
     font-style: normal
 }
@@ -15393,11 +15393,11 @@ p.demo_store a {
     opacity: 0
 }
 
-.commerce .commerce-result-count, 
+.commerce .commerce-result-count,
 .commerce-page .commerce-result-count {
     float: left;
 }
-.commerce .commerce-ordering, 
+.commerce .commerce-ordering,
 .commerce-page .commerce-ordering {
     float: right;
 }
@@ -15431,17 +15431,17 @@ p.demo_store a {
 }
 
 @media (max-width: 767px) {
-	.commerce #content div.product div.summary, 
-	.commerce div.product div.summary, 
-	.commerce-page #content div.product div.summary, 
+	.commerce #content div.product div.summary,
+	.commerce div.product div.summary,
+	.commerce-page #content div.product div.summary,
 	.commerce-page div.product div.summary {
 		width: 100%;
 		float: none;
 		margin-top: 30px;
 	}
-	.commerce #content div.product div.images, 
-	.commerce div.product div.images, 
-	.commerce-page #content div.product div.images, 
+	.commerce #content div.product div.images,
+	.commerce div.product div.images,
+	.commerce-page #content div.product div.images,
 	.commerce-page div.product div.images {
 		width: 100%;
 		float: none;
@@ -15450,7 +15450,7 @@ p.demo_store a {
 
 @media (max-width: 414px) {
     .commerce-page .cart-collaterals .noocart-coupon,
-	.commerce .cart-collaterals .cart_totals, 
+	.commerce .cart-collaterals .cart_totals,
 	.commerce-page .cart-collaterals .cart_totals {
         width: 100%;
 		float: none;

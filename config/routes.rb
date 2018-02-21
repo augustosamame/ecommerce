@@ -15,7 +15,11 @@ Ecommerce::Engine.routes.draw do
     resources :addresses
     resources :orders
   end
+
   post 'locale', :to => 'application#locale'
+  get 'category', :to => 'store#shop_by_category'
+  get 'product', :to => 'store#product_detail'
+
 
   root to: 'store#main'
 

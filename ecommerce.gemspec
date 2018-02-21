@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'material_icons'
   s.add_dependency 'record_tag_helper', '~> 1.0'
   s.add_dependency 'cocoon'
+  s.add_dependency "font-awesome-rails"
 
   s.add_development_dependency "pg"
   s.add_development_dependency "jquery-rails"

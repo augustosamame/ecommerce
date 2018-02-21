@@ -7,6 +7,7 @@ module Ecommerce
 
     before_action :merge_abilities
 
+    #these next line will change layout of views based on selected template
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"
 
     # Controllers can call this to add classes to the body tag
