@@ -5,6 +5,7 @@ module Ecommerce
   class StoreController < ApplicationController
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}/"
     before_action :set_menu_items
+    skip_before_action :authenticate_user!
 
     def main
       add_body_css_class('stretched')

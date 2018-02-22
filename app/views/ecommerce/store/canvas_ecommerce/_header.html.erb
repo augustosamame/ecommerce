@@ -11,8 +11,8 @@
       <!-- Logo
       ============================================= -->
       <div id="logo">
-        <a href="index.html" class="standard-logo"><%= image_tag Ecommerce.logo, alt: "Store Logo" %></a>
-        <a href="index.html" class="retina-logo"><%= image_tag Ecommerce.logo, alt: "Store Logo" %></a>
+        <a href="<%= main_app.root_path %>" class="standard-logo"><%= image_tag Ecommerce.logo, alt: "Store Logo" %></a>
+        <a href="<%= main_app.root_path %>" class="retina-logo"><%= image_tag Ecommerce.logo, alt: "Store Logo" %></a>
       </div><!-- #logo end -->
 
       <!-- Primary Navigation
@@ -20,8 +20,7 @@
       <nav id="primary-menu" class="style-ecommerce">
 
         <ul>
-          <li class=""><a href="#"><div><%= t('.home_menu') %></div></a>
-          </li>
+          <li class=""><%= link_to t('.home_menu'), main_app.root_path %></li>
 
           <% @home_menu_categories.each do |menu_item| %>
             <li class=""><%= link_to menu_item.name, category_path(menu_item) %>
@@ -88,9 +87,9 @@
 
         <!-- Top Account
         ============================================= -->
-        <div id="top-account">
-          <% if current_user %>
 
+        <% if current_user %>
+        <div id="top-account">
           <a href="#" id="top-account-trigger"><i class="icon-line2-user" style="font-size: 20px;"></i><%= " #{current_user.name}" %></a>
           <div class="top-account-content">
             <a href="<%= main_app.edit_user_registration_path %>">
@@ -111,11 +110,14 @@
 
             </div>
           </div>
+        </div>
 
-          <% else %>
-            <%= link_to "", main_app.new_user_registration_path, class:"icon-line2-user" %>
-          <% end %>
-        </div><!-- #top-account end -->
+        <% else %>
+          <div id="top-account" style="padding: 30px 30px;">
+            <%= link_to "", main_app.new_user_registration_path, class: "icon-line2-user", style: "font-size: 20px;" %>
+          </div>
+        <% end %>
+        <!-- #top-account end -->
 
       </nav><!-- #primary-menu end -->
 

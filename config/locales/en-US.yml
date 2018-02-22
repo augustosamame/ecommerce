@@ -10,6 +10,9 @@ en-US:
           my_account: "My Account"
           log_out: "Log Out"
           backoffice: "Backoffice"
+        footer:
+          select_language: "Select your Language:"
+          language_button: "Submit"
         main:
           fresh_arrivals: "Fresh Arrivals"
           popular_categories: 'Popular Categories'

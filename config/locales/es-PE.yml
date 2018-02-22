@@ -10,6 +10,9 @@ es-PE:
           my_account: "Mi Cuenta"
           log_out: "Cerrar Sesión"
           backoffice: "Backoffice"
+        footer:
+          select_language: "Selecciona tu Lenguaje:"
+          language_button: "Seleccionar"
         main:
           fresh_arrivals: "Recién Llegados"
           popular_categories: 'Categorías Populares'
