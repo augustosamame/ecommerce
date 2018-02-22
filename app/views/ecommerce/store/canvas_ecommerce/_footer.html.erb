@@ -75,6 +75,17 @@
           </div>
         </div>
 
+        <!-- Select Language -->
+        <% if Ecommerce.locale_set_by_store %>
+          <div id="set-locale">
+            <a href="#" id="top-locale-trigger"><i class="icon-line2-flag"></i><span></span></a>
+            <%= form_tag locale_path do %>
+              <%= select_tag 'set_locale', options_for_select(['Español', 'English'], get_default_language_from_session) %>
+              <%= submit_tag 'submit' %>
+            <% end %>
+          </div>
+        <% end %>
+
         <div class="widget subscribe-widget notopmargin clearfix">
           <h5><strong>Subscribe</strong> to Our Newsletter to get Important News, Amazing Offers &amp; Inside Scoops:</h5>
           <div class="widget-subscribe-form-result"></div>

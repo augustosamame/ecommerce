@@ -8,7 +8,6 @@ module Ecommerce
 
     def index
 
-      add_body_css_class('stretched')
       @products = Product.all
 
     end

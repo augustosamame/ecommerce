@@ -37,7 +37,7 @@ module Ecommerce
     # PATCH/PUT /backoffice/brands/1
     def update
       if @backoffice_brand.update(backoffice_brand_params)
-        redirect_to backoffice_brand(@backoffice_brand), notice: 'Brand was successfully updated.'
+        redirect_to backoffice_brand_path(@backoffice_brand), notice: 'Brand was successfully updated.'
       else
         render :edit
       end
@@ -57,7 +57,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_brand_params
-        params.require(:brand).permit(:name)
+        params.require(:brand).permit(:name, :logo, :logo_cache)
       end
   end
 end

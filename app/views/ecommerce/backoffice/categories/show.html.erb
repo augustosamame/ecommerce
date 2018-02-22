@@ -17,8 +17,17 @@
   <dt>Image:</dt>
   <dd><%= image_tag @backoffice_category.image_url(:medium_400) %></dd>
 
+  <dt>Include as Top Main Menu:</dt>
+  <dd><%= @backoffice_category.main_menu %></dd>
+
   <dt>Include in Popular HomePage Categories:</dt>
   <dd><%= @backoffice_category.popular_homepage %></dd>
+
+  <dt>Category Type:</dt>
+  <dd><%= @backoffice_category.category_type %></dd>
+
+  <dt>Category Order:</dt>
+  <dd><%= @backoffice_category.category_order %></dd>
 
   <dt>HomePage Popular Image:</dt>
   <dd><%= image_tag @backoffice_category.image_popular_homepage_url(:homepage) %></dd>

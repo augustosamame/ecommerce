@@ -5,6 +5,8 @@ class CreateEcommerceCategories < ActiveRecord::Migration[5.1]
       t.integer :parent_id #0 if root category
       t.string :image
       t.integer :status
+      t.integer :category_type, default: 0
+      t.integer :category_order, default: 0
       t.boolean :main_menu, default: "false"
       t.boolean :popular, default: "false"
       t.boolean :popular_homepage, default: "false"

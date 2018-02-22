@@ -7,7 +7,7 @@ module Ecommerce
 
     # GET /backoffice/categories
     def index
-      @backoffice_categories = Category.all
+      @backoffice_categories = Category.all.order(:category_order)
     end
 
     # GET /backoffice/categories/1
@@ -64,7 +64,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_category_params
-        params.require(:category).permit(:name, :parent_id, :image, :image_cache, :status, :main_menu, :popular_homepage, :image_popular_homepage, :image_popular_homepage_cache)
+        params.require(:category).permit(:name, :parent_id, :image, :image_cache, :status, :main_menu, :category_type, :category_order, :popular_homepage, :image_popular_homepage, :image_popular_homepage_cache)
       end
   end
 end

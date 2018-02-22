@@ -8,7 +8,8 @@ class CreateEcommerceProducts < ActiveRecord::Migration[5.1]
       t.text :description
       t.string :image
       t.string :permalink, :null => false
-      t.integer :price_cents
+      t.integer :price_cents, :default => 0
+      t.integer :discounted_price_cents, :default => 0
       t.string  :meta_keywords
       t.string  :meta_description
       t.boolean :stockable, default: true

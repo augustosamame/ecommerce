@@ -45,20 +45,21 @@ en-PE:
           new_products_subtitle: "From all over the world the best products money can buy"
           free_shipping: "Free Shipping on Orders over S/.100"
           payment_methods: "We accept all credit and debit cards"
-      header:
-        home_menu: "Home"
-        blog_menu: "Blog"
-        contact_us_menu: "Contact Us"
-        search_string: "Type &amp; Hit Enter.."
-        my_account: "My Account"
-        log_out: "Log Out"
-        backoffice: "Backoffice"
-      main:
-        fresh_arrivals: "Fresh Arrivals"
-        popular_categories: 'Popular Categories'
-        browse_categories: 'Browse our Products by Category'
-        best_selling_products: 'Best Selling Products'
-        free_shipping: 'Free Shipping on Orders of <strong>$199</strong> or above.'
+      canvas_ecommerce:
+        header:
+          home_menu: "Home"
+          blog_menu: "Blog"
+          contact_us_menu: "Contact Us"
+          search_string: "Type &amp; Hit Enter.."
+          my_account: "My Account"
+          log_out: "Log Out"
+          backoffice: "Backoffice"
+        main:
+          fresh_arrivals: "Fresh Arrivals"
+          popular_categories: 'Popular Categories'
+          browse_categories: 'Browse our Products by Category'
+          best_selling_products: 'Best Selling Products'
+          free_shipping: 'Free Shipping on Orders of <strong>$199</strong> or above.'
     backoffice:
       sidebar:
         products: 'Products'

@@ -15,6 +15,8 @@
             <th>Image</th>
             <th>Main Menu?</th>
             <th>Home Page?</th>
+            <th>Type</th>
+            <th>Order</th>
             <th>Home Page Image</th>
             <th>Status</th>
             <th>Show</th>
@@ -30,6 +32,8 @@
             <td><%= image_tag backoffice_category.image_url(:thumb_80), height: 80 %></td>
             <td><%= backoffice_category.main_menu %></td>
             <td><%= backoffice_category.popular_homepage %></td>
+            <td><%= backoffice_category.category_type %></td>
+            <td><%= backoffice_category.category_order %></td>
             <td><%= image_tag backoffice_category.image_popular_homepage_url(:homepage), height: 80 %></td>
             <td><%= backoffice_category.status %></td>
             <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_category_path(backoffice_category) %></td>

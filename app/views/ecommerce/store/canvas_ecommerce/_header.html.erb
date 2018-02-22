@@ -11,8 +11,8 @@
       <!-- Logo
       ============================================= -->
       <div id="logo">
-        <a href="index.html" class="standard-logo"><%= image_tag "ecommerce/img/logo.png", alt: "Canvas Logo" %></a>
-        <a href="index.html" class="retina-logo"><%= image_tag "ecommerce/img/logo@2x.png", alt: "Canvas Logo" %></a>
+        <a href="index.html" class="standard-logo"><%= image_tag Ecommerce.logo, alt: "Store Logo" %></a>
+        <a href="index.html" class="retina-logo"><%= image_tag Ecommerce.logo, alt: "Store Logo" %></a>
       </div><!-- #logo end -->
 
       <!-- Primary Navigation
@@ -24,7 +24,7 @@
           </li>
 
           <% @home_menu_categories.each do |menu_item| %>
-            <li class=""><a href="#"><div><%= menu_item.name %></div></a>
+            <li class=""><%= link_to menu_item.name, category_path(menu_item) %>
               <% unless Ecommerce::Category.where(parent_id: menu_item.id, status: "active").blank? %>
                 <ul>
                   <% Ecommerce::Category.where(parent_id: menu_item.id, status: "active").each do |sub_menu_item| %>
@@ -37,18 +37,10 @@
 
           <li><a href="#"><div><%= t('.blog_menu') %></div></a></li>
           <li><a href="#"><div><%= t('.contact_us_menu') %></div></a></li>
-          <!-- Select Language -->
-          <% if Ecommerce.locale_set_by_store %>
-            <li>
-            <div id="set-locale">
-              <a href="#" id="top-locale-trigger"><i class="icon-line2-flag"></i><span></span></a>
-              <%= form_tag locale_path do %>
-                <%= select_tag 'set_locale', options_for_select(['Español', 'English'], get_default_language_from_session) %>
-                <%= submit_tag 'submit' %>
-              <% end %>
-            </div>
-            </li>
+          <% if current_user.admin? %>
+          <li><a href="<%= backoffice_dashboard_path %>"><div style="color: red;">Backoffice</div></a></li>
           <% end %>
+
         </ul>
 
         <!-- Top Search
@@ -102,7 +94,7 @@
         <div id="top-account">
           <% if current_user %>
 
-          <a href="#" id="top-cart-trigger"><i class="icon-line2-user"><%= "Hola, #{current_user.name}" %></i><span></span></a>
+          <a href="#" id="top-cart-trigger"><i class="icon-line2-user"><%= " #{current_user.name}" %></i><span></span></a>
           <div class="top-cart-content">
             <a href="<%= main_app.edit_user_registration_path %>">
             <div class="top-cart-title">
