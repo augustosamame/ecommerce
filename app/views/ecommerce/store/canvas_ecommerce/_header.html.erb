@@ -37,9 +37,6 @@
 
           <li><a href="#"><div><%= t('.blog_menu') %></div></a></li>
           <li><a href="#"><div><%= t('.contact_us_menu') %></div></a></li>
-          <% if current_user.admin? %>
-          <li><a href="<%= backoffice_dashboard_path %>"><div style="color: red;">Backoffice</div></a></li>
-          <% end %>
 
         </ul>
 
@@ -94,22 +91,23 @@
         <div id="top-account">
           <% if current_user %>
 
-          <a href="#" id="top-cart-trigger"><i class="icon-line2-user"><%= " #{current_user.name}" %></i><span></span></a>
-          <div class="top-cart-content">
+          <a href="#" id="top-account-trigger"><i class="icon-line2-user" style="font-size: 20px;"></i><%= " #{current_user.name}" %></a>
+          <div class="top-account-content">
             <a href="<%= main_app.edit_user_registration_path %>">
-            <div class="top-cart-title">
+            <div class="top-account-title">
               <h4><%= t('.my_account') %></h4>
             </div>
             </a>
+
             <% if current_user.admin? %>
             <a href="<%= backoffice_dashboard_path %>">
-              <div class="top-cart-title">
-                <h4><%= t('.backoffice') %></h4>
+              <div class="top-account-title">
+                <h4 style="color: red;"><%= t('.backoffice') %></h4>
               </div>
             </a>
             <% end %>
-            <div class="top-cart-action clearfix">
-              <%= link_to "<i class='material-icons'>power_settings_new</i> #{t('.log_out')}".html_safe, main_app.destroy_user_session_path, :method => :delete, :class => "button button-dark button-circle button-small nomargin" %>
+            <div class="top-account-action clearfix">
+              <%= link_to "<i class='material-icons' style='vertical-align: middle;'>power_settings_new</i>  #{t('.log_out')}".html_safe, main_app.destroy_user_session_path, :method => :delete, :class => "button button-dark button-circle button-small nomargin" %>
 
             </div>
           </div>

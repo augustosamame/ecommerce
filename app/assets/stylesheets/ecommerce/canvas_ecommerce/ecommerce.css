@@ -257,6 +257,10 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 		transition: all .3s ease;
 	}
 
+	#primary-menu.style-ecommerce #top-account {
+		padding: 30px 15px;
+	}
+
 	#primary-menu ul ul li > a {
 	    font-weight: 600;
 	    text-transform: none;
@@ -272,11 +276,17 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 
 	#primary-menu.style-ecommerce #top-search > a,
 	#primary-menu.style-ecommerce #top-cart > a,
-	#primary-menu.style-ecommerce #side-panel-trigger > a,
-	#primary-menu.style-ecommerce #top-account > a {
+	#primary-menu.style-ecommerce #side-panel-trigger > a {
 		width: 20px;
 		height: 40px;
 		font-size: 20px;
+		line-height: 40px;
+	}
+
+	#primary-menu.style-ecommerce #top-account > a {
+		width: auto;
+		height: 40px;
+		font-size: 16px;
 		line-height: 40px;
 	}
 
@@ -300,6 +310,26 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 
 	#top-cart .top-cart-content { top: 100px; }
 
+	#top-account a:hover { color: #333; }
+
+	#primary-menu.style-ecommerce #top-account > a > span {
+		top: 2px;
+		left: auto;
+		right: -13px;
+		font-size: 11px;
+		font-weight: 400;
+		font-family: 'Montserrat', sans-serif;
+		color: #FFF;
+		font-weight: 300;
+		text-shadow: none;
+		background-color: #333;
+		border-radius: 50%;
+	}
+
+	#primary-menu.style-ecommerce #top-account .top-account-content { right: 0; }
+
+	#top-account .top-account-content { top: 100px; }
+
 	#header.sticky-header:not(.static-sticky) #top-search,
 	#header.sticky-header:not(.static-sticky) #top-cart,
 	#header.sticky-header:not(.static-sticky) #side-panel-trigger,
@@ -310,6 +340,7 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 	}
 
 	#header.sticky-header:not(.static-sticky) #top-cart .top-cart-content { top: 60px; }
+	#header.sticky-header:not(.static-sticky) #top-account .top-account-content { top: 60px; }
 
 	.grid-item {
 	  display: flex;
@@ -361,6 +392,7 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 }
 
 #primary-menu.style-ecommerce #top-cart > a > span { background-color: #333 }
+#primary-menu.style-ecommerce #top-account > a > span { background-color: #333 }
 
 #top-bar p {
 	font-size: 13px;
@@ -812,4 +844,3 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 		text-align: center;
 	}
 }
-

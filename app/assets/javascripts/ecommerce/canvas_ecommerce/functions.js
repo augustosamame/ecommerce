@@ -1069,6 +1069,7 @@ var SEMICOLON = SEMICOLON || {};
 			SEMICOLON.header.logo();
 			SEMICOLON.header.topsearch();
 			SEMICOLON.header.topcart();
+			SEMICOLON.header.topaccount();
 
 		},
 
@@ -1477,6 +1478,7 @@ var SEMICOLON = SEMICOLON || {};
 			$(document).on('click', function(event) {
 				if (!$(event.target).closest('#top-search').length) { $body.toggleClass('top-search-open', false); }
 				if (!$(event.target).closest('#top-cart').length) { $topCart.toggleClass('top-cart-open', false); }
+				if (!$(event.target).closest('#top-account').length) { $topAccount.toggleClass('top-account-open', false); }
 				if (!$(event.target).closest('#page-menu').length) { $pagemenu.toggleClass('pagemenu-active', false); }
 				if (!$(event.target).closest('#side-panel').length) { $body.toggleClass('side-panel-open', false); }
 				if (!$(event.target).closest('#primary-menu').length) { $('#primary-menu.on-click > ul').find('.show').removeClass('show'); }
@@ -1487,6 +1489,7 @@ var SEMICOLON = SEMICOLON || {};
 			$("#top-search-trigger").click(function(e){
 				$body.toggleClass('top-search-open');
 				$topCart.toggleClass('top-cart-open', false);
+				$topAccount.toggleClass('top-account-open', false);
 				$( '#primary-menu > ul, #primary-menu > div > ul' ).toggleClass("show", false);
 				$pagemenu.toggleClass('pagemenu-active', false);
 				if ($body.hasClass('top-search-open')){
@@ -1503,6 +1506,17 @@ var SEMICOLON = SEMICOLON || {};
 			$("#top-cart-trigger").click(function(e){
 				$pagemenu.toggleClass('pagemenu-active', false);
 				$topCart.toggleClass('top-cart-open');
+				e.stopPropagation();
+				e.preventDefault();
+			});
+
+		},
+
+		topaccount: function(){
+
+			$("#top-account-trigger").click(function(e){
+				$pagemenu.toggleClass('pagemenu-active', false);
+				$topAccount.toggleClass('top-account-open');
 				e.stopPropagation();
 				e.preventDefault();
 			});
@@ -3491,6 +3505,7 @@ var SEMICOLON = SEMICOLON || {};
 			$pagemenu.find('nav').click(function(e){
 				$body.toggleClass('top-search-open', false);
 				$topCart.toggleClass('top-cart-open', false);
+				$topAccount.toggleClass('top-account-open', false);
 			});
 			if( SEMICOLON.isMobile.any() ){
 				$body.addClass('device-touch');
@@ -3709,6 +3724,7 @@ var SEMICOLON = SEMICOLON || {};
 		prevPostPortId = '',
 		$topSearch = $('#top-search'),
 		$topCart = $('#top-cart'),
+		$topAccount = $('#top-account'),
 		$verticalMiddleEl = $('.vertical-middle'),
 		$topSocialEl = $('#top-social').find('li'),
 		$siStickyEl = $('.si-sticky'),

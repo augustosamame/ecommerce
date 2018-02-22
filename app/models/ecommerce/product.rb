@@ -20,5 +20,9 @@ module Ecommerce
     validates :category_id, presence: true
     validates :name, presence: true,   length: { maximum: 165 }
 
+    def discounted?
+      self.discounted_price_cents < self.price_cents
+    end
+
   end
 end

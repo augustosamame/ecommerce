@@ -621,6 +621,7 @@
 
 	#primary-menu > div > #top-search a,
 	#primary-menu > div > #top-cart,
+	#primary-menu > div > #top-account,
 	#primary-menu > div > #side-panel-trigger { margin: 20px 0 !important; }
 
 	#primary-menu ul.windows-mobile-menu li.sub-menu { position: relative; }
@@ -656,6 +657,7 @@
 	}
 
 	#header.sticky-style-3 #top-cart .top-cart-content { top: 40px; }
+	#header.sticky-style-3 #top-account .top-account-content { top: 40px; }
 
 	#top-search a { right: 43px; }
 
@@ -788,11 +790,13 @@
 
 	.responsive-sticky-header:not(.static-sticky) #top-search a,
 	.responsive-sticky-header:not(.static-sticky) #top-cart,
+	.responsive-sticky-header:not(.static-sticky) #top-account,
 	.responsive-sticky-header:not(.static-sticky) #side-panel-trigger { margin: 20px 0; }
 
 	.responsive-sticky-header:not(.static-sticky) #top-search form { height: 60px !important; }
 
 	.responsive-sticky-header:not(.static-sticky) #top-cart .top-cart-content { top: 40px; }
+	.responsive-sticky-header:not(.static-sticky) #top-account .top-account-content { top: 40px; }
 
 
 	/* Off Canvas Menu
@@ -1633,6 +1637,7 @@
 	.full-screen:not(.force-full-screen) .container.vertical-middle { width: 310px !important; }
 
 	#top-cart { display: none; }
+	#top-account { display: none; }
 
 	#top-search a { right: 15px; }
 
