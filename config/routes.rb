@@ -17,8 +17,8 @@ Ecommerce::Engine.routes.draw do
   end
 
   post 'locale', :to => 'application#locale'
-  get 'category', :to => 'store#shop_by_category'
-  get 'product', :to => 'store#product_detail'
+  get '/category/:id', :to => 'store#shop_by_category', :as => 'category'
+  get '/product/:id', :to => 'store#product_detail', :as => 'product'
 
 
   root to: 'store#main'

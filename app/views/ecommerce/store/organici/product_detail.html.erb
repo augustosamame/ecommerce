@@ -1,3 +1,12 @@
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/<%= @fb_compatible_locale_code %>/sdk.js#xfbml=1&version=v2.12&appId=<%= Ecommerce.fb_app_id %>&autoLogAppEvents=1';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <div class="main">
   <div class="commerce single-product noo-shop-main">
     <div class="container">
@@ -7,17 +16,17 @@
             <div class="single-inner">
               <div class="images">
                 <div class="product-simple-image">
-                  <a href="<%= @item.image.url %>" data-rel="prettyPhoto">
-                    <img width="300" height="381" src="<%= @item.image.url %>" alt="" />
+                  <a href="<%= @product.image.url %>" data-rel="prettyPhoto">
+                    <img width="300" height="381" src="<%= @product.image.url %>" alt="" />
                   </a>
                 </div>
               </div>
               <div class="summary entry-summary">
-                <h1 class="product_title entry-title"><%= @item.name %></h1>
-                <p class="price"><span class="amount"><%= number_to_currency(@item.price_cents / 100) %></span></p>
-                <p class="description"><%= @item.description %></p>
+                <h1 class="product_title entry-title"><%= @product.name %></h1>
+                <p class="price"><span class="amount"><%= number_to_currency(@product.price_cents / 100) %></span></p>
+                <p class="description"><%= @product.description %></p>
                 <div class="product_meta">
-                  <span class="posted_in">Category: <%= link_to @item.category.name, category_path(@item.category)%></span>
+                  <span class="posted_in">Category: <%= link_to @product.category.name, category_path(@product.category)%></span>
                   <span class="tagged_as">Tags: <a href="#">cucumbers</a>, <a href="#">vegetables</a></span>
                 </div>
                 <form class="cart">
@@ -60,118 +69,11 @@
                 </ul>
               <div class="tab-content">
                 <div class="tab-pane fade in active" id="tab-1">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Maecenas tristique gravida, odio et sagi ttis justo. Susp endisse ultricies nisi vel quam suscipit, et rutrum odio porttitor. Donec dictum non nulla ut lobortis. Maecenas tristique gravida, odio et sagi ttis justo. Aliquam vitae mi a eros tincidunt ultricies. Donec porta gravida arcu. Morbi facilisis lorem felis, eu inerdum quam scelerisque eu. Phasellus vel turpis dictum, pulvinar nulla</p>
+                  <p><%= @product.description %></p>
                 </div>
                 <div id="tab-2" class="tab-pane fade">
-                  <div id="comments" class="comments-area">
-                                <h2 class="comments-title">3 Comments</h2>
-                                <ol class="comments-list">
-                          <li class="comment">
-                              <div class="comment-wrap">
-                                  <div class="comment-img">
-                                      <img alt='' src='http://placehold.it/100x100' height='80' width='80' />
-                                    </div>
-                                  <article class="comment-block">
-                                      <header class="comment-header">
-                                          <cite class="comment-author">
-                                            admin
-                                          </cite>
-                                          <div class="comment-meta">
-                                              <span class="time">
-                                                  4 months ago
-                                              </span>
-                                          </div>
-                                                  </header>
-                                      <div class="comment-content">
-                                          <p>fames ac turpis egestas. Ut non enim eleifend felis pretium feugiat. Vivamus quis mi. Phasellus</p>
-                                      </div>
-                                      <span class="comment-reply">
-                                          <a class='comment-reply-link' href='#'><i class="fa fa-reply"></i> Reply</a>
-                                        </span>
-                                  </article>
-                              </div>
-                            <ol class="children">
-                              <li class="comment">
-                                  <div class="comment-wrap">
-                                      <div class="comment-img">
-                                          <img alt='' src='http://placehold.it/100x100' height='80' width='80' />
-                                        </div>
-                                      <article class="comment-block">
-                                          <header class="comment-header">
-                                              <cite class="comment-author">
-                                                admin
-                                                            </cite>
-                                              <div class="comment-meta">
-                                                  <span class="time">
-                                                      4 months ago
-                                                  </span>
-                                              </div>
-                                                      </header>
-                                          <div class="comment-content">
-                                              <p>fSames ac turpis egestas. Ut non enim eleifend felis pretium feugiat. Vivamus quis mi. Phasellus</p>
-                                          </div>
-                                          <span class="comment-reply">
-                                              <a class='comment-reply-link' href='#'><i class="fa fa-reply"></i> Reply</a>
-                                            </span>
-                                      </article>
-                                  </div>
-                              </li><!-- #comment-## -->
-                        </ol><!-- .children -->
-                      </li><!-- #comment-## -->
-                          <li class="comment">
-                              <div class="comment-wrap">
-                                  <div class="comment-img">
-                                      <img alt='' src='http://placehold.it/100x100' height='80' width='80' />
-                                    </div>
-                                  <article class="comment-block">
-                                      <header class="comment-header">
-                                          <cite class="comment-author">
-                                            admin
-                                          </cite>
-                                          <div class="comment-meta">
-                                              <span class="time">
-                                                  4 months ago
-                                              </span>
-                                          </div>
-                                                  </header>
-                                      <div class="comment-content">
-                                          <p>fames ac turpis egestas. Ut non enim eleifend felis pretium feugiat. Vivamus quis mi. Phasellus</p>
-                                      </div>
-                                      <span class="comment-reply">
-                                          <a class='comment-reply-link' href='#'><i class="fa fa-reply"></i> Reply</a>
-                                        </span>
-                                  </article>
-                              </div>
-                          </li><!-- #comment-## -->
-                    </ol> <!-- /.comments-list -->
-                    <div id="respond-wrap">
-                          <div id="respond" class="comment-respond">
-                        <h3 id="reply-title" class="comment-reply-title">
-                          <span>Leave your thought</span>
-                        </h3>
-                        <form class="comment-form">
-                          <div class="row">
-                            <div class="comment-form-author col-sm-6">
-                              <input id="author" name="author" type="text" placeholder="Enter Your Name*" class="form-control" value="" size="30" />
-                            </div>
-                            <div class="comment-form-email col-sm-6">
-                              <input id="email" name="email" type="text" placeholder="Enter Your Email*" class="form-control" value="" size="30" />
-                            </div>
-                            <div class="col-sm-12">
-                              <div class="comment-form-comment">
-                                <textarea class="form-control" placeholder="Enter Your Comment" id="comment" name="comment" cols="40" rows="6"></textarea>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-submit">
-                            <input name="submit" type="submit" id="submit" class="submit" value="Post Comments" />
-                          </div>
-                        </form>
-                      </div><!-- #respond -->
-                      </div>
-                    </div>
+                  <div class="fb-comments" data-href="<%= request.url %>" data-width="100%" data-order-by="reverse_time" data-numposts="5"></div>
                 </div>
-              </div>
             </div>
             <div class="related products">
               <h2>Related Products</h2>
