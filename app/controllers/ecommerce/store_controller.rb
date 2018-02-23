@@ -20,6 +20,7 @@ module Ecommerce
 
     def product_detail
       @product = Ecommerce::Product.find(params[:id])
+      @cart_item = CartItem.new
       case I18n.locale[0..1]
       when 'en'
         @fb_compatible_locale_code = 'en_US'

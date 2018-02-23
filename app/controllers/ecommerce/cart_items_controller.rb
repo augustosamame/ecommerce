@@ -8,6 +8,7 @@ module Ecommerce
     before_action :set_cart, only: [:create, :destroy]
 
     def create
+      byebug
       @cart.add_cart_items(cart_item_params)
 
       if @cart.save

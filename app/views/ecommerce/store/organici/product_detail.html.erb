@@ -33,7 +33,8 @@
                   <div class="quantity">
                     <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="input-text qty text" size="4"/>
                   </div>
-                  <button type="submit" class="single_add_to_cart_button button">Add to cart</button>
+                  <%= button_to "Add to cart", cart_items_path(@product), {class: 'single_add_to_cart_button button'} %>
+
                 </form>
                 <div class="yith-wcwl-add-to-wishlist">
                                           <div class="yith-wcwl-add-button">

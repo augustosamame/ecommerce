@@ -52,6 +52,7 @@ module Ecommerce
     #this lets us add functionality to main_app user model
     def decorate_user_class!
 
+      #uncomment this next line if executing something in standalone engine folder
       #if Ecommerce.const_defined?(user_class) #required in dev mode when testing standalone engine
         Ecommerce.user_class.class_eval do
           #examples of extending or including functionality through local engine gems to user model
