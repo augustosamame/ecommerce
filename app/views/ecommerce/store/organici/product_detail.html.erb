@@ -30,17 +30,23 @@
                   <span class="tagged_as">Tags: <a href="#">cucumbers</a>, <a href="#">vegetables</a></span>
                 </div>
                 <form class="cart">
-                  <div class="quantity">
-                    <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="input-text qty text" size="4"/>
+                  <div class="yith-wcwl-add-to-wishlist" id="devtech_minus">
+                    <a href="#" class="add_to_wishlist">-</a>
+                  </div>
+                  <div class="quantity" id="devtech_quantity">
+                    <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="input-text qty text no-spinners" id="devtech_quantity_field" size="4"/>
+                  </div>
+                  <div class="yith-wcwl-add-to-wishlist" id="devtech_plus">
+                    <a href="#" class="add_to_wishlist">+</a>
                   </div>
                   <%= button_to "Add to cart", cart_items_path(@product), {class: 'single_add_to_cart_button button'} %>
 
                 </form>
                 <div class="yith-wcwl-add-to-wishlist">
-                                          <div class="yith-wcwl-add-button">
-                                              <a href="#" class="add_to_wishlist"></a>
-                                          </div>
-                                      </div>
+                  <div class="yith-wcwl-add-button">
+                      <a href="#" class="add_to_wishlist"></a>
+                  </div>
+                </div>
                 <div class="clear"></div>
                 <div class="noo-social-share">
                   <span>Share:</span>
@@ -256,3 +262,14 @@
     </div>
   </div>
 </div>
+
+<script>
+  $("#devtech_plus").click(function() {
+    $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) + 1);
+  });
+  $("#devtech_minus").click(function() {
+    if (parseInt($("#devtech_quantity_field").val()) > 1) {
+      $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) - 1);
+    }
+  });
+</script>

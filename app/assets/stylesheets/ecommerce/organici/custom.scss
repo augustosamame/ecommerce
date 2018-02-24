@@ -1,3 +1,14 @@
+/* hide up/down arrows ("spinners") on input fields marked type="number" */
+.no-spinners {
+  -moz-appearance:textfield;
+}
+
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .payment-cards {
 	list-style: none;
 	text-align: right;
@@ -8,4 +19,26 @@
 	display: inline-block;
 	margin: 0 5px;
 	width: 66px;
+}
+
+#devtech_quantity {
+	margin-right: 0;
+}
+
+#devtech_plus a:before {
+	content: "\f067";
+}
+
+#devtech_plus {
+	margin-left: 0;
+	margin-right: 10;
+}
+
+#devtech_minus a:before {
+	content: "\f068";
+	margin-left: 0;
+}
+
+#devtech_minus {
+	margin-left: 0;
 }
