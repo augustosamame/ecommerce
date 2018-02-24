@@ -2,6 +2,7 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   class CartsController < ApplicationController
+    skip_before_action :authenticate_user!
     before_action :set_cart, only: [:show, :edit, :update, :destroy]
 
     # GET /carts/1

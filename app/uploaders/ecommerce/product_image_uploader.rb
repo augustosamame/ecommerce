@@ -44,8 +44,8 @@ class Ecommerce::ProductImageUploader < CarrierWave::Uploader::Base
     process resize_to_limit: [400, 400]
   end
 
-  version :thumb_80, from_version: :medium_400 do
-    process resize_to_limit: [80, 80]
+  version :thumb_100, from_version: :medium_400 do
+    process resize_to_limit: [100, 100]
   end
 
 #  def store_dimensions

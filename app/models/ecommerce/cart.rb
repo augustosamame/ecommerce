@@ -1,6 +1,6 @@
 module Ecommerce
   class Cart < ApplicationRecord
-    belongs_to :user
+    belongs_to :user, optional: true
     has_many :cart_items
 
     def add_cart_items(item_params)

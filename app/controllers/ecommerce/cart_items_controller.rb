@@ -8,14 +8,15 @@ module Ecommerce
     before_action :set_cart, only: [:create, :destroy]
 
     def create
-      byebug
-      @cart.add_cart_items(cart_item_params)
-
-      if @cart.save
-        redirect_to cart_path(@cart)
+      @cart_item = CartItem.new(cart_item_params)
+      @cart_item.cart_id = @cart.id
+      if @cart_item.save
+        redirect_to cart_path(@cart) and return
       else
         flash[:error] = "There was a problem adding this item to your cart"
-        redirect_to @product
+        @product = Product.find(@cart_item.product.id)
+
+        redirect_to product_path(@product)
       end
 
       @product = Ecommerce::Product.find(params[:id])
@@ -36,6 +37,10 @@ module Ecommerce
         @top_bar_new_hash = Ecommerce::Control.find_by(name: 'top_bar_cookie_read_hash').text_value #this will be set as a cookie via javascript if user closes top_bar
         @home_menu_categories = Ecommerce::Category.where(main_menu: true, status: "active").order(:category_order)
         @homepage_categories = Ecommerce::Category.where(popular_homepage: true, status: "active").order(:category_order)
+      end
+
+      def cart_item_params
+        params.require(:cart_item).permit(:cart_id, :product_id, :quantity, :status)
       end
 
   end

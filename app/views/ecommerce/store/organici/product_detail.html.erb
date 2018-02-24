@@ -29,19 +29,22 @@
                   <span class="posted_in">Category: <%= link_to @product.category.name, category_path(@product.category)%></span>
                   <span class="tagged_as">Tags: <a href="#">cucumbers</a>, <a href="#">vegetables</a></span>
                 </div>
-                <form class="cart">
+
+                <%= simple_form_for @cart_item, html: { class: "cart" } do |f| %>
                   <div class="yith-wcwl-add-to-wishlist" id="devtech_minus">
                     <a href="#" class="add_to_wishlist">-</a>
                   </div>
                   <div class="quantity" id="devtech_quantity">
-                    <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="input-text qty text no-spinners" id="devtech_quantity_field" size="4"/>
+                    <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners', id:"devtech_quantity_field", value: "1", size: "4", step: "1", min: "1" } %>
                   </div>
                   <div class="yith-wcwl-add-to-wishlist" id="devtech_plus">
                     <a href="#" class="add_to_wishlist">+</a>
                   </div>
-                  <%= button_to "Add to cart", cart_items_path(@product), {class: 'single_add_to_cart_button button'} %>
+                  <%= f.hidden_field :product_id, value: @product.id%>
+                  <%= f.button :submit, "Add to cart", class: "single_add_to_cart_button button" %>
+                <% end %>
 
-                </form>
+
                 <div class="yith-wcwl-add-to-wishlist">
                   <div class="yith-wcwl-add-button">
                       <a href="#" class="add_to_wishlist"></a>
@@ -272,4 +275,5 @@
       $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) - 1);
     }
   });
+
 </script>
