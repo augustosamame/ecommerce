@@ -10,6 +10,10 @@ class CreateEcommerceOrders < ActiveRecord::Migration[5.1]
       t.integer :coupon_id
       t.integer :payment_status
       t.integer :status
+      t.integer :stage
+      t.text :customer_comments
+      t.text :process_comments
+      t.text :delivery_comments
 
       t.timestamps
     end
