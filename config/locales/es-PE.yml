@@ -1,5 +1,9 @@
 es-PE:
   ecommerce:
+    processor:
+      culqi:
+        payment_popup_title: "Pago ExpatShop"
+        order_label: "Orden"
     store:
       canvas_ecommerce:
         header:

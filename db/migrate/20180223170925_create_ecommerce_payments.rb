@@ -1,5 +1,5 @@
 # This migration comes from ecommerce (originally 20171220160448)
-class CreatePayments < ActiveRecord::Migration[5.1]
+class CreateEcommercePayments < ActiveRecord::Migration[5.1]
   def change
     create_table :ecommerce_payments do |t|
       t.references :user

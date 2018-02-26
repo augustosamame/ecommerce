@@ -19,6 +19,8 @@ Ecommerce::Engine.routes.draw do
   post 'locale', :to => 'application#locale'
   get '/category/:id', :to => 'store#shop_by_category', :as => 'category'
   get '/product/:id', :to => 'store#product_detail', :as => 'product'
+  post '/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
+  get '/checkout', :to => 'checkout#show'
 
   resources :carts, except: [:index, :new, :create]
   resources :cart_items

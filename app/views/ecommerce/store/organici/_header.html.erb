@@ -22,10 +22,14 @@
 						<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>
 						<ul>
 							<li class="menu-item fly-right">
-								
-								<a href="my-account.html">
-									<i class="fa fa-user"></i><%= current_user ? current_user.name : t('.my_account') %>
-								</a>
+
+								<% if current_user %>
+									<a href="my-account.html">
+										<%= link_to "<i class='fa fa-user'></i>#{current_user.name}".html_safe, main_app.destroy_user_session_path, method: :delete %>
+									</a>
+								<% else %>
+								<%= link_to "<i class='fa fa-user'></i>#{t('.my_account')}".html_safe, main_app.new_user_session_path %>
+								<% end %>
 							</li>
 							<li class="menu-item fly-right">
 								<a href="wishlist.html">

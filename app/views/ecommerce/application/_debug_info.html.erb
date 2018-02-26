@@ -1,0 +1,29 @@
+<div class="container">
+  <% if Rails.env == "development" %>
+    <div class="row">
+      Debugging Info:
+    </div>
+    <div class="row">
+      Current:
+      <%= current_user.inspect %>
+    </div>
+    <div class="row">
+      Cart Id in Session:
+      <%= session[:cart_id] %>
+    </div>
+    <div class="row">
+      Guest Session Cookie:
+      <%= session[:guest_user_id] %>
+    </div>
+    <div class="row">
+      Controller:
+      <%= controller.controller_name %>
+      Action:
+      <%= controller.action_name %>
+    </div>
+    <div class="row">
+      Time Zone:
+      <%= Time.zone %>
+    </div>
+  <% end %>
+</div>

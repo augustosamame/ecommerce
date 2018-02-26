@@ -35,9 +35,10 @@ module Ecommerce
 
     def set_cart
       if current_user
-        @cart = Cart.find_by(current_user.cart_id)
+        @cart = Cart.find(current_user.cart_id) if current_user.cart_id
         unless @cart
           @cart = Cart.create
+          session[:cart_id] = @cart.id
           current_user.update(cart_id: @cart.id)
         end
       else

@@ -56,6 +56,7 @@ t.string :username
 t.string :address
 t.string :doc_id
 t.string :avatar
+t.string :cart_id
 t.integer :status
 
 Assets

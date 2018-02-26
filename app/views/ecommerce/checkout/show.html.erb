@@ -278,114 +278,212 @@
   <section class="noo-page-heading eff">
     <div class="container">
       <div class="noo-heading-content">
-        <h1 class="page-title eff">Cart</h1>
+        <h1 class="page-title eff">Checkout</h1>
         <div class="noo-page-breadcrumb eff">
-          <a href="./" class="home">Organici</a>/<span>Cart</span>
+          <a href="./" class="home">Organici</a>/<span>Checkout</span>
         </div>
       </div>
     </div>
   </section>
   <div class="main">
-    <div class="commerce commerce-page commerce-cart noo-shop-main">
+    <div class="commerce commerce-page commerce-checkout">
       <div class="container">
         <div class="row">
-          <div class="noo-main col-md-12">
-            <table class="shop_table cart">
-              <thead>
-                <tr>
-                  <th class="product-thumbnail">Image</th>
-                  <th class="product-price">Price</th>
-                  <th class="product-quantity">Quantity</th>
-                  <th class="product-subtotal">Total</th>
-                  <th class="product-remove">&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @cart.cart_items.each do |item| %>
-                <tr class="cart_item">
-                  <td class="product-thumbnail">
-                    <a href="<%= product_path(item.product) %>">
-                      <%= image_tag item.product.image.thumb_100.url, width: 100, height: 100, alt: "" %>
-                    </a>
-                    <%= link_to item.product.name, product_path(item.product) %>
-                  </td>
-                  <td class="product-price">
-                    <span class="amount"><%= number_to_currency(item.product.price_cents / 100) %></span>
-                  </td>
-                  <td class="product-quantity">
-                    <div class="quantity">
-                        <input type="number" step="1" min="0" name="qty" value="<%= item.quantity %>" class="input-text qty text" size="4"/>
-                    </div>
-                  </td>
-                  <td class="product-subtotal">
-                    <span class="amount"><%= number_to_currency((item.product.price_cents * item.quantity) / 100) %></span>
-                  </td>
-                  <td class="product-remove">
-                    <a href="#" class="remove">&times;</a>
-                  </td>
-                </tr>
-                <% end %>
-                <tr>
-                  <td colspan="5" class="actions">
-                    <a class="continue" href="shop.html">continue shopping</a>
-                    <div class="coupon">
-                      <label for="coupon_code">Coupon:</label>
-                      <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
-                      <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
-                    </div>
-                    <input type="submit" class="button" name="update_cart" value="Update Cart"/>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="cart-collaterals">
-              <div class="noocart-coupon">
-                <label for="coupon_code">Coupon</label>
-                <p>Enter your code if you have one</p>
-                <input type="text" name="noo_coupon_code" class="input-text" id="noo_coupon_code" value="" placeholder="Coupon code"/>
-                <button class="noo-apply-coupon button">Apply Coupon</button>
-              </div>
-              <div class="noocart-shipping">
-                <label>Estimate shipping &amp; tax</label>
-                <p>Enter your destination to get a shipping rate</p>
-                <strong>COUNTRY <abbr class="required" title="required">*</abbr></strong>
-                <select class="select">
-                  <option value="">Select a country</option>
-                  <option value="">America</option>
-                  <option value="">England</option>
-                  <option value="">France</option>
-                  <option value="">Vietnam</option>
-                </select>
-                <br /><br />
-                <strong>PROVINCE</strong>
-                <select class="select">
-                  <option value="">Please select</option>
-                </select>
-                <br /><br />
-                <strong>ZIP/POSTAL CODE</strong>
-                <input type="text" name="postal_code" class="input-text" id="postal_code" value="" placeholder="Postal code"/>
-              </div>
-              <div class="cart_totals">
-                <h2>Cart Totals</h2>
-                <table>
-                  <tr class="cart-subtotal">
-                    <th>Subtotal</th>
-                    <td><span class="amount" id="subtotal-amount">6.05</span></td>
-                  </tr>
-                  <tr class="shipping">
-                    <th>Shipping</th>
-                    <td>
-                      <p>Shipping costs will be calculated once you have provided your address.</p>
-                    </td>
-                  </tr>
-                  <tr class="order-total">
-                    <th>Total</th>
-                    <td><strong><span class="amount" id="total-amount">6.05</span></strong> </td>
-                  </tr>
-                </table>
-                <div class="wc-proceed-to-checkout">
-                  <%= link_to "Proceed to Checkout", checkout_path, class: "checkout-button button alt wc-forward" %>
+          <div class="noo-main col-md-8">
+            <div class="customer-details">
+              <div class="col-billing">
+                <div class="commerce-billing-fields">
+                  <h3>Billing Details</h3>
+                  <div class="form-row form-row form-row-first">
+                    <label>
+                      First Name <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <input type="text" class="input-text " name="billing_first_name" id="billing_first_name" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row form-row-last">
+                    <label>
+                      Last Name <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <input type="text" class="input-text " name="billing_last_name" id="billing_last_name" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row">
+                    <label>
+                      Company Name
+                    </label>
+                    <input type="text" class="input-text " name="billing_company" id="billing_company" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row form-row-first">
+                    <label>
+                      Email Address <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <input type="text" class="input-text " name="billing_email" id="billing_email" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row form-row-last">
+                    <label>
+                      Phone <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <input type="text" class="input-text " name="billing_phone" id="billing_phone" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row">
+                    <label>
+                      Country <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <select class="select">
+                      <option value="">Select a country</option>
+                      <option value="">America</option>
+                      <option value="">England</option>
+                      <option value="">France</option>
+                      <option value="">Vietnam</option>
+                    </select>
+                  </div>
+                  <div class="form-row form-row">
+                    <label>
+                      Address <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <input type="text" class="input-text " name="billing_address" id="billing_address" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row form-row-first">
+                    <label>
+                      Postcode / ZIP
+                    </label>
+                    <input type="text" class="input-text " name="billing_postcode" id="billing_postcode" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row form-row-last">
+                    <label>
+                      Town / City <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row form-row-wide">
+                    <input class="input-checkbox" id="createaccount" type="checkbox" name="createaccount" value="1">
+                    <label class="checkbox">Create an account?</label>
+                  </div>
+                  <div class="form-row form-row form-row-wide">
+                    <button class="button">Save Address</button>
+                  </div>
                 </div>
+              </div>
+              <div class="col-address mt-6">
+                <div class="commerce-address-fields">
+                  <h3>Shipping Address</h3>
+                  <div class="form-row form-row">
+                    <label>
+                      Country <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <select class="select">
+                      <option value="">Select a country</option>
+                      <option value="">America</option>
+                      <option value="">England</option>
+                      <option value="">France</option>
+                      <option value="">Vietnam</option>
+                    </select>
+                  </div>
+                  <div class="form-row form-row form-row-first">
+                    <label>
+                      First Name <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <input type="text" class="input-text " name="shipping_first_name" id="shipping_first_name" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row form-row-last">
+                    <label>
+                      Last Name <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <input type="text" class="input-text " name="shipping_last_name" id="shipping_last_name" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row">
+                    <label>
+                      Company Name
+                    </label>
+                    <input type="text" class="input-text " name="shipping_company" id="shipping_company" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row">
+                    <label>
+                      Address <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <input type="text" class="input-text " name="shipping_address" id="shipping_address" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row form-row-wide">
+                    <label>
+                      Town / City <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="">
+                  </div>
+                  <div class="form-row form-row form-row-wide">
+                    <label>
+                      Order Note <abbr class="required" title="required">*</abbr>
+                    </label>
+                    <textarea name="order_comments" class="input-text " id="order_comments" placeholder="Notes about your order, e.g. special notes for delivery." rows="2" cols="5"></textarea>
+                  </div>
+                  <div class="form-row form-row form-row-wide">
+                    <button class="button">Save Address</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="order-review-wrap">
+              <h3>Your order</h3>
+              <div class="commerce-checkout-review-order">
+                <table class="shop_table commerce-checkout-review-order-table">
+                  <thead>
+                    <tr>
+                      <th class="product-name">Product</th>
+                      <th class="product-total">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="cart_item">
+                      <td class="product-name">
+                        Broccoli&nbsp;
+                        <strong class="product-quantity">× 1</strong>
+                      </td>
+                      <td class="product-total">
+                        <span class="amount">&#36;2.05</span>
+                      </td>
+                    </tr>
+                    <tr class="cart_item">
+                      <td class="product-name">
+                        Brown Bread&nbsp;
+                        <strong class="product-quantity">× 1</strong>
+                      </td>
+                      <td class="product-total">
+                        <span class="amount">&#36;12.00</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr class="cart-subtotal">
+                      <th>Subtotal</th>
+                      <td><span class="amount" id="subtotal">14.05</span></td>
+                    </tr>
+                    <tr class="order-total">
+                      <th>Total</th>
+                      <td><strong><span class="amount" id="payment-amount">14.05</span></strong> </td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+                    <li>
+                      <input type="radio" class="input-radio" name="payment_method" value="cheque" checked="checked" />
+                      <label>
+                        Check Payments
+                      </label>
+                      <div class="payment_box payment_method_cheque">
+                        <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
+                      </div>
+                    </li>
+                    <li class="wc_payment_method payment_method_paypal">
+                      <input id="payment_method_paypal" type="radio" class="input-radio" name="payment_method" value="paypal" />
+                      <label for="payment_method_paypal">
+                        PayPal <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/AM_mc_vs_ms_ae_UK.png" alt="PayPal Acceptance Mark">
+                        <a href="#" title="What is PayPal?">What is PayPal?</a>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+                <button class="button mt-5" id ="pay-now-button">Place Order</button>
               </div>
             </div>
           </div>
@@ -403,3 +501,50 @@
     </div>
   </div>
 </div>
+
+<!-- Incluyendo .js de Culqi Checkout-->
+<script src="https://checkout.culqi.com/v2"></script>
+
+<!-- Configurando el checkout-->
+<script>
+  Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
+  var payment_amount = $('#payment-amount').html() * 100;
+  Culqi.settings({
+    title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+    currency: 'PEN',
+    description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@cart.id}" %>',
+    amount: payment_amount
+  });
+
+  $('#pay-now-button').on('click', function(e) {
+            // Abre el formulario con las opciones de Culqi.settings
+            Culqi.open();
+            e.preventDefault();
+  });
+
+  function culqi() {
+
+    if(Culqi.token) { // ¡Token creado exitosamente!
+        // Get the token ID:
+        var token = Culqi.token.id;
+        //var payment_amount = $('#payment_amount').html() * 100;
+        $.post(
+          "checkout/pay_order_culqi_checkout",
+          {
+          culqi_token: token,
+          amount: payment_amount,
+          cart_id: '<%= "#{@cart.id}" %>',
+          order_id: '<%= "#{@cart.id}" %>'
+          },
+          function(data) {
+          }
+       );
+        alert('Se ha creado un token:' + token);
+
+    }else{ // ¡Hubo algún problema!
+        // Mostramos JSON de objeto error en consola
+        console.log(Culqi.error);
+        alert(Culqi.error.mensaje);
+    }
+  };
+</script>

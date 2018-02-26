@@ -28,6 +28,10 @@ en-PE:
       long: "%A, %d de %B del %Y"
       short: "%d de %b"
   ecommerce:
+    processor:
+      culqi:
+        payment_popup_title: "ExpatShop Payment"
+        order_label: "Order"
     store:
       organici:
         header:

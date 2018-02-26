@@ -11,6 +11,7 @@ require 'sass-rails'
 require 'record_tag_helper'
 require 'cocoon'
 require 'font-awesome-rails'
+require 'culqi-ruby'
 
 module Ecommerce
 
