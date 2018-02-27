@@ -8,7 +8,7 @@ module Ecommerce
 
     # GET /checkout
     def show
-
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show"
     end
 
     def create_order
@@ -25,7 +25,6 @@ module Ecommerce
 
     def pay_order_culqi_checkout
       Rails.logger.debug params
-      byebug
       card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
       payment_created = Payment.new.new_culqi_payment(current_user, card_token_created, params[:amount], "Order", @order.id, params[:payment_request_id]) if card_token_created
       if payment_created[0]

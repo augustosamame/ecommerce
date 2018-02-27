@@ -2,7 +2,7 @@ module Ecommerce
   class Card < ApplicationRecord
     belongs_to :user
 
-    enum status: {activa: 1, inactiva: 2}
+    enum status: {active: 1, void: 2}
 
     def create_new_from_culqi(current_user, culqi_data)
       card = Card.new
@@ -17,7 +17,7 @@ module Ecommerce
       card.card_type = culqi_data[:iin][:card_type]
       card.issuer_name = culqi_data[:iin][:issuer][:name]
       card.issuer_country_code = culqi_data[:iin][:issuer][:country_code]
-      card.status = culqi_data[:active] == "true" ? 1 : 2
+      card.status = culqi_data[:active] == "true" ? "active" : "inactive"
       #TODO error_handling here
       if card.save
         return card

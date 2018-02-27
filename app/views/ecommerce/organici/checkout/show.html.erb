@@ -526,7 +526,7 @@
 
     if(Culqi.token) { // ¡Token creado exitosamente!
         // Get the token ID:
-        var token = Culqi.token.id;
+        var token = Culqi.token;
         //var payment_amount = $('#payment_amount').html() * 100;
         $.post(
           "checkout/pay_order_culqi_checkout",

@@ -9,13 +9,13 @@ module Ecommerce
 
     def main
       add_body_css_class('stretched')
-      render "ecommerce/store/#{Ecommerce.ecommerce_layout}/main"
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/main"
     end
 
     def shop_by_category
       @category = Ecommerce::Category.find(params[:id])
       @products = Ecommerce::Product.where(category_id: params[:id])
-      render "ecommerce/store/#{Ecommerce.ecommerce_layout}/shop_by_category"
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/shop_by_category"
     end
 
     def product_detail
@@ -29,7 +29,7 @@ module Ecommerce
       else
         @fb_compatible_locale_code = 'es_LA'
       end
-      render "ecommerce/store/#{Ecommerce.ecommerce_layout}/product_detail"
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/product_detail"
     end
 
     private

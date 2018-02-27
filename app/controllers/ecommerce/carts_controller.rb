@@ -7,6 +7,7 @@ module Ecommerce
 
     # GET /carts/1
     def show
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/cart/show"
     end
 
     # GET /carts/1/edit

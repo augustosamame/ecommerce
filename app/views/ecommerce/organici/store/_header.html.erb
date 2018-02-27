@@ -24,13 +24,16 @@
 							<li class="menu-item fly-right">
 
 								<% if current_user %>
-									<a href="my-account.html">
-										<%= link_to "<i class='fa fa-user'></i>#{current_user.name}".html_safe, main_app.destroy_user_session_path, method: :delete %>
-									</a>
+									<%= link_to "<i class='fa fa-user'></i>#{current_user.name}".html_safe, my_account_path %>
 								<% else %>
-								<%= link_to "<i class='fa fa-user'></i>#{t('.my_account')}".html_safe, main_app.new_user_session_path %>
+									<%= link_to "<i class='fa fa-user'></i>#{t('.my_account')}".html_safe, main_app.new_user_session_path %>
 								<% end %>
 							</li>
+							<% if current_user %>
+								<li class="menu-item fly-right">
+									<%= link_to "<i class='fa fa-user'></i>Log Out".html_safe, main_app.destroy_user_session_path, method: :delete %>
+								</li>
+							<% end %>
 							<li class="menu-item fly-right">
 								<a href="wishlist.html">
 									<i class="fa fa-heart-o"></i>Wishlist

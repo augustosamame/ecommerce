@@ -21,6 +21,7 @@ Ecommerce::Engine.routes.draw do
   get '/product/:id', :to => 'store#product_detail', :as => 'product'
   post '/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
   get '/checkout', :to => 'checkout#show'
+  get '/my_account', :to => 'users#show'
 
   resources :carts, except: [:index, :new, :create]
   resources :cart_items

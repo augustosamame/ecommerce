@@ -28,7 +28,7 @@ module Ecommerce
       else
         @fb_compatible_locale_code = 'es_LA'
       end
-      render "ecommerce/store/#{Ecommerce.ecommerce_layout}/product_detail"
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/product_detail"
     end
 
     private
