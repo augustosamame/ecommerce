@@ -7,7 +7,11 @@ module Ecommerce
 
     # GET /backoffice/orders
     def index
-      @backoffice_orders = Order.all
+      if params[:stage]
+        @backoffice_orders = Order.where(stage: params[:stage])
+      else
+        @backoffice_orders = Order.all
+      end
     end
 
     # GET /backoffice/orders/1

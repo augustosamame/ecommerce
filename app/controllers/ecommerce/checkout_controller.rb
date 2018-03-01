@@ -18,7 +18,7 @@ module Ecommerce
                     cart_id: params[:cart_id].to_i,
                     shipping_address_id: nil,
                     billing_address_id: nil,
-                    payment_status: "unpaid",
+                    payment_status: "paid",
                     status: "active"
                     )
     end

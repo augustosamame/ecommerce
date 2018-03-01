@@ -61,7 +61,7 @@
             <nav class="pull-right noo-main-menu">
               <ul class="nav-collapse navbar-nav">
                 <li class="menu-item-has-children current-menu-item">
-                  <a href="./">Home</a>
+                  <a href="<%= main_app.root_path %>">Home</a>
                   <ul class="sub-menu">
                     <li><a href="index-2.html">Homepage 2</a></li>
                     <li><a href="index-3.html">Homepage 3</a></li>
@@ -246,52 +246,41 @@
         <div class="row">
           <div class="noo-main col-md-12">
             <div id="customer_login">
-                      <div class="col-md-6">
-                        <h2>Login</h2>
-                        <form class="login">
-                          <div class="form-row form-row-wide">
-                    <label for="username">
-                      Username or email address
-                      <span class="required">*</span>
-                    </label>
-                    <input type="text" class="input-text" name="username" id="username" value="" />
-                  </div>
-                  <div class="form-row form-row-wide">
-                    <label for="password">
-                      Password
-                      <span class="required">*</span>
-                    </label>
-                    <input class="input-text" type="password" name="password" id="password" />
-                  </div>
-                  <div class="form-row">
-                    <input type="submit" class="button" name="login" value="Login" />
-                  </div>
-                  <div class="lost_password">
-                    <a href="#">Lost your password?</a>
-                  </div>
-                </form>
-              </div>
               <div class="col-md-6">
-                <h2>Register</h2>
+                <h2>My Orders</h2>
+                <h2>My Info</h2>
                 <form class="register">
                   <div class="form-row form-row-wide">
                     <label for="reg_email">
-                      Email address
+                      First Name
                       <span class="required">*</span>
                     </label>
                     <input type="email" class="input-text" name="email" id="reg_email" value="" />
                   </div>
                   <div class="form-row form-row-wide">
                     <label for="reg_password">
-                      Password
+                      Last Name
+                      <span class="required">*</span>
+                    </label>
+                    <input type="password" class="input-text" name="password" id="reg_password" />
+                  </div>
+                  <div class="form-row form-row-wide">
+                    <label for="reg_password">
+                      Mobile Number
                       <span class="required">*</span>
                     </label>
                     <input type="password" class="input-text" name="password" id="reg_password" />
                   </div>
                   <div class="form-row">
-                    <input type="submit" class="button" name="register" value="Register" />
+                    <input type="submit" class="button" name="update" value="Update" />
                   </div>
                 </form>
+                <h2>My Addresses</h2>
+                <h2>My Payment Methods</h2>
+              </div>
+              <div class="col-md-6">
+                <h2>Contact Support</h2>
+                <h2>Logout</h2>
               </div>
             </div>
           </div>

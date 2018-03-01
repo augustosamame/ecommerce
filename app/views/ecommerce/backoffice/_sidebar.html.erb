@@ -42,30 +42,30 @@
       </li>
 
       <li class="<%= class_string({ active: (['orders'].include? controller.controller_name) }) %>">
-        <a href="javascript:;"> <i class="material-icons">store</i> <span class="title">Pedidos</span> <span class=" arrow"></span> </a>
+        <a href="javascript:;"> <i class="material-icons">store</i> <span class="title">Orders</span> <span class=" arrow"></span> </a>
         <ul class="sub-menu">
-          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.where.not(stage: 'Delivered').count %></span>
-            <%= link_to "Todos los Pedidos", backoffice_orders_path %>
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.count %></span>
+            <%= link_to "All Orders", backoffice_orders_path %>
           </li>
-          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.where(stage: "Delivered").count %></span>
-            <%= link_to "Pedidos Entregados", backoffice_orders_path(stage: "Entregado") %>
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.where(stage: 'stage_closed').count %></span>
+            <%= link_to "Closed Orders", backoffice_orders_path(stage: "stage_closed") %>
           </li>
         </ul>
       </li>
 
       <li class="<%= class_string({ active: (['users'].include? controller.controller_name) }) %>">
-        <a href="javascript:;"> <i class="material-icons">face</i> <span class="title">Usuarios</span> <span class=" badge badge-disable pull-right "><%= User.where(status: "active").count %></span>
+        <a href="javascript:;"> <i class="material-icons">face</i> <span class="title">Users</span> <span class=" badge badge-disable pull-right "><%= User.where(status: "active").count %></span>
         </a>
         <ul class="sub-menu">
-          <li> <%= link_to "Todos los Usuarios", backoffice_users_path %></li>
-          <li> <%= link_to "Sólo Usuarios Registrados", backoffice_users_path(user: "regular") %></li>
+          <li> <%= link_to "All Users", backoffice_users_path %></li>
+          <li> <%= link_to "Registered Users", backoffice_users_path(user: "regular") %></li>
         </ul>
       </li>
       <li class="<%= class_string({ active: (['controls'].include? controller.controller_name) }) %>">
-        <a href="javascript:;"> <i class="material-icons">autorenew</i> <span class="title">Tablas de Control</span> <span class=" arrow"></span> </a>
+        <a href="javascript:;"> <i class="material-icons">autorenew</i> <span class="title">Settings</span> <span class=" arrow"></span> </a>
         <ul class="sub-menu">
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'controls' && controller.action_name == 'index')}) %>">
-            <%= link_to "Tabla de Control", backoffice_controls_path %>
+            <%= link_to "Settings", backoffice_controls_path %>
           </li>
         </ul>
       </li>

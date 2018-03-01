@@ -11,6 +11,7 @@ class CreateEcommerceCategories < ActiveRecord::Migration[5.1]
       t.boolean :popular, default: "false"
       t.boolean :popular_homepage, default: "false"
       t.string :image_popular_homepage
+      t.string :image_popular_homepage_overlay_text
       t.decimal :homepage_cat_image_width
       t.decimal :homepage_cat_image_height
 
