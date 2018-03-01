@@ -20,7 +20,6 @@ module Ecommerce
     end
 
     def new_culqi_payment(current_user, card_token_data, amount, payment_type, order_id = nil, payment_request_id = nil)
-      byebug
       Rails.logger.debug "Received #{order_id}"
       Rails.logger.debug "Card Token Data:"
       Rails.logger.debug card_token_data
@@ -36,9 +35,12 @@ module Ecommerce
         culqi_orden = "Order # #{order_id}"
         culqi_request = "Request # #{payment_request_id}"
       end
+      return true
       first_address = current_user.addresses.try(:first)
       culqi_address = first_address.blank? ? "" : "#{first_address.street}, #{first_address.street2}, #{first_address.district}"
-      culqi_name = ApplicationController.helpers.separate_name(current_user.name)
+      #culqi_name = ApplicationController.helpers.separate_name(current_user.name)
+      culqi_name = current_user.first_name
+      #no_antifraud_data = culqi_address.blank? || culqi_name[:first_name].blank? || culqi_name[:last_name].blank?
       no_antifraud_data = culqi_address.blank? || culqi_name[:first_name].blank? || culqi_name[:last_name].blank?
       plain_mobile = current_user.username.gsub(/[^\d]/, '')
       plain_mobile = plain_mobile[2..-1] if plain_mobile[0..1] == '51'
