@@ -30,6 +30,7 @@ module Ecommerce
       if @backoffice_category.save
         redirect_to backoffice_category_path(@backoffice_category), notice: 'Category was successfully created.'
       else
+        Rails.logger.debug @backoffice_category.errors
         render :new
       end
     end
