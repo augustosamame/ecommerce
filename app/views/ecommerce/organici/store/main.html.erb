@@ -1,23 +1,5 @@
 <div class="main">
-	
-	<div class="noo-slider-wrap">
-		 
-		<ul class="noo-slider-image">
-			<% @home_menu_categories.each do |category| %>
-				<li>
-					<div class="image-style category-main-image-container">
-						<a href=" <%= category_path(category) %> ">
-							<div class="category-main-image-layer"></div>
-							<%= image_tag category.image.url, width: 610, height: 520, alt: "", class: "category-main-image" %>
-							<p class="category-main-image-overlay-text"><%= category.image_popular_homepage_overlay_text %></p>
-						</a>
-					
-					</div>
-				</li>
-			<% end %>
-		</ul>
-	
-	</div>
+
 	<div class="container"></div>
 	<div class="noo-simple-product-wrap">
 		<div class="container">
@@ -30,14 +12,15 @@
 							</div>
 						</li>
 						<li>
+						<% @home_menu_categories.each do |category| %>
 							<div class="dvt_houses_contenedor hidden-xs hidden-sm">
-								<a href="#">
+								<a href=" <%= category_path(category) %> ">
 									<div class="dvt_houses_layer"></div>
-									<img alt="" class="dvt_houses_img" src="" width="265" height="100">
-									<p class="dvt_houses_titulos">House of India</p>
+									<%= image_tag category.image.url, width: 265, height: 100, alt: "", class: "dvt_houses_img" %>
+									<p class="dvt_houses_titulos"><%= category.image_popular_homepage_overlay_text %></p>
 								</a>
 							</div>
-							
+						<% end %>
 						</li>
 						<li>
 							<div class="dvt_houses_contenedor hidden-xs hidden-sm">
@@ -130,12 +113,12 @@
 									</div>
 								</div>
 							</a>
-						</li>			
+						</li>
 					</ul>
 					</div>
 			</div>
-		</div>	
-		
+		</div>
+
 	</div>
 	<div class="noo-height-product pt-8 pb-10">
 		<div class="container">

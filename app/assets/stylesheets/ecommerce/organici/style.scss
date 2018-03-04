@@ -102,7 +102,7 @@ a:hover {
     outline: 0;
 }
 
-.navbar-default .navbar-nav>li>a:focus, 
+.navbar-default .navbar-nav>li>a:focus,
 .navbar-default .navbar-nav>li>a:hover {
 	color: #79cba8;
 }
@@ -699,6 +699,7 @@ ol ol {
 
 .list-unstyled {
     padding-left: 0;
+    margin-top: 80px;
     list-style: none;
 }
 
@@ -15448,11 +15449,11 @@ p.demo_store a {
     opacity: 0
 }
 
-.commerce .commerce-result-count, 
+.commerce .commerce-result-count,
 .commerce-page .commerce-result-count {
     float: left;
 }
-.commerce .commerce-ordering, 
+.commerce .commerce-ordering,
 .commerce-page .commerce-ordering {
     float: right;
 }
@@ -15489,17 +15490,17 @@ p.demo_store a {
 }
 
 @media (max-width: 767px) {
-	.commerce #content div.product div.summary, 
-	.commerce div.product div.summary, 
-	.commerce-page #content div.product div.summary, 
+	.commerce #content div.product div.summary,
+	.commerce div.product div.summary,
+	.commerce-page #content div.product div.summary,
 	.commerce-page div.product div.summary {
 		width: 100%;
 		float: none;
 		margin-top: 30px;
 	}
-	.commerce #content div.product div.images, 
-	.commerce div.product div.images, 
-	.commerce-page #content div.product div.images, 
+	.commerce #content div.product div.images,
+	.commerce div.product div.images,
+	.commerce-page #content div.product div.images,
 	.commerce-page div.product div.images {
 		width: 100%;
 		float: none;
@@ -15508,7 +15509,7 @@ p.demo_store a {
 
 @media (max-width: 414px) {
     .commerce-page .cart-collaterals .noocart-coupon,
-	.commerce .cart-collaterals .cart_totals, 
+	.commerce .cart-collaterals .cart_totals,
 	.commerce-page .cart-collaterals .cart_totals {
         width: 100%;
 		float: none;
@@ -17198,7 +17199,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
     font-size: 24px;
     position: relative;
 }
-.commerce .form-row-first, 
+.commerce .form-row-first,
 .commerce .form-row-last {
     float: left;
     width: 47%;
@@ -17221,7 +17222,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
     padding: 0;
     text-transform: uppercase;
 }
-.commerce-checkout .form-row input, 
+.commerce-checkout .form-row input,
 .commerce-checkout .form-row .select {
     height: 40px;
     width: 100%;
@@ -17375,7 +17376,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
     margin: 6px 0 0 0;
 }
 .dvt_houses li{
-    
+
     max-height:100px;
     margin:15px 0px;
 }
