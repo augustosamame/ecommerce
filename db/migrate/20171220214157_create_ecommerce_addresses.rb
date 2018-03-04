@@ -5,9 +5,15 @@ class CreateEcommerceAddresses < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :street
       t.string :street2
-      t.string :state
+      t.string :district
       t.string :city
+      t.string :state
+      t.string :country
+      t.string :phone
       t.integer :address_type
+      t.float :latitude
+      t.float :longitude
+      t.string :authorized_person
       t.integer :shipping_or_billing
       t.integer :status
 
