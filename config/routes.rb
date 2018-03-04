@@ -25,6 +25,7 @@ Ecommerce::Engine.routes.draw do
 
   resources :carts, except: [:index, :new, :create]
   resources :cart_items
+  resources :addresses
 
   root to: 'store#main'
 

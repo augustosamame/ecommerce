@@ -8,6 +8,7 @@ module Ecommerce
 
     # GET /checkout
     def show
+      @checkout_addresses = Address.where(user_id: current_user.id)
       render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show"
     end
 

@@ -359,21 +359,26 @@
               <!--<div class="col-address mt-6">-->
                 <div class="commerce-address-fields">
                   <h3>Shipping Address</h3>
+                  <% if @checkout_addresses.count > 0 %>
+                    <div class="form-row form-row">
+                      <label>
+                        <h4>Pick an Address</h4>
+                      </label>
+                      <select class="select">
+                        <option value="">Select an address</option>
+                        <option value="">Home</option>
+                        <option value="">Office</option>
+                      </select>
+                    </div>
+                  <% end %>
                   <div class="form-row form-row">
                     <label>
-                      Country <abbr class="required" title="required">*</abbr>
+                      <h4>Create a New Address</h4>
                     </label>
-                    <select class="select">
-                      <option value="">Select a country</option>
-                      <option value="">America</option>
-                      <option value="">England</option>
-                      <option value="">France</option>
-                      <option value="">Vietnam</option>
-                    </select>
                   </div>
                   <div class="form-row form-row form-row-first">
                     <label>
-                      First Name <abbr class="required" title="required">*</abbr>
+                      First Name
                     </label>
                     <input type="text" class="input-text " name="shipping_first_name" id="shipping_first_name" placeholder="" value="">
                   </div>
