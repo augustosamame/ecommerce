@@ -17376,10 +17376,27 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
     margin: 6px 0 0 0;
 }
 .dvt_houses li{
-
     max-height:100px;
     margin:15px 0px;
+} 
+.dvt_houses_lista{
+    padding-left: 0;
+    margin-top: 0px;
+    list-style: none;
 }
+.dvt_houses_tope{
+    margin-top: 168px;
+}
+
+.dvt_houses_spac_btn{
+    margin-bottom:15px;
+}
+.dvt_houses_img {
+    height: 100px;
+    min-width: 307px;
+    vertical-align: middle;
+}
+
 .dvt_houses_contenedor{
     position:relative;
 }
@@ -17409,3 +17426,42 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
     vertical-align: middle;
     background-color:#ccc;
 }
+
+.dvts_category ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #f2f2f2;
+}
+
+.dvts_category li {
+    float: left;
+}
+
+.dvts_category li a {
+    display: block;
+    color: #333;
+    text-align: center;
+    padding: 10px 16px;
+    text-decoration: none;
+}
+
+.dvts_category li a:hover {
+    color: #79cba8;
+}
+.dvts_category p  {
+    color: #79cba8;
+    display: block;
+    text-align: right;
+    padding: 10px 8px;
+}
+
+@media (max-width: 767px) {
+
+ .dvt_houses_tope{
+    margin-top: 60px;
+}
+
+        
+    }
