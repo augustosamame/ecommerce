@@ -18,41 +18,10 @@
 							<%= image_tag Ecommerce.horizontal_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 283 %>
 						</a>
 					</div>
-					<nav class="pull-right noo-menu-option">
-						<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>
-						<ul>
-							<li class="menu-item fly-right">
-
-								<% if current_user %>
-									<%= link_to "<i class='fa fa-user'></i>#{current_user.name}".html_safe, my_account_path %>
-								<% else %>
-									<%= link_to "<i class='fa fa-user'></i>#{t('.my_account')}".html_safe, main_app.new_user_session_path %>
-								<% end %>
-							</li>
-							<% if current_user %>
-								<li class="menu-item fly-right">
-									<%= link_to "<i class='fa fa-user'></i>Log Out".html_safe, main_app.destroy_user_session_path, method: :delete %>
-								</li>
-							<% end %>
-							<li class="menu-item fly-right">
-								<a href="wishlist.html">
-									<i class="fa fa-heart-o"></i>Wishlist
-								</a>
-							</li>
-							<li class="menu-item noo-menu-item-cart minicart">
-								<a class="cart-button" href="cart.html">
-									<i class="fa fa-shopping-cart"></i><%= t('.cart') %>
-								</a>
-							</li>
-							<li class="menu-item fly-right">
-								<a id="noo-search" class="search-button noo-search" href="#">
-									<i class="fa fa-search"></i><%= t('.search') %>
-								</a>
-							</li>
-						</ul>
-						<a href="#" class="button-menu-extend"><i class="fa fa-bars"></i></a>
-					</nav>
+					
 					<nav class="pull-right noo-main-menu">
+						
+					<!-- menu principal  -->
 						<ul class="nav-collapse navbar-nav">
 							<li><a href="<%= root_path %>"><%= t('.home') %></a></li>
 							<!-- <li class="menu-item-has-children current-menu-item">
@@ -212,8 +181,59 @@
 								<li><%= link_to "Backoffice", backoffice_dashboard_path, style: "color: red;" %></li>
 							<% end %>
 						</ul>
+						<!-- fin menu principal  -->
+						
+						<!-- menu secundario -->
+						<nav class="pull-right noo-menu-option">
+							<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>
+							
+							<ul class="nav-collapse">
+								<li class="menu-item fly-right">
+	
+									<% if current_user %>
+										<%= link_to "<i class='fa fa-user'></i>#{current_user.name}".html_safe, my_account_path %>
+									<% else %>
+										<%= link_to "<i class='fa fa-user'></i>#{t('.my_account')}".html_safe, main_app.new_user_session_path %>
+									<% end %>
+								</li>
+								<% if current_user %>
+									<li class="menu-item fly-right">
+										<%= link_to "<i class='fa fa-user'></i>Log Out".html_safe, main_app.destroy_user_session_path, method: :delete %>
+									</li>
+								<% end %>
+								<li class="menu-item fly-right">
+									<a href="wishlist.html">
+										<i class="fa fa-heart-o"></i>Wishlist
+									</a>
+								</li>
+								<li class="menu-item noo-menu-item-cart minicart">
+									<a class="cart-button" href="cart.html">
+										<i class="fa fa-shopping-cart"></i><%= t('.cart') %>
+									</a>
+								</li>
+								<li class="menu-item fly-right">
+									<a id="noo-search" class="search-button noo-search" href="#">
+										<i class="fa fa-search"></i><%= t('.search') %>
+									</a>
+								</li>
+							</ul>
+						<!--<a href="#" class="button-menu-extend"><i class="fa fa-bars"></i></a>-->
+						
+							
+						
 					</nav>
+					<!--<div class="col-md-12 navbar" style="border:1px solid black; margin-bottom:20px;">
+						<ul>
+							<li>Food</li>
+							<li>Cleaning</li>
+							<li>Groceries</li>
+							<li>Fruits</li>
+						</ul>	
+					</div> -->
+					<!-- fin menu secundario  -->
+					
 				</div>
+				
 			</div>
 		</div>
 	</div>
