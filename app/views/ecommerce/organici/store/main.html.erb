@@ -1,5 +1,7 @@
 <div class="main">
+	
 	<div class="noo-slider-wrap">
+		 
 		<ul class="noo-slider-image">
 			<% @home_menu_categories.each do |category| %>
 				<li>
@@ -9,84 +11,131 @@
 							<%= image_tag category.image.url, width: 610, height: 520, alt: "", class: "category-main-image" %>
 							<p class="category-main-image-overlay-text"><%= category.image_popular_homepage_overlay_text %></p>
 						</a>
+					
 					</div>
 				</li>
 			<% end %>
 		</ul>
+	
 	</div>
+	<div class="container"></div>
 	<div class="noo-simple-product-wrap">
-		<ul class="noo-simple-product-slider">
-			<li>
-				<a href="#">
-					<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-						<div class="n-simple-content">
-							<h3>Peach</h3>
-							<span class="price"><span class="amount">&#36;25.00</span></span>
-						</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 dvt_houses">
+					<ul class="list-unstyled ">
+						<li>
+							<div class="visible-xs visible-sm col-xs-12 ">
+								<button type="button" class="btn btn-primary btn-lg btn-block">HOUSES</button>
+							</div>
+						</li>
+						<li>
+							<div class="dvt_houses_contenedor hidden-xs hidden-sm">
+								<a href="#">
+									<div class="dvt_houses_layer"></div>
+									<img alt="" class="dvt_houses_img" src="" width="265" height="100">
+									<p class="dvt_houses_titulos">House of India</p>
+								</a>
+							</div>
+							
+						</li>
+						<li>
+							<div class="dvt_houses_contenedor hidden-xs hidden-sm">
+								<a href="#">
+									<div class="dvt_houses_layer"></div>
+									<img alt="" class="dvt_houses_img" src="" width="265" height="100">
+									<p class="dvt_houses_titulos">House of Arabia</p>
+								</a>
+							</div>
+						</li>
+						<li>
+							<div class="dvt_houses_contenedor hidden-xs hidden-sm">
+								<a href="#">
+									<div class="dvt_houses_layer"></div>
+									<img alt="" class="dvt_houses_img" src="" width="265" height="100">
+									<p class="dvt_houses_titulos">House of Canada</p>
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="col-sm-9" >
+					<ul class="noo-simple-product-slider">
+						<li>
+							<a href="#">
+								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
+									<div class="n-simple-content">
+										<h3>Peach</h3>
+										<span class="price"><span class="amount">&#36;25.00</span></span>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
+									<div class="n-simple-content">
+										<h3>Fruits</h3>
+										<span class="price"><span class="amount">&#36;55.00</span></span>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
+									<div class="n-simple-content">
+										<h3>Chicken eggs</h3>
+										<span class="price"><span class="amount">&#36;25.00</span></span>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
+									<div class="n-simple-content">
+										<h3>Banana</h3>
+										<span class="price"><span class="amount">&#36;25.00</span></span>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
+									<div class="n-simple-content">
+										<h3>Jackfruit</h3>
+										<span class="price"><span class="amount">&#36;99.00</span></span>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
+									<div class="n-simple-content">
+										<h3>Grapes</h3>
+										<span class="price"><span class="amount">&#36;22.00</span></span>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
+									<div class="n-simple-content">
+										<h3>Cookies</h3>
+										<span class="price"><span class="amount">&#36;99.00</span></span>
+									</div>
+								</div>
+							</a>
+						</li>			
+					</ul>
 					</div>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-						<div class="n-simple-content">
-							<h3>Fruits</h3>
-							<span class="price"><span class="amount">&#36;25.00</span></span>
-						</div>
-					</div>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-						<div class="n-simple-content">
-							<h3>Chicken eggs</h3>
-							<span class="price"><span class="amount">&#36;25.00</span></span>
-						</div>
-					</div>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-						<div class="n-simple-content">
-							<h3>Banana</h3>
-							<span class="price"><span class="amount">&#36;25.00</span></span>
-						</div>
-					</div>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-						<div class="n-simple-content">
-							<h3>Jackfruit</h3>
-							<span class="price"><span class="amount">&#36;99.00</span></span>
-						</div>
-					</div>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-						<div class="n-simple-content">
-							<h3>Grapes</h3>
-							<span class="price"><span class="amount">&#36;22.00</span></span>
-						</div>
-					</div>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-						<div class="n-simple-content">
-							<h3>Cookies</h3>
-							<span class="price"><span class="amount">&#36;99.00</span></span>
-						</div>
-					</div>
-				</a>
-			</li>
-		</ul>
+			</div>
+		</div>	
+		
 	</div>
 	<div class="noo-height-product pt-8 pb-10">
 		<div class="container">

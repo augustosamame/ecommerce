@@ -17374,3 +17374,37 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 	display: block;
     margin: 6px 0 0 0;
 }
+.dvt_houses li{
+    
+    max-height:100px;
+    margin:15px 0px;
+}
+.dvt_houses_contenedor{
+    position:relative;
+}
+.dvt_houses_titulos{
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 27px;
+    font-weight: bold;
+    left: 5%;
+    top: 32%;
+}
+.dvt_houses_layer{
+    background-color: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 28%;
+    left: 0;
+    width: 100%;
+    height: 45%;
+}
+ .dvt_houses_layer:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.dvt_houses_img{
+    height: 100px;
+    max-width: 265px;
+    vertical-align: middle;
+    background-color:#ccc;
+}
