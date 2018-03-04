@@ -43,6 +43,7 @@ module Ecommerce
   mattr_accessor :exchanges_days_window # :integer, default: 14 # the amount of days the customer has to exchange their item after the expedited exchange is shipped in order to avoid being charged
   mattr_accessor :returns_days_window # :integer, default: 14 # the amount of days the customer has to return their item after the expedited exchange is shipped in order to avoid being charged
   mattr_accessor :logo # :string, default: 'logo/spree_50.png'
+  mattr_accessor :horizontal_logo # :string, default: 'logo/spree_50.png'
   mattr_accessor :products_per_page # :integer, default: 12
   mattr_accessor :min_restock_inventory # :boolean, default: true # Determines if a return item is restocked automatically once it has been received
   mattr_accessor :shipping_instructions_text# , :text, instructions/info for shipping
