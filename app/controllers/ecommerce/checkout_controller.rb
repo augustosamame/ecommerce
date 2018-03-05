@@ -11,6 +11,8 @@ module Ecommerce
       @address = Address.new(user_id: current_user.id)
       @picked_address = Address.new(user_id: current_user.id)
       @checkout_addresses = Address.where(user_id: current_user.id)
+      @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
+      byebug
       render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show"
     end
 

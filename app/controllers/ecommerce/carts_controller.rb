@@ -7,6 +7,8 @@ module Ecommerce
 
     # GET /carts/1
     def show
+      @cart_qty_subtotal = @cart.cart_items.includes(:product).sum(:quantity)
+      @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)  #different syntax as line_total is not a db column but method
       render "ecommerce/#{Ecommerce.ecommerce_layout}/cart/show"
     end
 

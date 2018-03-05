@@ -24,5 +24,9 @@ module Ecommerce
       self.discounted_price_cents < self.price_cents
     end
 
+    def current_price
+      [self.price_cents, self.discounted_price_cents].min
+    end
+
   end
 end

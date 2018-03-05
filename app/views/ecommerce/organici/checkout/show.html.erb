@@ -337,11 +337,11 @@
                   <tfoot>
                     <tr class="cart-subtotal">
                       <th>Subtotal</th>
-                      <td><span class="amount" id="subtotal">14.05</span></td>
+                      <td><span class="amount" id="subtotal"><%= number_to_currency(@cart_subtotal) %></span></td>
                     </tr>
                     <tr class="order-total">
                       <th>Total</th>
-                      <td><strong><span class="amount" id="payment-amount">14.05</span></strong> </td>
+                      <td><strong><span class="amount" id="payment-amount"><%= number_to_currency(@cart_subtotal) %></span></strong> </td>
                     </tr>
                   </tfoot>
                 </table>

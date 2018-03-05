@@ -310,7 +310,7 @@
                     <%= link_to item.product.name, product_path(item.product) %>
                   </td>
                   <td class="product-price">
-                    <span class="amount"><%= number_to_currency(item.product.price_cents / 100) %></span>
+                    <span class="amount"><%= number_to_currency(item.product.current_price / 100) %></span>
                   </td>
                   <td class="product-quantity">
                     <div class="quantity">
@@ -318,7 +318,7 @@
                     </div>
                   </td>
                   <td class="product-subtotal">
-                    <span class="amount"><%= number_to_currency((item.product.price_cents * item.quantity) / 100) %></span>
+                    <span class="amount"><%= number_to_currency(item.line_total) %></span>
                   </td>
                   <td class="product-remove">
                     <a href="#" class="remove">&times;</a>
@@ -369,8 +369,12 @@
                 <h2>Cart Totals</h2>
                 <table>
                   <tr class="cart-subtotal">
+                    <th>Total Items</th>
+                    <td><span class="amount" id="qty-subtotal-amount"><%= @cart_qty_subtotal %></span></td>
+                  </tr>
+                  <tr class="cart-subtotal">
                     <th>Subtotal</th>
-                    <td><span class="amount" id="subtotal-amount">6.05</span></td>
+                    <td><span class="amount" id="subtotal-amount"><%= number_to_currency(@cart_subtotal) %></span></td>
                   </tr>
                   <tr class="shipping">
                     <th>Shipping</th>
@@ -380,7 +384,7 @@
                   </tr>
                   <tr class="order-total">
                     <th>Total</th>
-                    <td><strong><span class="amount" id="total-amount">6.05</span></strong> </td>
+                    <td><strong><span class="amount" id="total-amount"><%= number_to_currency(@cart_subtotal) %></span></strong> </td>
                   </tr>
                 </table>
                 <div class="wc-proceed-to-checkout">
