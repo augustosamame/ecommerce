@@ -1,3 +1,0 @@
-<div style="color: red; margin-top: 5px; margin-bottom: 5px;"><%= @error_found_address %></div>
-<%= image_tag "https://maps.googleapis.com/maps/api/staticmap?center=#{@address.latitude},#{@address.longitude}&markers=#{@address.latitude},#{@address.longitude}&zoom=16&size=530x400&key=AIzaSyA4BHW3txEdqfxzdTlPwaHsYRSZbfeIcd8",
-          class: 'img-fluid img-rounded map_address_image', style: "padding-bottom: 10px;", alt: "#{@address.nombre} on the map" %>

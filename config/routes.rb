@@ -25,7 +25,9 @@ Ecommerce::Engine.routes.draw do
 
   resources :carts, except: [:index, :new, :create]
   resources :cart_items
+  patch '/addresses/update_map', to: 'addresses#update_map'
   resources :addresses
+
 
   root to: 'store#main'
 

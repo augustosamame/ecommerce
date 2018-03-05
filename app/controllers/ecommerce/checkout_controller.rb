@@ -8,16 +8,20 @@ module Ecommerce
 
     # GET /checkout
     def show
+      @address = Address.new(user_id: current_user.id)
+      @picked_address = Address.new(user_id: current_user.id)
       @checkout_addresses = Address.where(user_id: current_user.id)
       render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show"
     end
 
     def create_order
+      posted_address = params[:picked_shipping_address_id]
+      last_user_address = Address.where(current_user.id).order(:id).last
       @order = Order.create( user_id: current_user.id,
                     amount_cents: params[:amount].to_i,
                     stage: "stage_new",
                     cart_id: params[:cart_id].to_i,
-                    shipping_address_id: nil,
+                    shipping_address_id: posted_address.blank? ? posted_address.to_i : last_user_address.id,
                     billing_address_id: nil,
                     payment_status: "paid",
                     status: "active"

@@ -284,139 +284,23 @@
         <div class="row">
           <div class="noo-main col-md-8">
             <div class="customer-details">
-              <!--<div class="col-billing">
-                <div class="commerce-billing-fields">
-                  <h3>Billing Details</h3>
-                  <div class="form-row form-row form-row-first">
-                    <label>
-                      First Name <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <input type="text" class="input-text " name="billing_first_name" id="billing_first_name" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row form-row-last">
-                    <label>
-                      Last Name <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <input type="text" class="input-text " name="billing_last_name" id="billing_last_name" placeholder="" value="">
-                  </div>
+              <div class="commerce-address-fields">
+                <h3>Shipping Address</h3>
+                <% if @checkout_addresses.count > 0 %>
                   <div class="form-row form-row">
                     <label>
-                      Company Name
+                      <h4>Pick an Address</h4>
                     </label>
-                    <input type="text" class="input-text " name="billing_company" id="billing_company" placeholder="" value="">
                   </div>
-                  <div class="form-row form-row form-row-first">
-                    <label>
-                      Email Address <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <input type="text" class="input-text " name="billing_email" id="billing_email" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row form-row-last">
-                    <label>
-                      Phone <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <input type="text" class="input-text " name="billing_phone" id="billing_phone" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row">
-                    <label>
-                      Country <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <select class="select">
-                      <option value="">Select a country</option>
-                      <option value="">America</option>
-                      <option value="">England</option>
-                      <option value="">France</option>
-                      <option value="">Vietnam</option>
-                    </select>
-                  </div>
-                  <div class="form-row form-row">
-                    <label>
-                      Address <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <input type="text" class="input-text " name="billing_address" id="billing_address" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row form-row-first">
-                    <label>
-                      Postcode / ZIP
-                    </label>
-                    <input type="text" class="input-text " name="billing_postcode" id="billing_postcode" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row form-row-last">
-                    <label>
-                      Town / City <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row form-row-wide">
-                    <input class="input-checkbox" id="createaccount" type="checkbox" name="createaccount" value="1">
-                    <label class="checkbox">Create an account?</label>
-                  </div>
-                  <div class="form-row form-row form-row-wide">
-                    <button class="button">Save Address</button>
-                  </div>
+                  <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
+                <% end %>
+                <div class="form-row form-row">
+                  <label>
+                    <h4>Create a New Address</h4>
+                  </label>
                 </div>
-              </div>-->
-              <!--<div class="col-address mt-6">-->
-                <div class="commerce-address-fields">
-                  <h3>Shipping Address</h3>
-                  <% if @checkout_addresses.count > 0 %>
-                    <div class="form-row form-row">
-                      <label>
-                        <h4>Pick an Address</h4>
-                      </label>
-                      <select class="select">
-                        <option value="">Select an address</option>
-                        <option value="">Home</option>
-                        <option value="">Office</option>
-                      </select>
-                    </div>
-                  <% end %>
-                  <div class="form-row form-row">
-                    <label>
-                      <h4>Create a New Address</h4>
-                    </label>
-                  </div>
-                  <div class="form-row form-row form-row-first">
-                    <label>
-                      First Name
-                    </label>
-                    <input type="text" class="input-text " name="shipping_first_name" id="shipping_first_name" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row form-row-last">
-                    <label>
-                      Last Name <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <input type="text" class="input-text " name="shipping_last_name" id="shipping_last_name" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row">
-                    <label>
-                      Company Name
-                    </label>
-                    <input type="text" class="input-text " name="shipping_company" id="shipping_company" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row">
-                    <label>
-                      Address <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <input type="text" class="input-text " name="shipping_address" id="shipping_address" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row form-row-wide">
-                    <label>
-                      Town / City <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="">
-                  </div>
-                  <div class="form-row form-row form-row-wide">
-                    <label>
-                      Order Note <abbr class="required" title="required">*</abbr>
-                    </label>
-                    <textarea name="order_comments" class="input-text " id="order_comments" placeholder="Notes about your order, e.g. special notes for delivery." rows="2" cols="5"></textarea>
-                  </div>
-                  <div class="form-row form-row form-row-wide">
-                    <button class="button">Save Address</button>
-                  </div>
-                </div>
-              <!--</div>-->
+                <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
+              </div>
             </div>
           </div>
           <div class="col-md-4">
@@ -525,19 +409,21 @@
     if(Culqi.token) { // ¡Token creado exitosamente!
         // Get the token ID:
         var token = Culqi.token;
+        var picked_shipping_address_id = $('#address_id').val();
         //var payment_amount = $('#payment_amount').html() * 100;
         $.post(
           "checkout/pay_order_culqi_checkout",
           {
           culqi_token: token,
           amount: payment_amount,
+          picked_shipping_address_id: picked_shipping_address_id,
           cart_id: '<%= "#{@cart.id}" %>',
           order_id: '<%= "#{@cart.id}" %>'
           },
           function(data) {
           }
        );
-        alert('Se ha creado un token:' + token);
+       //alert('Se ha creado un token:' + token);
 
     }else{ // ¡Hubo algún problema!
         // Mostramos JSON de objeto error en consola
