@@ -9,7 +9,7 @@
 
 <div class="main">
   <div class="commerce single-product noo-shop-main">
-    <div class="container">
+    <div class="container single-product-container">
       <div class="row">
         <div class="noo-main col-md-9">
           <div class="product">
@@ -26,7 +26,7 @@
                 <p class="price"><span class="amount"><%= number_to_currency(@product.price_cents / 100) %></span></p>
                 <p class="description"><%= @product.description %></p>
                 <div class="product_meta">
-                  <span class="posted_in">Category: <%= link_to @product.category.name, category_path(@product.category)%></span>
+                  <span class="posted_in">Category: <%= link_to @product.category.name, products_path(category_id: @product.category.id)%></span>
                   <span class="tagged_as">Tags: <a href="#">cucumbers</a>, <a href="#">vegetables</a></span>
                 </div>
 

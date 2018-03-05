@@ -13,23 +13,8 @@ module Ecommerce
     end
 
     def shop_by_category
-      @category = Ecommerce::Category.find(params[:id])
       @products = Ecommerce::Product.where(category_id: params[:id])
-      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/shop_by_category"
-    end
-
-    def product_detail
-      @product = Ecommerce::Product.find(params[:id])
-      @cart_item = CartItem.new
-      case I18n.locale[0..1]
-      when 'en'
-        @fb_compatible_locale_code = 'en_US'
-      when 'es'
-        @fb_compatible_locale_code = 'es_LA'
-      else
-        @fb_compatible_locale_code = 'es_LA'
-      end
-      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/product_detail"
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
     end
 
     private

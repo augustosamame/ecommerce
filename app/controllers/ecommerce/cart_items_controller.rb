@@ -15,7 +15,6 @@ module Ecommerce
       else
         flash[:error] = "There was a problem adding this item to your cart"
         @product = Product.find(@cart_item.product.id)
-
         redirect_to product_path(@product)
       end
 
@@ -28,7 +27,7 @@ module Ecommerce
       else
         @fb_compatible_locale_code = 'es_LA'
       end
-      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/product_detail"
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
     end
 
     private

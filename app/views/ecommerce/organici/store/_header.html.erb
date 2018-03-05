@@ -18,9 +18,9 @@
 							<%= image_tag Ecommerce.horizontal_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 283 %>
 						</a>
 					</div>
-					
+
 					<nav class="pull-right noo-main-menu">
-						
+
 					<!-- menu principal  -->
 						<ul class="nav-collapse navbar-nav">
 							<li><a href="<%= root_path %>"><%= t('.home') %></a></li>
@@ -55,7 +55,7 @@
 											<li><a href="shop-list.html">Shop List</a></li>
 											<li><a href="shop-detail.html">Shop Detail</a></li>
 											<li><a href="my-account.html">My Account</a></li>
-											<li><a href="cart.html">Cart</a></li>
+											<li><%= link_to "Cart", cart_path(@cart.id) %></li>
 											<li><a href="cart-empty.html">Empty Cart</a></li>
 											<li><a href="wishlist.html">Wishlist</a></li>
 										</ul>
@@ -182,14 +182,14 @@
 							<% end %>
 						</ul>
 						<!-- fin menu principal  -->
-						
+
 						<!-- menu secundario -->
 						<nav class="pull-right noo-menu-option">
 							<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>
-							
+
 							<ul class="nav-collapse">
 								<li class="menu-item fly-right">
-	
+
 									<% if current_user %>
 										<%= link_to "<i class='fa fa-user'></i>#{current_user.name}".html_safe, my_account_path %>
 									<% else %>
@@ -207,7 +207,7 @@
 									</a>
 								</li>
 								<li class="menu-item minicart">
-									<a class="cart-button" href="cart.html">
+									<a class="cart-button" href="<%= cart_path(@cart.id) %>">
 										<i class="fa fa-shopping-cart"></i><%= t('.cart') %>
 									</a>
 								</li>
@@ -217,12 +217,12 @@
 									</a>
 								</li>
 							</ul>
-	
+
 						<!-- fin menu secundario  -->
 					</nav>
 
 				</div>
-				
+
 			</div>
 			<div class="container  hidden-xs hidden-sm">
 				<div class="row" >
@@ -231,6 +231,7 @@
 					</div>
 					<div class="col-md-4 dvts_category">
 						<ul>
+							<li><%= link_to "ALL PRODUCTS", products_path %></li>
 						  <li><a class="active" href="#home">FOOD</a></li>
 						  <li><a href="#news">CLEANING</a></li>
 						  <li><a href="#contact">GROCERIES</a></li>

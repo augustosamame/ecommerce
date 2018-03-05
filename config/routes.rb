@@ -17,8 +17,9 @@ Ecommerce::Engine.routes.draw do
   end
 
   post 'locale', :to => 'application#locale'
-  get '/category/:id', :to => 'store#shop_by_category', :as => 'category'
-  get '/product/:id', :to => 'store#product_detail', :as => 'product'
+  #get '/category/:id', :to => 'store#shop_by_category', :as => 'category'
+  #get '/product/:id', :to => 'store#product_detail', :as => 'product'
+  resources :products, only: [:index, :show]
   post '/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
   get '/checkout', :to => 'checkout#show'
   get '/my_account', :to => 'users#show'

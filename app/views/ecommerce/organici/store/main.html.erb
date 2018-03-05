@@ -17,7 +17,7 @@
 						<li>
 						<% @home_menu_categories.each do |category| %>
 							<div class="dvt_houses_contenedor hidden-xs hidden-sm">
-								<a href=" <%= category_path(category) %> ">
+								<a href=" <%= products_path(category_id: category.id) %> ">
 									<div class="dvt_houses_layer"></div>
 									<%= image_tag category.image.url, width: 245, height: 100, alt: "", class: "dvt_houses_img" %>
 									<p class="dvt_houses_titulos"><%= category.image_popular_homepage_overlay_text %></p>
