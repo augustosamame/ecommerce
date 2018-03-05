@@ -50,15 +50,15 @@ module Ecommerce
         flash[:notice] = 'Su Orden fue Pagada Exitosamente'
         Rails.logger.info payment_created[0]
         flash.keep(:notice)
-        #render js: "window.location = '#{order_path(payment_request.order_id)}'"
-        redirect_to root_path, notice: 'Pago exitoso'
+        render js: "window.location = '#{root_path}'"
+        #redirect_to root_path, notice: 'Pago exitoso'
       else
         flash[:error] = payment_created[1] || 'Error al Realizar el Pago'
         Rollbar.error(payment_created[1])
         Rails.logger.error payment_created[1]
         flash.keep(:error)
-        #render js: "window.location = '#{order_path(payment_request.order_id)}'"
-        redirect_to "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show", error: 'Error al realizar el Pago'
+        render js: "window.location = 'ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show}'"
+        #redirect_to "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show", error: 'Error al realizar el Pago'
       end
     end
 

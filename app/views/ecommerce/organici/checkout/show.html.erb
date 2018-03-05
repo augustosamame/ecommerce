@@ -400,11 +400,7 @@
 
   $('#pay-now-button').on('click', function(e) {
     // Abre el formulario con las opciones de Culqi.settings
-    if ($('#address_id').val() != "") {
-      Culqi.open();
-      e.preventDefault();
-    }
-    else {
+    if (!$('#address_id').val()) {
       if ($('#address_street').val() != "" && $('#address_district').val() != "") {
         $('#save-address-button').trigger('click');
         Culqi.open();
@@ -414,6 +410,10 @@
         // place error message here
         alert("You must pick an address");
       }
+    }
+    else {
+      Culqi.open();
+      e.preventDefault();
     }
   });
 

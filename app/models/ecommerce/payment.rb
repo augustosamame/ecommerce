@@ -8,7 +8,7 @@ module Ecommerce
 
     #monetize :amount_cents, :as => "amount"
 
-    after_save :check_if_order_paid
+    after_commit :check_if_order_paid
 
     #necessary so simple_form will not convert to UTC
     def date_before_type_cast
@@ -16,7 +16,7 @@ module Ecommerce
     end
 
     def check_if_order_paid
-      self.order.update(status: "Paid") if Payment.where(order: self.order_id).sum(:amount_cents) >= self.order.total_price_cents
+      self.order.update(stage: "stage_paid", payment_status: "paid") if Payment.where(order: self.order_id).sum(:amount_cents) >= self.order.amount_cents
     end
 
     def new_culqi_payment(current_user, card_token_data, amount, payment_type, order_id = nil, payment_request_id = nil)
