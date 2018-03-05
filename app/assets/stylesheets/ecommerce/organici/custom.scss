@@ -71,3 +71,29 @@
     left:30%;
     top:60%;
 }
+
+.commerce-address-fields .control-label {
+  color: #696969;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.form-control {
+  height: 40px;
+  border: 1px solid #f4eede;
+  border-radius: 0px;
+  color: #767676;
+  box-shadow: none;
+}
+
+.hide-ok-label {
+  display: none;
+}
+
+#submit-address-ok {
+  margin-left: 10px;
+  padding-top: 10px;
+  color: red;
+  vertical-align: -webkit-baseline-middle;
+}

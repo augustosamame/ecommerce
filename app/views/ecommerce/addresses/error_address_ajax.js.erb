@@ -1,0 +1,8 @@
+$('.has-errors').remove();
+<% if @address.errors.any? %>
+  $('#new_address').addClass('has-error');
+  $('#new_address').prepend('<ul class="alert alert-danger has-errors"></ul>');
+  <% @address.errors.full_messages.each do |msg| %>
+    $('.has-errors').append('<%= escape_javascript msg %>');
+  <% end %>
+<% end %>
