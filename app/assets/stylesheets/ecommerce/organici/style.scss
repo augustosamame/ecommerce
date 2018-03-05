@@ -17393,11 +17393,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 .dvt_houses_spac_btn{
     margin-bottom:15px;
 }
-.dvt_houses_img {
-    height: 100px;
-    min-width: 307px;
-    vertical-align: middle;
-}
+
 
 .dvt_houses_contenedor{
     position:relative;
@@ -17412,13 +17408,14 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
     font-weight: bold;
     left: 5%;
     top: 32%;
+    margin-left:17px;
 }
 .dvt_houses_layer{
     background-color: rgba(0, 0, 0, 0.4);
     position: absolute;
-    top: 28%;
-    left: 0;
-    width: 100%;
+    top: 23%;
+    left: 17;
+    min-width: 283px;
     height: 45%;
 }
  .dvt_houses_layer:hover{
@@ -17426,9 +17423,10 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 }
 .dvt_houses_img{
     height: 100px;
-    max-width: 245px;
+    min-width: 283px;
     vertical-align: middle;
-    background-color:#ccc;
+    margin-left: 17px;
+    margin-bottom: 10px;
 }
 
 .dvts_category ul {
