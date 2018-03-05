@@ -17375,10 +17375,12 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 	display: block;
     margin: 6px 0 0 0;
 }
+
 .dvt_houses li{
     max-height:100px;
-    margin:15px 0px;
+    margin-bottom:15px;
 }
+ 
 .dvt_houses_lista{
     padding-left: 0;
     margin-top: 0px;
@@ -17400,6 +17402,8 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 .dvt_houses_contenedor{
     position:relative;
 }
+
+
 .dvt_houses_titulos{
     z-index: 100;
     position: absolute;
@@ -17422,7 +17426,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 }
 .dvt_houses_img{
     height: 100px;
-    max-width: 265px;
+    max-width: 245px;
     vertical-align: middle;
     background-color:#ccc;
 }
