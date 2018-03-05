@@ -11,3 +11,6 @@ b1 = Ecommerce::Brand.create(name: 'Organici', remote_logo_url: 'https://devtech
 s1 = Ecommerce::Supplier.create(name: 'Organici')
 c1 = Ecommerce::Category.create(name: "House of India", parent_id: nil, remote_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/house_of_india_2.jpg", image_popular_homepage_overlay_text: "House of India", status: "active", category_type: 0, category_order: 1, main_menu: true, popular: false, popular_homepage: true, image_popular_homepage: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/house_of_india_2.jpg", homepage_cat_image_width: 400, homepage_cat_image_height: 233)
 Ecommerce::Product.create(category_id: c1.id, brand_id: b1.id, supplier_id: s1.id, name: "Arabian Apples", description: "The best apples your hard earned money can buy", remote_image_url: "https://devtechperu-expatshop-dev.s3.amazonaws.com/uploads/ecommerce/product/image/1/apples.jpg", permalink: "Arabian Apples", price_cents: 3000, discounted_price_cents: 3000, meta_keywords: nil, meta_description: nil, stockable: true, home_featured: false, category_featured: false, available_at: nil)
+
+pm1 = Ecommerce::PaymentMethod.create(name: "Card", status: "active")
+pm2 = Ecommerce::PaymentMethod.create(name: "Bank Deposit", status: "active")

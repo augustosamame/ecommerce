@@ -1,4 +1,4 @@
-<%= simple_form_for(@address, remote: true ) do |g| %>
+<%= simple_form_for(@picked_address, remote: true, html: {id: "address-pick-form"} ) do |g| %>
   <div class="form-inputs">
     <%= g.input :id, as: :select, collection: @checkout_addresses, label_method: lambda { |obj| obj.friendly_street_select}, label: false, prompt: "Pick an Address", html: { class: "select"} %>
   </div>

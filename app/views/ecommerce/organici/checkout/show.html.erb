@@ -399,9 +399,22 @@
   });
 
   $('#pay-now-button').on('click', function(e) {
-            // Abre el formulario con las opciones de Culqi.settings
-            Culqi.open();
-            e.preventDefault();
+    // Abre el formulario con las opciones de Culqi.settings
+    if ($('#address_id').val() != "") {
+      Culqi.open();
+      e.preventDefault();
+    }
+    else {
+      if ($('#address_street').val() != "" && $('#address_district').val() != "") {
+        $('#save-address-button').trigger('click');
+        Culqi.open();
+        e.preventDefault();
+      }
+      else {
+        // place error message here
+        alert("You must pick an address");
+      }
+    }
   });
 
   function culqi() {

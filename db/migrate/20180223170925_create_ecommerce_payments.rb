@@ -16,7 +16,7 @@ class CreateEcommercePayments < ActiveRecord::Migration[5.1]
       t.timestamps
     end
     add_foreign_key :ecommerce_payments, :users, column: :user_id
-    add_foreign_key :ecommerce_payments, :users, column: :order_id
-    add_foreign_key :ecommerce_payments, :users, column: :payment_method_id
+    add_foreign_key :ecommerce_payments, :orders, column: :order_id
+    add_foreign_key :ecommerce_payments, :payments, column: :payment_method_id
   end
 end
