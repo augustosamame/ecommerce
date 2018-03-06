@@ -26,6 +26,8 @@ module Ecommerce
   mattr_accessor :engine_alias_endpoint
   mattr_accessor :locale_set_by_store
   mattr_accessor :fb_app_id
+  mattr_accessor :electronic_invoicing
+  mattr_accessor :shipping_integrator
 
   mattr_accessor :address_requires_doc_id # :boolean, default: true # should state/state_name be required
   mattr_accessor :address_requires_phone # :boolean, default: true # Determines whether we require phone in address

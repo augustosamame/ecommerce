@@ -12,7 +12,6 @@ module Ecommerce
       @picked_address = Address.new(user_id: current_user.id)
       @checkout_addresses = Address.where(user_id: current_user.id)
       @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
-      byebug
       render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show"
     end
 
@@ -29,12 +28,14 @@ module Ecommerce
                     status: "active"
                     )
       if @order.save
-        clear_cart
+        close_cart_and_create_new
       end
     end
 
-    def clear_cart
-      session[:cart_id] = nil
+    def close_cart_and_create_new
+      @cart.update(status: "closed")
+      @cart = Cart.create(user_id: current_user.id, status: "active")
+      session[:cart_id] = @cart.id
     end
 
     def pay_order_culqi_checkout

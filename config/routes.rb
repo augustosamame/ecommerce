@@ -24,6 +24,8 @@ Ecommerce::Engine.routes.draw do
   get '/checkout', :to => 'checkout#show'
   get '/my_account', :to => 'users#show'
 
+  post '/calculate_shipping', :to => 'integrations#get_shipping_quote'
+
   resources :carts, except: [:index, :new, :create]
   resources :cart_items
   patch '/addresses/update_map', to: 'addresses#update_map'

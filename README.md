@@ -141,6 +141,12 @@ Ecommerce.use_main_app_javascripts = true
 Ecommerce.use_engine_header = false
 Ecommerce.use_engine_footer = false
 Ecommerce.logo = "PATH_TO_LOGO"
+Ecommerce.horizontal_logo = "PATH_TO_HORIZONTAL_LOGO"
+Ecommerce.engine_alias_endpoint = 'tienda'
+Ecommerce.locale_set_by_store = true
+Ecommerce.fb_app_id = 'FB_APP_ID'
+Ecommerce.shipping_integrator = 'Urbaner'
+Ecommerce.electronic_invoicing = 'Nubefact'
 
 ## Features
 

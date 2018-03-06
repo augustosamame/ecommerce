@@ -315,33 +315,30 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="cart_item">
-                      <td class="product-name">
-                        Broccoli&nbsp;
-                        <strong class="product-quantity">× 1</strong>
-                      </td>
-                      <td class="product-total">
-                        <span class="amount">&#36;2.05</span>
-                      </td>
-                    </tr>
-                    <tr class="cart_item">
-                      <td class="product-name">
-                        Brown Bread&nbsp;
-                        <strong class="product-quantity">× 1</strong>
-                      </td>
-                      <td class="product-total">
-                        <span class="amount">&#36;12.00</span>
-                      </td>
-                    </tr>
+                    <% @cart.cart_items.each do |item| %>
+                      <tr class="cart_item">
+                        <td class="product-name">
+                          <%= item.product.name %>
+                          <strong class="product-quantity">× <%= item.quantity %></strong>
+                        </td>
+                        <td class="product-total">
+                          <span class="amount"><%= number_to_currency(item.line_total) %></span>
+                        </td>
+                      </tr>
+                    <% end %>
                   </tbody>
                   <tfoot>
                     <tr class="cart-subtotal">
                       <th>Subtotal</th>
-                      <td><span class="amount" id="subtotal"><%= number_to_currency(@cart_subtotal) %></span></td>
+                      <td><strong><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="subtotal"><%= number_with_precision(@cart_subtotal) %></span></strong></td>
+                    </tr>
+                    <tr class="cart-subtotal">
+                      <th>Shipping</th>
+                      <td><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="shipping-amount"><%= number_with_precision(0) %></span></td>
                     </tr>
                     <tr class="order-total">
                       <th>Total</th>
-                      <td><strong><span class="amount" id="payment-amount"><%= number_to_currency(@cart_subtotal) %></span></strong> </td>
+                      <td><strong><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="payment-amount"><%= number_with_precision(@cart_subtotal) %></span></strong></td>
                     </tr>
                   </tfoot>
                 </table>
@@ -389,8 +386,54 @@
 
 <!-- Configurando el checkout-->
 <script>
-  Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
+
   var payment_amount = $('#payment-amount').html() * 100;
+  // calculate and update shipping html tag when shipping address is created
+  $("#save-address-button").click(function() {
+    calculate_shipping($("#address_street").val(), $("#address_district").val());
+  });
+
+  $('#address_id').on('change', function() {
+    if ( this.value ) {
+      calculate_shipping($("#address_street").val(), $("#address_district").val());
+    } else {
+      var my_zero = 0
+      $("#shipping-amount").html(my_zero.toFixed(2))
+    }
+  })
+  // calculate and update shipping html tag when shipping address is picked
+  //$("#save-address-button").click(function() {
+  //  calculate_shipping($("#address_street").val(), $("#address_district").val());
+  //});
+
+  function calculate_shipping(street, district) {
+    //alert(street, district);
+    $.ajax({
+      url: "calculate_shipping",
+      dataType: "json",
+      method: "POST",
+      data: { address: street, district: district },
+      success: function(data){
+        //console.log(data);
+        //console.log(data.amount);
+         // Output returned data in form
+         $("#shipping-amount").html(data.amount.toFixed(2))
+      }
+    });
+  }
+
+  $("body").on('DOMSubtreeModified', "#shipping-amount", function() {
+    recalculate_checkout_totals();
+  });
+
+  function recalculate_checkout_totals() {
+    var total_amount = Number($("#shipping-amount").html()) + Number($("#subtotal").html())
+    $('#payment-amount').html(total_amount.toFixed(2))
+    payment_amount = $('#payment-amount').html() * 100;
+  }
+
+  Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
+
   Culqi.settings({
     title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
     currency: 'PEN',
@@ -403,6 +446,13 @@
     if (!$('#address_id').val()) {
       if ($('#address_street').val() != "" && $('#address_district').val() != "") {
         $('#save-address-button').trigger('click');
+        Culqi.settings({
+          title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+          currency: 'PEN',
+          description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@cart.id}" %>',
+          amount: payment_amount
+        });
+        alert('about to open')
         Culqi.open();
         e.preventDefault();
       }
@@ -423,12 +473,15 @@
         // Get the token ID:
         var token = Culqi.token;
         var picked_shipping_address_id = $('#address_id').val();
+        var shipping_amount = $('#shipping-amount').html();
+        var payment_amount = $('#payment-amount').html() * 100;
         //var payment_amount = $('#payment_amount').html() * 100;
         $.post(
           "checkout/pay_order_culqi_checkout",
           {
           culqi_token: token,
           amount: payment_amount,
+          shipping_amount: shipping_amount,
           picked_shipping_address_id: picked_shipping_address_id,
           cart_id: '<%= "#{@cart.id}" %>',
           order_id: '<%= "#{@cart.id}" %>'

@@ -35,17 +35,20 @@ module Ecommerce
 
     def set_cart
       if current_user
-        @cart = Cart.find_by(user_id: current_user.id)
-        unless @cart
-          @cart = Cart.create(user_id: current_user.id)
+        @cart = Cart.where(user_id: current_user.id, status: "active").order(:id).last
+        if @cart
+          session[:cart_id] = @cart.id
+        else
+          @cart = Cart.find_by(id: session[:cart_id], status: "active") || Cart.create(user_id: current_user.id, status: "active")
+          @cart.update(user_id: current_user.id)
           session[:cart_id] = @cart.id
         end
       else
         #TODO when registering or logging_in, transfer cart ownership from session to db user record
         #something like @cart.update(user_id: current_user.id)
-        @cart = Cart.find_by(id: session[:cart_id])
+        @cart = Cart.find_by(id: session[:cart_id], status: "active")
         unless @cart
-          @cart = Cart.create
+          @cart = Cart.create(status: "active")
           session[:cart_id] = @cart.id
         end
       end

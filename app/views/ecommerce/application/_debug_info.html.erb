@@ -8,6 +8,10 @@
       <%= current_user.inspect %>
     </div>
     <div class="row">
+      Current Cart:
+      <%= @cart.try(:inspect) %>
+    </div>
+    <div class="row">
       Cart Id in Session:
       <%= session[:cart_id] %>
     </div>
