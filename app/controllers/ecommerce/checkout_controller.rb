@@ -20,6 +20,7 @@ module Ecommerce
       last_user_address = Address.where(user_id: current_user.id).order(:id).last
       @order = Order.new( user_id: current_user.id,
                     amount_cents: params[:amount].to_i,
+                    shipping_amount_cents: params[:shipping_amount].to_i,
                     stage: "stage_new",
                     cart_id: params[:cart_id].to_i,
                     shipping_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,

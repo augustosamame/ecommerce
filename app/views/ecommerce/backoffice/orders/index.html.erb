@@ -3,7 +3,7 @@
     <span class="glyphicon glyphicon-plus"></span>
     New Order
   <% end %>
-  <h1>Listing backoffice_orders</h1>
+  <h1>Orders</h1>
 </div>
 
 <div class="table-responsive">
@@ -11,10 +11,9 @@
     <thead>
       <tr>
         <th>User</th>
-        <th>Amount cents</th>
+        <th>Amount</th>
         <th>Stage</th>
         <th>Shipping address</th>
-        <th>Billing address</th>
         <th>Coupon</th>
         <th>Payment status</th>
         <th>Status</th>
@@ -29,10 +28,9 @@
     <tbody>
       <%= content_tag_for(:tr, @backoffice_orders) do |backoffice_order| %>
         <td><%= backoffice_order.user.name %></td>
-        <td><%= backoffice_order.amount_cents %></td>
-        <td><%= backoffice_order.stage %></td>
-        <td><%= backoffice_order.shipping_address_id %></td>
-        <td><%= backoffice_order.billing_address_id %></td>
+        <td><%= number_to_currency(backoffice_order.amount_cents / 100) %></td>
+        <td><%= backoffice_order.friendly_stage %></td>
+        <td><%= backoffice_order.friendly_shipping_address %></td>
         <td><%= backoffice_order.coupon_id %></td>
         <td><%= backoffice_order.payment_status %></td>
         <td><%= backoffice_order.status %></td>

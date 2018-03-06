@@ -388,83 +388,61 @@
 <script>
 
   var payment_amount = $('#payment-amount').html() * 100;
+  var shipping_calculated_flag = false
+
   // calculate and update shipping html tag when shipping address is created
   $("#save-address-button").click(function() {
     calculate_shipping($("#address_street").val(), $("#address_district").val());
   });
-
+  // calculate and update shipping html tag when shipping address is picked
   $('#address_id').on('change', function() {
     if ( this.value ) {
       calculate_shipping($("#address_street").val(), $("#address_district").val());
     } else {
       var my_zero = 0
       $("#shipping-amount").html(my_zero.toFixed(2))
+      shipping_calculated_flag = false
     }
   })
-  // calculate and update shipping html tag when shipping address is picked
-  //$("#save-address-button").click(function() {
-  //  calculate_shipping($("#address_street").val(), $("#address_district").val());
-  //});
 
   function calculate_shipping(street, district) {
-    //alert(street, district);
     $.ajax({
       url: "calculate_shipping",
       dataType: "json",
       method: "POST",
       data: { address: street, district: district },
       success: function(data){
-        //console.log(data);
-        //console.log(data.amount);
-         // Output returned data in form
          $("#shipping-amount").html(data.amount.toFixed(2))
+         recalculate_checkout_totals();
+         shipping_calculated_flag = true
       }
     });
   }
-
-  $("body").on('DOMSubtreeModified', "#shipping-amount", function() {
-    recalculate_checkout_totals();
-  });
 
   function recalculate_checkout_totals() {
     var total_amount = Number($("#shipping-amount").html()) + Number($("#subtotal").html())
     $('#payment-amount').html(total_amount.toFixed(2))
     payment_amount = $('#payment-amount').html() * 100;
+    Culqi.settings({
+      title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+      currency: 'PEN',
+      description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@cart.id}" %>',
+      amount: payment_amount
+    });
   }
 
   Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
 
-  Culqi.settings({
-    title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
-    currency: 'PEN',
-    description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@cart.id}" %>',
-    amount: payment_amount
-  });
-
   $('#pay-now-button').on('click', function(e) {
     // Abre el formulario con las opciones de Culqi.settings
-    if (!$('#address_id').val()) {
-      if ($('#address_street').val() != "" && $('#address_district').val() != "") {
-        $('#save-address-button').trigger('click');
-        Culqi.settings({
-          title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
-          currency: 'PEN',
-          description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@cart.id}" %>',
-          amount: payment_amount
-        });
-        alert('about to open')
-        Culqi.open();
-        e.preventDefault();
+    if (shipping_calculated_flag) {
+      Culqi.open();
+      e.preventDefault();
       }
       else {
         // place error message here
-        alert("You must pick an address");
+        alert("You must pick or save an address");
       }
-    }
-    else {
-      Culqi.open();
-      e.preventDefault();
-    }
   });
 
   function culqi() {
@@ -473,7 +451,7 @@
         // Get the token ID:
         var token = Culqi.token;
         var picked_shipping_address_id = $('#address_id').val();
-        var shipping_amount = $('#shipping-amount').html();
+        var shipping_amount = $('#shipping-amount').html() * 100;
         var payment_amount = $('#payment-amount').html() * 100;
         //var payment_amount = $('#payment_amount').html() * 100;
         $.post(

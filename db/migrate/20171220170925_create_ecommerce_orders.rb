@@ -3,7 +3,8 @@ class CreateEcommerceOrders < ActiveRecord::Migration[5.1]
   def change
     create_table :ecommerce_orders do |t|
       t.references :user
-      t.integer :amount_cents
+      t.integer :amount_cents, default: 0
+      t.integer :shipping_amount_cents, default: 0
       t.integer :stage
       t.integer :cart_id
       t.integer :shipping_address_id

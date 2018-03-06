@@ -61,7 +61,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_order_params
-        params.require(:order).permit(:user_id, :amount_cents, :stage, :shipping_address_id, :billing_address_id, :coupon_id, :payment_status, :status)
+        params.require(:order).permit(:user_id, :amount_cents, :shipping_amount_cents, :stage, :shipping_address_id, :billing_address_id, :coupon_id, :payment_status, :status)
       end
   end
 end

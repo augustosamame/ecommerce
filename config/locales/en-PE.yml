@@ -27,6 +27,14 @@ en-PE:
       default: "%d/%m/%Y"
       long: "%A, %d de %B del %Y"
       short: "%d de %b"
+  model:
+    order:
+      stage_new: "New"
+      stage_paid: "Paid"
+      stage_shipped: "Shipped"
+      stage_delivered: "Delivered"
+      stage_closed: "Closed"
+      stage_void: "Void"
   ecommerce:
     processor:
       culqi:
