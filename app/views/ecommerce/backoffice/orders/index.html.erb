@@ -38,7 +38,7 @@
         <td><%= backoffice_order.status %></td>
         <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_order_path(backoffice_order) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>
-        <td><%= link_to "<i class='material-icons'>attach_money</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>
+        <td><%= link_to "<i class='material-icons'>attach_money</i>".html_safe, backoffice_orders_einvoice_path(backoffice_order), method: :post %></td>
         <td><%= link_to "<i class='material-icons'>local_shipping</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>
         <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_order_path(backoffice_order), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>

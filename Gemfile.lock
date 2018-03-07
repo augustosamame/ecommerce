@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ecommerce (0.2.0)
+    ecommerce (0.2.2)
       bootstrap-sass
       carrierwave (~> 1.2.1)
       cocoon

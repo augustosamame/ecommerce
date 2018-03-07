@@ -14,6 +14,7 @@ Ecommerce::Engine.routes.draw do
     resources :properties
     resources :addresses
     resources :orders
+    post '/orders/einvoice'
   end
 
   post 'locale', :to => 'application#locale'

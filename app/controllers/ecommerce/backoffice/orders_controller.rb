@@ -5,6 +5,11 @@ module Ecommerce
     before_action :set_backoffice_order, only: [:show, :edit, :update, :destroy]
     authorize_resource :class => "Ecommerce::Order"
 
+    def einvoice
+      @backoffice_order = Order.find(params[:format])
+      einvoice = @backoffice_order.einvoice
+    end
+
     # GET /backoffice/orders
     def index
       if params[:stage]
