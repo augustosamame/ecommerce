@@ -17,28 +17,35 @@ module Ecommerce
     end
 
     def einvoice
+      order_billing_address = Address.find_by(id: self.billing_address_id)
+      invoice_lines_array = Array.new
+      OrderItem.where(order_id: self.id).includes(:product).each do |item|
+        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: item.price_cents / 100, price_subtotal: ((item.price_cents / 1.18).to_i) / 100 }
+      end
       invoice_hash = {
-        number: "B001-#{100 + 1}",
+        number: "B001-#{100 + self.id}",
         currency_id: "PEN",
         id: self.id,
-        province_id: "ABANCAY",
         zip: "030101",
         catalog_06_id: "6 - RUC",
-        company_id: "ORGANIZACION EL CONSTRUCTOR SAC",
+        partner_id: Ecommerce.company_legal_name,
+        company_id: Ecommerce.company_legal_name,
         email: self.user.email,
-        vat: "20602903312",
-        street: "AV. CHILE NRO. 111 (ESQ CN VENEZUELA CT MADERERA PALOMINO) APURIMAC",
-        company_id_city: "Andahuaylas",
-        company_id_street: "Av. Perú No. 140",
-        date_invoice: self.created_at,
+        vat: "20600946634",
+        street: order_billing_address.try(:street),
+        company_id_city: Ecommerce.company_city,
+        company_id_street: Ecommerce.company_street,
+        date_invoice: Time.now.to_s[0..9],
         payment_term_id: "15 Days",
         date: Time.now.to_s[0..9],
         amount_total: self.amount_cents / 100,
-        company_id_zip: false,
-        partner_shipping_id: "CONSTRUCTORA Y CONSULTORA JCN",
-        company_id_vat: "20602903312",
-        district_id: "ABANCAY",
-        state_id: "APURIMAC"
+        company_id_zip: 33,
+        partner_shipping_id: "SHIPPING_ID",
+        company_id_vat: Ecommerce.company_vat,
+        district_id: order_billing_address.try(:district),
+        province_id: order_billing_address.try(:city),
+        state_id: order_billing_address.try(:state),
+        invoice_line_ids: invoice_lines_array
       }
       url = URI("http://localhost:3001/invoice")
       http = Net::HTTP.new(url.host, url.port)
@@ -49,8 +56,7 @@ module Ecommerce
       request.body = invoice_hash.to_json
 
       response = http.request(request)
-      puts response.read_body
-      byebug
+      return response.read_body
     end
 
   end

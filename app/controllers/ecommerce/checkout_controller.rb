@@ -25,7 +25,7 @@ module Ecommerce
                       stage: "stage_new",
                       cart_id: params[:cart_id].to_i,
                       shipping_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
-                      billing_address_id: nil,
+                      billing_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
                       payment_status: "paid",
                       status: "active"
                       )

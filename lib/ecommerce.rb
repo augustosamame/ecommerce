@@ -28,6 +28,10 @@ module Ecommerce
   mattr_accessor :fb_app_id
   mattr_accessor :electronic_invoicing
   mattr_accessor :shipping_integrator
+  mattr_accessor :company_legal_name
+  mattr_accessor :company_city
+  mattr_accessor :company_street
+  mattr_accessor :company_vat
 
   mattr_accessor :address_requires_doc_id # :boolean, default: true # should state/state_name be required
   mattr_accessor :address_requires_phone # :boolean, default: true # Determines whether we require phone in address

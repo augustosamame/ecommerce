@@ -1,0 +1,44 @@
+<div class="page-header">
+  <%= link_to backoffice_orders_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_order_path(@backoffice_order), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1><%= "Order ##{@backoffice_order.id}" %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>User:</dt>
+  <dd><%= @backoffice_order.user.name %></dd>
+
+  <dt>Order Total (inc. shipping):</dt>
+  <dd><%= number_to_currency(@backoffice_order.amount_cents / 100) %></dd>
+
+  <dt>Shipping Amount:</dt>
+  <dd><%= number_to_currency(@backoffice_order.shipping_amount_cents / 100) %></dd>
+
+  <dt>Stage:</dt>
+  <dd><%= @backoffice_order.friendly_stage %></dd>
+
+  <dt>Shipping address:</dt>
+  <dd><%= @backoffice_order.friendly_shipping_address %></dd>
+
+  <dt>Billing address:</dt>
+  <dd><%= @backoffice_order.billing_address_id %></dd>
+
+  <dt>Coupon:</dt>
+  <dd><%= @backoffice_order.coupon_id %></dd>
+
+  <dt>Payment status:</dt>
+  <dd><%= @backoffice_order.payment_status %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @backoffice_order.status %></dd>
+
+</dl>
+
+<%= render 'order_details' %>
+<%= render 'einvoice' %>

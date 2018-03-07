@@ -7,7 +7,8 @@ module Ecommerce
 
     def einvoice
       @backoffice_order = Order.find(params[:format])
-      einvoice = @backoffice_order.einvoice
+      @order_details = Cart.find(@backoffice_order.id).cart_items.includes(:product)
+      @einvoice = JSON.parse(@backoffice_order.einvoice)
     end
 
     # GET /backoffice/orders
