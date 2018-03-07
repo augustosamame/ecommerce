@@ -16,6 +16,7 @@ module Ecommerce
 
     # GET /backoffice/orders/1
     def show
+      @order_details = Cart.find(@backoffice_order.id).cart_items.includes(:product)
     end
 
     # GET /backoffice/orders/new

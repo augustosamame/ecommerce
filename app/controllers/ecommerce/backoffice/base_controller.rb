@@ -16,7 +16,7 @@ module Ecommerce
       @users_array = User.all.map{|f| {label: f.name, id: f.id}}
       #@products_array = Product.all.map{|f| {label: "#{f.name} - #{f.price_cents.to_soles}", value: f.name, id: f.id}}
       @products_array = Product.all.map{|f| {label: "#{f.name}", value: f.name, id: f.id}}
-      @orders_array = Order.all.map{|f| {label: "Order ##{f.id} - #{f.user.name}", value: f.user.name, id: f.id}}
+      @orders_array = Order.all.includes(:user).map{|f| {label: "Order ##{f.id} - #{f.user.name}", value: f.user.name, id: f.id}}
     end
 
   end
