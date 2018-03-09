@@ -32,7 +32,6 @@ Ecommerce::Engine.routes.draw do
   patch '/addresses/update_map', to: 'addresses#update_map'
   resources :addresses
 
-
   root to: 'store#main'
 
 end
