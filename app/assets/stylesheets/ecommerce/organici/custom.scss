@@ -101,3 +101,13 @@
 .single-product-container {
   margin-top: 80px;
 }
+
+@media (max-width: 767px) {
+    .navbar-brand {
+        line-height: 75px !important;
+    }
+    .navbar-brand .noo-logo-img {
+        max-height: 75px;
+        margin-top: -25px;
+    }
+}

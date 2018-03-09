@@ -1,17 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Canvas Shop</title>
+<% content_for :head do %>
+  <title><%= Ecommerce::Control.get_control_value('store_title') || "Canvas Shop" %></title>
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
   <%= stylesheet_link_tag    "ecommerce/canvas_shop", media: "all" %>
-  <%= javascript_include_tag "ecommerce/canvas_shop" %>
   <%= csrf_meta_tags %>
-</head>
-<body>
-  You are now using the Canvas Shop Layout
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<% end %>
 
-<%= yield %>
 
-</body>
-</html>
+<!-- Document Wrapper
+============================================= -->
+<div id="wrapper" class="clearfix">
 
+  <%= render 'ecommerce/application/flashes' %>
+  <%= render 'ecommerce/application/spinner' %>
+
+  <%= render 'ecommerce/canvas_shop/store/top_bar' %>
+  <%= render 'ecommerce/canvas_shop/store/header' %>
+
+  <%= yield %>
+
+  <%= render 'ecommerce/canvas_shop/store/footer' %>
+
+</div>
+
+
+<!-- Go To Top
+============================================= -->
+<div id="gotoTop" class="icon-angle-up"></div>
+<%= javascript_include_tag "ecommerce/canvas_shop" %>
 <% parent_layout "ecommerce/base" %>

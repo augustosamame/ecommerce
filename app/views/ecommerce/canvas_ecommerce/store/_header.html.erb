@@ -23,7 +23,7 @@
           <li class=""><%= link_to t('.home_menu'), main_app.root_path %></li>
 
           <% @home_menu_categories.each do |menu_item| %>
-            <li class=""><%= link_to menu_item.name, category_path(menu_item) %>
+            <li class=""><%= link_to menu_item.name, products_path(category_id: menu_item.id) %>
               <% unless Ecommerce::Category.where(parent_id: menu_item.id, status: "active").blank? %>
                 <ul>
                   <% Ecommerce::Category.where(parent_id: menu_item.id, status: "active").each do |sub_menu_item| %>

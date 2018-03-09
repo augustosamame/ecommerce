@@ -1,0 +1,478 @@
+<div class="site">
+  <header class="noo-header header-1">
+    <div class="navbar-wrapper">
+      <div class="navbar navbar-default">
+        <div class="container">
+          <div class="menu-position">
+            <div class="navbar-header pull-left">
+              <div class="noo_menu_canvas">
+                <div class="btn-search noo-search">
+                  <i class="fa fa-search"></i>
+                </div>
+                <div data-target=".nav-collapse" class="btn-navbar">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+              <a href="./" class="navbar-brand">
+                <img class="noo-logo-img noo-logo-normal" src="images/logo.png" alt="">
+              </a>
+            </div>
+            <nav class="pull-right noo-menu-option">
+              <a href="#" class="button-expand-option">
+                <i class="fa fa-ellipsis-v"></i>
+              </a>
+              <ul>
+                <li class="menu-item fly-right">
+                  <a href="my-account.html">
+                    <i class="fa fa-user"></i>
+                    My Account
+                  </a>
+                </li>
+                <li class="menu-item fly-right">
+                  <a href="wishlist.html">
+                    <i class="fa fa-heart-o"></i>
+                    Wishlist
+                  </a>
+                </li>
+                <li class="menu-item noo-menu-item-cart minicart">
+                  <a class="cart-button" href="cart.html">
+                    <span class="cart-item has-items">
+                      <i class="fa fa-shopping-cart"></i>
+                      <span>(3)</span> Items
+                    </span>
+                  </a>
+                  <div class="noo-minicart">
+                    <div class="minicart-header">3 items in the shopping cart</div>
+                    <div class="minicart-body">
+                      <div class="cart-product clearfix">
+                        <div class="cart-product-image">
+                          <a class="cart-product-img" href="shop-detail.html">
+                            <img width="100" height="100" src="images/product/thumb/product_6.png" alt="" />
+                          </a>
+                        </div>
+                        <div class="cart-product-details">
+                          <div class="cart-product-title">
+                            <a href="shop-detail.html">Apples</a>
+                          </div>
+                          <div class="cart-product-price">
+                            <span class="amount">&#36;3.95</span>
+                          </div>
+                          <div class="cart-product-quantity">x 1</div>
+                        </div>
+                        <a href="#" class="remove">&times;</a>
+                      </div>
+                      <div class="cart-product clearfix">
+                        <div class="cart-product-image">
+                          <a class="cart-product-img" href="shop-detail.html">
+                            <img width="100" height="100" src="images/product/thumb/product_3.png" alt="" />
+                          </a>
+                        </div>
+                        <div class="cart-product-details">
+                          <div class="cart-product-title">
+                            <a href="shop-detail.html">Brown Bread</a>
+                          </div>
+                          <div class="cart-product-price">
+                            <span class="amount">&#36;3.95</span>
+                          </div>
+                          <div class="cart-product-quantity">x 2</div>
+                        </div>
+                        <a href="#" class="remove">&times;</a>
+                      </div>
+                    </div>
+                    <div class="minicart-footer">
+                      <div class="minicart-total">
+                        Subtotal <span class="amount">&#36;6.05</span>
+                      </div>
+                      <div class="minicart-actions clearfix">
+                        <a class="button btn-primary" href="cart.html">
+                          <span class="text">View Cart</span>
+                        </a>
+                        <a class="checkout-button button btn-primary" href="#">
+                          <span class="text">Checkout</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="menu-item fly-right">
+                  <a id="noo-search" class="search-button noo-search" href="#">
+                    <i class="fa fa-search"></i> <span>Search</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <nav class="pull-right noo-main-menu">
+              <ul class="nav-collapse navbar-nav">
+                <li class="menu-item-has-children current-menu-item">
+                  <a href="<%= main_app.root_path %>">Home</a>
+                </li>
+                <li class="menu-item-has-children">
+                  <a href="#">Header</a>
+                  <ul class="sub-menu">
+                    <li><a href="header-1.html">Header 1</a></li>
+                    <li><a href="header-2.html">Header 2</a></li>
+                    <li><a href="header-3.html">Header 3</a></li>
+                    <li><a href="header-4.html">Header 4</a></li>
+                    <li><a href="header-5.html">Header 5</a></li>
+                    <li><a href="header-6.html">Header 6</a></li>
+                  </ul>
+                </li>
+                <li><a href="our-story.html">Our Story</a></li>
+                <li class="menu-item-has-children noo_megamenu mega-col-columns-4">
+                  <a href="shop.html">Shop</a>
+                  <ul class="sub-menu">
+                    <li class="menu-item-has-children">
+                      <a href="#">Shop page</a>
+                      <ul class="sub-menu">
+                        <li><a href="shop-list.html">Shop List</a></li>
+                        <li><a href="shop-detail.html">Shop Detail</a></li>
+                        <li><a href="my-account.html">My Account</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="cart-empty.html">Empty Cart</a></li>
+                        <li><a href="wishlist.html">Wishlist</a></li>
+                      </ul>
+                    </li>
+                    <li class="menu-item-has-children">
+                      <div class="noo_megamenu_widget_area">
+                        <div class="widget commerce widget_products">
+                          <h3 class="widget-title">Products</h3>
+                          <ul class="product_list_widget">
+                            <li>
+                              <a href="shop-detail.html">
+                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                                <span class="product-title">French Bread</span>
+                              </a>
+                              <span class="amount">&#36;10.00</span>
+                            </li>
+                            <li>
+                              <a href="shop-detail.html">
+                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                                <span class="product-title">Cookie</span>
+                              </a>
+                              <span class="amount">&#36;15.00</span>
+                            </li>
+                            <li>
+                              <a href="shop-detail.html">
+                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                                <span class="product-title">Brown Bread</span>
+                              </a>
+                              <span class="amount">&#36;12.00</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="noo_megamenu_widget_area">
+                        <div class="widget commerce widget_products">
+                          <h3 class="widget-title">Featured</h3>
+                          <ul class="product_list_widget">
+                            <li>
+                              <a href="shop-detail.html">
+                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                                <span class="product-title">French Bread</span>
+                              </a>
+                              <span class="amount">&#36;10.00</span>
+                            </li>
+                            <li>
+                              <a href="shop-detail.html">
+                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                                <span class="product-title">Cookie</span>
+                              </a>
+                              <span class="amount">&#36;15.00</span>
+                            </li>
+                            <li>
+                              <a href="shop-detail.html">
+                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                                <span class="product-title">Brown Bread</span>
+                              </a>
+                              <span class="amount">&#36;12.00</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="noo_megamenu_widget_area">
+                        <div class="widget commerce widget_products">
+                          <h3 class="widget-title">Sales</h3>
+                          <ul class="product_list_widget">
+                            <li>
+                              <a href="shop-detail.html">
+                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                                <span class="product-title">French Bread</span>
+                              </a>
+                              <span class="amount">&#36;10.00</span>
+                            </li>
+                            <li>
+                              <a href="shop-detail.html">
+                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                                <span class="product-title">Cookie</span>
+                              </a>
+                              <span class="amount">&#36;15.00</span>
+                            </li>
+                            <li>
+                              <a href="shop-detail.html">
+                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                                <span class="product-title">Brown Bread</span>
+                              </a>
+                              <span class="amount">&#36;12.00</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu-item-has-children">
+                  <a href="boxes.html">Boxes</a>
+                  <ul class="sub-menu">
+                    <li><a href="box-detail.html">Box Detail</a></li>
+                  </ul>
+                </li>
+                <li class="menu-item-has-children">
+                  <a href="blog.html">Blog</a>
+                  <ul class="sub-menu">
+                    <li class="menu-item-has-children">
+                      <a href="blog-masonry.html">Blog Masonry</a>
+                      <ul class="sub-menu">
+                        <li><a href="blog-masonry-two-columns.html">2 Columns</a></li>
+                        <li><a href="blog-masonry.html">3 Columns</a></li>
+                        <li><a href="blog-masonry-four-columns.html">4 Columns</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="blog.html">Blog Listing</a></li>
+                    <li><a href="blog-detail.html">Blog Single Default</a></li>
+                    <li><a href="blog-detail-video.html">Blog Single Video</a></li>
+                    <li><a href="blog-detail-audio.html">Blog Single SoundCloud</a></li>
+                    <li><a href="blog-detail-slider.html">Blog Single Slider</a></li>
+                  </ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="search-header5">
+      <div class="remove-form"></div>
+      <div class="container">
+        <form class="form-horizontal">
+          <label class="note-search">Type and Press Enter to Search</label>
+          <input type="search" name="s" class="form-control" value="" placeholder="Search...">
+          <input type="submit" value="Search">
+        </form>
+      </div>
+    </div>
+  </header>
+  <section class="noo-page-heading eff">
+    <div class="container">
+      <div class="noo-heading-content">
+        <h1 class="page-title eff">Checkout</h1>
+        <div class="noo-page-breadcrumb eff">
+          <a href="./" class="home">Organici</a>/<span>Checkout</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="main">
+    <div class="commerce commerce-page commerce-checkout">
+      <div class="container">
+        <div class="row">
+          <div class="noo-main col-md-8">
+            <div class="customer-details">
+              <div class="commerce-address-fields">
+                <h3>Shipping Address</h3>
+                <% if @checkout_addresses.count > 0 %>
+                  <div class="form-row form-row">
+                    <label>
+                      <h4>Pick an Address</h4>
+                    </label>
+                  </div>
+                  <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
+                <% end %>
+                <div class="form-row form-row">
+                  <label>
+                    <h4>Create a New Address</h4>
+                  </label>
+                </div>
+                <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="order-review-wrap">
+              <h3>Your order</h3>
+              <div class="commerce-checkout-review-order">
+                <table class="shop_table commerce-checkout-review-order-table">
+                  <thead>
+                    <tr>
+                      <th class="product-name">Product</th>
+                      <th class="product-total">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @cart.cart_items.each do |item| %>
+                      <tr class="cart_item">
+                        <td class="product-name">
+                          <%= item.product.name %>
+                          <strong class="product-quantity">× <%= item.quantity %></strong>
+                        </td>
+                        <td class="product-total">
+                          <span class="amount"><%= number_to_currency(item.line_total) %></span>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                  <tfoot>
+                    <tr class="cart-subtotal">
+                      <th>Subtotal</th>
+                      <td><strong><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="subtotal"><%= number_with_precision(@cart_subtotal) %></span></strong></td>
+                    </tr>
+                    <tr class="cart-subtotal">
+                      <th>Shipping</th>
+                      <td><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="shipping-amount"><%= number_with_precision(0) %></span></td>
+                    </tr>
+                    <tr class="order-total">
+                      <th>Total</th>
+                      <td><strong><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="payment-amount"><%= number_with_precision(@cart_subtotal) %></span></strong></td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+                    <li>
+                      <input type="radio" class="input-radio" name="payment_method" value="cheque" checked="checked" />
+                      <label>
+                        Check Payments
+                      </label>
+                      <div class="payment_box payment_method_cheque">
+                        <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
+                      </div>
+                    </li>
+                    <li class="wc_payment_method payment_method_paypal">
+                      <input id="payment_method_paypal" type="radio" class="input-radio" name="payment_method" value="paypal" />
+                      <label for="payment_method_paypal">
+                        PayPal <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/AM_mc_vs_ms_ae_UK.png" alt="PayPal Acceptance Mark">
+                        <a href="#" title="What is PayPal?">What is PayPal?</a>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+                <button class="button mt-5" id ="pay-now-button">Place Order</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="noo-footer-shop-now">
+      <div class="container">
+        <div class="col-md-7">
+          <h4>- Every day fresh -</h4>
+          <h3>organic food</h3>
+        </div>
+        <img src="images/organici-love-me.png" class="noo-image-footer" alt="" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Incluyendo .js de Culqi Checkout-->
+<script src="https://checkout.culqi.com/v2"></script>
+
+<!-- Configurando el checkout-->
+<script>
+
+  var payment_amount = $('#payment-amount').html() * 100;
+  var shipping_calculated_flag = false
+
+  // calculate and update shipping html tag when shipping address is created
+  $("#save-address-button").click(function() {
+    calculate_shipping($("#address_street").val(), $("#address_district").val());
+  });
+  // calculate and update shipping html tag when shipping address is picked
+  $('#address_id').on('change', function() {
+    if ( this.value ) {
+      calculate_shipping($("#address_street").val(), $("#address_district").val());
+    } else {
+      var my_zero = 0
+      $("#shipping-amount").html(my_zero.toFixed(2))
+      shipping_calculated_flag = false
+    }
+  })
+
+  function calculate_shipping(street, district) {
+    $.ajax({
+      url: "calculate_shipping",
+      dataType: "json",
+      method: "POST",
+      data: { address: street, district: district },
+      success: function(data){
+         $("#shipping-amount").html(data.amount.toFixed(2))
+         recalculate_checkout_totals();
+         shipping_calculated_flag = true
+      }
+    });
+  }
+
+  function recalculate_checkout_totals() {
+    var total_amount = Number($("#shipping-amount").html()) + Number($("#subtotal").html())
+    $('#payment-amount').html(total_amount.toFixed(2))
+    payment_amount = $('#payment-amount').html() * 100;
+    Culqi.settings({
+      title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+      currency: 'PEN',
+      description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@cart.id}" %>',
+      amount: payment_amount
+    });
+  }
+
+  Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
+
+  $('#pay-now-button').on('click', function(e) {
+    // Abre el formulario con las opciones de Culqi.settings
+    if (shipping_calculated_flag) {
+      Culqi.open();
+      e.preventDefault();
+      }
+      else {
+        // place error message here
+        alert("You must pick or save an address");
+      }
+  });
+
+  function culqi() {
+
+    if(Culqi.token) { // ¡Token creado exitosamente!
+        // Get the token ID:
+        var token = Culqi.token;
+        var picked_shipping_address_id = $('#address_id').val();
+        var shipping_amount = $('#shipping-amount').html() * 100;
+        var payment_amount = $('#payment-amount').html() * 100;
+        //var payment_amount = $('#payment_amount').html() * 100;
+        $.post(
+          "checkout/pay_order_culqi_checkout",
+          {
+          culqi_token: token,
+          amount: payment_amount,
+          shipping_amount: shipping_amount,
+          picked_shipping_address_id: picked_shipping_address_id,
+          cart_id: '<%= "#{@cart.id}" %>',
+          order_id: '<%= "#{@cart.id}" %>'
+          },
+          function(data) {
+          }
+       );
+       //alert('Se ha creado un token:' + token);
+
+    }else{ // ¡Hubo algún problema!
+        // Mostramos JSON de objeto error en consola
+        console.log(Culqi.error);
+        alert(Culqi.error.mensaje);
+    }
+  };
+</script>

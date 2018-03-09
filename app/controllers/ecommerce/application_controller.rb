@@ -13,6 +13,8 @@ module Ecommerce
 
     def add_stretched_to_body_tag
       add_body_css_class('stretched') if Ecommerce.ecommerce_layout == 'canvas_ecommerce'
+      add_body_css_class('stretched') if Ecommerce.ecommerce_layout == 'canvas_shop'
+      add_body_css_class('no-transition') if Ecommerce.ecommerce_layout == 'canvas_shop'
     end
 
     # Controllers can call this to add classes to the body tag
