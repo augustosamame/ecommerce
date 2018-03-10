@@ -9,7 +9,8 @@ module Ecommerce
 
     def index
       if params[:category_id]
-        @products = Product.where(category_id: params[:category_id])
+        @category = Category.find(params[:category_id])
+        @products = Product.tagged_with(@category.name)
       else
         @products = Product.all
       end
@@ -40,7 +41,7 @@ module Ecommerce
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def product_params
-        params.require(:address).permit(:name)
+        params.require(:address).permit(:name, :tag_list)
       end
 
   end

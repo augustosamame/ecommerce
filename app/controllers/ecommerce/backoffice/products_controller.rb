@@ -27,7 +27,9 @@ module Ecommerce
 
     # POST /backoffice/products
     def create
+      puts params
       @backoffice_product = Product.new(backoffice_product_params)
+      @backoffice_product.category_list.add(backoffice_product_params[:category_id])
       @backoffice_product.permalink = @backoffice_product.name
       if @backoffice_product.save
         redirect_to backoffice_product_path(@backoffice_product), notice: 'Product was successfully created.'
@@ -60,7 +62,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_params
-        params.require(:product).permit(:category_id, :brand_id, :supplier_id, :name, :description, :price_cents, :discounted_price_cents, :stockable, :image, :image_cache, :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
+        params.require(:product).permit(:brand_id, :supplier_id, :name, :description, :price_cents, :discounted_price_cents, :stockable, :image, :image_cache, category_id: [], category_list: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
       end
   end
 end

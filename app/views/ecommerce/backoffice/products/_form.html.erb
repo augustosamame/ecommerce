@@ -2,7 +2,7 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :category, :label_method => lambda { |category| "#{category.name}" }  %>
+    <%= f.association :category, as: :tags, :value_method => lambda { |category| "#{category.name}" }, :label_method => lambda { |category| "#{category.name}" }, label: "Categories (you can choose more than one)" %>
     <%= f.association :brand, :label_method => lambda { |brand| "#{brand.name}" }  %>
     <%= f.association :supplier, :label_method => lambda { |supplier| "#{supplier.name}" }  %>
     <%= f.input :name %>
@@ -61,6 +61,8 @@
     $("#price-cents").change(function(){
       $('#discounted-price-cents').val($('#price-cents').val());
     });
+
+    $('select.form-control.tags').select2({tags: true});
   });
   });
 

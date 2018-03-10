@@ -6,7 +6,6 @@
 //= require ecommerce/backoffice/plugins/jquery-scrollbar/jquery.scrollbar.min
 //= require ecommerce/backoffice/plugins/jquery-numberAnimate/jquery.animateNumbers
 //= require ecommerce/backoffice/plugins/jquery-validation/js/jquery.validate.min
-//= require ecommerce/backoffice/plugins/bootstrap-select2/select2.min
 //= require ecommerce/backoffice/webarch
 //= require ecommerce/backoffice/jaaulde-cookies
 //= require ecommerce/backoffice/jaaulde-cookies.jquery

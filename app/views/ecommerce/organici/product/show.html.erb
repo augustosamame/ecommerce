@@ -26,8 +26,12 @@
                 <p class="price"><span class="amount"><%= number_to_currency(@product.price_cents / 100) %></span></p>
                 <p class="description"><%= @product.description %></p>
                 <div class="product_meta">
-                  <span class="posted_in">Category: <%= link_to @product.category.name, products_path(category_id: @product.category.id)%></span>
-                  <span class="tagged_as">Tags: <a href="#">cucumbers</a>, <a href="#">vegetables</a></span>
+                  <span class="posted_in">
+                    <span>Categories: </span>
+                    <% @product.category_list.each do |cl| %>
+                    <span><%= link_to cl, products_path(category_id: Ecommerce::Category.find_by(name: cl).id), style: "margin-left: 10px;" %></span>
+                    <% end %>
+                  </span>
                 </div>
 
                 <%= simple_form_for @cart_item, html: { class: "cart" } do |f| %>
