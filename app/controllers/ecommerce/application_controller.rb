@@ -7,6 +7,7 @@ module Ecommerce
     before_action :merge_abilities
     before_action :add_stretched_to_body_tag
     before_action :set_cart
+    before_action :set_header_menu_items
 
     #these next line will change layout of views based on selected template
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"
@@ -54,6 +55,10 @@ module Ecommerce
           session[:cart_id] = @cart.id
         end
       end
+    end
+    
+    def set_header_menu_items
+      @primary_menu_categories = Ecommerce::Category.where(main_menu: true, category_type: "primary", status: "active").order(:category_order)
     end
 
     def merge_abilities
