@@ -6,5 +6,6 @@ module Ecommerce
     mount_uploader :image_popular_homepage, Ecommerce::CategoryHomeImageUploader
 
     enum status: {active: 0, inactive: 1}
+    enum category_type: {primary: 0, secondary: 1}
   end
 end

@@ -7,7 +7,7 @@ module Ecommerce
 
     # GET /backoffice/categories
     def index
-      @backoffice_categories = Category.all.order(:category_order)
+      @backoffice_categories = Category.all.order(:category_order, :id)
     end
 
     # GET /backoffice/categories/1

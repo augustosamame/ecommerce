@@ -19,10 +19,10 @@
     </div>
 
     <%= f.input :status, collection: Ecommerce::Category.statuses.keys %>
-    <%= f.input :main_menu, label: "Include as a Main Menu Item" %>
+    <%= f.input :main_menu, label: "Include as a Menu Item (primary or secondary)" %>
+    <%= f.input :category_type, collection: Ecommerce::Category.category_types.keys, label: "Category Type (primary: main menu, secondary: secondary menu)" %>
     <%= f.input :popular_homepage, label: "Include in Popular HomePage Categories" %>
     <%= f.input :image_popular_homepage_overlay_text, label: "Text for Image Overlay in Popular HomePage Categories" %>
-    <%= f.input :category_type, label: "Category Type" %>
     <%= f.input :category_order, label: "Category Order (0 appears first)" %>
 
     <%= f.label "HomePage Category Image" %>

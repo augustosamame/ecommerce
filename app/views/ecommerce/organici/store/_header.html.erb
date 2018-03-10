@@ -15,7 +15,7 @@
 							</div>
 						</div>
 						<a href="./" class="navbar-brand">
-							<%= image_tag Ecommerce.horizontal_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 283 %>
+							<%= image_tag Ecommerce.logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 283 %>
 						</a>
 					</div>
 
@@ -232,10 +232,9 @@
 					<div class="col-md-4 dvts_category">
 						<ul>
 							<li><%= link_to "ALL PRODUCTS", products_path %></li>
-						  <li><a class="active" href="#home">FOOD</a></li>
-						  <li><a href="#news">CLEANING</a></li>
-						  <li><a href="#contact">GROCERIES</a></li>
-						  <li><a href="#about">FRUITS</a></li>
+							<% @primary_menu_categories.each do |category| %>
+								<li><%= link_to category.name, products_path(category_id: category.id), class: "active" %></li>
+							<% end %>
 						</ul>
 				</div>
 			</div>
