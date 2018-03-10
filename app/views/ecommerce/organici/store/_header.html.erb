@@ -14,8 +14,12 @@
 								<span></span>
 							</div>
 						</div>
-						<a href="./" class="navbar-brand">
-							<%= image_tag Ecommerce.logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 283 %>
+						<a href="<% root_path %>" class="navbar-brand">
+							<% if controller.controller_name == "store" && controller.action_name == "main" %>
+								<%= image_tag Ecommerce.header_landing_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 283 %>
+							<% else %>
+								<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 283 %>
+							<% end %>
 						</a>
 					</div>
 

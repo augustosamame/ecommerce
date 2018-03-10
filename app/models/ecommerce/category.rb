@@ -7,5 +7,15 @@ module Ecommerce
 
     enum status: {active: 0, inactive: 1}
     enum category_type: {primary: 0, secondary: 1}
+
+    def cat_group_for_select
+      case self.category_type
+      when "primary"
+        return ["primary"]
+      when "secondary"
+        return ["secondary"]
+      end
+
+    end
   end
 end
