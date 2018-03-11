@@ -8,7 +8,12 @@ module Ecommerce
     def einvoice
       @backoffice_order = Order.find(params[:format])
       @order_details = Cart.find(@backoffice_order.id).cart_items.includes(:product)
-      @einvoice = JSON.parse(@backoffice_order.einvoice)
+      @einvoice = JSON.parse(@backoffice_order.generate_einvoice)
+      if @einvoice["response_text"] == "OK"
+        @epdf = @einvoice["response_url"]
+      else
+        @einvoice_error_message = @einvoice["response_text"]
+      end
     end
 
     # GET /backoffice/orders
@@ -23,6 +28,11 @@ module Ecommerce
     # GET /backoffice/orders/1
     def show
       @order_details = Cart.find(@backoffice_order.id).cart_items.includes(:product)
+      if @backoffice_order.efact_response_text == "OK"
+        @epdf = @backoffice_order.efact_invoice_url
+      else
+        @einvoice_error_message.efact_response_text
+      end
     end
 
     # GET /backoffice/orders/new

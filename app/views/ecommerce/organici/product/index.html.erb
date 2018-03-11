@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="noo-main col-md-9">
-          <div class="noo-catalog">
+          <div class="noo-product-grid-wrap commerce product-style2">
             <p class="commerce-result-count">Showing 1&ndash;9 of 18 results</p>
             <div class="product-style-control pull-right">
               <span class="noo-list"><a href="shop-list.html"><i class="fa fa-th-list"></i></a></span>
@@ -19,7 +19,62 @@
               </select>
             </form>
           </div>
-          <div class="products row product-grid">
+
+<div class="noo-height-product pt-8 pb-10">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="noo-product-grid-wrap commerce product-style2">
+          <div class="noo-product-grid products row product-grid noo-grid-4">
+            <% @products.each do |item| %>
+            <div class="bread masonry-item noo-product-column col-md-4 col-sm-6 product">
+              <div class="noo-product-inner">
+                <div class="noo-product-thumbnail">
+                  <a href="<%= product_path(item) %>">
+                    <%= image_tag item.image.url, width: 600, height: 760, alt: "" %>
+                  </a>
+                  <div class="noo-rating">
+                    <div class="star-rating">
+                      <span style="width:0%"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="noo-product-title">
+                  <h3><%= link_to item.name, product_path(item) %></h3>
+                  <span class="price"><span class="amount"><%= number_to_currency(item.price_cents / 100) %></span></span>
+                  <div class="noo-product-action">
+                    <div class="noo-action">
+                      <a href="ajax/product-quickview.html" class="noo-qucik-view">
+                        <i class="fa fa-search"></i>
+                      </a>
+                      <%= link_to "", cart_items_path(cart_item: {quantity: 1, product_id: item.id}), :method => :post, class: "button product_type_simple add_to_cart_button" %>
+
+                      <div class="yith-wcwl-add-to-wishlist">
+                                                    <div class="yith-wcwl-add-button">
+                                                      <%= link_to "", wishlist_items_path(wishlist_item: {quantity: 1, product_id: item.id}), :method => :post, class: "add_to_wishlist" %>
+
+                                                    </div>
+                                                </div>
+                      <div class="clear"></div>
+                      <a href="shop-detail.html" class="link-detail">
+                        <i class="fa fa-link"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+          <div class="noo-product-grid products row product-grid noo-grid-4">
             <% @products.each do |item| %>
               <div class="masonry-item noo-product-column col-md-4 col-sm-6 product">
                 <div class="noo-product-inner">
@@ -39,6 +94,7 @@
                     <div class="noo-product-action">
                       <div class="noo-action">
                         <%= link_to "Add to Cart", cart_items_path(cart_item: {quantity: 1, product_id: item.id}), :method => :post, class: "button product_type_simple add_to_cart_button" %>
+                        <%= link_to "<i class='fa fa-heart-o'></i>".html_safe, wishlist_items_path(wishlist_item: {quantity: 1, product_id: item.id}), :method => :post, class: "yith-wcwl-add-button" %>
                       </div>
                     </div>
                   </div>

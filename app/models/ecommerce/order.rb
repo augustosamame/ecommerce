@@ -1,5 +1,8 @@
 module Ecommerce
   class Order < ApplicationRecord
+
+    after_commit :generate_einvoice
+
     belongs_to :user
     belongs_to :cart
 
@@ -20,7 +23,7 @@ module Ecommerce
       Address.find_by(id: self.shipping_address_id)
     end
 
-    def einvoice
+    def generate_einvoice
       order_billing_address = Address.find_by(id: self.billing_address_id)
       invoice_lines_array = Array.new
       OrderItem.where(order_id: self.id).includes(:product).each do |item|
@@ -31,35 +34,40 @@ module Ecommerce
         currency_id: "PEN",
         id: self.id,
         zip: "030101",
-        catalog_06_id: "6 - RUC",
+        catalog_06_id: "1 - DNI",
         partner_id: Ecommerce.company_legal_name,
         company_id: Ecommerce.company_legal_name,
         email: self.user.email,
-        vat: "20600946634",
+        vat: "09344556",
         street: order_billing_address.try(:street),
         company_id_city: Ecommerce.company_city,
         company_id_street: Ecommerce.company_street,
         date_invoice: Time.now.to_s[0..9],
-        payment_term_id: "15 Days",
+        payment_term_id: "Contado",
         date: Time.now.to_s[0..9],
         amount_total: self.amount_cents / 100,
         company_id_zip: 33,
-        partner_shipping_id: "SHIPPING_ID",
+        partner_shipping_id: "shipping_id",
         company_id_vat: Ecommerce.company_vat,
         district_id: order_billing_address.try(:district),
         province_id: order_billing_address.try(:city),
         state_id: order_billing_address.try(:state),
         invoice_line_ids: invoice_lines_array
       }
-      url = URI("http://localhost:3001/invoice")
+      url = URI(ENV['DEVTECH_EFACT_ENDPOINT'])
       http = Net::HTTP.new(url.host, url.port)
       request = Net::HTTP::Post.new(url)
       request["Content-Type"] = 'application/json'
-      request["authorization"] = '12345678901234566251'
+      request["authorization"] = ENV['DEVTECH_EFACT_TOKEN']
       request["Cache-Control"] = 'no-cache'
       request.body = invoice_hash.to_json
-
       response = http.request(request)
+      if response.read_body && response.read_body["response_text"] == "OK"
+        self.response_text = "OK"
+        self.response_url = response.read_body["response_url"]
+        self.response_sent_text = invoice_hash.to_json
+        self.save
+      end
       return response.read_body
     end
 

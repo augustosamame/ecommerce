@@ -7,6 +7,7 @@ module Ecommerce
     before_action :merge_abilities
     before_action :add_stretched_to_body_tag
     before_action :set_cart
+    before_action :set_wishlist
     before_action :set_header_menu_items
 
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"
@@ -52,6 +53,27 @@ module Ecommerce
         unless @cart
           @cart = Cart.create(status: "active")
           session[:cart_id] = @cart.id
+        end
+      end
+    end
+
+    def set_wishlist
+      if current_user
+        @wishlist = Wishlist.where(user_id: current_user.id, status: "active").order(:id).last
+        if @wishlist
+          session[:wishlist_id] = @wishlist.id
+        else
+          @wishlist = Wishlist.find_by(id: session[:wishlist_id], status: "active") || Wishlist.create(user_id: current_user.id, status: "active")
+          @wishlist.update(user_id: current_user.id)
+          session[:wishlist_id] = @wishlist.id
+        end
+      else
+        #TODO when registering or logging_in, transfer wishlist ownership from session to db user record
+        #something like @wishlist.update(user_id: current_user.id)
+        @wishlist = Wishlist.find_by(id: session[:wishlist_id], status: "active")
+        unless @wishlist
+          @wishlist = Wishlist.create(status: "active")
+          session[:wishlist_id] = @wishlist.id
         end
       end
     end

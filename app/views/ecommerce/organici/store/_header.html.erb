@@ -63,7 +63,9 @@
 												<li><%= link_to "Cart", Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %></li>
 											<% end %>
 											<li><a href="cart-empty.html">Empty Cart</a></li>
-											<li><a href="wishlist.html">Wishlist</a></li>
+											<% if @wishlist.id %>
+												<li><%= link_to "Wishlist", Ecommerce::Engine.routes.url_helpers.wishlist_path(@wishlist.id) %></li>
+											<% end %>
 										</ul>
 									</li>
 									<li class="menu-item-has-children">
@@ -208,9 +210,11 @@
 									</li>
 								<% end %>
 								<li class="menu-item fly-right">
-									<a href="wishlist.html">
-										<i class="fa fa-heart-o"></i>Wishlist
+									<% if @wishlist.id %>
+									<a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.wishlist_path(@wishlist.id) %>">
+										<i class="fa fa-heart-o"></i><%= t('.wishlist') %>
 									</a>
+									<% end %>
 								</li>
 								<li class="menu-item minicart">
 									<% if @cart.id %>

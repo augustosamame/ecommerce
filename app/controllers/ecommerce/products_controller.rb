@@ -19,6 +19,7 @@ module Ecommerce
 
     def show
       @cart_item = CartItem.new
+      @wishlist_item = CartItem.new
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
     end
 
