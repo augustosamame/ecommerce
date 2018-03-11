@@ -1,0 +1,28 @@
+<head>
+  <title><%= Ecommerce::Control.get_control_value('store_title') || "Organici Store" %></title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:700" type="text/css" media="all"/>
+  <%= stylesheet_link_tag "ecommerce/organici", media: "all" %>
+  <%= csrf_meta_tags %>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
+  <meta name="google" content="notranslate" />
+  <%= stylesheet_link_tag    'ecommerce/application', media: 'all' %>
+  <%= javascript_include_tag 'ecommerce/application' %>
+</head>
+
+<body>
+<div style= "width: 400px; margin: auto; margin-top: 50px;">
+
+  <div style= "margin-bottom: 30px;">
+    <%= image_tag Ecommerce.logo, style: "display: block; margin: auto; width: auto" %>
+  </div>
+
+  <%= render 'ecommerce/application/flashes' %>
+
+  <%= yield %>
+
+</div>
+
+<%= javascript_include_tag "ecommerce/organici" %>
+</body>

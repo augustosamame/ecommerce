@@ -59,7 +59,9 @@
 											<li><a href="shop-list.html">Shop List</a></li>
 											<li><a href="shop-detail.html">Shop Detail</a></li>
 											<li><a href="my-account.html">My Account</a></li>
-											<li><%= link_to "Cart", cart_path(@cart.id) %></li>
+											<% if @cart.id %>
+												<li><%= link_to "Cart", Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %></li>
+											<% end %>
 											<li><a href="cart-empty.html">Empty Cart</a></li>
 											<li><a href="wishlist.html">Wishlist</a></li>
 										</ul>
@@ -211,9 +213,11 @@
 									</a>
 								</li>
 								<li class="menu-item minicart">
-									<a class="cart-button" href="<%= cart_path(@cart.id) %>">
+									<% if @cart.id %>
+									<a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
 										<i class="fa fa-shopping-cart"></i><%= t('.cart') %>
 									</a>
+									<% end %>
 								</li>
 								<li class="menu-item fly-right">
 									<a id="noo-search" class="search-button noo-search" href="#">
@@ -235,9 +239,9 @@
 					</div>
 					<div class="col-md-4 dvts_category">
 						<ul>
-							<li><%= link_to "ALL PRODUCTS", products_path %></li>
+							<li><%= link_to "ALL PRODUCTS", Ecommerce::Engine.routes.url_helpers.products_path %></li>
 							<% @primary_menu_categories.each do |category| %>
-								<li><%= link_to category.name, products_path(category_id: category.id), class: "active" %></li>
+								<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active" %></li>
 							<% end %>
 						</ul>
 				</div>

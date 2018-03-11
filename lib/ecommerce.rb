@@ -18,12 +18,14 @@ module Ecommerce
 
   mattr_accessor :user_class #Can now reference this setting as Ecommerce.user_class
   mattr_accessor :ecommerce_layout
+  mattr_accessor :ecommerce_devise_layout
   mattr_accessor :use_main_app_header
   mattr_accessor :use_main_app_footer
   mattr_accessor :use_main_app_javascripts
   mattr_accessor :use_engine_header
   mattr_accessor :use_engine_footer
   mattr_accessor :engine_alias_endpoint
+  mattr_accessor :ask_for_email
   mattr_accessor :locale_set_by_store
   mattr_accessor :fb_app_id
   mattr_accessor :electronic_invoicing

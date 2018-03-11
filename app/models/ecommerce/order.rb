@@ -16,6 +16,10 @@ module Ecommerce
       "#{found.name} - #{found.street} - #{found.district}"
     end
 
+    def shipping_address
+      Address.find_by(id: self.shipping_address_id)
+    end
+
     def einvoice
       order_billing_address = Address.find_by(id: self.billing_address_id)
       invoice_lines_array = Array.new
