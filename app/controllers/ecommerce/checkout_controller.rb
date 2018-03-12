@@ -26,7 +26,7 @@ module Ecommerce
                       cart_id: params[:cart_id].to_i,
                       shipping_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
                       billing_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
-                      payment_status: "paid",
+                      payment_status: "unpaid",
                       status: "active"
                       )
         if @order.save

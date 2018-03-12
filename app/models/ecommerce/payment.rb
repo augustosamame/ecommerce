@@ -16,7 +16,10 @@ module Ecommerce
     end
 
     def check_if_order_paid
-      self.order.update(stage: "stage_paid", payment_status: "paid") if Payment.where(order: self.order_id).sum(:amount_cents) >= self.order.amount_cents
+      if Payment.where(order: self.order_id).sum(:amount_cents) >= self.order.amount_cents
+        self.order.update(stage: "stage_paid", payment_status: "paid")
+        Ecommerce::CreateEinvoiceWorker.perform_async(self.order.id)
+      end
     end
 
     def new_culqi_payment(current_user, card_token_data, amount, payment_type, order_id = nil, payment_request_id = nil)

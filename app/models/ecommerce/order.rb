@@ -1,8 +1,6 @@
 module Ecommerce
   class Order < ApplicationRecord
 
-    after_commit :generate_einvoice
-
     belongs_to :user
     belongs_to :cart
 
@@ -19,8 +17,17 @@ module Ecommerce
       "#{found.name} - #{found.street} - #{found.district}"
     end
 
+    def friendly_billing_address
+      found = Address.find_by(id: self.billing_address_id)
+      "#{found.name} - #{found.street} - #{found.district}"
+    end
+
     def shipping_address
       Address.find_by(id: self.shipping_address_id)
+    end
+
+    def billing_address
+      Address.find_by(id: self.billing_address_id)
     end
 
     def generate_einvoice
@@ -30,7 +37,7 @@ module Ecommerce
         invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: item.price_cents / 100, price_subtotal: ((item.price_cents / 1.18).to_i) / 100 }
       end
       invoice_hash = {
-        number: "B001-#{100 + self.id}",
+        number: "B001-#{117 + self.id}",
         currency_id: "PEN",
         id: self.id,
         zip: "030101",
@@ -62,13 +69,18 @@ module Ecommerce
       request["Cache-Control"] = 'no-cache'
       request.body = invoice_hash.to_json
       response = http.request(request)
-      if response.read_body && response.read_body["response_text"] == "OK"
-        self.response_text = "OK"
-        self.response_url = response.read_body["response_url"]
-        self.response_sent_text = invoice_hash.to_json
-        self.save
+      if response.code == "200"
+        response_body = JSON.parse(response.read_body)
+        if response.read_body && response_body["response_text"] == "OK"
+          self.update_columns(efact_response_text: "OK", efact_invoice_url: response_body["response_url"], efact_sent_text: invoice_hash.to_json)
+        else
+          self.update_columns(efact_response_text: "Internal Error #{response.code} - #{response_body["response_text"]}")
+        end
+        return response_body.to_json
+      else
+        self.update_columns(efact_response_text: "Internal Error #{response.code}")
+        return response.read_body
       end
-      return response.read_body
     end
 
   end
