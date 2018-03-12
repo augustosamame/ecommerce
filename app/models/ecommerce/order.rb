@@ -3,6 +3,7 @@ module Ecommerce
 
     belongs_to :user
     belongs_to :cart
+    has_many :order_items
 
     enum stage: {stage_new: 0, stage_paid: 1, stage_shipped: 2, stage_delivered: 3, stage_closed: 4, stage_void: 5 }
     enum payment_status: {unpaid: 0, paid: 1, refunded: 2 }
@@ -73,6 +74,7 @@ module Ecommerce
         response_body = JSON.parse(response.read_body)
         if response.read_body && response_body["response_text"] == "OK"
           self.update_columns(efact_response_text: "OK", efact_invoice_url: response_body["response_url"], efact_sent_text: invoice_hash.to_json)
+          TwilioIntegration.new.send_sms_to_number("Your ExpatShop Order No. #{self.id} has been Paid! We will let you know when we ship.", self.user.username) #if Rails.env == "production"
         else
           self.update_columns(efact_response_text: "Internal Error #{response.code} - #{response_body["response_text"]}")
         end

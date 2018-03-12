@@ -5,7 +5,8 @@ module Ecommerce
   class CartItemsController < ApplicationController
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}/"
     skip_before_action :authenticate_user!
-    before_action :set_cart, only: [:create, :destroy]
+    before_action :set_menu_items
+    before_action :set_cart_item, only: [:destroy]
 
     def create
       @cart_item = CartItem.new(cart_item_params)
@@ -30,7 +31,21 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
     end
 
+    def edit
+      @cart_item.update(cart_item_params)
+      redirect_to @cart_item.cart, notice: 'Cart edited.'
+    end
+
+    def destroy
+      @cart_item.destroy
+      redirect_to @cart_item.cart, notice: 'Item deleted.'
+    end
+
     private
+
+      def set_cart_item
+        @cart_item = CartItem.find(params[:id])
+      end
 
       def set_menu_items
         @top_bar_new_hash = Ecommerce::Control.find_by(name: 'top_bar_cookie_read_hash').text_value #this will be set as a cookie via javascript if user closes top_bar

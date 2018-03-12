@@ -461,8 +461,7 @@
           amount: payment_amount,
           shipping_amount: shipping_amount,
           picked_shipping_address_id: picked_shipping_address_id,
-          cart_id: '<%= "#{@cart.id}" %>',
-          order_id: '<%= "#{@cart.id}" %>'
+          cart_id: '<%= "#{@cart.id}" if @cart %>'
           },
           function(data) {
           }
