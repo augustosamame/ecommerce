@@ -35,3 +35,17 @@ var $loading = $('.spinner').hide();
     });
 
 </script>
+<script>
+    $(document).ready(function(){
+    $(".dvt_dropdown").hover(            
+        function() {
+            $('.dvt_dropdown-menu', this).not('.in .dvt_dropdown-menu').stop( true, true ).slideDown("fast");
+            $(this).toggleClass('open');        
+        },
+        function() {
+            $('.dvt_dropdown-menu', this).not('.in .dvt_dropdown-menu').stop( true, true ).slideUp("fast");
+            $(this).toggleClass('open');       
+        }
+    );
+})
+</script>

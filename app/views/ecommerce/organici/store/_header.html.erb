@@ -1,8 +1,8 @@
 <header class="noo-header header-3">
 	<div class="navbar-wrapper">
 		<div class="navbar navbar-default">
-			<div class="container">
-				<div class="menu-position">
+			<div class="container-fluid">
+				<div class="menu-position" style="top:30px;">
 					<div class="navbar-header pull-left">
 						<div class="noo_menu_canvas">
 							<div class="btn-search noo-search">
@@ -14,15 +14,15 @@
 								<span></span>
 							</div>
 						</div>
-						<a href="./" class="navbar-brand">
-							<%= image_tag Ecommerce.logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 283 %>
+						<a href="./" class="navbar-brand" style="position: absolute;top: -25px; left:55px;">
+							<%= image_tag Ecommerce.logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 110 %>
 						</a>
 					</div>
 
 					<nav class="pull-right noo-main-menu">
 
 					<!-- menu principal  -->
-						<ul class="nav-collapse navbar-nav">
+						<ul class="nav-collapse navbar-nav"  style="margin-right: 140px;">
 							<li><a href="<%= root_path %>"><%= t('.home') %></a></li>
 							<!-- <li class="menu-item-has-children current-menu-item">
 								<a href="./"><%= t('.home') %></a>
@@ -184,27 +184,18 @@
 						<!-- fin menu principal  -->
 
 						<!-- menu secundario -->
+					
 						<nav class="pull-right noo-menu-option">
 							<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>
 
-							<ul class="nav-collapse">
-								<li class="menu-item fly-right">
-
-									<% if current_user %>
-										<%= link_to "<i class='fa fa-user'></i>#{current_user.name}".html_safe, my_account_path %>
-									<% else %>
-										<%= link_to "<i class='fa fa-user'></i>#{t('.my_account')}".html_safe, main_app.new_user_session_path %>
-									<% end %>
+							<ul class="nav-collapse noo-main-menu">
+								<li class="">
+									<a href="#" class=""><i class='fa fa-user'></i>My Account <span class="caret"></span></a>
 								</li>
-								<% if current_user %>
-									<li class="menu-item fly-right">
-										<%= link_to "<i class='fa fa-user'></i>Log Out".html_safe, main_app.destroy_user_session_path, method: :delete %>
-									</li>
-								<% end %>
+								
+
 								<li class="menu-item fly-right">
-									<a href="wishlist.html">
-										<i class="fa fa-heart-o"></i>Wishlist
-									</a>
+									<a href="wishlist.html"><i class="fa fa-heart-o"></i>Wishlist</a>
 								</li>
 								<li class="menu-item minicart">
 									<a class="cart-button" href="<%= cart_path(@cart.id) %>">
@@ -216,29 +207,28 @@
 										<i class="fa fa-search"></i><%= t('.search') %>
 									</a>
 								</li>
-							</ul>
+							</ul> 
 
 						<!-- fin menu secundario  -->
 					</nav>
 
 				</div>
-
-			</div>
-			<div class="container  hidden-xs hidden-sm">
-				<div class="row" >
-					<div class="col-md-5 dvts_category">
-						<p>CATEGORY</p>
+				<!-- menu product -->
+				<div class="container-fluid dvt_back">
+					<div class="col-md-12 dvt_allp hidden-xs .hidden-sm">
+						
+						<ul class="bt_allp" style="margin-top: 7px; margin-bottom: 9px;">
+							<li style="color:#398cd8; padding-right:20px; border-right:1px solid #cccccc;">All Product</li>
+							<li><a href="#">Food</a></li>
+				            <li><a href="#">Cleaning</a></li>
+				            <li><a href="#">Groceries</a></li>
+				            <li><a href="#">Fruits</a></li>
+			            </ul>
 					</div>
-					<div class="col-md-4 dvts_category">
-						<ul>
-							<li><%= link_to "ALL PRODUCTS", products_path %></li>
-							<% @primary_menu_categories.each do |category| %>
-								<li><%= link_to category.name, products_path(category_id: category.id), class: "active" %></li>
-							<% end %>
-						</ul>
 				</div>
+				<!-- final menu product -->
 			</div>
-		</div>
+
 	</div>
 	<div class="search-header5">
 		<div class="remove-form"></div>

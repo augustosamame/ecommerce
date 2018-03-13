@@ -1,11 +1,12 @@
 <div class="main">
 
-	<div class="container"></div>
+	<div class="container-fluid"></div>
 	<div class="noo-simple-product-wrap">
 		<div class="container-fluid dvt_houses_tope">
 			<div class="row">
-				<div class="col-md-3 dvt_houses">
-					<ul class="dvt_houses_lista ">
+				<!--menu izquierda -->
+				<div class="col-md-2 dvt_houses" >
+					<ul class="dvt_houses_lista " style="margin-top:30px;">
 						<li>
 							<div class="visible-xs visible-sm col-xs-12 ">
 								<button type="button" class="btn btn-primary btn-lg btn-block dvt_houses_spac_btn">CATEGORY</button>
@@ -14,94 +15,56 @@
 								<button type="button" class="btn btn-primary btn-lg btn-block">HOUSES</button>
 							</div>
 						</li>
-						<li>
+						<li >
 						<% @secondary_menu_categories.each do |category| %>
-							<div class="dvt_houses_contenedor hidden-xs hidden-sm">
+							<div class="dvt_houses_contenedor hidden-xs hidden-sm" >
 								<a href=" <%= products_path(category_id: category.id) %> ">
-									<div class="dvt_houses_layer"></div>
-									<%= image_tag category.image.url, width: 245, height: 100, alt: "", class: "dvt_houses_img" %>
-									<p class="dvt_houses_titulos"><%= category.image_popular_homepage_overlay_text %></p>
+									<%= image_tag category.image.url, width: 187, height: 49, alt: "", class: "dvt_houses_img" %>
+									<span class="dvt_houses_titulos" style="text-align:center;"><%= category.image_popular_homepage_overlay_text %></span>
 								</a>
 							</div>
 						<% end %>
 					</li>
 					</ul>
+
 				</div>
-				<div class="col-sm-9" >
-					<ul class="noo-simple-product-slider">
-						<li>
-							<a href="#">
-								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-									<div class="n-simple-content">
-										<h3>Peach</h3>
-										<span class="price"><span class="amount">&#36;25.00</span></span>
-									</div>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-									<div class="n-simple-content">
-										<h3>Fruits</h3>
-										<span class="price"><span class="amount">&#36;55.00</span></span>
-									</div>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-									<div class="n-simple-content">
-										<h3>Chicken eggs</h3>
-										<span class="price"><span class="amount">&#36;25.00</span></span>
-									</div>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-									<div class="n-simple-content">
-										<h3>Banana</h3>
-										<span class="price"><span class="amount">&#36;25.00</span></span>
-									</div>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-									<div class="n-simple-content">
-										<h3>Jackfruit</h3>
-										<span class="price"><span class="amount">&#36;99.00</span></span>
-									</div>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-									<div class="n-simple-content">
-										<h3>Grapes</h3>
-										<span class="price"><span class="amount">&#36;22.00</span></span>
-									</div>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<div class="noo-simple-slider-item" data-bg="<%= asset_path('ecommerce/img/slider/slide_363x265.jpg') %>">
-									<div class="n-simple-content">
-										<h3>Cookies</h3>
-										<span class="price"><span class="amount">&#36;99.00</span></span>
-									</div>
-								</div>
-							</a>
-						</li>
-					</ul>
+					<!--fin menu izquierda -->
+						<!--slide -->
+				<div class="col-sm-10" style="margin-top:30px;" >
+					<div id="myCarousel" class="carousel slide" data-ride="carousel">
+						  <!-- Indicators -->
+						  <ol class="carousel-indicators">
+						    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						    <li data-target="#myCarousel" data-slide-to="1"></li>
+						   
+						  </ol>
+						
+						  <!-- Wrapper for slides -->
+						  <div class="carousel-inner">
+						  	<div class="dvt_frase">La frase va aquí</div>
+						    <div class="item active">
+						      <img src="http://www.aquaflash.net/wp-content/uploads/2016/11/food15.jpg" alt="Vegetables">
+						    </div>
+						
+						    <div class="item">
+						      <img src="https://media.guim.co.uk/51f397f794a73ccd83b0bb79b982b4fff20c32bf/0_277_4666_2800/2000.jpg" alt="chicken">
+						    </div>
+						
+						  
+						
+						  <!-- Left and right controls -->
+						  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+						    <span class="glyphicon glyphicon-chevron-left"></span>
+						    <span class="sr-only">Previous</span>
+						  </a>
+						  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+						    <span class="glyphicon glyphicon-chevron-right"></span>
+						    <span class="sr-only">Next</span>
+						  </a>
+						</div>
 					</div>
 			</div>
+				<!--fin slide -->
 		</div>
 
 	</div>
@@ -497,3 +460,4 @@
 	</div>
 
 </div>
+
