@@ -21,7 +21,9 @@ Ecommerce::Engine.routes.draw do
   #get '/category/:id', :to => 'store#shop_by_category', :as => 'category'
   #get '/product/:id', :to => 'store#product_detail', :as => 'product'
   resources :products, only: [:index, :show]
+  resources :orders, only: [:index, :show]
   post '/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
+  post '/orders/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
   get '/checkout', :to => 'checkout#show'
   get '/my_account', :to => 'users#show'
 
@@ -29,6 +31,8 @@ Ecommerce::Engine.routes.draw do
 
   resources :carts, except: [:index, :new, :create]
   resources :cart_items
+  resources :wishlists, except: [:index, :new, :create]
+  resources :wishlist_items
   patch '/addresses/update_map', to: 'addresses#update_map'
   resources :addresses
 

@@ -38,7 +38,13 @@
         <td><%= backoffice_order.status %></td>
         <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_order_path(backoffice_order) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>
-        <td><%= link_to "<i class='material-icons'>attach_money</i>".html_safe, backoffice_orders_einvoice_path(backoffice_order), method: :post %></td>
+        <% if backoffice_order.efact_response_text == "OK" %>
+          <td><%= link_to "Link", backoffice_order.efact_invoice_url, target: "blank" %></td>
+        <% else %>
+          <td><%= link_to "Resend", backoffice_orders_einvoice_path(backoffice_order), method: :post %></td>
+        <% end %>
+
+
         <td><%= link_to "<i class='material-icons'>local_shipping</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>
         <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_order_path(backoffice_order), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>

@@ -15,6 +15,9 @@ class CreateEcommerceOrders < ActiveRecord::Migration[5.1]
       t.text :customer_comments
       t.text :process_comments
       t.text :delivery_comments
+      t.text :efact_sent_text
+      t.text :efact_response_text
+      t.text :efact_invoice_url
 
       t.timestamps
     end

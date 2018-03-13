@@ -8,21 +8,36 @@ module Ecommerce
     def einvoice
       @backoffice_order = Order.find(params[:format])
       @order_details = Cart.find(@backoffice_order.id).cart_items.includes(:product)
-      @einvoice = JSON.parse(@backoffice_order.einvoice)
+      #begin
+        @einvoice = JSON.parse(@backoffice_order.generate_einvoice)
+      #rescue Net::OpenTimeout
+      #  retry
+      #end
+      if @einvoice["response_text"] == "OK"
+        @epdf = @einvoice["response_url"]
+      else
+        @einvoice_error_message = @einvoice["response_text"] || "#{@einvoice["status"]} : #{@einvoice["error"]}"
+      end
+      render :action => "show"
     end
 
     # GET /backoffice/orders
     def index
       if params[:stage]
-        @backoffice_orders = Order.where(stage: params[:stage])
+        @backoffice_orders = Order.where(stage: params[:stage]).order(id: :desc)
       else
-        @backoffice_orders = Order.all
+        @backoffice_orders = Order.all.order(id: :desc)
       end
     end
 
     # GET /backoffice/orders/1
     def show
       @order_details = Cart.find(@backoffice_order.id).cart_items.includes(:product)
+      if @backoffice_order.efact_response_text == "OK"
+        @epdf = @backoffice_order.efact_invoice_url
+      else
+        @einvoice_error_message = @backoffice_order.efact_response_text
+      end
     end
 
     # GET /backoffice/orders/new

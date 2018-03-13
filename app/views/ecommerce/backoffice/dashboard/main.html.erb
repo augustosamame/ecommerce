@@ -30,8 +30,11 @@
 						<td>
 							<%= order.user.name  %>
 						</td>
+						<td>
+							<%= order.shipping_address.district  %>
+						</td>
             <td>
-							S/. <%= order.amount_cents  %>
+							S/. <%= order.amount_cents / 100  %>
 						</td>
 					</tr>
           <% end %>

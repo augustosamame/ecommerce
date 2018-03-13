@@ -1,0 +1,36 @@
+<div class="main">
+  <div class="commerce commerce-account noo-shop-main">
+<div class="container">
+  <div class="row" style="margin-top: 50px;">
+  <h2><a href="<%= orders_path %>">My Orders</a></h2>
+<div class="table-responsive">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Payment Status</th>
+        <th>Total</th>
+        <th>Show</th>
+        <th>Cancel</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @orders) do |order| %>
+        <td><%= order.id %></td>
+        <td><%= order.created_at.localtime.strftime("%d-%b-%y") %></td>
+        <td><%= order.stage %></td>
+        <td><%= order.payment_status %></td>
+        <td><%= number_to_currency(order.amount_cents / 100) %></td>
+        <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, order_path(order) %></td>
+        <td><%= link_to "<i class='material-icons'>clear</i>".html_safe, order_path(order) %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+</div>
+</div>

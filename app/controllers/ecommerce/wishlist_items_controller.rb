@@ -2,20 +2,19 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   #class StoreController < ActionController::Base
-  class CartItemsController < ApplicationController
+  class WishlistItemsController < ApplicationController
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}/"
     skip_before_action :authenticate_user!
-    before_action :set_menu_items
-    before_action :set_cart_item, only: [:destroy]
+    before_action :set_wishlist, only: [:create, :destroy]
 
     def create
-      @cart_item = CartItem.new(cart_item_params)
-      @cart_item.cart_id = @cart.id
-      if @cart_item.save
-        redirect_to cart_path(@cart) and return
+      @wishlist_item = WishlistItem.new(wishlist_item_params)
+      @wishlist_item.wishlist_id = @wishlist.id
+      if @wishlist_item.save
+        redirect_to wishlist_path(@wishlist) and return
       else
-        flash[:error] = "There was a problem adding this item to your cart"
-        @product = Product.find(@cart_item.product.id)
+        flash[:error] = "There was a problem adding this item to your wishlist"
+        @product = Product.find(@wishlist_item.product.id)
         redirect_to product_path(@product)
       end
 
@@ -31,21 +30,7 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
     end
 
-    def edit
-      @cart_item.update(cart_item_params)
-      redirect_to @cart_item.cart, notice: 'Cart edited.'
-    end
-
-    def destroy
-      @cart_item.destroy
-      redirect_to @cart_item.cart, notice: 'Item deleted.'
-    end
-
     private
-
-      def set_cart_item
-        @cart_item = CartItem.find(params[:id])
-      end
 
       def set_menu_items
         @top_bar_new_hash = Ecommerce::Control.find_by(name: 'top_bar_cookie_read_hash').text_value #this will be set as a cookie via javascript if user closes top_bar
@@ -54,8 +39,8 @@ module Ecommerce
         @homepage_categories = Ecommerce::Category.where(popular_homepage: true, status: "active").order(:category_order)
       end
 
-      def cart_item_params
-        params.require(:cart_item).permit(:cart_id, :product_id, :quantity, :status)
+      def wishlist_item_params
+        params.require(:wishlist_item).permit(:wishlist_id, :product_id, :quantity, :status)
       end
 
   end

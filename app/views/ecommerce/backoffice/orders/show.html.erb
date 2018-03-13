@@ -27,7 +27,7 @@
   <dd><%= @backoffice_order.friendly_shipping_address %></dd>
 
   <dt>Billing address:</dt>
-  <dd><%= @backoffice_order.billing_address_id %></dd>
+  <dd><%= @backoffice_order.friendly_billing_address %></dd>
 
   <dt>Coupon:</dt>
   <dd><%= @backoffice_order.coupon_id %></dd>
@@ -41,3 +41,4 @@
 </dl>
 
 <%= render 'order_details' %>
+<%= render 'einvoice' %>

@@ -1,4 +1,7 @@
 <h3>Electronic Invoice Data</h3>
-<% @einvoice.each do |j,k| %>
-  <%= "#{j}: #{k}" %></br>
+<% if @epdf %>
+  <p>Link: <%= link_to @epdf %></p>
+  <embed src="<%= @epdf %>" width="500" height="375">
+<% else %>
+  <%= "Error generating electronic invoice: #{@einvoice_error_message}" %>
 <% end %>
