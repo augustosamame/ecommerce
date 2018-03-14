@@ -12747,9 +12747,9 @@ a.go-to-top:hover a.go-to-top:focus.on:hover {
         padding-top: 70px !important;
         padding-bottom: 70px !important;
     }
-    .noo-main-menu {
+    /*.noo-main-menu {
         display: none;
-    }
+    }*/
     .noo-main-canvas .sub-menu {
         list-style: none;
         display: none;
@@ -17412,7 +17412,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 } 
 .dvt_houses_contenedor span{
     color:#ffffff;
-    font-size:13px;
+    font-size:15px;
      display: block;
   margin-left: auto;
   margin-right: auto;
@@ -17443,7 +17443,7 @@ bottom:50px;
 .dvt_houses_img{
 height: 49px;
 vertical-align: middle;
-margin-bottom: 4px;
+margin-bottom: 2px;
 }
 
 .dvts_category ul {
@@ -17490,12 +17490,12 @@ margin-bottom: 4px;
     font-family: 'Lobster', cursive;
 }
 .bt_allp li a{
-    font-family: 'Lobster', cursive;
-     font-size: 16px;
-     text-decoration: none;
-     padding: 30px 15px;
-     color: #fff;
-     line-height: 18px;
+   font-family: 'Lobster', cursive;
+font-size: 20px;
+text-decoration: none;
+padding: 28px 15px;
+color: #fff;
+line-height: 23px;
 }
 .bt_allp li a:hover{
     color: #2586d7;
@@ -17504,6 +17504,13 @@ margin-bottom: 4px;
 
  .dvt_houses_tope{
     margin-top: 60px;
+}
+    }
+    
+@media (max-width: 991px) {
+
+ .dvt_houses_tope{
+    margin-top: 100px;
 }
     }
     
