@@ -14,8 +14,17 @@
 								<span></span>
 							</div>
 						</div>
-						<a href="<%= root_path %>" class="navbar-brand" style="position: absolute;top: -50px; left:55px;">
-							<%= image_tag Ecommerce.header_landing_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 140 %>
+<<<<<<< HEAD
+						<a href="./" class="navbar-brand" style="position: absolute;top: -25px; left:55px;">
+							<%= image_tag Ecommerce.logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 110 %>
+=======
+						<a href="<% root_path %>" class="navbar-brand">
+							<% if controller.controller_name == "store" && controller.action_name == "main" %>
+								<%= image_tag Ecommerce.header_landing_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 283 %>
+							<% else %>
+								<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", height: 64, width: 283 %>
+							<% end %>
+>>>>>>> a75690bbd77f7ee274f6fdc73f14ceff716c2d3b
 						</a>
 					</div>
 
@@ -199,11 +208,15 @@
 								
 
 								<li class="menu-item fly-right">
+<<<<<<< HEAD
+									<a href="wishlist.html"><i class="fa fa-heart-o"></i>Wishlist</a>
+=======
 									<% if @wishlist.id %>
 									<a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.wishlist_path(@wishlist.id) %>">
 										<i class="fa fa-heart-o"></i><%= t('.wishlist') %>
 									</a>
 									<% end %>
+>>>>>>> a75690bbd77f7ee274f6fdc73f14ceff716c2d3b
 								</li>
 								<li class="menu-item minicart">
 									<% if @cart.id %>
@@ -228,14 +241,24 @@
 					<div class="col-md-12 dvt_allp hidden-xs .hidden-sm">
 						
 						<ul class="bt_allp" style="margin-top: 7px; margin-bottom: 9px;">
-			
-							<li style="color:#398cd8; padding-right:20px; border-right:1px solid #cccccc;"><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>">All Products</a></li>
+							<li style="color:#398cd8; padding-right:20px; border-right:1px solid #cccccc;">All Product</li>
+							<li><a href="#">Food</a></li>
+				            <li><a href="#">Cleaning</a></li>
+				            <li><a href="#">Groceries</a></li>
+				            <li><a href="#">Fruits</a></li>
+			            </ul>
+					</div>
+<<<<<<< HEAD
+=======
+					<div class="col-md-4 dvts_category">
+						<ul>
+							<li><%= link_to "ALL PRODUCTS", Ecommerce::Engine.routes.url_helpers.products_path %></li>
 							<% @primary_menu_categories.each do |category| %>
 								<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active" %></li>
 							<% end %>
-			            </ul>
-					</div>
-					
+						</ul>
+>>>>>>> a75690bbd77f7ee274f6fdc73f14ceff716c2d3b
+				</div>
 				<!-- final menu product -->
 			</div>
 
