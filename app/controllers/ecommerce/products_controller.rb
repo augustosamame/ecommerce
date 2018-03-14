@@ -14,12 +14,21 @@ module Ecommerce
       else
         @products = Product.all
       end
+
+      set_index_meta_tags
+
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
     end
 
     def show
+
+      #set_controller_meta_tags(action_name)
+
       @cart_item = CartItem.new
       @wishlist_item = CartItem.new
+
+      set_show_meta_tags
+
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
     end
 
@@ -43,6 +52,25 @@ module Ecommerce
       # Never trust parameters from the scary internet, only allow the white list through.
       def product_params
         params.require(:address).permit(:name, :tag_list)
+      end
+
+      def set_show_meta_tags
+        set_meta_tags title: @product.name,
+                      description: @product.description,
+                      og: {
+                        title: "ExpatShop Perú - #{@product.name}",
+                        description:    @product.description,
+                        image:    @product.image.medium_400.url
+                      }
+      end
+
+      def set_index_meta_tags
+        set_meta_tags title: "Products",
+                      description: "ExpatShop Product List",
+                      og: {
+                        title:    :full_title,
+                        image:    Ecommerce.logo
+                      }
       end
 
   end

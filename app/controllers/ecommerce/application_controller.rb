@@ -3,12 +3,15 @@
 module Ecommerce
 
   class ApplicationController < ::ApplicationController
+    #include Ecommerce::BeforeRender
+
     protect_from_forgery with: :exception
     before_action :merge_abilities
     before_action :add_stretched_to_body_tag
     before_action :set_cart
     before_action :set_wishlist
     before_action :set_header_menu_items
+    #before_render :set_controller_meta_tags
 
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"
 
@@ -22,6 +25,10 @@ module Ecommerce
     def add_body_css_class(css_class)
       @body_css_classes ||= []
       @body_css_classes << css_class
+    end
+
+    def set_controller_meta_tags
+      global_controller_meta_tags(controller_name, action_name)
     end
 
     def locale
@@ -85,6 +92,23 @@ module Ecommerce
     def merge_abilities
       current_ability.merge(Ecommerce::Ability.new(current_user))
     end
+
+    def global_controller_meta_tags(mycontroller, myaction)
+
+      case "#{mycontroller}:#{myaction}"
+      when "products:index"
+        set_meta_tags title: "Products",
+                      description: "ExpatShop Product List",
+                      og: {
+                        title:    :full_title,
+                        image:    'http://ia.media-imdb.com/rock.jpg'
+                      }
+
+      else
+        set_meta_tags description: "No match for meta_tags"
+      end
+    end
+
   end
 
 end

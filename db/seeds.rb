@@ -3,10 +3,13 @@ Ecommerce::Control.create(name: 'invoice_terms_and_conditions', localized_name: 
 Ecommerce::Control.create(name: 'show_top_bar', localized_name: 'Show Top Bar', value_field_type: "boolean", boolean_value: true )
 Ecommerce::Control.create(name: 'top_bar_cookie_read_hash', localized_name: 'Top Bar Cookie Read Hash', internal: true, value_field_type: "text")
 Ecommerce::Control.create(name: 'top_bar_html', localized_name: 'Top Bar HTML', value_field_type: "text", text_value: "Back to the future of awesome Bags: Introducing the best bags in the world. <a href='#'>Shop Now</a>")
-Ecommerce::Control.create(name: 'store_title', localized_name: 'Store Title', value_field_type: "text", text_value: "Put Store Title Here")
+Ecommerce::Control.create(name: 'store_title', localized_name: 'Store Title', value_field_type: "text", text_value: "ExpatShop Perú")
 Ecommerce::Control.create(name: 'auto_invoice', localized_name: 'Auto Invoice', value_field_type: "boolean", boolean_value: false )
 Ecommerce::Control.create(name: 'auto_ship', localized_name: 'Auto Ship', value_field_type: "boolean", boolean_value: false )
-
+Ecommerce::Control.create(name: 'home_slider_text', localized_name: 'Home Slider Text', value_field_type: "text", text_value: "From the World to Perú" )
+Ecommerce::Control.create(name: 'home_slider_image1', localized_name: 'Home Slider 1st Image', value_field_type: "text", text_value: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image1.png" )
+Ecommerce::Control.create(name: 'home_slider_image2', localized_name: 'Home Slider 2nd Image', value_field_type: "text", text_value: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image2.png" )
+Ecommerce::Control.create(name: 'home_slider_image3', localized_name: 'Home Slider 3rd Image', value_field_type: "text", text_value: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image3.png" )
 
 pm1 = Ecommerce::PaymentMethod.create(name: "Card", status: "active")
 pm2 = Ecommerce::PaymentMethod.create(name: "Bank Deposit", status: "active")

@@ -36,22 +36,25 @@
 						  <ol class="carousel-indicators">
 						    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 						    <li data-target="#myCarousel" data-slide-to="1"></li>
-						   
+
 						  </ol>
-						
+
 						  <!-- Wrapper for slides -->
 						  <div class="carousel-inner">
-						  	<div class="dvt_frase">La frase va aquí</div>
+						  	<div class="dvt_frase"><%= Ecommerce::Control.find_by(name: 'home_slider_text').text_value %></div>
 						    <div class="item active">
-						      <img src="http://www.aquaflash.net/wp-content/uploads/2016/11/food15.jpg" alt="Vegetables">
+						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image1').text_value %>" alt="Slider1 Images">
 						    </div>
-						
+
 						    <div class="item">
-						      <img src="https://media.guim.co.uk/51f397f794a73ccd83b0bb79b982b4fff20c32bf/0_277_4666_2800/2000.jpg" alt="chicken">
+						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image2').text_value %>" alt="Slider2 Image">
 						    </div>
-						
-						  
-						
+
+								<div class="item">
+						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image3').text_value %>" alt="Slider3 Image">
+						    </div>
+
+
 						  <!-- Left and right controls -->
 						  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
 						    <span class="glyphicon glyphicon-chevron-left"></span>
@@ -460,4 +463,3 @@
 	</div>
 
 </div>
-

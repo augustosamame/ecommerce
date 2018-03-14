@@ -1,5 +1,6 @@
   <head>
     <meta name="google" content="notranslate" />
+    <%= display_meta_tags site: Ecommerce::Control.get_control_value('store_title') || "Set Store Title in Database" %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag :cocoon %>
@@ -37,14 +38,14 @@ var $loading = $('.spinner').hide();
 </script>
 <script>
     $(document).ready(function(){
-    $(".dvt_dropdown").hover(            
+    $(".dvt_dropdown").hover(
         function() {
             $('.dvt_dropdown-menu', this).not('.in .dvt_dropdown-menu').stop( true, true ).slideDown("fast");
-            $(this).toggleClass('open');        
+            $(this).toggleClass('open');
         },
         function() {
             $('.dvt_dropdown-menu', this).not('.in .dvt_dropdown-menu').stop( true, true ).slideUp("fast");
-            $(this).toggleClass('open');       
+            $(this).toggleClass('open');
         }
     );
 })
