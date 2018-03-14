@@ -7,13 +7,6 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
-<script>
-FB.ui({
-  method: 'share',
-  href: 'https://developers.facebook.com/docs/',
-}, function(response){});
-</script>
-
 <div class="main">
   <div class="commerce single-product noo-shop-main">
     <div class="container single-product-container">
@@ -64,7 +57,7 @@ FB.ui({
                 <div class="clear"></div>
                 <div class="noo-social-share">
                   <span>Share:</span>
-                  <a href="#share" class="noo-share" title="Share on Facebook">
+                  <a href='<%= "https://www.facebook.com/sharer/sharer.php?u=#{request.original_url}" %>' target="_blank" rel="noopener" class="noo-share" title="Share on Facebook">
                     <i class="fa fa-facebook"></i>
                   </a>
                   <a href="#share" class="noo-share" title="Share on Twitter">
