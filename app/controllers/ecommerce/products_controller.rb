@@ -58,7 +58,7 @@ module Ecommerce
         set_meta_tags title: @product.name,
                       description: @product.description,
                       og: {
-                        title: "ExpatShop Perú - #{@product.name}",
+                        title: "#{@product.name} | #{Ecommerce.site_name}", #TODO change this to global value to save a db call
                         description:    @product.description,
                         image:    @product.image.medium_400.url
                       }

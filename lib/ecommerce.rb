@@ -18,6 +18,7 @@ module Ecommerce
 
   mattr_accessor :user_class #Can now reference this setting as Ecommerce.user_class
   mattr_accessor :ecommerce_layout
+  mattr_accessor :site_name
   mattr_accessor :ecommerce_devise_layout
   mattr_accessor :use_main_app_header
   mattr_accessor :use_main_app_footer

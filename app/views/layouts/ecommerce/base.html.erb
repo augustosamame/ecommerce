@@ -1,6 +1,6 @@
   <head>
     <meta name="google" content="notranslate" />
-    <%= display_meta_tags site: Ecommerce::Control.get_control_value('store_title') || "Set Store Title in Database" %>
+    <%= display_meta_tags site: Ecommerce.site_name || "Set Store Title in Database" %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag :cocoon %>

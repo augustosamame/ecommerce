@@ -40,8 +40,10 @@
 						  </ol>
 
 						  <!-- Wrapper for slides -->
+<video poster="https://thumbs.gfycat.com/LiveDearestIndianskimmer-mobile.jpg" controls="controls" autoplay="" loop="" src="https://zippy.gfycat.com/LiveDearestIndianskimmer.mp4" type="video/mp4"></video>
 						  <div class="carousel-inner">
-						  	<div class="dvt_frase"><%= Ecommerce::Control.find_by(name: 'home_slider_text').text_value %></div>
+
+						  	<div class="dvt_frase"><%= Ecommerce::Control.get_control_value('home_slider_text') %></div>
 						    <div class="item active">
 						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image1').text_value %>" alt="Slider1 Images">
 						    </div>
