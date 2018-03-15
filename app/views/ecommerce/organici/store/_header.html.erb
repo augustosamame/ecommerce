@@ -62,7 +62,7 @@
 												<% if current_user %>
 												<a href="<%= my_account_path %>" class=""><i class='fa fa-user'></i><%= current_user.name %> <span class="caret"></span></a>
 												<% else %>
-												<a href="<%= new_user_session_path %>" class=""><i class='fa fa-user'></i>My Account<span class="caret"></span></a>
+												<a href="<%= main_app.new_user_session_path %>" class=""><i class='fa fa-user'></i>My Account<span class="caret"></span></a>
 												<% end %>
 											</li>
 
