@@ -17528,8 +17528,31 @@ line-height: 23px;
 
 @media (max-width: 991px) {
 
+  .dvt_houses_spac_btn{
+      margin-bottom:15px;
+      color: white;
+      background-image: url("https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/category_collage.png");
+      height: 200px;
+  }
+
+  .dvt_categ_spac_btn {
+    margin-bottom:15px;
+  }
+
+  .dvt_frase {
+    font-size: 20px !important;
+  }
+
+  .dvt_slide_video {
+    display: none;
+  }
+
+  .dvt_back {
+    margin-top: 0px;
+  }
+
  .dvt_houses_tope{
-    margin-top: 100px;
+    margin-top: 0px;
 }
     }
 
@@ -17720,7 +17743,7 @@ z-index: 1;
 }
  .dvt_frase{
      z-index: 9999;
-     font-size: 55px;
+     font-size: 45px;
      color:#ffffff;
     text-shadow: 0 6px 8px #191919;
        position: absolute;
@@ -17732,7 +17755,7 @@ z-index: 1;
 .dvt_slide_video{
     position:absolute;
  top: 64%;
-left: 88%;
+left: 68%;
     z-index:9998;
 
 }
