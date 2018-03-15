@@ -41,7 +41,7 @@
                 </div>
                 <div class="noo-product-title">
                   <h3><%= link_to item.name, product_path(item) %></h3><br>
-                  <span class="short-descrip" style="font-size:13px;">Acompaña tus reuniones con una tabla de piqueos variada</span><br>
+                  <span class="short-descrip" style="font-size:13px;"><%= item.short_description %></span><br>
                   <span class="price"><span class="amount"><%= number_to_currency(item.price_cents / 100) %></span></span>
                   <div class="noo-product-action">
                     <div class="noo-action">
