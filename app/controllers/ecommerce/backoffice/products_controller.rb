@@ -65,7 +65,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_params
-        params.require(:product).permit(:brand_id, :supplier_id, :name, :description, :price_cents, :discounted_price_cents, :stockable, :home_featured, :image, :image_cache, category_id: [], category_list: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
+        params.require(:product).permit(:brand_id, :supplier_id, :name, :description, :description2, :price_cents, :discounted_price_cents, :stockable, :home_featured, :image, :image_cache, category_id: [], category_list: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
       end
   end
 end
