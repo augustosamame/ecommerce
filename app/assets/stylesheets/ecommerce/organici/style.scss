@@ -5838,7 +5838,7 @@ body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
     width: 30px;
     height: 30px;
     display: block;
-    background-image: url("../images/quickview-close.png");
+    background-image: asset-url("img/quickview-close.png");
     background-position: center center;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -11403,7 +11403,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 }
 
 .quick-view-wrap .quick-content .quickview-close {
-    background-image: url("../images/quickview-close.png");
+    background-image: asset-url("img/quickview-close.png");
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
@@ -12981,7 +12981,7 @@ a.go-to-top:hover a.go-to-top:focus.on:hover {
         width: 30px;
         height: 30px;
         display: block;
-        background-image: url("../images/quickview-close.png");
+        background-image: asset-url("img/quickview-close.png");
         background-position: center center;
         background-repeat: no-repeat;
         cursor: pointer;
@@ -17497,7 +17497,7 @@ display: block;
 
 .dvt_back{
     background-color:#3B3A3A;
-    margin-top:55px;
+    margin-top:35px;
 }
 .dvt_allpt{
     color: white;

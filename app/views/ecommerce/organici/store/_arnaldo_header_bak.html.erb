@@ -1,0 +1,281 @@
+<header class="noo-header header-3 inner-relative">
+	<div class="navbar-wrapper">
+		<div class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="menu-position" style="top:30px;">
+					<div class="navbar-header pull-left">
+						<div class="noo_menu_canvas">
+							<div class="btn-search noo-search">
+								<i class="fa fa-search"></i>
+							</div>
+							<div data-target="nav-collapse" class="btn-navbar">
+								<span></span>
+								<span></span>
+								<span></span>
+							</div>
+						</div>
+						<a href="<%= root_path %>" class="navbar-brand" style="position: absolute;top: -50px; left:55px;">
+							<%= image_tag Ecommerce.header_landing_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 140 %>
+						</a>
+					</div>
+					<nav class="pull-right noo-menu-option">
+									<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>
+									<ul>
+										<li class="menu-item fly-right">
+											<a href="my-account.html">
+												<i class="fa fa-user"></i>My Account
+											</a>
+										</li>
+										<li class="menu-item fly-right">
+											<a href="wishlist.html">
+												<i class="fa fa-heart-o"></i>Wishlist
+											</a>
+										</li>
+										<li class="menu-item noo-menu-item-cart minicart">
+											<a class="cart-button" href="cart.html">
+												<i class="fa fa-shopping-cart"></i>Cart
+											</a>
+										</li>
+										<li class="menu-item fly-right">
+											<a id="noo-search" class="search-button noo-search" href="#">
+												<i class="fa fa-search"></i> Search
+											</a>
+										</li>
+									</ul>
+									<a href="#" class="button-menu-extend"><i class="fa fa-bars"></i></a>
+								</nav>
+
+					<nav class="pull-right noo-main-menu">
+
+					<!-- menu principal  -->
+						<ul class="nav-collapse navbar-nav"  >
+							<li><a href="<%= root_path %>"><%= t('.home') %></a></li>
+							<!-- <li class="menu-item-has-children current-menu-item">
+								<a href="./"><%= t('.home') %></a>
+								<ul class="sub-menu">
+									<li><a href="index-2.html">Homepage 2</a></li>
+									<li><a href="index-3.html">Homepage 3</a></li>
+									<li><a href="index-4.html">Homepage 4</a></li>
+									<li><a href="index-5.html">Homepage 5</a></li>
+									<li><a href="index-6.html">Homepage 6</a></li>
+								</ul>
+							</li> -->
+							<!-- <li class="menu-item-has-children">
+								<a href="#">Header</a>
+								<ul class="sub-menu">
+									<li><a href="header-1.html">Header 1</a></li>
+									<li><a href="header-2.html">Header 2</a></li>
+									<li><a href="header-3.html">Header 3</a></li>
+									<li><a href="header-4.html">Header 4</a></li>
+									<li><a href="header-5.html">Header 5</a></li>
+									<li><a href="header-6.html">Header 6</a></li>
+								</ul>
+							</li> -->
+							<li><a href="our-story.html"><%= t('.our_story') %></a></li>
+							<!--<li class="menu-item-has-children noo_megamenu mega-col-columns-4">
+								<a href="shop.html">Shop</a>
+								<ul class="sub-menu">
+									<li class="menu-item-has-children">
+										<a href="#">Shop page</a>
+										<ul class="sub-menu">
+											<li><a href="shop-list.html">Shop List</a></li>
+											<li><a href="shop-detail.html">Shop Detail</a></li>
+											<li><a href="my-account.html">My Account</a></li>
+											<% if @cart.id %>
+												<li><%= link_to "Cart", Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %></li>
+											<% end %>
+											<li><a href="cart-empty.html">Empty Cart</a></li>
+											<% if @wishlist.id %>
+												<li><%= link_to "Wishlist", Ecommerce::Engine.routes.url_helpers.wishlist_path(@wishlist.id) %></li>
+											<% end %>
+										</ul>
+									</li>
+									<li class="menu-item-has-children">
+										<div class="noo_megamenu_widget_area">
+											<div class="widget commerce widget_products">
+												<h3 class="widget-title">Products</h3>
+												<ul class="product_list_widget">
+													<li>
+														<a href="shop-detail.html">
+															<%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+															<span class="product-title">French Bread</span>
+														</a>
+														<span class="amount">&#36;10.00</span>
+													</li>
+													<li>
+														<a href="shop-detail.html">
+															<%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+															<span class="product-title">Cookie</span>
+														</a>
+														<span class="amount">&#36;15.00</span>
+													</li>
+													<li>
+														<a href="shop-detail.html">
+															<%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+															<span class="product-title">Brown Bread</span>
+														</a>
+														<span class="amount">&#36;12.00</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="noo_megamenu_widget_area">
+											<div class="widget commerce widget_products">
+												<h3 class="widget-title">Featured</h3>
+												<ul class="product_list_widget">
+													<li>
+														<a href="shop-detail.html">
+															<%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+															<span class="product-title">French Bread</span>
+														</a>
+														<span class="amount">&#36;10.00</span>
+													</li>
+													<li>
+														<a href="shop-detail.html">
+															<%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+															<span class="product-title">Cookie</span>
+														</a>
+														<span class="amount">&#36;15.00</span>
+													</li>
+													<li>
+														<a href="shop-detail.html">
+															<%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+															<span class="product-title">Brown Bread</span>
+														</a>
+														<span class="amount">&#36;12.00</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="noo_megamenu_widget_area">
+											<div class="widget commerce widget_products">
+												<h3 class="widget-title">Sales</h3>
+												<ul class="product_list_widget">
+													<li>
+														<a href="shop-detail.html">
+															<%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+															<span class="product-title">French Bread</span>
+														</a>
+														<span class="amount">&#36;10.00</span>
+													</li>
+													<li>
+														<a href="shop-detail.html">
+															<%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+															<span class="product-title">Cookie</span>
+														</a>
+														<span class="amount">&#36;15.00</span>
+													</li>
+													<li>
+														<a href="shop-detail.html">
+															<%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+															<span class="product-title">Brown Bread</span>
+														</a>
+														<span class="amount">&#36;12.00</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</li> -->
+							<!-- <li class="menu-item-has-children">
+								<a href="boxes.html">Boxes</a>
+								<ul class="sub-menu">
+									<li><a href="box-detail.html">Box Detail</a></li>
+								</ul>
+							</li> -->
+							<li class="menu-item-has-children">
+								<a href="blog.html"><%= t('.blog') %></a>
+								<ul class="sub-menu">
+									<li class="menu-item-has-children">
+										<a href="blog-masonry.html">The Benefits of Dates</a>
+										<!--<ul class="sub-menu">
+											<li><a href="blog-masonry-two-columns.html">2 Columns</a></li>
+											<li><a href="blog-masonry.html">3 Columns</a></li>
+											<li><a href="blog-masonry-four-columns.html">4 Columns</a></li>
+										</ul>-->
+									</li>
+									<li><a href="blog.html">The Best Wines for your Table</a></li>
+								</ul>
+							</li>
+							<li><a href="contact.html"><%= t('.contact') %></a></li>
+							<% if current_user && current_user.admin? %>
+								<li><%= link_to "Backoffice", backoffice_dashboard_path, style: "color: red;" %></li>
+							<% end %>
+						</ul>
+						<!-- fin menu principal  -->
+
+						<!-- menu secundario -->
+
+						<nav class="pull-right noo-menu-option">
+							<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>
+
+							<ul class="nav-collapse noo-main-menu">
+								<li class="">
+									<% if current_user %>
+									<a href="<%= my_account_path %>" class=""><i class='fa fa-user'></i><%= current_user.name %> <span class="caret"></span></a>
+									<% else %>
+									<a href="<%= new_user_session_path %>" class=""><i class='fa fa-user'></i>My Account<span class="caret"></span></a>
+									<% end %>
+								</li>
+
+
+								<li class="menu-item fly-right">
+									<% if @wishlist.id %>
+									<a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.wishlist_path(@wishlist.id) %>">
+										<i class="fa fa-heart-o"></i><%= t('.wishlist') %>
+									</a>
+									<% end %>
+								</li>
+								<li class="menu-item minicart">
+									<% if @cart.id %>
+									<a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
+										<i class="fa fa-shopping-cart"></i><%= t('.cart') %>
+									</a>
+									<% end %>
+								</li>
+								<li class="menu-item fly-right">
+									<a id="noo-search" class="search-button noo-search" href="#">
+										<i class="fa fa-search"></i><%= t('.search') %>
+									</a>
+								</li>
+							</ul>
+
+						<!-- fin menu secundario  -->
+					</nav>
+
+				</div>
+				<!-- menu product -->
+				<div class="container-fluid dvt_back">
+					<div class="col-md-12 dvt_allp hidden-xs .hidden-sm">
+
+						<ul class="bt_allp" style="margin-top: 7px; margin-bottom: 9px;">
+
+							<li style="color:#398cd8; padding-right:20px; border-right:1px solid #cccccc;"><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>">All Products</a></li>
+							<% @primary_menu_categories.each do |category| %>
+								<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active" %></li>
+							<% end %>
+			            </ul>
+					</div>
+
+				<!-- final menu product -->
+			</div>
+
+	</div>
+	</div>
+	</div>
+	<div class="search-header5">
+		<div class="remove-form"></div>
+		<div class="container">
+			<form class="form-horizontal">
+				<label class="note-search"><%= t('.search_instructions') %></label>
+				<input type="search" name="s" class="form-control" value="" placeholder= "<%= t('.search_placeholder') %>">
+				<input type="submit" value="Search">
+			</form>
+		</div>
+	</div>
+</header>
