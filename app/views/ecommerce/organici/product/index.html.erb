@@ -25,7 +25,7 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="noo-product-grid-wrap commerce product-style2">
-          <div class="noo-product-grid products row product-grid noo-grid-4">
+          <div class="noo-product-grid products row product-grid noo-grid-4" >
             <% @products.each do |item| %>
             <div class="bread masonry-item noo-product-column col-md-4 col-sm-6 product">
               <div class="noo-product-inner">
@@ -40,7 +40,8 @@
                   </div>
                 </div>
                 <div class="noo-product-title">
-                  <h3><%= link_to item.name, product_path(item) %></h3>
+                  <h3><%= link_to item.name, product_path(item) %></h3><br>
+                  <span class="short-descrip" style="font-size:13px;">Acompaña tus reuniones con una tabla de piqueos variada</span><br>
                   <span class="price"><span class="amount"><%= number_to_currency(item.price_cents / 100) %></span></span>
                   <div class="noo-product-action">
                     <div class="noo-action">
@@ -78,9 +79,9 @@
             <% @products.each do |item| %>
               <div class="masonry-item noo-product-column col-md-4 col-sm-6 product">
                 <div class="noo-product-inner">
-                  <div class="noo-product-thumbnail">
+                  <div class="noo-product-thumbnail" >
                     <a href="<%= product_path(item) %>">
-                      <%= image_tag item.image.url, width: 600, height: 760, alt: "" %>
+                      <%= image_tag item.image.url, width: 600, height: 760, alt: "", style:"250px;" %>
                     </a>
                     <div class="noo-rating">
                       <div class="star-rating">
@@ -90,6 +91,7 @@
                   </div>
                   <div class="noo-product-title">
                     <h3><%= link_to item.name, product_path(item) %></h3>
+                    <span class="short-descrip">Short Description</span>
                     <span class="price"><span class="amount"><%= number_to_currency(item.price_cents / 100) %></span></span>
                     <div class="noo-product-action">
                       <div class="noo-action">
