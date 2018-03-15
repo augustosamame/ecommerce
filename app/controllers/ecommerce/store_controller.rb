@@ -4,7 +4,7 @@ module Ecommerce
   #class StoreController < ActionController::Base
   class StoreController < ApplicationController
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}/"
-    before_action :set_menu_items
+    before_action :set_home_items
     skip_before_action :authenticate_user!
 
     def main
@@ -19,9 +19,10 @@ module Ecommerce
 
     private
 
-      def set_menu_items
+      def set_home_items
         @top_bar_new_hash = Ecommerce::Control.find_by(name: 'top_bar_cookie_read_hash').text_value #this will be set as a cookie via javascript if user closes top_bar
         @secondary_menu_categories = Ecommerce::Category.where(main_menu: true, category_type: "secondary", status: "active").order(:category_order)
+        @featured_homepage_products = Ecommerce::Product.where(home_featured: true).order(:id)
         @homepage_categories = Ecommerce::Category.where(popular_homepage: true, status: "active").order(:category_order)
       end
 

@@ -42,7 +42,9 @@
 
 						  <div class="carousel-inner">
 
-						  	<div class="dvt_frase"><%= Ecommerce::Control.get_control_value('home_slider_text') %></div>
+						  	<div class="dvt_frase" style="left: 7%; font-size: 45px;"><%= Ecommerce::Control.get_control_value('home_slider_text') %></div>
+
+								<image style="height: 50px; z-index: 9999; position: absolute; top: 68%; left: 82%;" src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif">
 						    <div class="item active">
 						    	<div class="dvt_slide_video"><img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif" width="120" height="100"></div>
 						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image1').text_value %>" alt="Slider1 Images">
@@ -79,68 +81,54 @@
 				<div class="col-sm-12">
 					<div class="noo-product-grid-wrap commerce product-style2">
 						<div class="noo-sh-title">
-							<%= image_tag "ecommerce/img/icon_p.png", alt: "", width: 40, height: 39 %>
+							<%= image_tag "ecommerce/img/icon_p_azul.png", alt: "", width: 40, height: 39 %>
 							<h2><%= t('.new_products') %></h2>
 							<p> <%= t('.new_products_subtitle') %></p>
 						</div>
 						<div class="noo-product-filter masonry-filters">
-							<ul class="noo-header-filter" data-option-key="filter">
+							<ul class="noo-header-filter">
 								<li>
-									<a data-option-value="*" href="#all" class="selected">
-										<span>All products</span>
+									<a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>" class="selected">
+										<span>All Products</span>
 									</a>
 								</li>
-								<li>
-									<a data-option-value=".fruit" href="#fruit">
-										<span>Fruit</span>
-									</a>
-								</li>
-								<li>
-									<a data-option-value=".vegetable" href="#vegetable">
-										<span>Vegetable</span>
-									</a>
-								</li>
-								<li>
-									<a data-option-value=".bread" href="#bread">
-										<span>Bread</span>
-									</a>
-								</li>
-								<li>
-									<a data-option-value=".others" href="#others">
-										<span>Others</span>
-									</a>
-								</li>
+								<% @primary_menu_categories.each do |category| %>
+									<li>
+										<%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id) %>
+									</li>
+								<% end %>
 							</ul>
 						</div>
 						<div class="noo-product-grid products row product-grid noo-grid-4">
+							<% @featured_homepage_products.each do |item| %>
 							<div class="bread masonry-item noo-product-column col-md-4 col-sm-6 product">
 								<div class="noo-product-inner">
 									<div class="noo-product-thumbnail">
 										<a href="shop-detail.html">
-											<%= image_tag "ecommerce/img/product/product_260x330.jpg", width: 600, height: 760, alt: "" %>
+											<%= image_tag item.image.url, width: 600, height: 760, alt: "" %>
 										</a>
-										<div class="noo-rating">
+										<!--<div class="noo-rating">
 											<div class="star-rating">
 												<span style="width:0%"></span>
 											</div>
-										</div>
+										</div>-->
 									</div>
 									<div class="noo-product-title">
-										<h3><a href="shop-detail.html">French Bread</a></h3>
-										<span class="price">
-											<span class="amount">&#36;10.00</span>
-										</span>
+										<h3><%= link_to item.name, product_path(item) %></h3>
+										<span class="price"><span class="amount"><%= number_to_currency(item.price_cents / 100) %></span></span>
 										<div class="noo-product-action">
 											<div class="noo-action">
 												<a href="ajax/product-quickview.html" class="noo-qucik-view">
 													<i class="fa fa-search"></i>
 												</a>
-												<a href="#" class="button product_type_simple add_to_cart_button"></a>
+												<%= link_to "", cart_items_path(cart_item: {quantity: 1, product_id: item.id}), :method => :post, class: "button product_type_simple add_to_cart_button" %>
+
 												<div class="yith-wcwl-add-to-wishlist">
-                                                      <div class="yith-wcwl-add-button">
-                                                          <a href="#" class="add_to_wishlist"></a>
-                                                      </div>
-                                                  </div>
+																											<div class="yith-wcwl-add-button">
+																												<%= link_to "", wishlist_items_path(wishlist_item: {quantity: 1, product_id: item.id}), :method => :post, class: "add_to_wishlist" %>
+
+																											</div>
+																									</div>
 												<div class="clear"></div>
 												<a href="shop-detail.html" class="link-detail">
 													<i class="fa fa-link"></i>
@@ -150,265 +138,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="bread masonry-item noo-product-column col-md-4 col-sm-6 product">
-								<div class="noo-product-inner">
-									<div class="noo-product-thumbnail">
-										<a href="shop-detail.html">
-											<%= image_tag "ecommerce/img/product/product_260x330.jpg", width: 600, height: 760, alt: "" %>
-										</a>
-										<div class="noo-rating">
-											<div class="star-rating">
-												<span style="width:0%"></span>
-											</div>
-										</div>
-									</div>
-									<div class="noo-product-title">
-										<h3><a href="shop-detail.html">Cookie</a></h3>
-										<span class="price">
-											<span class="amount">&#36;15.00</span>
-										</span>
-										<div class="noo-product-action">
-											<div class="noo-action">
-												<a href="ajax/product-quickview.html" class="noo-qucik-view">
-													<i class="fa fa-search"></i>
-												</a>
-												<a href="#" class="button product_type_simple add_to_cart_button"></a>
-												<div class="yith-wcwl-add-to-wishlist">
-                                                      <div class="yith-wcwl-add-button">
-                                                          <a href="#" class="add_to_wishlist"></a>
-                                                      </div>
-                                                  </div>
-												<div class="clear"></div>
-												<a href="shop-detail.html" class="link-detail">
-													<i class="fa fa-link"></i>
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="bread masonry-item noo-product-column col-md-4 col-sm-6 product">
-								<div class="noo-product-inner">
-									<div class="noo-product-thumbnail">
-										<a href="shop-detail.html">
-											<%= image_tag "ecommerce/img/product/product_260x330.jpg", width: 600, height: 760, alt: "" %>
-										</a>
-										<div class="noo-rating">
-											<div class="star-rating">
-												<span style="width:0%"></span>
-											</div>
-										</div>
-									</div>
-									<div class="noo-product-title">
-										<h3><a href="shop-detail.html">Brown Bread</a></h3>
-										<span class="price">
-											<span class="amount">&#36;12.00</span>
-										</span>
-										<div class="noo-product-action">
-											<div class="noo-action">
-												<a href="ajax/product-quickview.html" class="noo-qucik-view">
-													<i class="fa fa-search"></i>
-												</a>
-												<a href="#" class="button product_type_simple add_to_cart_button"></a>
-												<div class="yith-wcwl-add-to-wishlist">
-                                                      <div class="yith-wcwl-add-button">
-                                                          <a href="#" class="add_to_wishlist"></a>
-                                                      </div>
-                                                  </div>
-												<div class="clear"></div>
-												<a href="shop-detail.html" class="link-detail">
-													<i class="fa fa-link"></i>
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="fruit organic-fruits masonry-item noo-product-column col-md-4 col-sm-6 product">
-								<div class="noo-product-inner">
-									<div class="noo-product-thumbnail">
-										<a href="shop-detail.html">
-											<%= image_tag "ecommerce/img/product/product_260x330.jpg", width: 600, height: 760, alt: "" %>
-										</a>
-										<div class="noo-rating">
-											<div class="star-rating">
-												<span style="width:0%"></span>
-											</div>
-										</div>
-									</div>
-									<div class="noo-product-title">
-										<h3><a href="shop-detail.html">Apples</a></h3>
-										<span class="price">
-											<span class="amount">&#36;3.95</span>
-										</span>
-										<div class="noo-product-action">
-											<div class="noo-action">
-												<a href="ajax/product-quickview.html" class="noo-qucik-view">
-													<i class="fa fa-search"></i>
-												</a>
-												<a href="#" class="button product_type_simple add_to_cart_button"></a>
-												<div class="yith-wcwl-add-to-wishlist">
-                                                      <div class="yith-wcwl-add-button">
-                                                          <a href="#" class="add_to_wishlist"></a>
-                                                      </div>
-                                                  </div>
-												<div class="clear"></div>
-												<a href="shop-detail.html" class="link-detail">
-													<i class="fa fa-link"></i>
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="fruit masonry-item noo-product-column col-md-4 col-sm-6 product">
-								<div class="noo-product-inner">
-									<div class="noo-product-thumbnail">
-										<a href="shop-detail.html">
-											<%= image_tag "ecommerce/img/product/product_260x330.jpg", width: 600, height: 760, alt: "" %>
-										</a>
-										<div class="noo-rating">
-											<div class="star-rating">
-												<span style="width:0%"></span>
-											</div>
-										</div>
-									</div>
-									<div class="noo-product-title">
-										<h3><a href="shop-detail.html">Mangoes</a></h3>
-										<span class="price">
-											<span class="amount">&#36;1.95</span>
-										</span>
-										<div class="noo-product-action">
-											<div class="noo-action">
-												<a href="ajax/product-quickview.html" class="noo-qucik-view">
-													<i class="fa fa-search"></i>
-												</a>
-												<a href="#" class="button product_type_simple add_to_cart_button"></a>
-												<div class="yith-wcwl-add-to-wishlist">
-                                                      <div class="yith-wcwl-add-button">
-                                                          <a href="#" class="add_to_wishlist"></a>
-                                                      </div>
-                                                  </div>
-												<div class="clear"></div>
-												<a href="shop-detail.html" class="link-detail">
-													<i class="fa fa-link"></i>
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="others vegetable masonry-item noo-product-column col-md-4 col-sm-6 product">
-								<div class="noo-product-inner">
-									<div class="noo-product-thumbnail">
-										<a href="shop-detail.html">
-											<%= image_tag "ecommerce/img/product/product_260x330.jpg", width: 600, height: 760, alt: "" %>
-										</a>
-										<div class="noo-rating">
-											<div class="star-rating">
-												<span style="width:0%"></span>
-											</div>
-										</div>
-									</div>
-									<div class="noo-product-title">
-										<h3><a href="shop-detail.html">Broccoli</a></h3>
-										<span class="price">
-											<span class="amount">&#36;2.05</span>
-										</span>
-										<div class="noo-product-action">
-											<div class="noo-action">
-												<a href="ajax/product-quickview.html" class="noo-qucik-view">
-													<i class="fa fa-search"></i>
-												</a>
-												<a href="#" class="button product_type_simple add_to_cart_button"></a>
-												<div class="yith-wcwl-add-to-wishlist">
-                                                      <div class="yith-wcwl-add-button">
-                                                          <a href="#" class="add_to_wishlist"></a>
-                                                      </div>
-                                                  </div>
-												<div class="clear"></div>
-												<a href="shop-detail.html" class="link-detail">
-													<i class="fa fa-link"></i>
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="fruit others masonry-item noo-product-column col-md-4 col-sm-6 product">
-								<div class="noo-product-inner">
-									<div class="noo-product-thumbnail">
-										<a href="shop-detail.html">
-											<%= image_tag "ecommerce/img/product/product_260x330.jpg", width: 600, height: 760, alt: "" %>
-										</a>
-										<div class="noo-rating">
-											<div class="star-rating">
-												<span style="width:0%"></span>
-											</div>
-										</div>
-									</div>
-									<div class="noo-product-title">
-										<h3><a href="shop-detail.html">Limes</a></h3>
-										<span class="price">
-											<span class="amount">&#36;0.75</span>
-										</span>
-										<div class="noo-product-action">
-											<div class="noo-action">
-												<a href="ajax/product-quickview.html" class="noo-qucik-view">
-													<i class="fa fa-search"></i>
-												</a>
-												<a href="#" class="button product_type_simple add_to_cart_button"></a>
-												<div class="yith-wcwl-add-to-wishlist">
-                                                      <div class="yith-wcwl-add-button">
-                                                          <a href="#" class="add_to_wishlist"></a>
-                                                      </div>
-                                                  </div>
-												<div class="clear"></div>
-												<a href="shop-detail.html" class="link-detail">
-													<i class="fa fa-link"></i>
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="fruit masonry-item noo-product-column col-md-4 col-sm-6 product">
-								<div class="noo-product-inner">
-									<div class="noo-product-thumbnail">
-										<a href="shop-detail.html">
-											<%= image_tag "ecommerce/img/product/product_260x330.jpg", width: 600, height: 760, alt: "" %>
-										</a>
-										<div class="noo-rating">
-											<div class="star-rating">
-												<span style="width:0%"></span>
-											</div>
-										</div>
-									</div>
-									<div class="noo-product-title">
-										<h3><a href="shop-detail.html">Passion Fruits</a></h3>
-										<span class="price">
-											<span class="amount">&#36;3.99</span>
-										</span>
-										<div class="noo-product-action">
-											<div class="noo-action">
-												<a href="ajax/product-quickview.html" class="noo-qucik-view">
-													<i class="fa fa-search"></i>
-												</a>
-												<a href="#" class="button product_type_simple add_to_cart_button"></a>
-												<div class="yith-wcwl-add-to-wishlist">
-                                                      <div class="yith-wcwl-add-button">
-                                                          <a href="#" class="add_to_wishlist"></a>
-                                                      </div>
-                                                  </div>
-												<div class="clear"></div>
-												<a href="shop-detail.html" class="link-detail">
-													<i class="fa fa-link"></i>
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+							<% end %>
 						</div>
 					</div>
 				</div>

@@ -40,8 +40,8 @@ en-PE:
       culqi:
         payment_popup_title: "ExpatShop Payment"
         order_label: "Order"
-    store:
-      organici:
+    organici:
+      store:
         header:
           my_account: "My Account"
           cart: "Cart"
@@ -53,7 +53,7 @@ en-PE:
           search_instructions: "Type and Press Enter to Search"
           search_placeholder: "Search..."
         main:
-          new_products: "Our Products"
+          new_products: "Featured Products"
           new_products_subtitle: "From all over the world the best products money can buy"
           free_shipping: "Free Shipping on Orders over S/.100"
           payment_methods: "We accept all credit and debit cards"
