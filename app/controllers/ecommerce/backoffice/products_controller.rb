@@ -23,6 +23,7 @@ module Ecommerce
 
     # GET /backoffice/products/1/edit
     def edit
+
     end
 
     # POST /backoffice/products
@@ -42,6 +43,8 @@ module Ecommerce
     # PATCH/PUT /backoffice/products/1
     def update
       if @backoffice_product.update(backoffice_product_params)
+        @backoffice_product.category_list = backoffice_product_params[:category_id]
+        @backoffice_product.save
         redirect_to backoffice_product_path(@backoffice_product), notice: 'Product was successfully updated.'
       else
         render :edit
