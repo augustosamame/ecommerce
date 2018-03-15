@@ -1,0 +1,269 @@
+<header class="noo-header header-1">
+  <div class="navbar-wrapper">
+    <div class="navbar navbar-default">
+      <div class="container">
+        <div class="menu-position">
+          <div class="navbar-header pull-left">
+            <div class="noo_menu_canvas">
+              <div class="btn-search noo-search">
+                <i class="fa fa-search"></i>
+              </div>
+              <div data-target=".nav-collapse" class="btn-navbar">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+            <a href="./" class="navbar-brand">
+              <img class="noo-logo-img noo-logo-normal" src="images/logo.png" alt="">
+            </a>
+          </div>
+          <nav class="pull-right noo-menu-option">
+            <a href="#" class="button-expand-option">
+              <i class="fa fa-ellipsis-v"></i>
+            </a>
+            <ul>
+              <li class="menu-item fly-right">
+                <a href="my-account.html">
+                  <i class="fa fa-user"></i>
+                  My Account
+                </a>
+              </li>
+              <li class="menu-item fly-right">
+                <a href="wishlist.html">
+                  <i class="fa fa-heart-o"></i>
+                  Wishlist
+                </a>
+              </li>
+              <li class="menu-item noo-menu-item-cart minicart">
+                <a class="cart-button" href="cart.html">
+                  <span class="cart-item has-items">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span>(3)</span> Items
+                  </span>
+                </a>
+                <div class="noo-minicart">
+                  <div class="minicart-header">3 items in the shopping cart</div>
+                  <div class="minicart-body">
+                    <div class="cart-product clearfix">
+                      <div class="cart-product-image">
+                        <a class="cart-product-img" href="shop-detail.html">
+                          <img width="100" height="100" src="images/product/thumb/product_6.png" alt="" />
+                        </a>
+                      </div>
+                      <div class="cart-product-details">
+                        <div class="cart-product-title">
+                          <a href="shop-detail.html">Apples</a>
+                        </div>
+                        <div class="cart-product-price">
+                          <span class="amount">&#36;3.95</span>
+                        </div>
+                        <div class="cart-product-quantity">x 1</div>
+                      </div>
+                      <a href="#" class="remove">&times;</a>
+                    </div>
+                    <div class="cart-product clearfix">
+                      <div class="cart-product-image">
+                        <a class="cart-product-img" href="shop-detail.html">
+                          <img width="100" height="100" src="images/product/thumb/product_3.png" alt="" />
+                        </a>
+                      </div>
+                      <div class="cart-product-details">
+                        <div class="cart-product-title">
+                          <a href="shop-detail.html">Brown Bread</a>
+                        </div>
+                        <div class="cart-product-price">
+                          <span class="amount">&#36;3.95</span>
+                        </div>
+                        <div class="cart-product-quantity">x 2</div>
+                      </div>
+                      <a href="#" class="remove">&times;</a>
+                    </div>
+                  </div>
+                  <div class="minicart-footer">
+                    <div class="minicart-total">
+                      Subtotal <span class="amount">&#36;6.05</span>
+                    </div>
+                    <div class="minicart-actions clearfix">
+                      <a class="button btn-primary" href="cart.html">
+                        <span class="text">View Cart</span>
+                      </a>
+                      <a class="checkout-button button btn-primary" href="#">
+                        <span class="text">Checkout</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="menu-item fly-right">
+                <a id="noo-search" class="search-button noo-search" href="#">
+                  <i class="fa fa-search"></i> <span>Search</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <nav class="pull-right noo-main-menu">
+            <ul class="nav-collapse navbar-nav">
+              <li class="menu-item-has-children current-menu-item">
+                <a href="<%= main_app.root_path %>">Home</a>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="#">Header</a>
+                <ul class="sub-menu">
+                  <li><a href="header-1.html">Header 1</a></li>
+                  <li><a href="header-2.html">Header 2</a></li>
+                  <li><a href="header-3.html">Header 3</a></li>
+                  <li><a href="header-4.html">Header 4</a></li>
+                  <li><a href="header-5.html">Header 5</a></li>
+                  <li><a href="header-6.html">Header 6</a></li>
+                </ul>
+              </li>
+              <li><a href="our-story.html">Our Story</a></li>
+              <li class="menu-item-has-children noo_megamenu mega-col-columns-4">
+                <a href="shop.html">Shop</a>
+                <ul class="sub-menu">
+                  <li class="menu-item-has-children">
+                    <a href="#">Shop page</a>
+                    <ul class="sub-menu">
+                      <li><a href="shop-list.html">Shop List</a></li>
+                      <li><a href="shop-detail.html">Shop Detail</a></li>
+                      <li><a href="my-account.html">My Account</a></li>
+                      <li><a href="cart.html">Cart</a></li>
+                      <li><a href="cart-empty.html">Empty Cart</a></li>
+                      <li><a href="wishlist.html">Wishlist</a></li>
+                    </ul>
+                  </li>
+                  <li class="menu-item-has-children">
+                    <div class="noo_megamenu_widget_area">
+                      <div class="widget commerce widget_products">
+                        <h3 class="widget-title">Products</h3>
+                        <ul class="product_list_widget">
+                          <li>
+                            <a href="shop-detail.html">
+                              <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                              <span class="product-title">French Bread</span>
+                            </a>
+                            <span class="amount">&#36;10.00</span>
+                          </li>
+                          <li>
+                            <a href="shop-detail.html">
+                              <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                              <span class="product-title">Cookie</span>
+                            </a>
+                            <span class="amount">&#36;15.00</span>
+                          </li>
+                          <li>
+                            <a href="shop-detail.html">
+                              <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                              <span class="product-title">Brown Bread</span>
+                            </a>
+                            <span class="amount">&#36;12.00</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="noo_megamenu_widget_area">
+                      <div class="widget commerce widget_products">
+                        <h3 class="widget-title">Featured</h3>
+                        <ul class="product_list_widget">
+                          <li>
+                            <a href="shop-detail.html">
+                              <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                              <span class="product-title">French Bread</span>
+                            </a>
+                            <span class="amount">&#36;10.00</span>
+                          </li>
+                          <li>
+                            <a href="shop-detail.html">
+                              <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                              <span class="product-title">Cookie</span>
+                            </a>
+                            <span class="amount">&#36;15.00</span>
+                          </li>
+                          <li>
+                            <a href="shop-detail.html">
+                              <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                              <span class="product-title">Brown Bread</span>
+                            </a>
+                            <span class="amount">&#36;12.00</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="noo_megamenu_widget_area">
+                      <div class="widget commerce widget_products">
+                        <h3 class="widget-title">Sales</h3>
+                        <ul class="product_list_widget">
+                          <li>
+                            <a href="shop-detail.html">
+                              <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                              <span class="product-title">French Bread</span>
+                            </a>
+                            <span class="amount">&#36;10.00</span>
+                          </li>
+                          <li>
+                            <a href="shop-detail.html">
+                              <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                              <span class="product-title">Cookie</span>
+                            </a>
+                            <span class="amount">&#36;15.00</span>
+                          </li>
+                          <li>
+                            <a href="shop-detail.html">
+                              <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
+                              <span class="product-title">Brown Bread</span>
+                            </a>
+                            <span class="amount">&#36;12.00</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="boxes.html">Boxes</a>
+                <ul class="sub-menu">
+                  <li><a href="box-detail.html">Box Detail</a></li>
+                </ul>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="blog.html">Blog</a>
+                <ul class="sub-menu">
+                  <li class="menu-item-has-children">
+                    <a href="blog-masonry.html">Blog Masonry</a>
+                    <ul class="sub-menu">
+                      <li><a href="blog-masonry-two-columns.html">2 Columns</a></li>
+                      <li><a href="blog-masonry.html">3 Columns</a></li>
+                      <li><a href="blog-masonry-four-columns.html">4 Columns</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="blog.html">Blog Listing</a></li>
+                  <li><a href="blog-detail.html">Blog Single Default</a></li>
+                  <li><a href="blog-detail-video.html">Blog Single Video</a></li>
+                  <li><a href="blog-detail-audio.html">Blog Single SoundCloud</a></li>
+                  <li><a href="blog-detail-slider.html">Blog Single Slider</a></li>
+                </ul>
+              </li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="search-header5">
+    <div class="remove-form"></div>
+    <div class="container">
+      <form class="form-horizontal">
+        <label class="note-search">Type and Press Enter to Search</label>
+        <input type="search" name="s" class="form-control" value="" placeholder="Search...">
+        <input type="submit" value="Search">
+      </form>
+    </div>
+  </div>
+</header>

@@ -834,10 +834,11 @@ body.top-search-open #top-search a i.icon-line2-magnifier,
 	font-weight: 300;
 }
 
-
 @media (max-width: 991px) {
 
-	.payments-info { text-align: center; }
+	.payments-info {
+		text-align: center;
+	}
 
 	.payment-cards {
 		margin-top: 40px;
