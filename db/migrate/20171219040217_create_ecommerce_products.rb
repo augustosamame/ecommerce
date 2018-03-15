@@ -5,7 +5,8 @@ class CreateEcommerceProducts < ActiveRecord::Migration[5.1]
       t.references :brand
       t.references :supplier
       t.string :name, :null => false
-      t.text :description
+      t.string :short_description, default: ""
+      t.text :description, default: ""
       t.string :image
       t.string :permalink, :null => false
       t.integer :price_cents, :default => 0
