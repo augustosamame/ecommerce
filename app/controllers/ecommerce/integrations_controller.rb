@@ -14,9 +14,9 @@ module Ecommerce
       case Ecommerce.shipping_integrator
       when "Urbaner"
         case
-        when @cart.cart_total < 30
+        when @cart.get_totals[:tot_acum] < 30
           response = {:amount => 7.00}
-        when @cart.cart_total < 50
+        when @cart.get_totals[:tot_acum] < 50
           response = {:amount => 5.00}
         else
           response = {:amount => 0.00}

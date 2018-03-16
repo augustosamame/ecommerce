@@ -10,12 +10,14 @@ module Ecommerce
       CartItem.create(user_id: current_user, product: item_params[:product_id])
     end
 
-    def cart_total
-      acum = 0
+    def get_totals
+      tot_acum = 0
+      qty_items = 0
       self.cart_items.each do |item|
-        acum += item.line_total
+        tot_acum += item.line_total
+        qty_items += item.quantity
       end
-      return acum
+      return {tot_acum: tot_acum, tot_qty: qty_items}
     end
 
   end
