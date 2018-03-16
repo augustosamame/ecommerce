@@ -46,12 +46,14 @@
 									<!-- menu secundario -->
 
 									<nav class="pull-right noo-menu-option">
+
 										<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>
 
-										<ul class="nav-collapse noo-main-menu">
-											<li class="">
+										<ul class="nav-collapse navbar-nav noo-main-menu">
+											<li class="menu-item-has-children">
 												<% if current_user %>
-												<a href="<%= my_account_path %>" class=""><i class='fa fa-user'></i><%= current_user.name %> <span class="caret"></span></a>
+												<%= link_to "<i class='fa fa-user'></i>#{current_user.name}<span class='caret'></span>".html_safe, main_app.destroy_user_session_path, method: :delete %>
+												</a>
 												<% else %>
 												<a href="<%= main_app.new_user_session_path %>" class=""><i class='fa fa-user'></i>My Account<span class="caret"></span></a>
 												<% end %>
