@@ -1,0 +1,27 @@
+<div class="main">
+
+	<div class="container-fluid"></div>
+	<div class="noo-simple-product-wrap">
+		<div class="container-fluid dvt_houses_tope">
+			<div class="row">
+				<div class="col-md-2 dvt_houses" >
+					<ul class="dvt_houses_lista " style="margin-top:30px;">
+
+							<% @secondary_menu_categories.each do |category| %>
+								<li>
+								<div class="dvt_houses_contenedor" style="margin: auto;" >
+									<a href=" <%= products_path(category_id: category.id) %> ">
+										<%= image_tag category.image.url, width: 187, height: 49, alt: "", class: "dvt_houses_img" %>
+										<span class="dvt_houses_titulos" style="text-align:center;"><%= category.image_popular_homepage_overlay_text %></span>
+									</a>
+								</div>
+								</li>
+							<% end %>
+
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

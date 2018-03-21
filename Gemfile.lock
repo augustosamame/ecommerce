@@ -1,8 +1,9 @@
 PATH
   remote: .
   specs:
-    ecommerce (0.2.6)
+    ecommerce (0.3.4)
       bootstrap-sass
+      browser
       carrierwave (~> 1.2.1)
       cocoon
       culqi-ruby
@@ -67,6 +68,7 @@ GEM
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    browser (2.5.3)
     builder (3.2.3)
     carrierwave (1.2.2)
       activemodel (>= 4.0.0)
@@ -90,7 +92,7 @@ GEM
       dotenv (= 2.2.1)
       railties (>= 3.2, < 5.2)
     erubi (1.7.1)
-    excon (0.60.0)
+    excon (0.61.0)
     execjs (2.7.0)
     ffi (1.9.23)
     fog-aws (1.4.1)
@@ -153,7 +155,7 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multi_json (1.13.1)
-    nio4r (2.2.0)
+    nio4r (2.3.0)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     pg (1.0.0)

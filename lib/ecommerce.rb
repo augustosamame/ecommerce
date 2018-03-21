@@ -13,6 +13,7 @@ require 'cocoon'
 require 'font-awesome-rails'
 require 'culqi-ruby'
 require 'geocoder'
+require "browser"
 
 module Ecommerce
 

@@ -15,7 +15,11 @@
 										</div>
 									</div>
 									<a href="<%= root_path %>" class="navbar-brand">
-										<%= image_tag Ecommerce.header_landing_logo, style: "margin-top: -22px;", alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 140 %>
+									<% if browser.device.mobile? %>
+											<%= image_tag Ecommerce.header_logo, style: "margin-top: -22px;", alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 140 %>
+									<% else %>
+											<%= image_tag Ecommerce.header_landing_logo, style: "margin-top: -22px;", alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 140 %>
+									<% end %>
 									</a>
 								</div>
 

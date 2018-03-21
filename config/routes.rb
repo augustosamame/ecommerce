@@ -35,6 +35,8 @@ Ecommerce::Engine.routes.draw do
   resources :wishlist_items
   patch '/addresses/update_map', to: 'addresses#update_map'
   resources :addresses
+  get '/categories_m', to: 'store#categories_mobile'
+  get '/houses_m', to: 'store#houses_mobile'
 
   root to: 'store#main'
 

@@ -17,6 +17,16 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
     end
 
+    def houses_mobile
+      add_body_css_class('stretched')
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/houses_mobile"
+    end
+
+    def categories_mobile
+      add_body_css_class('stretched')
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/categories_mobile"
+    end
+
     private
 
       def set_home_items
