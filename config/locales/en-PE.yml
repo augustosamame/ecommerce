@@ -46,7 +46,7 @@ en-PE:
           my_account: "My Account"
           cart: "Cart"
           search: "Search"
-          home: "Home"
+          home: "Store"
           our_story: "Our Story"
           blog: "Blog"
           contact: "Contact"
@@ -59,7 +59,7 @@ en-PE:
           payment_methods: "We accept all credit and debit cards"
       canvas_ecommerce:
         header:
-          home_menu: "Home"
+          home_menu: "Store"
           blog_menu: "Blog"
           contact_us_menu: "Contact Us"
           search_string: "Type &amp; Hit Enter.."

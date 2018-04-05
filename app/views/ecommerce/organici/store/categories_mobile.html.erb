@@ -8,9 +8,16 @@
 					<ul class="dvt_houses_lista " style="margin-top:30px;">
 
 						<% @primary_menu_categories.each do |category| %>
+
 							<li>
-								<%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id) %>
+							<div class="dvt_houses_contenedor" style="margin: auto;" >
+								<a href=" <%= products_path(category_id: category.id) %> ">
+									<%= image_tag category.image.url, width: 187, height: 49, alt: "", class: "dvt_houses_img" %>
+									<span class="dvt_houses_titulos" style="text-align:center;"><%= category.image_popular_homepage_overlay_text %></span>
+								</a>
+							</div>
 							</li>
+
 						<% end %>
 
 

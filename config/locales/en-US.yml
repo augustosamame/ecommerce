@@ -3,7 +3,7 @@ en-US:
     store:
       canvas_ecommerce:
         header:
-          home_menu: "Home"
+          home_menu: "Store"
           blog_menu: "Blog"
           contact_us_menu: "Contact Us"
           search_string: "Type &amp; Hit Enter.."

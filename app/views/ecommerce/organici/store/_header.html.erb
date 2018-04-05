@@ -26,23 +26,27 @@
 								<nav class="pull-left noo-main-menu">
 									<ul class="nav-collapse navbar-nav">
 										<li class="current-menu-item">
-											<a href="<%= root_path %>">Home</a>
+											<a href="<%= Ecommerce::Engine.routes.url_helpers.root_path %>">Store</a>
 										</li>
 
 										<li><a href="our-story.html">Our Story</a></li>
 										<li class="menu-item-has-children">
-											<a href="blog.html">Blog</a>
+											<a href="<%= Blog::Engine.routes.url_helpers.root_path %>">Blog</a>
 											<ul class="sub-menu">
-												<li><a href="blog.html"></a></li>
-												<li><a href="blog-detail.html">Health Benefits of Dates</a></li>
-												<li><a href="blog-detail-video.html">The Best French Wines</a></li>
-												<li><a href="blog-detail-audio.html">See All Blog Articles</a></li>
+												<% Blog::Post.where(post_published: true).each do |post| %>
+													<li><a href="<%= Blog::Engine.routes.url_helpers.blog_path(post.id) %>"><%= post.title %></a></li>
+												<% end %>
+												<li><a href="<%= Blog::Engine.routes.url_helpers.root_path %>">See All Blog Articles</a></li>
 											</ul>
 										</li>
 										<li><a href="contact.html">Contact</a></li>
 
-										<% if current_user && current_user.admin? %>
-											<li><%= link_to "Backoffice", backoffice_dashboard_path, style: "color: red;" %></li>
+										<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
+											<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
+										<% end %>
+
+										<% if current_user && ["admin", "blogger"].include?(current_user.role) && controller_name == "blog" %>
+											<li><%= link_to "Manage Blog Posts", Blog::Engine.routes.url_helpers.posts_path, style: "color: red;" %></li>
 										<% end %>
 
 									</ul>
@@ -65,7 +69,7 @@
 
 
 											<li class="menu-item fly-right">
-												<% if @wishlist.id %>
+												<% if @wishlist && @wishlist.id %>
 												<a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.wishlist_path(@wishlist.id) %>">
 													<i class="fa fa-heart-o"></i><%= t('.wishlist') %>
 												</a>
@@ -75,6 +79,7 @@
 
 
 											<li class="menu-item noo-menu-item-cart minicart">
+												<% if @cart && @cart.id %>
 				                <a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
 				                  <span class="cart-item has-items">
 				                    <i class="fa fa-shopping-cart"></i>
@@ -120,6 +125,7 @@
 				                    </div>
 				                  </div>
 				                </div>
+												<% end %>
 				              </li>
 
 											<li class="menu-item fly-right">
@@ -136,6 +142,7 @@
 							</div>
 
 							<!-- menu product -->
+							<% unless @hide_header_ecommerce_items %>
 							<div class="container-fluid dvt_back">
 								<div class="col-md-12 dvt_allp hidden-xs .hidden-sm">
 
@@ -147,6 +154,7 @@
 										<% end %>
 						            </ul>
 								</div>
+							<% end %>
 
 							<!-- final menu product -->
 
@@ -154,6 +162,8 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- TODO Search should have alternate functionality if header is being shown from blog or ecommerce -->
 				<div class="search-header5">
 					<div class="remove-form"></div>
 					<div class="container">
