@@ -1,3 +1,23 @@
+.payment-cards {
+	list-style: none;
+	text-align: right;
+	margin: 0;
+}
+
+.payment-cards li {
+	display: inline-block;
+	margin: 0 5px;
+	width: 44px;
+}
+
+.product-image > a,
+.product-image .slide a,
+.product-image img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
 .revo-slider-emphasis-text {
   font-size: 58px;
   font-weight: 700;

@@ -30,8 +30,8 @@
           <div class="product-image image_height_360">
             <a href="<%= product_path(item) %>"><%= image_tag item.image.medium_400.url, alt: "#{item.name} Image" %></a>
             <a href="<%= product_path(item) %>"><%= image_tag "https://s3.amazonaws.com/devtechperu-expatshop-dev/uploads/ecommerce/product/image/2/medium_400_rice.jpeg", alt: "#{item.name} Image", height: 360, width: 360 %></a>
-            <!-- <a href="#"><img src="images/shop/dress/1.jpg" alt="Checked Short Dress"></a>
-            <a href="#"><img src="images/shop/dress/1-1.jpg" alt="Checked Short Dress"></a> -->
+            <!-- <a href="#"><img src= <%= image_url("ecommerce/img/shop/dress/1.jpg" %> alt="Checked Short Dress"></a>
+            <a href="#"><img src= <%= image_url("ecommerce/img/shop/dress/1-1.jpg" %> alt="Checked Short Dress"></a> -->
             <% if item.discounted? %>
               <div class="sale-flash">Sale</div>
             <% end %>
@@ -62,8 +62,8 @@
         <div class="product clearfix">
           <div class="product-image image_height_360">
             <a href="<%= product_path(item) %>"><%= image_tag item.image.medium_400.url, alt: "#{item.name} Image" %></a>
-            <!-- <a href="#"><img src="images/shop/pants/1-1.jpg" alt="Slim Fit Chinos"></a>
-            <a href="#"><img src="images/shop/pants/1.jpg" alt="Slim Fit Chinos"></a> -->
+            <!-- <a href="#"><img src= <%= image_url("ecommerce/img/shop/pants/1-1.jpg" %> alt="Slim Fit Chinos"></a>
+            <a href="#"><img src= <%= image_url("ecommerce/img/shop/pants/1.jpg" %> alt="Slim Fit Chinos"></a> -->
             <div class="product-overlay">
               <a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
               <a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
@@ -92,9 +92,9 @@
                   <div class="slide"><a href="<%= product_path(item) %>"><%= image_tag item.image.medium_400.url, alt: "#{item.name} Image" %></a></div>
                   <div class="slide"><a href="<%= product_path(item) %>"><%= image_tag item.image.medium_400.url, alt: "#{item.name} Image" %></a></div>
                   <div class="slide"><a href="<%= product_path(item) %>"><%= image_tag item.image.medium_400.url, alt: "#{item.name} Image" %></a></div>
-                  <!-- <div class="slide"><a href="#"><img src="images/shop/shoes/1.jpg" alt="Dark Brown Boots"></a></div>
-                  <div class="slide"><a href="#"><img src="images/shop/shoes/1-1.jpg" alt="Dark Brown Boots"></a></div>
-                  <div class="slide"><a href="#"><img src="images/shop/shoes/1-2.jpg" alt="Dark Brown Boots"></a></div> -->
+                  <!-- <div class="slide"><a href="#"><img src= <%= image_url("ecommerce/img/shop/shoes/1.jpg" %> alt="Dark Brown Boots"></a></div>
+                  <div class="slide"><a href="#"><img src= <%= image_url("ecommerce/img/shop/shoes/1-1.jpg" %> alt="Dark Brown Boots"></a></div>
+                  <div class="slide"><a href="#"><img src= <%= image_url("ecommerce/img/shop/shoes/1-2.jpg" %> alt="Dark Brown Boots"></a></div> -->
                 </div>
               </div>
             </div>

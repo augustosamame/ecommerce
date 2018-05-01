@@ -2,7 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 /*
-*= require 'ecommerce/canvas_shop/style'
 *= require 'ecommerce/canvas_shop/dark'
 *= require 'ecommerce/canvas_shop/font-icons'
 *= require 'ecommerce/canvas_shop/animate'
@@ -11,4 +10,6 @@
 *= require 'ecommerce/canvas_shop/include/rs-plugin/css/settings'
 *= require 'ecommerce/canvas_shop/include/rs-plugin/css/layers'
 *= require 'ecommerce/canvas_shop/include/rs-plugin/css/navigation'
+*= require 'ecommerce/canvas_shop/style'
+*= require 'ecommerce/canvas_shop/canvas_shop_custom'
 */

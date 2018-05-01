@@ -4,8 +4,27 @@ es-PE:
       culqi:
         payment_popup_title: "Pago ExpatShop"
         order_label: "Orden"
-    store:
-      canvas_ecommerce:
+    canvas_ecommerce:
+      store:
+        header:
+          home_menu: "Inicio"
+          blog_menu: "Blog"
+          contact_us_menu: "Contáctanos"
+          search_string: "Ingrese el término de búsqueda y presione Enter.."
+          my_account: "Mi Cuenta"
+          log_out: "Cerrar Sesión"
+          backoffice: "Backoffice"
+        footer:
+          select_language: "Selecciona tu Lenguaje:"
+          language_button: "Seleccionar"
+        main:
+          fresh_arrivals: "Recién Llegados"
+          popular_categories: 'Categorías Populares'
+          browse_categories: 'Mira nuestros productos por categoría'
+          best_selling_products: 'Nuestros Productos más Vendidos'
+          free_shipping: 'Envío sin costo para pedidos mayores a <strong>S/.199</strong>.'
+    canvas_shop:
+      store:
         header:
           home_menu: "Inicio"
           blog_menu: "Blog"

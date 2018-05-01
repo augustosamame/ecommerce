@@ -9,20 +9,40 @@
 			<!-- Logo
 			============================================= -->
 			<div id="logo">
-				<a href="<%= root_path %>">
-					<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "standard-logo", width: 200 %>
-				</a>
-				<!-- <a href="index.html" class="standard-logo" data-dark-logo="images/logo-dark.png"><img src="images/logo.png" alt="Canvas Logo"></a>
-				<a href="index.html" class="retina-logo" data-dark-logo="images/logo-dark@2x.png"><img src="images/logo@2x.png" alt="Canvas Logo"></a> -->
-			</div><!-- #logo end -->
+				<a href="<%= main_app.root_path %>" class="standard-logo"><%= image_tag Ecommerce.header_logo, alt: "Store Logo" %></a>
+        <a href="<%= main_app.root_path %>" class="retina-logo"><%= image_tag Ecommerce.header_logo, alt: "Store Logo" %></a>
+			</div>
 
 			<!-- Primary Navigation
 			============================================= -->
 			<nav id="primary-menu">
 
 				<ul>
+					<li class=""><%= link_to t('.home_menu'), main_app.root_path %></li>
+
+          <% @primary_menu_categories.each do |menu_item| %>
+            <li class=""><%= link_to menu_item.name, products_path(category_id: menu_item.id) %>
+              <% unless Ecommerce::Category.where(parent_id: menu_item.id, status: "active").blank? %>
+                <ul>
+                  <% Ecommerce::Category.where(parent_id: menu_item.id, status: "active").each do |sub_menu_item| %>
+                    <li><a href="#"><div><%= sub_menu_item.name %></div></a></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </li>
+          <% end %>
+
+          <!--<li><a href="#"><div><%= t('.blog_menu') %></div></a></li>
+          <li><a href="#"><div><%= t('.contact_us_menu') %></div></a></li>-->
+
+        </ul>
+
+
+				<!--<ul>
 					<li class="current"><a href="#"><div>Home</div><span>Inicio</span></a></li>
 					<li class="current"><a href="#"><div>Quiénes Somos</div><span>Conócenos</span></a></li>
+					<li><a href="#"><div>Contact</div><span>Get In Touch</span></a></li>
+				</ul>-->
 					<!-- Mega Menu
 					============================================= -->
 					<!--<% @primary_menu_categories.each do |category| %>
@@ -118,8 +138,7 @@
 					<li><a href="#"><div>Sale</div><span>Awesome Works</span></a></li>
 					<li><a href="#"><div>Blog</div><span>Latest News</span></a></li>
 				-->
-					<li><a href="#"><div>Contact</div><span>Get In Touch</span></a></li>
-				</ul>
+
 
 				<!-- Top Cart
 				============================================= -->
@@ -132,7 +151,7 @@
 						<div class="top-cart-items">
 							<div class="top-cart-item clearfix">
 								<div class="top-cart-item-image">
-									<a href="#"><img src="images/shop/small/1.jpg" alt="Blue Round-Neck Tshirt" /></a>
+									<a href="#"><img src= <%= image_url("ecommerce/img/shop/small/1.jpg") %> alt="Blue Round-Neck Tshirt" /></a>
 								</div>
 								<div class="top-cart-item-desc">
 									<a href="#">Blue Round-Neck Tshirt</a>
@@ -142,7 +161,7 @@
 							</div>
 							<div class="top-cart-item clearfix">
 								<div class="top-cart-item-image">
-									<a href="#"><img src="images/shop/small/6.jpg" alt="Light Blue Denim Dress" /></a>
+									<a href="#"><img src= <%= image_url("ecommerce/img/shop/small/6.jpg") %> alt="Light Blue Denim Dress" /></a>
 								</div>
 								<div class="top-cart-item-desc">
 									<a href="#">Light Blue Denim Dress</a>
