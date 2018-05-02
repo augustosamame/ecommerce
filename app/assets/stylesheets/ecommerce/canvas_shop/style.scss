@@ -12157,7 +12157,7 @@ body:not(.device-touch) .tagcloud a {
 .widget_pages li a,
 .widget_rss li a,
 .widget_recent_comments li a {
-	background: url("images/icons/widget-link.png") left top no-repeat;
+	background: asset_url("ecommerce/img/icons/widget-link.png") left top no-repeat;
 	border: none !important;
 	color: #444;
 	font-size: 14px;

@@ -14,11 +14,13 @@
   <%= render 'ecommerce/application/spinner' %>
 
   <%= render 'ecommerce/canvas_shop/store/top_bar' %>
-  <%= render 'ecommerce/canvas_shop/store/header' %>
+  <%= render 'ecommerce/canvas_shop/store/header' if Ecommerce.use_engine_header %>
 
   <%= yield %>
 
-  <%= render 'ecommerce/canvas_shop/store/footer' %>
+  <%= render 'ecommerce/canvas_shop/store/footer' if Ecommerce.use_engine_footer %>
+
+  <%= render "ecommerce/canvas_shop/store/custom/#{Ecommerce.custom_footer}_footer" if Ecommerce.custom_footer %>
 
 </div>
 
