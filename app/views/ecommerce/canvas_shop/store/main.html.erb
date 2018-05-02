@@ -2,7 +2,6 @@
 
 <%= render "ecommerce/canvas_shop/store/main_slider" %>
 
-
 <!-- Content
 ============================================= -->
 <section id="content">
@@ -38,9 +37,8 @@
 			<div class="tabs topmargin-lg clearfix" id="tab-3">
 
 				<ul class="tab-nav clearfix">
-					<li><a href="#tabs-9">New Arrivals</a></li>
-					<li><a href="#tabs-10">Best sellers</a></li>
-					<li><a href="#tabs-11">You may like</a></li>
+					<li><a href="#tabs-9">Más Vendidos</a></li>
+					<li><a href="#tabs-10">Recomendados para tí</a></li>
 				</ul>
 
 				<div class="tab-container">
@@ -49,19 +47,21 @@
 
 						<div id="shop" class="shop clearfix">
 
+							<% @featured_homepage_products.each do |item| %>
+
 							<div class="product clearfix">
 								<div class="product-image">
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/dress/1.jpg") %> alt="Checked Short Dress"></a>
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/dress/1-1.jpg") %> alt="Checked Short Dress"></a>
-									<div class="sale-flash">50% Off*</div>
+									<a href="<%= product_path(item) %>"><%= image_tag item.image.url, height: 470, alt: "" %></a>
+									<a href="<%= product_path(item) %>"><%= image_tag item.image.url, height: 470, alt: "" %></a>
+									<!--<div class="sale-flash">50% Off*</div>-->
 									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
+										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> <%= t('.add_to_cart') %></span></a>
+										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span><%= t('.quick_view') %></span></a>
 									</div>
 								</div>
 								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Checked Short Dress</a></h3></div>
-									<div class="product-price"><del>$24.99</del> <ins>$12.49</ins></div>
+									<div class="product-title"><h3><%= link_to item.name, product_path(item) %></h3></div>
+									<div class="product-price"><!--<del>--><%= number_to_currency(item.price_cents / 100) %><!-- </del><ins>$12.49</ins>--></div>
 									<div class="product-rating">
 										<i class="icon-star3"></i>
 										<i class="icon-star3"></i>
@@ -72,7 +72,9 @@
 								</div>
 							</div>
 
-							<div class="product clearfix">
+							<% end %>
+
+							<!-- <div class="product clearfix">
 								<div class="product-image">
 									<a href="#"><img src= <%= image_url("ecommerce/img/shop/pants/1-1.jpg") %> alt="Slim Fit Chinos"></a>
 									<a href="#"><img src= <%= image_url("ecommerce/img/shop/pants/1.jpg") %> alt="Slim Fit Chinos"></a>
@@ -93,57 +95,8 @@
 									</div>
 								</div>
 							</div>
+							-->
 
-							<div class="product clearfix">
-								<div class="product-image">
-									<div class="fslider" data-arrows="false">
-										<div class="flexslider">
-											<div class="slider-wrap">
-												<div class="slide"><a href="#"><img src= <%= image_url("ecommerce/img/shop/shoes/1.jpg") %> alt="Dark Brown Boots"></a></div>
-												<div class="slide"><a href="#"><img src= <%= image_url("ecommerce/img/shop/shoes/1-1.jpg") %> alt="Dark Brown Boots"></a></div>
-												<div class="slide"><a href="#"><img src= <%= image_url("ecommerce/img/shop/shoes/1-2.jpg") %> alt="Dark Brown Boots"></a></div>
-											</div>
-										</div>
-									</div>
-									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
-									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Dark Brown Boots</a></h3></div>
-									<div class="product-price">$49</div>
-									<div class="product-rating">
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star-empty"></i>
-										<i class="icon-star-empty"></i>
-									</div>
-								</div>
-							</div>
-
-							<div class="product clearfix">
-								<div class="product-image">
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/dress/2.jpg") %> alt="Light Blue Denim Dress"></a>
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/dress/2-2.jpg") %> alt="Light Blue Denim Dress"></a>
-									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
-									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Light Blue Denim Dress</a></h3></div>
-									<div class="product-price">$19.95</div>
-									<div class="product-rating">
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star-empty"></i>
-									</div>
-								</div>
-							</div>
 
 						</div>
 
@@ -153,201 +106,9 @@
 
 						<div id="shop" class="shop clearfix">
 
-							<div class="product clearfix">
-								<div class="product-image">
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/sunglasses/1.jpg") %> alt="Unisex Sunglasses"></a>
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/sunglasses/1-1.jpg") %> alt="Unisex Sunglasses"></a>
-									<div class="sale-flash">Sale!</div>
-									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
-									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Unisex Sunglasses</a></h3></div>
-									<div class="product-price"><del>$19.99</del> <ins>$11.99</ins></div>
-									<div class="product-rating">
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star-empty"></i>
-										<i class="icon-star-empty"></i>
-									</div>
-								</div>
-							</div>
 
-							<div class="product clearfix">
-								<div class="product-image">
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/tshirts/1.jpg") %> alt="Blue Round-Neck Tshirt"></a>
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/tshirts/1-1.jpg") %> alt="Blue Round-Neck Tshirt"></a>
-									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
-									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Blue Round-Neck Tshirt</a></h3></div>
-									<div class="product-price">$9.99</div>
-									<div class="product-rating">
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star-half-full"></i>
-										<i class="icon-star-empty"></i>
-									</div>
-								</div>
-							</div>
-
-							<div class="product clearfix">
-								<div class="product-image">
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/watches/1.jpg") %> alt="Silver Chrome Watch"></a>
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/watches/1-1.jpg") %> alt="Silver Chrome Watch"></a>
-									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
-									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Silver Chrome Watch</a></h3></div>
-									<div class="product-price">$129.99</div>
-									<div class="product-rating">
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star-half-full"></i>
-									</div>
-								</div>
-							</div>
-
-							<div class="product clearfix">
-								<div class="product-image">
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/shoes/2.jpg") %> alt="Men Grey Casual Shoes"></a>
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/shoes/2-1.jpg") %> alt="Men Grey Casual Shoes"></a>
-									<div class="sale-flash">Sale!</div>
-									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
-									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Men Grey Casual Shoes</a></h3></div>
-									<div class="product-price"><del>$45.99</del> <ins>$39.49</ins></div>
-									<div class="product-rating">
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star-half-full"></i>
-										<i class="icon-star-empty"></i>
-										<i class="icon-star-empty"></i>
-									</div>
-								</div>
-							</div>
 
 						</div>
-					</div>
-
-					<div class="tab-content clearfix" id="tabs-11">
-
-						<div id="shop" class="shop clearfix">
-
-							<div class="product clearfix">
-								<div class="product-image">
-									<div class="fslider" data-arrows="false">
-										<div class="flexslider">
-											<div class="slider-wrap">
-												<div class="slide"><a href="#"><img src= <%= image_url("ecommerce/img/shop/dress/3.jpg") %> alt="Pink Printed Dress"></a></div>
-												<div class="slide"><a href="#"><img src= <%= image_url("ecommerce/img/shop/dress/3-1.jpg") %> alt="Pink Printed Dress"></a></div>
-												<div class="slide"><a href="#"><img src= <%= image_url("ecommerce/img/shop/dress/3-2.jpg") %> alt="Pink Printed Dress"></a></div>
-											</div>
-										</div>
-									</div>
-									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
-									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Pink Printed Dress</a></h3></div>
-									<div class="product-price">$39.49</div>
-									<div class="product-rating">
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star-empty"></i>
-										<i class="icon-star-empty"></i>
-									</div>
-								</div>
-							</div>
-
-							<div class="product clearfix">
-								<div class="product-image">
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/pants/5.jpg") %> alt="Green Trousers"></a>
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/pants/5-1.jpg") %> alt="Green Trousers"></a>
-									<div class="sale-flash">Sale!</div>
-									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
-									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Green Trousers</a></h3></div>
-									<div class="product-price"><del>$24.99</del> <ins>$21.99</ins></div>
-									<div class="product-rating">
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star-half-full"></i>
-										<i class="icon-star-empty"></i>
-									</div>
-								</div>
-							</div>
-
-							<div class="product clearfix">
-								<div class="product-image">
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/sunglasses/2.jpg") %> alt="Men Aviator Sunglasses"></a>
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/sunglasses/2-1.jpg") %> alt="Men Aviator Sunglasses"></a>
-									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
-									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Men Aviator Sunglasses</a></h3></div>
-									<div class="product-price">$13.49</div>
-									<div class="product-rating">
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star-empty"></i>
-									</div>
-								</div>
-							</div>
-
-							<div class="product clearfix">
-								<div class="product-image">
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/tshirts/4.jpg") %> alt="Black Polo Tshirt"></a>
-									<a href="#"><img src= <%= image_url("ecommerce/img/shop/tshirts/4-1.jpg") %> alt="Black Polo Tshirt"></a>
-									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> Add to Cart</span></a>
-										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span> Quick View</span></a>
-									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title"><h3><a href="#">Black Polo Tshirt</a></h3></div>
-									<div class="product-price">$11.49</div>
-									<div class="product-rating">
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-										<i class="icon-star3"></i>
-									</div>
-								</div>
-							</div>
-
-						</div>
-
 					</div>
 
 				</div>
@@ -356,6 +117,7 @@
 
 			<div class="clear bottommargin-sm"></div>
 
+<!--
 			<div class="col_one_third">
 				<div class="fancy-title title-border">
 					<h4>About Us</h4>
@@ -457,9 +219,9 @@
 			</div>
 
 			<div class="clear"></div>
-
+-->
 			<div class="fancy-title title-border title-center topmargin-sm">
-				<h4>Popular Brands</h4>
+				<h4>Nuestras Marcas</h4>
 			</div>
 
 			<ul class="clients-grid grid-6 nobottommargin clearfix">
@@ -491,20 +253,20 @@
 				<div class="col_one_fourth nobottommargin">
 					<div class="feature-box fbox-plain fbox-dark fbox-small">
 						<div class="fbox-icon">
-							<i class="icon-thumbs-up2"></i>
+							<i class="icon-credit-cards"></i>
 						</div>
-						<h3>100% Original</h3>
-						<p class="notopmargin">We guarantee you the sale of Original Brands.</p>
+						<h3>Medios de Pago</h3>
+						<p class="notopmargin">Aceptamos todas las tarjetas de crédito y débito así como depósitos bancarios.</p>
 					</div>
 				</div>
 
 				<div class="col_one_fourth nobottommargin">
 					<div class="feature-box fbox-plain fbox-dark fbox-small">
 						<div class="fbox-icon">
-							<i class="icon-credit-cards"></i>
+							<i class="icon-thumbs-up2"></i>
 						</div>
-						<h3>Payment Options</h3>
-						<p class="notopmargin">We accept Visa, MasterCard and American Express.</p>
+						<h3>Garantía de Devolución</h3>
+						<p class="notopmargin">En caso el producto no sea el que usted necesite podrá devolverlo y le reembolsaremos lo pagado (*).</p>
 					</div>
 				</div>
 
@@ -513,8 +275,8 @@
 						<div class="fbox-icon">
 							<i class="icon-truck2"></i>
 						</div>
-						<h3>Free Shipping</h3>
-						<p class="notopmargin">Free Delivery to 100+ Locations on orders above $40.</p>
+						<h3>Envío Gratuito</h3>
+						<p class="notopmargin">Envío gratuito a Lima y capitales de provincia para compras mayores a S/150.</p>
 					</div>
 				</div>
 
@@ -523,8 +285,8 @@
 						<div class="fbox-icon">
 							<i class="icon-undo"></i>
 						</div>
-						<h3>30-Days Returns</h3>
-						<p class="notopmargin">Return or exchange items purchased within 30 days.</p>
+						<h3>Respaldado por Especialistas</h3>
+						<p class="notopmargin">Todos nuestros productos han sido aprobados por médicos especilistas en pie y tobillo.</p>
 					</div>
 				</div>
 
@@ -541,19 +303,19 @@
 				<div class="col_half subscribe-widget nobottommargin col_last">
 
 					<div class="heading-block topmargin-lg">
-						<h3><strong>GET 20% OFF*</strong></h3>
-						<span>Our App scales beautifully to different Devices.</span>
+						<h3><strong>OBTÉN 10% de DESCUENTO*</strong></h3>
+						<span>Regístrate en nuestro Newsletter y recibiras 10% de descuento en tu primera compra.</span>
 					</div>
 
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet cumque, perferendis accusamus porro illo exercitationem molestias.</p>
+					<p>Recibirán un cupón en tu correo que podrás utilizar para obtenter el descuento al momento de realizar checkout</p>
 
 					<div class="widget-subscribe-form-result"></div>
 					<form id="widget-subscribe-form3" action="include/subscribe.php" role="form" method="post" class="nobottommargin">
 						<div class="input-group" style="max-width:400px;">
 							<span class="input-group-addon"><i class="icon-email2"></i></span>
-							<input type="email" name="widget-subscribe-form-email" class="form-control required email" placeholder="Enter your Email">
+							<input type="email" name="widget-subscribe-form-email" class="form-control required email" placeholder="Ingresa tu correo">
 							<span class="input-group-btn">
-								<button class="btn btn-danger" type="submit">Subscribe Now</button>
+								<button class="btn btn-danger" type="submit">Registrarse</button>
 							</span>
 						</div>
 					</form>
@@ -571,10 +333,10 @@
 	  <div class="container clearfix">
 
 	    <div class="row payments-info">
-	      <div class="col-md-3">
+	      <div class="col-md-4">
 	        <p class="lead nomargin"><%= t('.payment_methods').html_safe %></p>
 	      </div>
-	      <div class="col-md-9">
+	      <div class="col-md-8">
 	        <ul class="payment-cards clearfix" style="margin-top: 5px;">
 
 	          <li><%= image_tag "ecommerce/img/cards/visa.png", alt: "Visa" %></li>
