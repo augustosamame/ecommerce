@@ -37,6 +37,9 @@ module Ecommerce
   mattr_accessor :company_city
   mattr_accessor :company_street
   mattr_accessor :company_vat
+  mattr_accessor :sales_email
+  mattr_accessor :support_email
+  mattr_accessor :phone_number
 
   mattr_accessor :address_requires_doc_id # :boolean, default: true # should state/state_name be required
   mattr_accessor :address_requires_phone # :boolean, default: true # Determines whether we require phone in address

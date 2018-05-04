@@ -1,405 +1,185 @@
-<div class="site">
-  <header class="noo-header header-1">
-    <div class="navbar-wrapper">
-      <div class="navbar navbar-default">
-        <div class="container">
-          <div class="menu-position">
-            <div class="navbar-header pull-left">
-              <div class="noo_menu_canvas">
-                <div class="btn-search noo-search">
-                  <i class="fa fa-search"></i>
-                </div>
-                <div data-target=".nav-collapse" class="btn-navbar">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-              <a href="./" class="navbar-brand">
-                <img class="noo-logo-img noo-logo-normal" src="images/logo.png" alt="">
-              </a>
-            </div>
-            <nav class="pull-right noo-menu-option">
-              <a href="#" class="button-expand-option">
-                <i class="fa fa-ellipsis-v"></i>
-              </a>
-              <ul>
-                <li class="menu-item fly-right">
-                  <a href="my-account.html">
-                    <i class="fa fa-user"></i>
-                    My Account
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+
+  <div class="container clearfix">
+    <h1><%= t('.cart') %></h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#"><%= t('.home') %></a></li>
+      <li class="breadcrumb-item"><a href="#"><%= t('.shop') %></a></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= t('.cart') %></li>
+    </ol>
+  </div>
+
+</section><!-- #page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+
+  <div class="content-wrap">
+
+    <div class="container clearfix">
+
+      <div class="table-responsive">
+        <table class="table cart">
+          <thead>
+            <tr>
+              <th class="cart-product-remove">&nbsp;</th>
+              <th class="cart-product-thumbnail">&nbsp;</th>
+              <th class="cart-product-name"><%= t('.product') %></th>
+              <th class="cart-product-price"><%= t('.unit_price') %></th>
+              <th class="cart-product-quantity"><%= t('.quantity') %></th>
+              <th class="cart-product-subtotal"><%= t('.total') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @cart.cart_items.count == 0 %>
+              <tr class="cart_item">
+                <td class="cart-product-remove">
+
+                </td>
+
+                <td class="cart-product-thumbnail">
+                  <h4> <%= t('.no_items_in_cart') %></h4>
+                </td>
+
+                <td class="cart-product-name">
+
+                </td>
+
+                <td class="cart-product-price">
+
+                </td>
+
+                <td class="cart-product-quantity">
+                  <div class="quantity clearfix">
+                    <input type="button" value="-" class="minus">
+                    <input type="text" name="quantity" value="" class="qty" />
+                    <input type="button" value="+" class="plus">
+                  </div>
+                </td>
+
+                <td class="cart-product-subtotal">
+
+                </td>
+              </tr>
+            <% else %>
+              <% @cart.cart_items.each do |item| %>
+              <tr class="cart_item">
+                <td class="cart-product-remove">
+                  <%= link_to "".html_safe, cart_item_path(item.id), method: :delete, class: "icon-trash2" %>
+                  <!-- <a href="#" class="remove" title="<%= t('.remove') %>"><i class="icon-trash2"></i></a> -->
+                </td>
+
+                <td class="cart-product-thumbnail">
+                  <a href="<%= product_path(item.product) %>">
+                    <%= image_tag item.product.image.thumb_100.url, width: 64, height: 64, alt: "" %>
                   </a>
-                </li>
-                <li class="menu-item fly-right">
-                  <a href="wishlist.html">
-                    <i class="fa fa-heart-o"></i>
-                    Wishlist
-                  </a>
-                </li>
-                <li class="menu-item noo-menu-item-cart minicart">
-                  <a class="cart-button" href="cart.html">
-                    <span class="cart-item has-items">
-                      <i class="fa fa-shopping-cart"></i>
-                      <span>(3)</span> Items
-                    </span>
-                  </a>
-                  <div class="noo-minicart">
-                    <div class="minicart-header">3 items in the shopping cart</div>
-                    <div class="minicart-body">
-                      <div class="cart-product clearfix">
-                        <div class="cart-product-image">
-                          <a class="cart-product-img" href="shop-detail.html">
-                            <img width="100" height="100" src="images/product/thumb/product_6.png" alt="" />
-                          </a>
-                        </div>
-                        <div class="cart-product-details">
-                          <div class="cart-product-title">
-                            <a href="shop-detail.html">Apples</a>
-                          </div>
-                          <div class="cart-product-price">
-                            <span class="amount">&#36;3.95</span>
-                          </div>
-                          <div class="cart-product-quantity">x 1</div>
-                        </div>
-                        <a href="#" class="remove">&times;</a>
-                      </div>
-                      <div class="cart-product clearfix">
-                        <div class="cart-product-image">
-                          <a class="cart-product-img" href="shop-detail.html">
-                            <img width="100" height="100" src="images/product/thumb/product_3.png" alt="" />
-                          </a>
-                        </div>
-                        <div class="cart-product-details">
-                          <div class="cart-product-title">
-                            <a href="shop-detail.html">Brown Bread</a>
-                          </div>
-                          <div class="cart-product-price">
-                            <span class="amount">&#36;3.95</span>
-                          </div>
-                          <div class="cart-product-quantity">x 2</div>
-                        </div>
-                        <a href="#" class="remove">&times;</a>
-                      </div>
-                    </div>
-                    <div class="minicart-footer">
-                      <div class="minicart-total">
-                        Subtotal <span class="amount">&#36;6.05</span>
-                      </div>
-                      <div class="minicart-actions clearfix">
-                        <a class="button btn-primary" href="cart.html">
-                          <span class="text">View Cart</span>
-                        </a>
-                        <a class="checkout-button button btn-primary" href="#">
-                          <span class="text">Checkout</span>
-                        </a>
-                      </div>
+                </td>
+
+                <td class="cart-product-name">
+                  <%= link_to item.product.name, product_path(item.product) %>
+                </td>
+
+                <td class="cart-product-price">
+                  <span class="amount"><%= number_to_currency(item.product.current_price / 100) %></span>
+                </td>
+
+                <td class="cart-product-quantity">
+                  <div class="quantity clearfix">
+                    <input type="button" value="-" class="minus">
+                    <input type="text" name="quantity" value="<%= item.quantity %>" class="qty" />
+                    <input type="button" value="+" class="plus">
+                  </div>
+                </td>
+
+                <td class="cart-product-subtotal">
+                  <span class="amount"><%= number_to_currency(item.line_total) %></span>
+                </td>
+              </tr>
+              <% end %>
+            <% end %>
+
+            <tr class="cart_item">
+              <td colspan="6">
+                <div class="row clearfix">
+                  <div class="col-lg-4 col-4 nopadding">
+                    <div class="row">
+                      <%= link_to t('.continue_shopping'), root_path, class: "button continue-shopping notopmargin" %>
                     </div>
                   </div>
-                </li>
-                <li class="menu-item fly-right">
-                  <a id="noo-search" class="search-button noo-search" href="#">
-                    <i class="fa fa-search"></i> <span>Search</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-            <nav class="pull-right noo-main-menu">
-              <ul class="nav-collapse navbar-nav">
-                <li class="menu-item-has-children current-menu-item">
-                  <a href="<%= main_app.root_path %>">Home</a>
-                  <ul class="sub-menu">
-                    <li><a href="index-2.html">Homepage 2</a></li>
-                    <li><a href="index-3.html">Homepage 3</a></li>
-                    <li><a href="index-4.html">Homepage 4</a></li>
-                    <li><a href="index-5.html">Homepage 5</a></li>
-                    <li><a href="index-6.html">Homepage 6</a></li>
-                  </ul>
-                </li>
-                <li class="menu-item-has-children">
-                  <a href="#">Header</a>
-                  <ul class="sub-menu">
-                    <li><a href="header-1.html">Header 1</a></li>
-                    <li><a href="header-2.html">Header 2</a></li>
-                    <li><a href="header-3.html">Header 3</a></li>
-                    <li><a href="header-4.html">Header 4</a></li>
-                    <li><a href="header-5.html">Header 5</a></li>
-                    <li><a href="header-6.html">Header 6</a></li>
-                  </ul>
-                </li>
-                <li><a href="our-story.html">Our Story</a></li>
-                <li class="menu-item-has-children noo_megamenu mega-col-columns-4">
-                  <a href="shop.html">Shop</a>
-                  <ul class="sub-menu">
-                    <li class="menu-item-has-children">
-                      <a href="#">Shop page</a>
-                      <ul class="sub-menu">
-                        <li><a href="shop-list.html">Shop List</a></li>
-                        <li><a href="shop-detail.html">Shop Detail</a></li>
-                        <li><a href="my-account.html">My Account</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="cart-empty.html">Empty Cart</a></li>
-                        <li><a href="wishlist.html">Wishlist</a></li>
-                      </ul>
-                    </li>
-                    <li class="menu-item-has-children">
-                      <div class="noo_megamenu_widget_area">
-                        <div class="widget commerce widget_products">
-                          <h3 class="widget-title">Products</h3>
-                          <ul class="product_list_widget">
-                            <li>
-                              <a href="shop-detail.html">
-                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
-                                <span class="product-title">French Bread</span>
-                              </a>
-                              <span class="amount">&#36;10.00</span>
-                            </li>
-                            <li>
-                              <a href="shop-detail.html">
-                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
-                                <span class="product-title">Cookie</span>
-                              </a>
-                              <span class="amount">&#36;15.00</span>
-                            </li>
-                            <li>
-                              <a href="shop-detail.html">
-                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
-                                <span class="product-title">Brown Bread</span>
-                              </a>
-                              <span class="amount">&#36;12.00</span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="noo_megamenu_widget_area">
-                        <div class="widget commerce widget_products">
-                          <h3 class="widget-title">Featured</h3>
-                          <ul class="product_list_widget">
-                            <li>
-                              <a href="shop-detail.html">
-                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
-                                <span class="product-title">French Bread</span>
-                              </a>
-                              <span class="amount">&#36;10.00</span>
-                            </li>
-                            <li>
-                              <a href="shop-detail.html">
-                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
-                                <span class="product-title">Cookie</span>
-                              </a>
-                              <span class="amount">&#36;15.00</span>
-                            </li>
-                            <li>
-                              <a href="shop-detail.html">
-                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
-                                <span class="product-title">Brown Bread</span>
-                              </a>
-                              <span class="amount">&#36;12.00</span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="noo_megamenu_widget_area">
-                        <div class="widget commerce widget_products">
-                          <h3 class="widget-title">Sales</h3>
-                          <ul class="product_list_widget">
-                            <li>
-                              <a href="shop-detail.html">
-                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
-                                <span class="product-title">French Bread</span>
-                              </a>
-                              <span class="amount">&#36;10.00</span>
-                            </li>
-                            <li>
-                              <a href="shop-detail.html">
-                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
-                                <span class="product-title">Cookie</span>
-                              </a>
-                              <span class="amount">&#36;15.00</span>
-                            </li>
-                            <li>
-                              <a href="shop-detail.html">
-                                <%= image_tag "ecommerce/img/product/product_100x100.jpg", width: 100, height: 100, alt: "" %>
-                                <span class="product-title">Brown Bread</span>
-                              </a>
-                              <span class="amount">&#36;12.00</span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu-item-has-children">
-                  <a href="boxes.html">Boxes</a>
-                  <ul class="sub-menu">
-                    <li><a href="box-detail.html">Box Detail</a></li>
-                  </ul>
-                </li>
-                <li class="menu-item-has-children">
-                  <a href="blog.html">Blog</a>
-                  <ul class="sub-menu">
-                    <li class="menu-item-has-children">
-                      <a href="blog-masonry.html">The Benefits of Dates</a>
-                      <!--<ul class="sub-menu">
-                        <li><a href="blog-masonry-two-columns.html">2 Columns</a></li>
-                        <li><a href="blog-masonry.html">3 Columns</a></li>
-                        <li><a href="blog-masonry-four-columns.html">4 Columns</a></li>
-                      </ul> -->
-                    </li>
-                    <li><a href="blog.html">The Best Wines for your Table</a></li>
-                  </ul>
-                </li>
-                <li><a href="contact.html">Contact</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="search-header5">
-      <div class="remove-form"></div>
-      <div class="container">
-        <form class="form-horizontal">
-          <label class="note-search">Type and Press Enter to Search</label>
-          <input type="search" name="s" class="form-control" value="" placeholder="Search...">
-          <input type="submit" value="Search">
-        </form>
-      </div>
-    </div>
-  </header>
-  <section class="noo-page-heading eff">
-    <div class="container">
-      <div class="noo-heading-content">
-        <h1 class="page-title eff">Cart</h1>
-        <div class="noo-page-breadcrumb eff">
-          <a href="./" class="home">Organici</a>/<span>Cart</span>
-        </div>
-      </div>
-    </div>
-  </section>
-  <div class="main">
-    <div class="commerce commerce-page commerce-cart noo-shop-main">
-      <div class="container">
-        <div class="row">
-          <div class="noo-main col-md-12">
-            <table class="shop_table cart">
-              <thead>
-                <tr>
-                  <th class="product-thumbnail">Image</th>
-                  <th class="product-price">Price</th>
-                  <th class="product-quantity">Quantity</th>
-                  <th class="product-subtotal">Total</th>
-                  <th class="product-remove">&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @cart.cart_items.each do |item| %>
-                <tr class="cart_item">
-                  <td class="product-thumbnail">
-                    <a href="<%= product_path(item.product) %>">
-                      <%= image_tag item.product.image.thumb_100.url, width: 100, height: 100, alt: "" %>
-                    </a>
-                    <%= link_to item.product.name, product_path(item.product) %>
-                  </td>
-                  <td class="product-price">
-                    <span class="amount"><%= number_to_currency(item.product.current_price / 100) %></span>
-                  </td>
-                  <td class="product-quantity">
-                    <div class="quantity">
-                        <input type="number" step="1" min="0" name="qty" value="<%= item.quantity %>" class="input-text qty text" size="4"/>
-                    </div>
-                  </td>
-                  <td class="product-subtotal">
-                    <span class="amount"><%= number_to_currency(item.line_total) %></span>
-                  </td>
-                  <td class="product-remove">
-                    <a href="#" class="remove">&times;</a>
-                  </td>
-                </tr>
-                <% end %>
-                <tr>
-                  <td colspan="5" class="actions">
-                    <a class="continue" href="shop.html">continue shopping</a>
-                    <div class="coupon">
-                      <label for="coupon_code">Coupon:</label>
-                      <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
-                      <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
-                    </div>
-                    <input type="submit" class="button" name="update_cart" value="Update Cart"/>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="cart-collaterals">
-              <div class="noocart-coupon">
-                <label for="coupon_code">Coupon</label>
-                <p>Enter your code if you have one</p>
-                <input type="text" name="noo_coupon_code" class="input-text" id="noo_coupon_code" value="" placeholder="Coupon code"/>
-                <button class="noo-apply-coupon button">Apply Coupon</button>
-              </div>
-              <div class="noocart-shipping">
-                <label>Estimate shipping &amp; tax</label>
-                <p>Enter your destination to get a shipping rate</p>
-                <strong>COUNTRY <abbr class="required" title="required">*</abbr></strong>
-                <select class="select">
-                  <option value="">Select a country</option>
-                  <option value="">America</option>
-                  <option value="">England</option>
-                  <option value="">France</option>
-                  <option value="">Vietnam</option>
-                </select>
-                <br /><br />
-                <strong>PROVINCE</strong>
-                <select class="select">
-                  <option value="">Please select</option>
-                </select>
-                <br /><br />
-                <strong>ZIP/POSTAL CODE</strong>
-                <input type="text" name="postal_code" class="input-text" id="postal_code" value="" placeholder="Postal code"/>
-              </div>
-              <div class="cart_totals">
-                <h2>Cart Totals</h2>
-                <table>
-                  <tr class="cart-subtotal">
-                    <th>Total Items</th>
-                    <td><span class="amount" id="qty-subtotal-amount"><%= @cart_qty_subtotal %></span></td>
-                  </tr>
-                  <tr class="cart-subtotal">
-                    <th>Subtotal</th>
-                    <td><span class="amount" id="subtotal-amount"><%= number_to_currency(@cart_subtotal) %></span></td>
-                  </tr>
-                  <tr class="shipping">
-                    <th>Shipping</th>
-                    <td>
-                      <p>Shipping costs will be calculated once you have provided your address.</p>
-                    </td>
-                  </tr>
-                  <tr class="order-total">
-                    <th>Total</th>
-                    <td><strong><span class="amount" id="total-amount"><%= number_to_currency(@cart_subtotal) %></span></strong> </td>
-                  </tr>
-                </table>
-                <div class="wc-proceed-to-checkout">
-                  <%= link_to "Proceed to Checkout", checkout_path, class: "checkout-button button alt wc-forward" %>
+                  <div class="col-lg-8 col-8 nopadding">
+                    <a href="#" class="button button-3d nomargin fright"><%= t('.update_cart') %></a>
+                    <%= link_to t('.proceed_to_checkout'), checkout_path, class: "button button-3d notopmargin fright" %>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+      <div class="row clearfix">
+        <div class="col-lg-8 clearfix">
+
+        </div>
+
+        <div class="col-lg-4 clearfix">
+          <h4><%= t('.cart_totals') %></h4>
+
+          <div class="table-responsive">
+            <table class="table cart">
+              <tbody>
+                <tr class="cart_item">
+                  <td class="cart-product-name">
+                    <strong><%= t('.total_num_of_items') %></strong>
+                  </td>
+
+                  <td class="cart-product-name">
+                    <span class="amount" id="qty-subtotal-amount"><%= @cart_qty_subtotal %></span>
+                  </td>
+                </tr>
+
+                <tr class="cart_item">
+                  <td class="cart-product-name wide-cart-product-name">
+                    <strong><%= t('.cart_subtotal') %></strong>
+                  </td>
+
+                  <td class="cart-product-name wide-cart-product-name">
+                    <span class="amount" id="subtotal-amount"><%= number_to_currency(@cart_subtotal) %></span>
+                  </td>
+                </tr>
+                <tr class="cart_item">
+                  <td class="cart-product-name wide-cart-product-name">
+                    <strong><%= t('.shipping') %></strong>
+                  </td>
+
+                  <td class="cart-product-name wide-cart-product-name">
+                    <span class="amount"><%= t('.shipping_costs_will_be_calculated') %></span>
+                  </td>
+                </tr>
+                <tr class="cart_item">
+                  <td class="cart-product-name wide-cart-product-name">
+                    <strong><%= t('.total') %></strong>
+                  </td>
+
+                  <td class="cart-product-name wide-cart-product-name">
+                    <span class="amount color lead" id="total-amount"><strong><%= number_to_currency(@cart_subtotal) %></strong></span>
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+            <%= link_to t('.proceed_to_checkout'), checkout_path, class: "button button-3d notopmargin fright" %>
           </div>
         </div>
       </div>
+
     </div>
-    <div class="noo-footer-shop-now">
-      <div class="container">
-        <div class="col-md-7">
-          <h4>- Every day fresh -</h4>
-          <h3>organic food</h3>
-        </div>
-        <img src="images/organici-love-me.png" class="noo-image-footer" alt="" />
-      </div>
-    </div>
+
   </div>
-</div>
+
+</section><!-- #content end -->

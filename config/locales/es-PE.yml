@@ -25,6 +25,9 @@ es-PE:
           free_shipping: 'Envío sin costo para pedidos mayores a <strong>S/.199</strong>.'
     canvas_shop:
       store:
+        top_bar:
+          call: "Telef"
+          email: "Correo"
         header:
           home_menu: "Inicio"
           blog_menu: "Blog"
@@ -45,6 +48,28 @@ es-PE:
           add_to_cart: 'Agregar al carrito'
           quick_view: 'Vista Rápida'
           payment_methods: 'Aceptamos Todas las Tarjetas de Crédito y Débito así como depósito bancario'
+          our_brands: "Nuestras Marcas"
+      product:
+        show:
+          add_to_cart: "Agregar al Carrito"
+          description: "Descripción"
+          additional_information: "Información Adicional"
+          reviews: "Comentarios"
+      cart:
+        show:
+          home: "Inicio"
+          shop: "Tienda"
+          cart: "Carrito de Compras"
+          no_items_in_cart: "No hay Artículos en su Carrito de Compras"
+          continue_shopping: "Seguir Comprando"
+          update_cart: Actualizar Carrito
+          proceed_to_checkout: "Finalizar Compra"
+          cart_totals: "Totales"
+          total_num_of_items: "Cant Total de Items"
+          cart_subtotal: "Subtotal"
+          shipping: "Costos de Envío"
+          shipping_costs_will_be_calculated: "Serán calculados una vez indique su dirección de envío"
+          total: "Total"
     backoffice:
       sidebar:
         products: 'Productos'

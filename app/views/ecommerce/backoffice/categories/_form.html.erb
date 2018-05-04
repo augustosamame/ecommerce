@@ -8,7 +8,7 @@
     <%= f.label "Category Image" %>
     <div class="form-group">
       <% if f.object.image? %>
-        <%= image_tag f.object.image, id: "image_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
+        <%= image_tag f.object.image.to_s, id: "image_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
       <% end %>
       <img alt="your image" class="img-thumbnail hidden" height="200" id="image_prev" src="#" width="200"/>
       <br/>
@@ -28,7 +28,7 @@
     <%= f.label "HomePage Category Image" %>
     <div class="form-group">
       <% if f.object.image_popular_homepage? %>
-        <%= image_tag f.object.image_popular_homepage, id: "image_popular_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
+        <%= image_tag f.object.image_popular_homepage.to_s, id: "image_popular_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
       <% end %>
       <img alt="your image" class="img-thumbnail hidden" height="200" id="image_popular_prev" src="#" width="200"/>
       <br/>

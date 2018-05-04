@@ -12,6 +12,7 @@
       <tr>
         <th>Name</th>
         <th>Logo</th>
+        <th>Featured</th>
         <th>Show</th>
         <th>Edit</th>
         <th>Destroy</th>
@@ -22,6 +23,7 @@
       <%= content_tag_for(:tr, @backoffice_brands) do |backoffice_brand| %>
             <td><%= backoffice_brand.name %></td>
             <td><%= image_tag backoffice_brand.logo.thumb_80.url, height: 80 %></td>
+            <td><%= backoffice_brand.featured %></td>
             <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_brand_path(backoffice_brand) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_brand_path(backoffice_brand) %></td>
         <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_brand_path(backoffice_brand), method: :delete, data: { confirm: 'Are you sure?' } %></td>

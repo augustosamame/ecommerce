@@ -6,7 +6,7 @@
 
     <div class="col_half nobottommargin">
 
-      <p class="nobottommargin"><strong>Call:</strong> 1800-547-2145 | <strong>Email:</strong> info@canvas.com</p>
+      <p class="nobottommargin"><strong><%= t('.call') %>:</strong> <%= Ecommerce.phone_number %> | <strong><%= t('.email') %>:</strong> <%= Ecommerce.sales_email %></p>
 
     </div>
 
@@ -16,21 +16,18 @@
       ============================================= -->
       <div class="top-links">
         <ul>
-          <li><a href="#">USD</a>
+          <li><a href="#">PEN</a>
             <ul>
+              <li><a href="#">USD</a></li>
               <li><a href="#">EUR</a></li>
-              <li><a href="#">AUD</a></li>
-              <li><a href="#">GBP</a></li>
             </ul>
           </li>
-          <li><a href="#">EN</a>
+          <li><a href="#">ES</a>
             <ul>
-              <li><a href="#"><img src= <%= image_url("ecommerce/img/icons/flags/french.png") %> alt="French"> FR</a></li>
-              <li><a href="#"><img src= <%= image_url("ecommerce/img/icons/flags/italian.png") %> alt="Italian"> IT</a></li>
-              <li><a href="#"><img src= <%= image_url("ecommerce/img/icons/flags/german.png") %> alt="German"> DE</a></li>
+              <li><a href="#"><img src= <%= image_url("ecommerce/img/icons/flags/french.png") %> alt="English"> EN</a></li>
             </ul>
           </li>
-          <li><a href="#">Login</a>
+          <li><a href="#">Inicia Sesión</a>
             <div class="top-link-section">
               <form id="top-login" role="form">
                 <div class="input-group" id="top-login-username">

@@ -8,6 +8,7 @@ module Ecommerce
     skip_before_action :authenticate_user!
 
     def main
+      @home_brands = Brand.where(featured: true)
       add_body_css_class('stretched')
       render "ecommerce/#{Ecommerce.ecommerce_layout}/store/main"
     end

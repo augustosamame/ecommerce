@@ -10,13 +10,33 @@
 
 		<div class="container clearfix">
 
-			<div class="col-md-8 nopadding">
+			<div class="row ecommerce-categories clearfix" style="padding: 20px 0 0;">
 
-				<div class="col-md-6 noleftpadding bottommargin-sm">
-					<a href="#"><img src= <%= image_url("ecommerce/img/shop/banners/2.jpg") %> alt="Image"></a>
+				<div class="heading-block nobottomborder center">
+					<h3><%= t('.popular_categories') %></h3>
+					<span><%= t('.browse_categories') %></span>
 				</div>
 
-				<div class="col-md-6 noleftpadding bottommargin-sm">
+				<% @homepage_categories.each do |category| %>
+
+        <div class="col-md-<%= col_width_for_image_dimensions(category) %>">
+          <%= link_to '', root_path, style: "background: url(#{category.image_popular_homepage_url(:homepage)}) no-repeat center center; background-size: cover;" %>
+            <div class="vertical-middle dark center">
+              <div class="heading-block nomargin noborder">
+                <h3 class="capitalize font-secondary nott t500"><%= category.name %></h3>
+              </div>
+            </div>
+        </div>
+
+        <% end %>
+
+<!--				<div class="col-md-6 noleftpadding bottommargin-sm">
+					<a href="#"><img src= <%= image_url("ecommerce/img/shop/banners/2.jpg") %> alt="Image"></a>
+				</div>
+-->
+			</div>
+
+<!--		<div class="col-md-6 noleftpadding bottommargin-sm">
 					<a href="#"><img src= <%= image_url("ecommerce/img/shop/banners/8.jpg") %> alt="Image"></a>
 				</div>
 
@@ -31,6 +51,7 @@
 			<div class="col-md-4 nopadding">
 				<a href="#"><img src= <%= image_url("ecommerce/img/shop/banners/9.jpg") %> alt="Image"></a>
 			</div>
+-->
 
 			<div class="clear"></div>
 
@@ -221,28 +242,13 @@
 			<div class="clear"></div>
 -->
 			<div class="fancy-title title-border title-center topmargin-sm">
-				<h4>Nuestras Marcas</h4>
+				<h4><%= t('.our_brands') %></h4>
 			</div>
 
 			<ul class="clients-grid grid-6 nobottommargin clearfix">
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/1.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/2.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/3.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/4.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/5.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/6.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/7.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/8.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/9.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/10.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/11.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/12.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/13.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/14.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/15.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/16.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/19.png") %> alt="Clients"></a></li>
-				<li><a href="#"><img src= <%= image_url("ecommerce/img/clients/logo/18.png") %> alt="Clients"></a></li>
+				<% @home_brands.each do |brand| %>
+					<li><a href="#"><img src= <%= brand.logo.url %> alt="Brand_logo"></a></li>
+				<% end %>
 			</ul>
 
 		</div>
