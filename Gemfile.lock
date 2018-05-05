@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ecommerce (0.3.9)
+    ecommerce (0.4.0.3)
       bootstrap-sass
       browser
       carrierwave

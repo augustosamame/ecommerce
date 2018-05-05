@@ -28,6 +28,7 @@ es-PE:
         top_bar:
           call: "Telef"
           email: "Correo"
+          log_in: "Iniciar Sesión"
         header:
           home_menu: "Inicio"
           blog_menu: "Blog"
