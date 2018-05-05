@@ -36,6 +36,8 @@ es-PE:
           my_account: "Mi Cuenta"
           log_out: "Cerrar Sesión"
           backoffice: "Backoffice"
+          cart: "Carrito de Compras"
+          view_cart: "Ver Carrito"
         footer:
           select_language: "Selecciona tu Lenguaje:"
           language_button: "Seleccionar"

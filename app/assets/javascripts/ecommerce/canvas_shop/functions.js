@@ -1503,6 +1503,13 @@ var SEMICOLON = SEMICOLON || {};
 
 		topcart: function(){
 
+			$("#top-cart-trigger").mouseover(function(e){
+				$pagemenu.toggleClass('pagemenu-active', false);
+				$topCart.toggleClass('top-cart-open');
+				e.stopPropagation();
+				e.preventDefault();
+			});
+
 			$("#top-cart-trigger").click(function(e){
 				$pagemenu.toggleClass('pagemenu-active', false);
 				$topCart.toggleClass('top-cart-open');

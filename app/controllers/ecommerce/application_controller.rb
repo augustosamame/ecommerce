@@ -62,6 +62,7 @@ module Ecommerce
           session[:cart_id] = @cart.id
         end
       end
+      @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
     end
 
     def set_wishlist
