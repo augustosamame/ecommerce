@@ -76,6 +76,20 @@ es-PE:
           shipping: "Costos de Envío"
           shipping_costs_will_be_calculated: "Serán calculados una vez indique su dirección de envío"
           total: "Total"
+      checkout:
+        show:
+          checkout: "Finalizar Compra"
+          shipping_address: "Dirección de Envío"
+          pick_an_address: "Selecciona una Dirección"
+          create_a_new_address: "Ingresa una Nueva Dirección"
+          your_order: "Tu Pedido"
+          product: "Producto"
+          total: "Total"
+          subtotal: "Subtotal"
+          shipping: "Costo de envío"
+          bank_deposit_instructions: "Te enviaremos el número de cuenta bancaria a depositar luego de confirmar tu pedido"
+        new_address_form:
+          type: "Tipo"
     backoffice:
       sidebar:
         products: 'Productos'

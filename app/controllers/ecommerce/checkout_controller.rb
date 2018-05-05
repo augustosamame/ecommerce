@@ -12,6 +12,8 @@ module Ecommerce
       @picked_address = Address.new(user_id: current_user.id)
       @checkout_addresses = Address.where(user_id: current_user.id)
       @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
+      @payment_bank_deposit = PaymentMethod.find_by(name: "Bank Deposit", status: "active")
+      @payment_credit_card = PaymentMethod.find_by(name: "Card", status: "active")
       render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show"
     end
 

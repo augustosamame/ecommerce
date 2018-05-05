@@ -1,7 +1,7 @@
 <%= simple_form_for(@address, remote: true) do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs">
-    <%= f.input :name, collection: ["Home", "Doorman", "Office", "Warehouse", "Other"], label: "Type", prompt: "Select Type of Address" %>
+    <%= f.input :name, collection: ["Home", "Doorman", "Office", "Warehouse", "Other"], label: t('.type'), prompt: "Select Type of Address" %>
     <%= f.input :street, label: "Street" %>
     <%= f.input :district, collection: @districts, prompt: "Select District", label: "District" %>
     <%= f.input :city, as: :hidden, input_html: {value: "Lima"}, label: "City"  %>
