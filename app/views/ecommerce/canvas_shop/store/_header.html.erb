@@ -32,6 +32,9 @@
             </li>
           <% end %>
 
+					<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
+						<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
+					<% end %>
           <!--<li><a href="#"><div><%= t('.blog_menu') %></div></a></li>
           <li><a href="#"><div><%= t('.contact_us_menu') %></div></a></li>-->
 

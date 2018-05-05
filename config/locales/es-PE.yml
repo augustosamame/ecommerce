@@ -55,6 +55,9 @@ es-PE:
           description: "Descripción"
           additional_information: "Información Adicional"
           reviews: "Comentarios"
+        index:
+          add_to_cart: "Agregar al Carrito"
+          quick_view: "Ver Detalles"
       cart:
         show:
           home: "Inicio"
