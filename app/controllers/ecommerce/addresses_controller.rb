@@ -9,7 +9,7 @@ module Ecommerce
 
     respond_to :html, :json, :js
 
-    #authorize_resource
+    authorize_resource
 
     # GET /addresses
     # GET /addresses.json

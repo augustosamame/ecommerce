@@ -8,6 +8,8 @@ module Ecommerce
     before_action :set_menu_items
     before_action :set_cart_item, only: [:destroy]
 
+    authorize_resource
+
     def create
       @cart_item = CartItem.new(cart_item_params)
       @cart_item.cart_id = @cart.id

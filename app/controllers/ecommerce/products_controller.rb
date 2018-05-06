@@ -7,6 +7,8 @@ module Ecommerce
     before_action :set_product, only: [:show]
     before_action :set_facebook_locale, only: [:show]
 
+    authorize_resource
+
     def index
       if params[:category_id]
         @category = Category.find(params[:category_id])

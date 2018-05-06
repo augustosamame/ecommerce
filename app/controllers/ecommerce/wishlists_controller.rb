@@ -5,6 +5,8 @@ module Ecommerce
     skip_before_action :authenticate_user!
     before_action :set_wishlist, only: [:show, :edit, :update, :destroy]
 
+    authorize_resource
+
     # GET /wishlists/1
     def show
       @wishlist_qty_subtotal = @wishlist.wishlist_items.includes(:product).sum(:quantity)

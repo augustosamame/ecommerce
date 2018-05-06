@@ -5,6 +5,8 @@ module Ecommerce
     skip_before_action :authenticate_user!
     before_action :set_cart, only: [:show, :edit, :update, :destroy]
 
+    authorize_resource
+
     # GET /carts/1
     def show
       @cart_qty_subtotal = @cart.cart_items.includes(:product).sum(:quantity)

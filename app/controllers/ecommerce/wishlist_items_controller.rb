@@ -7,6 +7,8 @@ module Ecommerce
     skip_before_action :authenticate_user!
     before_action :set_wishlist, only: [:create, :destroy]
 
+    authorize_resource
+
     def create
       @wishlist_item = WishlistItem.new(wishlist_item_params)
       @wishlist_item.wishlist_id = @wishlist.id

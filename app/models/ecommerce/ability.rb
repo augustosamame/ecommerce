@@ -9,6 +9,25 @@ module Ecommerce
       user ||= User.new # guest user (not logged in)
       if user.admin?
         can :manage, :all
+      elsif user.standard?
+        can :read, Brand
+        can :read, Property
+        can :read, Category
+        can :read, Product
+        can :read, ProductSku
+        can :read, ProductSkuProperty
+        can :read, ProductProperty
+        can :manage, User, {id: user.id}
+        can :manage, Order, {user_id: user.id}
+        can :manage, OrderItem, :order => { :user_id => user.id }
+        can :manage, Address, {user_id: user.id}
+        can :manage, Cart, {user_id: user.id}
+        can :manage, CartItem, :cart => {user_id: user.id}
+        can :manage, Wishlist, {user_id: user.id}
+        can :manage, WishlistItem, :wishlist => {user_id: user.id}
+        can :manage, Payment, {user_id: user.id}
+        can :read, PaymentMethod
+        can :manage, Card, {user_id: user.id}
       else
         #can :read, :all
       end

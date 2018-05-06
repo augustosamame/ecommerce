@@ -5,6 +5,8 @@ module Ecommerce
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}"
     before_action :set_order, only: [:show]
 
+    authorize_resource
+
     def index
       @orders = Order.where(user_id: current_user.id).order(id: :desc)
       render "ecommerce/#{Ecommerce.ecommerce_layout}/order/index"
