@@ -76,7 +76,7 @@
 									<a href="<%= product_path(item) %>"><%= image_tag item.image.url, height: 470, alt: "" %></a>
 									<!--<div class="sale-flash">50% Off*</div>-->
 									<div class="product-overlay">
-										<a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span> <%= t('.add_to_cart') %></span></a>
+										<%= link_to "<i class='icon-shopping-cart'></i><span>#{t('.add_to_cart')}".html_safe, cart_items_path(cart_item: {quantity: 1, product_id: item.id}), :method => :post, class: "add-to-cart" %>
 										<a href="include/ajax/shop-item.html" class="item-quick-view" data-lightbox="ajax"><i class="icon-zoom-in2"></i><span><%= t('.quick_view') %></span></a>
 									</div>
 								</div>

@@ -37,6 +37,7 @@ module Ecommerce
       # Use callbacks to share common setup or constraints between actions.
       def set_cart
         @cart = Cart.find(params[:id])
+        @cart_item_qty_total = @cart.cart_items.sum(&:quantity)
       end
 
       # Only allow a trusted parameter "white list" through.

@@ -146,7 +146,7 @@
 				<!-- Top Cart
 				============================================= -->
 				<div id="top-cart">
-					<a href="#" id="top-cart-trigger"><i class="icon-shopping-cart"></i><span>5</span></a>
+					<a href="#" id="top-cart-trigger"><i class="icon-shopping-cart"></i><span><%= @cart_item_qty_total || 0 %></span></a>
 					<div class="top-cart-content">
 						<div class="top-cart-title">
 							<h4><%= t('.cart') %></h4>
