@@ -83,29 +83,31 @@
                 <div class="commerce-checkout-payment">
                   <ul class="payment_methods">
 
-                    <% if @payment_bank_deposit %>
+                    <% if @payment_credit_card %>
 
-                    <li>
-                      <input type="radio" class="input-radio" name="payment_method" value="cheque" checked="checked" />
+                    <li class="wc_payment_method payment_method_credit">
+                      <input id="payment_method_card" type="radio" class="input-radio" name="payment_method" value="card" checked="checked" />
                       <label>
-                        Depósito Bancario
+                        Tarjeta de Crédito o Débito
                       </label>
-                      <div class="payment_box payment_method_cheque">
-                        <p><%= t('.bank_deposit_instructions') %></p>
+                      <div class="payment_box">
+                        <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row1.png" alt="Credit Card Images">
+                        <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row2.png" alt="Credit Card Images">
                       </div>
                     </li>
 
                     <% end %>
 
-                    <% if @payment_credit_card %>
+                    <% if @payment_bank_deposit %>
 
-                    <li class="wc_payment_method payment_method_paypal">
-                      <input id="payment_method_paypal" type="radio" class="input-radio" name="payment_method" value="paypal" />
-                      <label for="payment_method_paypal">
-                        Tarjeta de Crédito o Débito
-                        <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row1.png" alt="Credit Card Images">
-                        <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row2.png" alt="Credit Card Images">
+                    <li class="wc_payment_method payment_method_bank">
+                      <input id="payment_method_bank" type="radio" class="input-radio" name="payment_method" value="bank" />
+                      <label>
+                        Depósito Bancario
                       </label>
+                      <div class="payment_box">
+                        <p><%= t('.bank_deposit_instructions') %></p>
+                      </div>
                     </li>
 
                     <% end %>
@@ -128,6 +130,7 @@
 <!-- Configurando el checkout-->
 <script>
 
+  Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
   var payment_amount = $('#payment-amount').html() * 100;
   var shipping_calculated_flag = false
 
@@ -172,18 +175,38 @@
     });
   }
 
-  Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
-
   $('#pay-now-button').on('click', function(e) {
-    // Abre el formulario con las opciones de Culqi.settings
+    // determina el medio de pago
     if (shipping_calculated_flag) {
-      Culqi.open();
-      e.preventDefault();
+
+      if ($('#payment_method_bank').is(":checked")) {
+        var picked_shipping_address_id = $('#address_id').val();
+        var shipping_amount = $('#shipping-amount').html() * 100;
+        var payment_amount = $('#payment-amount').html() * 100;
+        //var payment_amount = $('#payment_amount').html() * 100;
+        $.post(
+          "checkout/pay_order_bank",
+          {
+          amount: payment_amount,
+          shipping_amount: shipping_amount,
+          picked_shipping_address_id: picked_shipping_address_id,
+          cart_id: '<%= "#{@cart.id}" if @cart %>'
+          },
+          function(data) {
+          }
+       );
       }
-      else {
-        // place error message here
-        alert("You must pick or save an address");
-      }
+      if ($('#payment_method_card').is(":checked")) {
+        // Abre el formulario con las opciones de Culqi.settings
+          console.log("About to open Culqi modal");
+          Culqi.open();
+          e.preventDefault();
+          }
+    }
+    else {
+      // place error message here
+      alert("You must pick or save an address");
+    };
   });
 
   function culqi() {
@@ -202,8 +225,7 @@
           amount: payment_amount,
           shipping_amount: shipping_amount,
           picked_shipping_address_id: picked_shipping_address_id,
-          cart_id: '<%= "#{@cart.id}" %>',
-          order_id: '<%= "#{@cart.id}" %>'
+          cart_id: '<%= "#{@cart.id}" if @cart %>'
           },
           function(data) {
           }

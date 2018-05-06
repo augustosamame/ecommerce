@@ -42,7 +42,7 @@ module Ecommerce
       first_address = Address.where(user_id: current_user.id).first
       culqi_address = first_address.blank? ? "" : "#{first_address.street},#{first_address.street2.blank? ? "" : (first_address.street2 + ",")} #{first_address.district}"
       no_antifraud_data = culqi_address.blank? || current_user.first_name.blank? || current_user.last_name.blank?
-      plain_mobile = current_user.username.gsub(/[^\d]/, '')
+      plain_mobile = current_user.username ? current_user.username.gsub(/[^\d]/, '') : ( current_user.phone ? current_user.phone.gsub(/[^\d]/, '') : "" )
       plain_mobile = plain_mobile[2..-1] if plain_mobile[0..1] == '51'
       antifraud_hash = no_antifraud_data ? nil : {
           :first_name => current_user.first_name,
@@ -50,9 +50,13 @@ module Ecommerce
           :address => culqi_address,
           :address_city => "LIMA",
           :country_code => "PE",
-          :phone_number => plain_mobile
+          :phone_number => plain_mobile.blank? ? "986976377" : plain_mobile
       }
+      Rails.logger.debug "Antifraud Hash: #{antifraud_hash}"
       charge = Culqi::Charge.create(
+      :first_name => current_user.first_name,
+      :last_name => current_user.last_name,
+      :phone_number => current_user.phone || "986976377",
       :amount => amount.to_i,
       :capture => true,
       :currency_code => 'PEN',
@@ -95,7 +99,7 @@ module Ecommerce
       else
         success = false
         if response["object"] == "error"
-          error_message = response["user_message"] || "Error al intentar realizar el pago"
+          error_message = "#{response['user_message']} #{response['merchant_message']}" || "Error al intentar realizar el pago"
           return success, error_message
         else
           return success, "Error interno al procesar el pago"

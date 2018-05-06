@@ -110,6 +110,7 @@
 <!-- Configurando el checkout-->
 <script>
 
+  Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
   var payment_amount = $('#payment-amount').html() * 100;
   var shipping_calculated_flag = false
 
@@ -153,8 +154,6 @@
       amount: payment_amount
     });
   }
-
-  Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
 
   $('#pay-now-button').on('click', function(e) {
     // Abre el formulario con las opciones de Culqi.settings

@@ -1,0 +1,162 @@
+<section class="noo-page-heading eff">
+  <div class="container">
+    <div class="noo-heading-content">
+      <h1 class="page-title eff">Order # <%= @order.id %></h1>
+      <div class="noo-page-breadcrumb eff">
+        <a href="" class="home">Canvas Shop</a>/<span>Order</span>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="main">
+  <div class="commerce commerce-page commerce-cart noo-shop-main">
+    <div class="container">
+      <div class="row">
+        <div class="noo-main col-md-4">
+          <div class="cart_totals">
+            <h2>Order Status</h2>
+            <table>
+              <tr class="cart-subtotal">
+                <th>Order Total</th>
+                <td><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="payment-amount"><%= number_with_precision(@order.amount_cents / 100) %></span></strong></td>
+              </tr>
+              <tr class="cart-subtotal">
+                <th>Payment</th>
+                <td><span class="show-order-payment-status" id="qty-subtotal-amount"><%= @order.payment_status.upcase %></span></td>
+              </tr>
+              <tr class="cart-subtotal">
+                <th>Shipping</th>
+                <td><span class="amount" id="subtotal-amount"><%= "Not yet shipped" %></span></td>
+              </tr>
+              <tr class="shipping">
+                <th>Invoice</th>
+                <td>
+                  <% if @order.efact_invoice_url %>
+                    <p><%= link_to "See Invoice", @order.efact_invoice_url, target: "blank" %></p>
+                  <% else %>
+                    <p><%= "Not yet invoiced" %></p>
+                  <% end %>
+                </td>
+              </tr>
+            </table>
+            <% if @order.payment_status == "unpaid" %>
+              <div class="wc-proceed-to-checkout">
+                <button class="button mt-5" id="retry-pay-now-button" class="checkout-button button alt wc-forward">Pay Order with Card Now</button>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <% if @order.payment_status == "unpaid" %>
+        <div class="row">
+          <p>
+            <h4>Instrucciones para pago mediante depósito / transferencia bancaria</h4>
+            Cuenta Corriente S/. BCP No. 123-1234442252-1</br>
+            CCI 425-123-1234442252-176</br>
+            Podiatrika EIRL</br>
+            Una vez depositado, enviénos la constancia de transferencia / depósito a ventas@podiatrika.pe
+          </p>
+        </div>
+      <% end %>
+
+      <div class="row">
+
+        <div class="noo-main col-md-12">
+          <h2>Order Details</h2>
+          <table class="shop_table cart">
+            <thead>
+              <tr>
+                <th class="product-thumbnail">Image</th>
+                <th class="product-price">Price</th>
+                <th class="product-quantity">Quantity</th>
+                <th class="product-subtotal">Total</th>
+                <th class="product-remove">&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @order.order_items.each do |item| %>
+              <tr class="cart_item">
+                <td class="product-thumbnail">
+                  <a href="<%= product_path(item.product) %>">
+                    <%= image_tag item.product.image.thumb_100.url, width: 100, height: 100, alt: "" %>
+                  </a>
+                  <%= link_to item.product.name, product_path(item.product) %>
+                </td>
+                <td class="product-price">
+                  <span class="amount"><%= number_to_currency(item.price_cents / 100) %></span>
+                </td>
+                <td class="product-quantity">
+                  <div class="quantity">
+                      <input type="number" step="1" min="0" name="qty" value="<%= item.quantity %>" class="input-text qty text" size="4"/>
+                  </div>
+                </td>
+                <td class="product-subtotal">
+                  <span class="amount"><%= number_to_currency(item.line_total) %></span>
+                </td>
+              </tr>
+              <% end %>
+              <tr>
+                <td colspan="5" class="actions">
+                  <a class="continue" href="<%= orders_path %>">My Orders</a>
+                  <div class="coupon">
+                    <label for="coupon_code">Coupon:</label>
+                    <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
+                    <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+<%= render "ecommerce/organici/store/prefooter" %>
+</div>
+
+<!-- Incluyendo .js de Culqi Checkout-->
+<script src="https://checkout.culqi.com/v2"></script>
+
+<script>
+
+Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
+var payment_amount = $('#payment-amount').html() * 100;
+Culqi.settings({
+title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+currency: 'PEN',
+description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@order.id}" %>',
+amount: payment_amount
+});
+
+$('#retry-pay-now-button').on('click', function(e) {
+// Abre el formulario con las opciones de Culqi.settings
+  Culqi.open();
+  e.preventDefault();
+});
+
+function culqi() {
+
+if(Culqi.token) { // ¡Token creado exitosamente!
+    // Get the token ID:
+    var token = Culqi.token;
+    var payment_amount = $('#payment-amount').html() * 100;
+    //var payment_amount = $('#payment_amount').html() * 100;
+    $.post(
+      "checkout/pay_order_culqi_checkout",
+      {
+      culqi_token: token,
+      amount: payment_amount,
+      order_id: '<%= "#{@order.id}" if @order %>'
+      },
+      function(data) {
+      }
+   );
+   //alert('Se ha creado un token:' + token);
+
+} else { // ¡Hubo algún problema!
+    // Mostramos JSON de objeto error en consola
+    console.log(Culqi.error);
+    alert(Culqi.error.mensaje);
+}
+};
+</script>

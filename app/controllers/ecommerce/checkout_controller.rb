@@ -4,7 +4,7 @@ module Ecommerce
   class CheckoutController < ApplicationController
     #skip_before_action :authenticate_user!, only: [:show]
     #before_action :set_checkout, only: [:show, :edit, :update, :destroy]
-    before_action :find_or_create_order, only: [:pay_order_culqi_checkout]
+    before_action :find_or_create_order, only: [:pay_order_culqi_checkout, :pay_order_bank]
 
     # GET /checkout
     def show
@@ -75,6 +75,13 @@ module Ecommerce
         render js: "window.location = '#{order_path(@order.id)}'"
         #redirect_to "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show", error: 'Error al realizar el Pago'
       end
+    end
+
+    def pay_order_bank
+      Rails.logger.debug params
+      flash[:notice] = 'Su Orden fue Creada Exitosamente'
+      flash.keep(:notice)
+      render js: "window.location = '#{order_path(@order.id)}'"
     end
 
     private
