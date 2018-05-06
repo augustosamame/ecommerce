@@ -32,6 +32,8 @@ module Ecommerce
   mattr_accessor :locale_set_by_store
   mattr_accessor :fb_app_id
   mattr_accessor :electronic_invoicing
+  mattr_accessor :serie_boleta
+  mattr_accessor :serie_factura
   mattr_accessor :shipping_integrator
   mattr_accessor :company_legal_name
   mattr_accessor :company_city
