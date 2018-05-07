@@ -39,6 +39,7 @@ Ecommerce::Engine.routes.draw do
   get '/categories_m', to: 'store#categories_mobile'
   get '/houses_m', to: 'store#houses_mobile'
 
+  get '/ecommerce_root', to: 'store#main'
   root to: 'store#main'
 
 end

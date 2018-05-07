@@ -126,7 +126,7 @@
                 <span class="posted_in">Category:</span>
 
                 <% @product.category_list.each do |cl| %>
-                <span><%= link_to cl, products_path(category_id: Ecommerce::Category.find_by(name: cl).id), style: "margin-left: 10px;" %></span>
+                <span><%= link_to cl, products_path(category_id: Ecommerce::Category.find_by("lower(name) = ?", cl.downcase).try(:id)), style: "margin-left: 10px;" %></span>
                 <% end %>
               <!--
                 <span class="tagged_as">Tags: <a href="#" rel="tag">Pink</a>, <a href="#" rel="tag">Short</a>, <a href="#" rel="tag">Dress</a>, <a href="#" rel="tag">Printed</a>.</span>

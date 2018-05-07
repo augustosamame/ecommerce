@@ -27,7 +27,7 @@ Mount the engine in your routes:
 mount Ecommerce::Engine, at: "/tienda", as: "ecommerce"
 ```
 
-Main App Requirements:
+## Main App Requirements:
 
 Gems:
 
@@ -41,6 +41,13 @@ gem "responders"
 gem 'devise'
 gem 'devise-i18n'
 gem 'cancancan'
+gem 'acts-as-taggable-on', github: "Fodoj/acts-as-taggable-on", branch: 'rails-5.2'
+
+ActsAsTaggableOn requires an initializer with the following:
+
+ActsAsTaggableOn.force_lowercase = true
+
+
 
 User Model
 
@@ -58,6 +65,35 @@ t.string :doc_id
 t.string :avatar
 t.string :cart_id
 t.integer :status
+
+
+Locale:
+
+application.rb must set the locale to a supported locale:
+
+config.i18n.default_locale = :'es-PE'
+
+
+Include the Following Helper:
+
+module LayoutHelper
+  # Used to achieve nested layouts without content_for. This helper relies on
+  # Rails internals, so beware that it make break with future major versions
+  # of Rails. Inspired by http://stackoverflow.com/a/18214036
+  #
+  # Usage: For example, suppose "child" layout extends "parent" layout.
+  # Use <%= yield %> as you would with non-nested layouts, as usual. Then on
+  # the very last line of layouts/child.html.erb, include this:
+  #
+  #     <% parent_layout "parent" %>
+  #
+  def parent_layout(layout)
+    @view_flow.set(:layout, output_buffer)
+    output = render(:file => "layouts/#{layout}")
+    self.output_buffer = ActionView::OutputBuffer.new(output)
+  end
+end
+
 
 Assets
 
