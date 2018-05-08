@@ -30,7 +30,7 @@
                   <span class="posted_in">
                     <span>Categories: </span>
                     <% @product.category_list.each do |cl| %>
-                    <span><%= link_to cl, products_path(category_id: Ecommerce::Category.find_by(name: cl).id), style: "margin-left: 10px;" %></span>
+                    <span><%= link_to cl, products_path(category_id: Ecommerce::Category.find_by("lower(name) = ?", cl.downcase).try(:id)), style: "margin-left: 10px;" %></span>
                     <% end %>
                   </span>
                 </div>
