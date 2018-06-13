@@ -31,7 +31,7 @@
 							<%= order.user.name  %>
 						</td>
 						<td>
-							<%= order.shipping_address.district  %>
+							<%= order.try(:shipping_address).try(:district)  %>
 						</td>
             <td>
 							S/. <%= order.amount_cents / 100  %>

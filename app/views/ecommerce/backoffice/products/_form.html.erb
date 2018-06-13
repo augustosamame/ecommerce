@@ -6,6 +6,7 @@
     <%= f.association :brand, :label_method => lambda { |brand| "#{brand.name}" }  %>
     <%= f.association :supplier, :label_method => lambda { |supplier| "#{supplier.name}" }  %>
     <%= f.input :name %>
+    <%= f.input :description2, label: "Short Description" %>
     <%= f.input :description %>
     <%= f.input :description2, label: "Spanish Description" %>
     <%= f.input :price_cents, :input_html => { :id => 'price-cents' } %>

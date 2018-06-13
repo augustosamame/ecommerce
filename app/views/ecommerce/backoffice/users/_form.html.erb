@@ -6,11 +6,10 @@
     <%= f.input :last_name %>
     <%= f.input :email %>
     <%= f.input :avatar %>
-    <%= f.input :role %>
+    <%= f.input :role, collection: User.roles.keys %>
     <%= f.input :phone %>
     <%= f.input :username %>
     <%= f.input :doc_id %>
-    <%= f.input :status %>
   </div>
 
   <div class="form-actions">

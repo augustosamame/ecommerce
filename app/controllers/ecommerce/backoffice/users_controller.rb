@@ -10,6 +10,7 @@ module Ecommerce
       @backoffice_users = User.all
     end
 
+
     # GET /backoffice/users/1
     def show
     end
@@ -17,6 +18,7 @@ module Ecommerce
     # GET /backoffice/users/new
     def new
       @backoffice_user = User.new
+      @backoffice_user.status = "active"
     end
 
     # GET /backoffice/users/1/edit
@@ -26,7 +28,7 @@ module Ecommerce
     # POST /backoffice/users
     def create
       @backoffice_user = User.new(backoffice_user_params)
-
+      @backoffice_user.password = "123456"
       if @backoffice_user.save
         redirect_to backoffice_user_path(@backoffice_user), notice: 'User was successfully created.'
       else
@@ -57,7 +59,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_user_params
-        params.require(:user).permit(:name, :description, :image)
+        params.require(:user).permit(:first_name, :last_name, :phone, :username, :address, :doc_id, :avatar, :avatar_cache, :email, :role, :status)
       end
   end
 end

@@ -3,7 +3,7 @@
     <span class="glyphicon glyphicon-plus"></span>
     New Category
   <% end %>
-  <h1>Listing backoffice_categories</h1>
+  <h1>Listing Categories</h1>
 </div>
 
 <div class="table-responsive">
@@ -29,7 +29,7 @@
       <%= content_tag_for(:tr, @backoffice_categories) do |backoffice_category| %>
             <td><%= backoffice_category.name %></td>
             <td><%= backoffice_category.parent_id ? Ecommerce::Category.find(backoffice_category.parent_id).name : "Raíz" %></td>
-            <td><%= image_tag backoffice_category.image_url(:thumb_80), height: 80 %></td>
+            <td><%= image_tag backoffice_category.image_url(:medium_400), height: 80 %></td>
             <td><%= backoffice_category.main_menu %></td>
             <td><%= backoffice_category.popular_homepage %></td>
             <td><%= backoffice_category.category_type %></td>

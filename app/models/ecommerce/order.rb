@@ -9,18 +9,20 @@ module Ecommerce
     enum payment_status: {unpaid: 0, paid: 1, refunded: 2 }
     enum status: {active: 0, void: 2 }
 
+    attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
+
     def friendly_stage
       I18n.translate("model.order.#{self.stage}")
     end
 
     def friendly_shipping_address
       found = Address.find_by(id: self.shipping_address_id)
-      "#{found.name} - #{found.street} - #{found.district}"
+      "#{found.try(:name)} - #{found.try(:street)} - #{found.try(:district)}"
     end
 
     def friendly_billing_address
       found = Address.find_by(id: self.billing_address_id)
-      "#{found.name} - #{found.street} - #{found.district}"
+      "#{found.try(:name)} - #{found.try(:street)} - #{found.try(:district)}"
     end
 
     def shipping_address

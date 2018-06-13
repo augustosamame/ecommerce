@@ -66,9 +66,12 @@
 						    </div>
 
 								<div class="item">
-						      <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/bohemian_crystal_glass.png" alt="Slider4 Image">
+						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image4').text_value %>" alt="Slider4 Image">
 						    </div>
 
+								<div class="item">
+						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image5').text_value %>" alt="Slider5 Image">
+						    </div>
 
 						  <!-- Left and right controls -->
 						  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
