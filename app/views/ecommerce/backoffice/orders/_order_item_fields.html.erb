@@ -1,0 +1,21 @@
+<div class="nested-fields">
+  <div class="form-group lista1" style="margin-top: 0px; margin-bottom: 0px;">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="lavaggio_grid col-xs-4 t_o1">
+          <%= f.association :product, collection: Ecommerce::Product.all, input_html: { class: "product_picker"}, label: false, required: false %>
+        </div>
+        <div class="lavaggio_grid col-xs-2 t_o1">
+          <%= f.input :quantity, label: false, input_html: { class: "quantity_picker" } %>
+        </div>
+        <div class="lavaggio_grid col-xs-2 t_o1">
+          <%= f.input :price_cents, required: false, label: false %>
+        </div>
+        <div class="lavaggio_grid col-xs-1 t_o1">
+          <%= link_to_remove_association "remove item", f, class: 'btn btn-default remove-nested-item' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

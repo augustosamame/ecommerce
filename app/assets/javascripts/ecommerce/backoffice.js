@@ -12,3 +12,4 @@
 //= require ecommerce/backoffice/rotador-rst
 //= require ecommerce/backoffice/scrollReveal
 //= require ecommerce/backoffice/back_autocomplete
+//= require best_in_place

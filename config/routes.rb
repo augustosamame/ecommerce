@@ -7,6 +7,7 @@ Ecommerce::Engine.routes.draw do
     resources :suppliers
     resources :controls
     resources :categories
+    put '/categories_in_place/:id' => 'categories#best_in_place_update'
     resources :products
     resources :product_variants
     resources :product_skus

@@ -14,6 +14,7 @@ require 'font-awesome-rails'
 require 'culqi-ruby'
 require 'geocoder'
 require "browser"
+require "best_in_place"
 
 module Ecommerce
 

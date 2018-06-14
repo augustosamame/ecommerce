@@ -63,33 +63,37 @@ $(function(){
 <script type="text/javascript">
 //tags = <%= raw @users_array %>
 $(document).ready(function(){
-users_tags = jQuery.parseJSON(<%=raw @users_array.to_json.inspect %>);
-products_tags = jQuery.parseJSON(<%=raw @products_array.to_json.inspect %>);
-orders_tags = jQuery.parseJSON(<%=raw @orders_array.to_json.inspect %>);
-$( ".search_users" ).autocomplete({
-  autoFocus: true,
-  minLength: 0,
-  source: users_tags,
-  select: function (e, ui) {
-        window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/users/" + ui.item.id);
-    },
-});
-$( ".search_products" ).autocomplete({
-  autoFocus: false,
-  minLength: 1,
-  source: products_tags,
-  select: function (e, ui) {
-        window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/products/" + ui.item.id);
-    },
-});
-$( ".search_orders" ).autocomplete({
-  autoFocus: false,
-  minLength: 1,
-  source: orders_tags,
-  select: function (e, ui) {
-        window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/orders/" + ui.item.id);
-    },
-});
+
+  /* Activating Best In Place */
+  jQuery(".best_in_place").best_in_place();
+
+  users_tags = jQuery.parseJSON(<%=raw @users_array.to_json.inspect %>);
+  products_tags = jQuery.parseJSON(<%=raw @products_array.to_json.inspect %>);
+  orders_tags = jQuery.parseJSON(<%=raw @orders_array.to_json.inspect %>);
+  $( ".search_users" ).autocomplete({
+    autoFocus: true,
+    minLength: 0,
+    source: users_tags,
+    select: function (e, ui) {
+          window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/users/" + ui.item.id);
+      },
+  });
+  $( ".search_products" ).autocomplete({
+    autoFocus: false,
+    minLength: 1,
+    source: products_tags,
+    select: function (e, ui) {
+          window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/products/" + ui.item.id);
+      },
+  });
+  $( ".search_orders" ).autocomplete({
+    autoFocus: false,
+    minLength: 1,
+    source: orders_tags,
+    select: function (e, ui) {
+          window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/orders/" + ui.item.id);
+      },
+  });
 });
 </script>
 

@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'culqi-ruby'
   s.add_dependency 'geocoder'
   s.add_dependency "browser"
+  s.add_dependency 'best_in_place'
 
   s.add_development_dependency "pg"
   s.add_development_dependency "jquery-rails"

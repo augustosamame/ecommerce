@@ -12,10 +12,17 @@
     <%= f.input :coupon_id %>
     <%= f.input :payment_status, collection: Ecommerce::Order.payment_statuses.keys %>
     <%= f.input :status, collection: Ecommerce::Order.statuses.keys %>
-    <%= f.input :product_line_1, label: "Product 1", collection: Ecommerce::Product.all %>
-    <%= f.input :product_line_2, label: "Product 2", collection: Ecommerce::Product.all %>
-    <%= f.input :product_line_3, label: "Product 3", collection: Ecommerce::Product.all %>
-    <%= f.input :product_line_4, label: "Product 4", collection: Ecommerce::Product.all %>
+
+    <div id='backoffice_order_items'>
+      <%= f.simple_fields_for :order_items do |item| %>
+        <%= render 'task_fields', :f => item %>
+      <% end %>
+      <div class='links'>
+        <%= link_to_add_association 'add item', f, :order_items %>
+      </div>
+    </div>
+
+
     <%= f.input :amount_cents, label: "Total Amount" %>
   </div>
 

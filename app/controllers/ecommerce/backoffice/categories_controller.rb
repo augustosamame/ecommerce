@@ -2,7 +2,7 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   class Backoffice::CategoriesController < Backoffice::BaseController
-    before_action :set_backoffice_category, only: [:show, :edit, :update, :destroy]
+    before_action :set_backoffice_category, only: [:show, :edit, :update, :best_in_place_update, :destroy]
     authorize_resource :class => "Ecommerce::Category"
 
     # GET /backoffice/categories
@@ -41,6 +41,16 @@ module Ecommerce
         redirect_to backoffice_category_path(@backoffice_category), notice: 'Category was successfully updated.'
       else
         render :edit
+      end
+    end
+
+    def best_in_place_update
+      if @backoffice_category.update(backoffice_category_params)
+        head :ok
+        #respond_with @backoffice_category
+      else
+        Rails.logger.error "Unable to update category order in place. Error: #{@backoffice_category.errors.inspect}"
+        head :ok
       end
     end
 
