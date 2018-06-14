@@ -10,7 +10,9 @@
 <div class="main">
   <div class="commerce single-product noo-shop-main">
     <div class="container single-product-container">
+
       <div class="row" style="margin-top: 50px;">
+
         <div class="noo-main col-md-9">
           <div class="product">
             <div class="single-inner">
@@ -173,16 +175,20 @@
           </div>-->
         </div>
         </div>
-        <<div class="noo-sidebar col-md-3">
-          <!--div class="noo-sidebar-wrap">
-            <div class="widget commerce widget_product_search">
-              <h3 class="widget-title">Search</h3>
-              <form class="commerce-product-search">
-                <input type="search" id="commerce-product-search-field" class="search-field" placeholder="Search Products&hellip;" value="" name="s"/>
-                <input type="submit" value="Search"/>
-              </form>
-            </div>
-            <div class="widget commerce widget_product_categories">
+        </div>
+        <div class="noo-sidebar col-md-3">
+          <div class="noo-sidebar-wrap">
+            <div class="col_one_fifth col_last">
+              <a href="#" title="Brand Logo" class="d-none d-md-block"><img class="image_fade" src="<%= @product.brand.logo.medium_200.url %>" alt="Brand Logo"></a>
+              <div class="divider divider-center"><i class="icon-circle-blank"></i></div>
+              <div class="widget commerce widget_product_search">
+                <h3 class="widget-title">Search</h3>
+                <form class="commerce-product-search">
+                  <input type="search" id="commerce-product-search-field" class="search-field" placeholder="Search Products&hellip;" value="" name="s"/>
+                  <input type="submit" value="Search"/>
+                </form>
+              </div>
+            <!--<div class="widget commerce widget_product_categories">
               <h3 class="widget-title">Categories</h3>
               <ul class="product-categories">
                 <li><a href="#">Bread</a></li>
@@ -256,8 +262,8 @@
                 <a href="#">mango</a>
               </div>
             </div>
-          </div>
-        </div>-->
+          </div>-->
+        </div>
       </div>
     </div>
   </div>
