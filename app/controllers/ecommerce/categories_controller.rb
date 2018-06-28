@@ -1,10 +1,9 @@
 require_dependency "ecommerce/application_controller"
 
 module Ecommerce
-  class ProductsController < ApplicationController
+  class CategoriesController < ApplicationController
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}"
     skip_before_action :authenticate_user!
-    before_action :set_product, only: [:show]
     before_action :set_facebook_locale, only: [:show]
 
     authorize_resource
@@ -13,19 +12,13 @@ module Ecommerce
 
       set_index_meta_tags
 
-      if params[:category_id]
-        @category = Category.find(params[:category_id])
+      if params[:parent_category]
+        @category = Category.find(params[:parent_category])
         @child_categories = Category.where(parent_id: @category.id)
-        if @child_categories.count > 0
-          redirect_to categories_path(parent_category: @category.id)
-        else
-          @products = Product.tagged_with(@category.name)
-          render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
-        end
-      else
-        @products = Product.all
-        render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
+      
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/category/index"
+
     end
 
     def show
@@ -37,13 +30,13 @@ module Ecommerce
 
       set_show_meta_tags
 
-      render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/category/show"
     end
 
     private
       # Use callbacks to share common setup or constraints between actions.
-      def set_product
-        @product = Product.find(params[:id])
+      def set_category
+        @category = Category.find(params[:id])
       end
 
       def set_facebook_locale
@@ -58,23 +51,23 @@ module Ecommerce
       end
 
       # Never trust parameters from the scary internet, only allow the white list through.
-      def product_params
+      def category_params
         params.require(:address).permit(:name, :tag_list)
       end
 
       def set_show_meta_tags
-        set_meta_tags title: @product.name,
-                      description: @product.description,
+        set_meta_tags title: @category.name,
+                      description: @category.description,
                       og: {
-                        title: "#{@product.name} | #{Ecommerce.site_name}", #TODO change this to global value to save a db call
-                        description:    @product.description,
-                        image:    @product.image.medium_400.url
+                        title: "#{@category.name} | #{Ecommerce.site_name}", #TODO change this to global value to save a db call
+                        description:    @category.description,
+                        image:    @category.image.medium_400.url
                       }
       end
 
       def set_index_meta_tags
-        set_meta_tags title: "Products",
-                      description: "ExpatShop Product List",
+        set_meta_tags title: "Categories",
+                      description: "ExpatShop Category List",
                       og: {
                         title:    :full_title,
                         image:    Ecommerce.logo

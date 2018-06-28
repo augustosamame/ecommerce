@@ -1,0 +1,39 @@
+<div class="page-header">
+  <%= link_to new_backoffice_slider_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Slider
+  <% end %>
+  <h1>Listing Sliders</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Text</th>
+        <th>View</th>
+        <th>Order</th>
+        <th>Status</th>
+        <th>Image</th>
+        <th>Show</th>
+        <th>Edit</th>
+        <th>Destroy</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @backoffice_sliders) do |backoffice_slider| %>
+            <td><%= backoffice_slider.slider_name %></td>
+            <td><%= backoffice_slider.slider_text %></td>
+            <td><%= backoffice_slider.slider_view %></td>
+            <td><%= backoffice_slider.slider_order %></td>
+            <td><%= backoffice_slider.status %></td>
+            <td><%= image_tag backoffice_slider.slider_image.thumb_120.url, height: 120 %></td>
+            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_slider_path(backoffice_slider) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_slider_path(backoffice_slider) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_slider_path(backoffice_slider), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

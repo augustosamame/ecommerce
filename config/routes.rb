@@ -4,6 +4,7 @@ Ecommerce::Engine.routes.draw do
     get 'dashboard', :to => "dashboard#main"
     resources :users
     resources :brands
+    resources :sliders
     resources :suppliers
     resources :controls
     resources :categories
@@ -22,6 +23,7 @@ Ecommerce::Engine.routes.draw do
   #get '/category/:id', :to => 'store#shop_by_category', :as => 'category'
   #get '/product/:id', :to => 'store#product_detail', :as => 'product'
   resources :products, only: [:index, :show]
+  resources :categories, only: [:index]
   resources :orders, only: [:index, :show]
   post '/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
   post '/checkout/pay_order_bank', :to => 'checkout#pay_order_bank'

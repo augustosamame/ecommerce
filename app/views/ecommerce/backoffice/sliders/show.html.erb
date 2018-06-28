@@ -1,0 +1,27 @@
+<div class="page-header">
+  <%= link_to backoffice_sliders_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_slider_path(@backoffice_slider), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show Slider</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Name:</dt>
+  <dd><%= @backoffice_slider.slider_name %></dd>
+  <dt>Text:</dt>
+  <dd><%= @backoffice_slider.slider_text %></dd>
+  <dt>View:</dt>
+  <dd><%= @backoffice_slider.slider_view %></dd>
+  <dt>Order:</dt>
+  <dd><%= @backoffice_slider.slider_order %></dd>
+  <dt>Status:</dt>
+  <dd><%= @backoffice_slider.status %></dd>
+  <dt>Image:</dt>
+  <dd><%= image_tag @backoffice_slider.slider_image.large_1200.url.to_s %></dd>
+
+</dl>
