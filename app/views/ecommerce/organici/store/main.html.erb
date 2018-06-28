@@ -55,35 +55,35 @@
 								<div class="item active">
 									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).first.slider_text %></div>
 									<div class="dvt_slide_video"><img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif" width="100" height="80"></div>
-						      <img src="<%= Ecommerce::Slider.first.slider_image.url %>">
+						      <img src="<%= Ecommerce::Slider.order(:slider_order).first.slider_image.url %>">
 						    </div>
 								<% end %>
 
 								<% if Ecommerce::Slider.order(:slider_order).second %>
 								<div class="item">
 									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).second.slider_text %></div>
-						      <img src="<%= Ecommerce::Slider.second.slider_image.url %>">
+						      <img src="<%= Ecommerce::Slider.order(:slider_order).second.slider_image.url %>">
 						    </div>
 								<% end %>
 
 								<% if Ecommerce::Slider.order(:slider_order).third %>
 								<div class="item">
 									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).third.slider_text %></div>
-						      <img src="<%= Ecommerce::Slider.third.slider_image.url %>">
+						      <img src="<%= Ecommerce::Slider.order(:slider_order).third.slider_image.url %>">
 						    </div>
 								<% end %>
 
 								<% if Ecommerce::Slider.order(:slider_order).fourth %>
 								<div class="item">
 									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fourth.slider_text %></div>
-						      <img src="<%= Ecommerce::Slider.fourth.slider_image.url %>">
+						      <img src="<%= Ecommerce::Slider.order(:slider_order).fourth.slider_image.url %>">
 						    </div>
 								<% end %>
 
 								<% if Ecommerce::Slider.order(:slider_order).fifth %>
 								<div class="item">
 									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fifth.slider_text %></div>
-						      <img src="<%= Ecommerce::Slider.fifth.slider_image.url %>">
+						      <img src="<%= Ecommerce::Slider.order(:slider_order).fifth.slider_image.url %>">
 						    </div>
 								<% end %>
 
