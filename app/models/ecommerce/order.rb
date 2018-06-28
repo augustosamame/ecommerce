@@ -10,6 +10,8 @@ module Ecommerce
     enum payment_status: {unpaid: 0, paid: 1, refunded: 2 }
     enum status: {active: 0, void: 2 }
 
+    monetize :amount_cents, :shipping_amount_cents
+
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
     def friendly_stage
@@ -38,7 +40,7 @@ module Ecommerce
       order_billing_address = Address.find_by(id: self.billing_address_id)
       invoice_lines_array = Array.new
       OrderItem.where(order_id: self.id).includes(:product).each do |item|
-        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: item.price_cents / 100, price_subtotal: ((item.price_cents / 1.18).to_i) / 100 }
+        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: item.price, price_subtotal: ((item.price / 1.18)) }
       end
       invoice_hash = {
         number: "B#{Ecommerce.serie_boleta}-#{131 + self.id}",
@@ -56,7 +58,7 @@ module Ecommerce
         date_invoice: Time.now.to_s[0..9],
         payment_term_id: "Contado",
         date: Time.now.to_s[0..9],
-        amount_total: self.amount_cents / 100,
+        amount_total: self.amount.to_f,
         company_id_zip: 33,
         partner_shipping_id: "shipping_id",
         company_id_vat: Ecommerce.company_vat,

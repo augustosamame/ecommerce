@@ -3,8 +3,10 @@ module Ecommerce
     belongs_to :order
     belongs_to :product
 
+    monetize :price_cents
+
     def line_total
-      self.quantity * (self.price_cents / 100)
+      self.quantity * (self.price)
     end
   end
 end

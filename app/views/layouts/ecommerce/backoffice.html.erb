@@ -69,6 +69,7 @@ $(document).ready(function(){
 
   users_tags = jQuery.parseJSON(<%=raw @users_array.to_json.inspect %>);
   products_tags = jQuery.parseJSON(<%=raw @products_array.to_json.inspect %>);
+  category_products_tags = jQuery.parseJSON(<%=raw @category_products_array.to_json.inspect %>);
   orders_tags = jQuery.parseJSON(<%=raw @orders_array.to_json.inspect %>);
   $( ".search_users" ).autocomplete({
     autoFocus: true,
@@ -82,6 +83,14 @@ $(document).ready(function(){
     autoFocus: false,
     minLength: 1,
     source: products_tags,
+    select: function (e, ui) {
+          window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/products/" + ui.item.id);
+      },
+  });
+  $( ".search_category_products" ).autocomplete({
+    autoFocus: false,
+    minLength: 1,
+    source: category_products_tags,
     select: function (e, ui) {
           window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/products/" + ui.item.id);
       },

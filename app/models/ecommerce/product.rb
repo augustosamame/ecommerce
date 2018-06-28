@@ -19,6 +19,9 @@ module Ecommerce
 
     mount_uploader :image, Ecommerce::ProductImageUploader
 
+    monetize :price_cents
+    monetize :discounted_price_cents
+
     #validates :category_id, presence: true
     validates_presence_of :category_list
     validates :name, presence: true,   length: { maximum: 165 }
@@ -28,7 +31,7 @@ module Ecommerce
     end
 
     def current_price
-      [self.price_cents, self.discounted_price_cents].min
+      [self.price, self.discounted_price].min
     end
 
   end

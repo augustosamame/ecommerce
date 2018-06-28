@@ -18,7 +18,7 @@
               <table>
                 <tr class="cart-subtotal">
                   <th>Order Total</th>
-                  <td><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="payment-amount"><%= number_with_precision(@order.amount_cents / 100) %></span></strong></td>
+                  <td><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="payment-amount"><%= number_with_precision(@order.amount) %></span></strong></td>
                 </tr>
                 <tr class="cart-subtotal">
                   <th>Payment</th>
@@ -41,10 +41,20 @@
               </table>
               <% if @order.payment_status == "unpaid" %>
                 <div class="wc-proceed-to-checkout">
-                  <button class="button mt-5" id="retry-pay-now-button" class="checkout-button button alt wc-forward">Pay Order Now</button>
+                  <button class="button mt-5" id="retry-pay-now-button" class="checkout-button button alt wc-forward">Pay Order Via Credit Card Now</button>
                 </div>
               <% end %>
             </div>
+          </div>
+          <div class="noo-main col-md-8">
+            <h3>Manual Payment Instructions:</h3>
+            <p>
+              Instructions Line #1</br>
+              Instructions Line #2</br>
+              Instructions Line #3</br>
+              Instructions Line #4</br>
+              Instructions Line #5</br>
+            </p>
           </div>
         </div>
         <div class="row">
@@ -71,7 +81,7 @@
                     <%= link_to item.product.name, product_path(item.product) %>
                   </td>
                   <td class="product-price">
-                    <span class="amount"><%= number_to_currency(item.price_cents / 100) %></span>
+                    <span class="amount"><%= number_to_currency(item.price) %></span>
                   </td>
                   <td class="product-quantity">
                     <div class="quantity">

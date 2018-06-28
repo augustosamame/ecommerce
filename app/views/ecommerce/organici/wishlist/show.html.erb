@@ -33,7 +33,7 @@
                     <%= link_to item.product.name, product_path(item.product) %>
                   </td>
                   <td class="product-price">
-                    <span class="amount"><%= number_to_currency(item.product.current_price / 100) %></span>
+                    <span class="amount"><%= number_to_currency(item.product.current_price) %></span>
                   </td>
                   <td class="product-quantity">
                     <div class="quantity">

@@ -15,10 +15,10 @@
   <dd><%= @backoffice_order.user.name %></dd>
 
   <dt>Order Total (inc. shipping):</dt>
-  <dd><%= number_to_currency(@backoffice_order.amount_cents / 100) %></dd>
+  <dd><%= number_to_currency(@backoffice_order.amount) %></dd>
 
   <dt>Shipping Amount:</dt>
-  <dd><%= number_to_currency(@backoffice_order.shipping_amount_cents / 100) %></dd>
+  <dd><%= number_to_currency(@backoffice_order.shipping_amount) %></dd>
 
   <dt>Stage:</dt>
   <dd><%= @backoffice_order.friendly_stage %></dd>

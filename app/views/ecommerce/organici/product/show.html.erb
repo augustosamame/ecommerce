@@ -19,13 +19,13 @@
               <div class="images">
                 <div class="product-simple-image">
                   <a href="<%= @product.image.url %>" data-rel="prettyPhoto">
-                    <img width="300" height="381" src="<%= @product.image.url %>" alt="" />
+                    <img width="300" height="381" src="<%= @product.image.url %>" alt="" class="max-height-800" />
                   </a>
                 </div>
               </div>
               <div class="summary entry-summary">
                 <h1 class="product_title entry-title"><%= @product.name %></h1>
-                <p class="price"><span class="amount"><%= number_to_currency(@product.price_cents / 100) %></span></p>
+                <p class="price"><span class="amount"><%= number_to_currency(@product.price) %></span></p>
                 <p class="description"><%= @product.description %></p>
                 <p class="description"><%= @product.description2 %></p>
                 <div class="product_meta">

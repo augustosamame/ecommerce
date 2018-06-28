@@ -17,7 +17,7 @@
     <%= f.label "Main Product Image" %>
     <div class="form-group">
       <% if f.object.image? %>
-        <%= image_tag f.object.image, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
+        <%= image_tag f.object.image.url, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
       <% end %>
       <img alt="your image" class="img-thumbnail hidden" height="200" id="img_prev" src="#" width="200"/>
       <br/>
@@ -42,8 +42,9 @@
 
 <script>
 
-  document.addEventListener("DOMContentLoaded", function(event) {
-  $(function() {
+  $(document).ready(function(){
+
+   {
     function readURL(input) {
       if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -65,8 +66,14 @@
       $('#discounted-price-cents').val($('#price-cents').val());
     });
 
-    $('select.form-control.tags').select2({tags: true});
-  });
+    $('select.form-control.tags').select2({
+      tags: true
+    });
+
+    $('select.form-control.tags').val(JSON.parse(<%=raw @backoffice_product.category_list.to_json.inspect %>));
+    $('select.form-control.tags').trigger('change'); // Notify any JS components that the value changed
+
+  };
   });
 
 

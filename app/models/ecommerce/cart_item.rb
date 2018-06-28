@@ -4,7 +4,7 @@ module Ecommerce
     belongs_to :product
 
     def line_total
-      self.quantity * (self.product.current_price / 100)
+      self.quantity * self.product.current_price
     end
   end
 end

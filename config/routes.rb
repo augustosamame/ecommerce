@@ -26,6 +26,7 @@ Ecommerce::Engine.routes.draw do
   post '/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
   post '/checkout/pay_order_bank', :to => 'checkout#pay_order_bank'
   post '/orders/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
+  post '/checkout/pay_order_manual', :to => 'checkout#pay_order_manual'
   get '/checkout', :to => 'checkout#show'
   get '/my_account', :to => 'users#show'
 

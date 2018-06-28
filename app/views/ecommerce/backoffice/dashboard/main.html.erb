@@ -34,7 +34,7 @@
 							<%= order.try(:shipping_address).try(:district)  %>
 						</td>
             <td>
-							S/. <%= order.amount_cents / 100  %>
+							S/. <%= order.amount %>
 						</td>
 					</tr>
           <% end %>

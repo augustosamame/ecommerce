@@ -150,7 +150,7 @@
 
 										<li style="color:#398cd8; padding-right:20px; border-right:1px solid #cccccc;"><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>">All Products</a></li>
 										<% @primary_menu_categories.each do |category| %>
-											<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active" %></li>
+											<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active header-menu-no-wrap" %></li>
 										<% end %>
 						            </ul>
 								</div>

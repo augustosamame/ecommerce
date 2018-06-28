@@ -30,7 +30,7 @@
       <%= content_tag_for(:tr, @backoffice_orders) do |backoffice_order| %>
         <td><%= backoffice_order.id %></td>
         <td><%= backoffice_order.user.name %></td>
-        <td><%= number_to_currency(backoffice_order.amount_cents / 100) %></td>
+        <td><%= number_to_currency(backoffice_order.amount) %></td>
         <td><%= backoffice_order.friendly_stage %></td>
         <td><%= backoffice_order.friendly_shipping_address %></td>
         <td><%= backoffice_order.coupon_id %></td>

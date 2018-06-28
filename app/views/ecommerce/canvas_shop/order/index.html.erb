@@ -33,7 +33,7 @@
         <td><%= order.created_at.localtime.strftime("%d-%b-%y") %></td>
         <td><%= order.stage %></td>
         <td><%= order.payment_status %></td>
-        <td><%= number_to_currency(order.amount_cents / 100) %></td>
+        <td><%= number_to_currency(order.amount) %></td>
         <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, order_path(order) %></td>
         <td><%= link_to "<i class='material-icons'>clear</i>".html_safe, order_path(order) %></td>
       <% end %>

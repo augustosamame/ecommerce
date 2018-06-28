@@ -4,7 +4,7 @@ module Ecommerce
   class CheckoutController < ApplicationController
     #skip_before_action :authenticate_user!, only: [:show]
     #before_action :set_checkout, only: [:show, :edit, :update, :destroy]
-    before_action :find_or_create_order, only: [:pay_order_culqi_checkout, :pay_order_bank]
+    before_action :find_or_create_order, only: [:pay_order_culqi_checkout, :pay_order_bank, :pay_order_manual]
 
     # GET /checkout
     def show
@@ -40,7 +40,7 @@ module Ecommerce
               OrderItem.create!(
                 order_id: @order.id,
                 product_id: item.product_id,
-                price_cents: item.product.current_price,
+                price_cents: (item.product.current_price.to_f * 100).to_i,
                 quantity: item.quantity,
                 status: "active"
               )
@@ -62,13 +62,13 @@ module Ecommerce
       card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
       payment_created = Payment.new.new_culqi_payment(current_user, card_token_created, params[:amount], "Order", @order.id, params[:payment_request_id]) if card_token_created
       if payment_created[0]
-        flash[:notice] = 'Su Orden fue Pagada Exitosamente'
+        flash[:notice] = 'Your Order was successfully placed'
         Rails.logger.info payment_created[0]
         flash.keep(:notice)
         render js: "window.location = '#{root_path}'"
         #redirect_to root_path, notice: 'Pago exitoso'
       else
-        flash[:error] = payment_created[1] || 'Error al Realizar el Pago'
+        flash[:error] = payment_created[1] || 'Error when processing payment'
         Rollbar.error(payment_created[1])
         Rails.logger.error payment_created[1]
         flash.keep(:error)
@@ -79,7 +79,14 @@ module Ecommerce
 
     def pay_order_bank
       Rails.logger.debug params
-      flash[:notice] = 'Su Orden fue Creada Exitosamente'
+      flash[:notice] = 'Your Order was successfully placed'
+      flash.keep(:notice)
+      render js: "window.location = '#{order_path(@order.id)}'"
+    end
+
+    def pay_order_manual
+      Rails.logger.debug params
+      flash[:notice] = 'Your Order was successfully placed'
       flash.keep(:notice)
       render js: "window.location = '#{order_path(@order.id)}'"
     end

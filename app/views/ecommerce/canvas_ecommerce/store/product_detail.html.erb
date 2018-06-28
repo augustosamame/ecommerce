@@ -49,9 +49,9 @@
             <!-- Product Single - Price
             ============================================= -->
             <% if @product.discounted? %>
-              <div class="product-price"><del><%= number_to_currency(@product.price_cents / 100) %></del> <ins><%= number_to_currency(@product.discounted_price_cents / 100) %></ins></div><!-- Product Single - Price End -->
+              <div class="product-price"><del><%= number_to_currency(@product.price) %></del> <ins><%= number_to_currency(@product.discounted_price) %></ins></div><!-- Product Single - Price End -->
             <% else %>
-              <div class="product-price"><%= number_to_currency(@product.price_cents / 100) %></div><!-- Product Single - Price End -->
+              <div class="product-price"><%= number_to_currency(@product.price) %></div><!-- Product Single - Price End -->
             <% end %>
 
             <!-- Product Single - Rating

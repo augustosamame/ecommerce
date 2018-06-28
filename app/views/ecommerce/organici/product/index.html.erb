@@ -42,7 +42,7 @@
                 <div class="noo-product-title">
                   <h3><%= link_to item.name, product_path(item) %></h3><br>
                   <span class="short-descrip" style="font-size:13px;"><%= item.short_description %></span><br>
-                  <span class="price"><span class="amount"><%= number_to_currency(item.price_cents / 100) %></span></span>
+                  <span class="price"><span class="amount"><%= number_to_currency(item.price) %></span></span>
                   <div class="noo-product-action">
                     <div class="noo-action">
                       <a href="ajax/product-quickview.html" class="noo-qucik-view">
@@ -92,7 +92,7 @@
                   <div class="noo-product-title">
                     <h3><%= link_to item.name, product_path(item) %></h3>
                     <span class="short-descrip">Short Description</span>
-                    <span class="price"><span class="amount"><%= number_to_currency(item.price_cents / 100) %></span></span>
+                    <span class="price"><span class="amount"><%= number_to_currency(item.price) %></span></span>
                     <div class="noo-product-action">
                       <div class="noo-action">
                         <%= link_to "Add to Cart", cart_items_path(cart_item: {quantity: 1, product_id: item.id}), :method => :post, class: "button product_type_simple add_to_cart_button" %>

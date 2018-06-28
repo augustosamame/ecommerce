@@ -7,7 +7,7 @@ module Ecommerce
 
     # GET /backoffice/products
     def index
-      @backoffice_products = Product.all
+      @backoffice_products = Product.all.order(id: :desc)
     end
 
     # GET /backoffice/products/1
@@ -23,7 +23,6 @@ module Ecommerce
 
     # GET /backoffice/products/1/edit
     def edit
-
     end
 
     # POST /backoffice/products

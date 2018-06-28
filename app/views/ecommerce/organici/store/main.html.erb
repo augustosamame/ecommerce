@@ -49,37 +49,41 @@
 
 						  <div class="carousel-inner">
 
-						  	<% unless Ecommerce::Control.find_by(name: 'home_slider_image1').text_value.blank? %>
-								<div class="dvt_frase" style="left: 7%;"><%= Ecommerce::Control.get_control_value('home_slider1_text') %></div>
+
+
+								<% if Ecommerce::Slider.order(:slider_order).first %>
 								<div class="item active">
+									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).first.slider_text %></div>
 									<div class="dvt_slide_video"><img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif" width="100" height="80"></div>
-						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image1').text_value %>" alt="Slider1 Images">
+						      <img src="<%= Ecommerce::Slider.first.slider_image.url %>">
 						    </div>
 								<% end %>
 
-								<% unless Ecommerce::Control.find_by(name: 'home_slider_image2').text_value.blank? %>
-								<div class="dvt_frase" style="left: 7%;"><%= Ecommerce::Control.get_control_value('home_slider2_text') %></div>
+								<% if Ecommerce::Slider.order(:slider_order).second %>
 								<div class="item">
-						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image2').text_value %>" alt="Slider2 Image">
+									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).second.slider_text %></div>
+						      <img src="<%= Ecommerce::Slider.second.slider_image.url %>">
 						    </div>
 								<% end %>
 
-								<% unless Ecommerce::Control.find_by(name: 'home_slider_image3').text_value.blank? %>
-								<div class="dvt_frase" style="left: 7%;"><%= Ecommerce::Control.get_control_value('home_slider3_text') %></div>
+								<% if Ecommerce::Slider.order(:slider_order).third %>
 								<div class="item">
-						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image3').text_value %>" alt="Slider3 Image">
+									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).third.slider_text %></div>
+						      <img src="<%= Ecommerce::Slider.third.slider_image.url %>">
 						    </div>
 								<% end %>
 
-								<% unless Ecommerce::Control.find_by(name: 'home_slider_image4').text_value.blank? %>
+								<% if Ecommerce::Slider.order(:slider_order).fourth %>
 								<div class="item">
-						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image4').text_value %>" alt="Slider4 Image">
+									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fourth.slider_text %></div>
+						      <img src="<%= Ecommerce::Slider.fourth.slider_image.url %>">
 						    </div>
 								<% end %>
 
-								<% unless Ecommerce::Control.find_by(name: 'home_slider_image5').text_value.blank? %>
+								<% if Ecommerce::Slider.order(:slider_order).fifth %>
 								<div class="item">
-						      <img src="<%= Ecommerce::Control.find_by(name: 'home_slider_image5').text_value %>" alt="Slider5 Image">
+									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fifth.slider_text %></div>
+						      <img src="<%= Ecommerce::Slider.fifth.slider_image.url %>">
 						    </div>
 								<% end %>
 
@@ -127,7 +131,7 @@
 							<% @featured_homepage_products.each do |item| %>
 							<div class="bread masonry-item noo-product-column col-md-4 col-sm-6 product">
 								<div class="noo-product-inner">
-									<div class="noo-product-thumbnail">
+									<div class="noo-product-thumbnail max-height-400">
 										<a href="<%= product_path(item) %>">
 											<%= image_tag item.image.url, width: 600, height: 760, alt: "" %>
 										</a>
@@ -140,7 +144,7 @@
 									<div class="noo-product-title">
 										<h3><%= link_to item.name, product_path(item) %></h3>
 										<span class="short-descrip" style="font-size:13px;"><%= item.short_description %></span><br>
-										<span class="price"><span class="amount"><%= number_to_currency(item.price_cents / 100) %></span></span>
+										<span class="price"><span class="amount"><%= number_to_currency(item.price) %></span></span>
 										<div class="noo-product-action">
 											<div class="noo-action">
 												<a href="ajax/product-quickview.html" class="noo-qucik-view">
