@@ -15,7 +15,8 @@ module Ecommerce
 
       if params[:category_id]
         @category = Category.find(params[:category_id])
-        @child_categories = Category.where(parent_id: @category.id)
+        #@child_categories = Category.where(parent_id: @category.id)
+        @child_categories = Category.tagged_with(@category.name)
         if @child_categories.count > 0
           redirect_to categories_path(parent_category: @category.id)
         else

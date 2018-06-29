@@ -14,10 +14,17 @@ module Ecommerce
 
       if params[:parent_category]
         @category = Category.find(params[:parent_category])
-        @child_categories = Category.where(parent_id: @category.id)
+        @child_categories = Category.tagged_with(@category.name)
+        if @child_categories.count > 0
+          render "ecommerce/#{Ecommerce.ecommerce_layout}/category/index"
+        else
+          @products = Product.tagged_with(@category.name)
+          render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
+        end
+        #@child_categories = Category.where(parent_id: @category.id)
       end
-      
-      render "ecommerce/#{Ecommerce.ecommerce_layout}/category/index"
+
+      #render "ecommerce/#{Ecommerce.ecommerce_layout}/category/index"
 
     end
 
