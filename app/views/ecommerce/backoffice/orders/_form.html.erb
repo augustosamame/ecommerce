@@ -15,7 +15,7 @@
 
     <div id='backoffice_order_items'>
       <%= f.simple_fields_for :order_items do |item| %>
-        <%= render 'task_fields', :f => item %>
+        <%= render 'order_item_fields', :f => item %>
       <% end %>
       <div class='links'>
         <%= link_to_add_association 'add item', f, :order_items %>

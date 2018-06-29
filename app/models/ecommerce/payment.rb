@@ -18,8 +18,6 @@ module Ecommerce
     def check_if_order_paid
       if Payment.where(order: self.order_id).sum(:amount_cents) >= self.order.amount_cents
         self.order.update(stage: "stage_paid", payment_status: "paid")
-        #Ecommerce::CreateEinvoiceWorker.perform_async(self.order.id)
-        CreateEinvoiceWorker.perform_async(self.order.id)
       end
     end
 

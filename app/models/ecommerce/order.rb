@@ -12,7 +12,18 @@ module Ecommerce
 
     monetize :amount_cents, :shipping_amount_cents
 
+    after_commit :notify_new_order, on: :create
+    after_commit :fire_envoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
+
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
+
+    def notify_new_order
+      AdminMailer.new_order_email(self.user, self).deliver!
+    end
+
+    def fire_envoice_worker
+      CreateEinvoiceWorker.perform_async(self.id) if self.payment_status == "paid"
+    end
 
     def friendly_stage
       I18n.translate("model.order.#{self.stage}")
