@@ -38,7 +38,7 @@ module Ecommerce
 
     # PATCH/PUT /backoffice/categories/1
     def update
-      @backoffice_category.parent_category_list.add(backoffice_category_params[:parent_id])
+      @backoffice_category.parent_category_list = backoffice_category_params[:parent_id]
       if @backoffice_category.update(backoffice_category_params)
         redirect_to backoffice_category_path(@backoffice_category), notice: 'Category was successfully updated.'
       else
