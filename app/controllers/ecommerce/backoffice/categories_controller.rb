@@ -26,6 +26,7 @@ module Ecommerce
     # POST /backoffice/categories
     def create
       @backoffice_category = Category.new(backoffice_category_params)
+      @backoffice_category.parent_category_list.add(backoffice_category_params[:parent_id])
 
       if @backoffice_category.save
         redirect_to backoffice_category_path(@backoffice_category), notice: 'Category was successfully created.'
@@ -37,6 +38,7 @@ module Ecommerce
 
     # PATCH/PUT /backoffice/categories/1
     def update
+      @backoffice_category.parent_category_list.add(backoffice_category_params[:parent_id])
       if @backoffice_category.update(backoffice_category_params)
         redirect_to backoffice_category_path(@backoffice_category), notice: 'Category was successfully updated.'
       else
@@ -75,7 +77,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_category_params
-        params.require(:category).permit(:name, :parent_id, :image, :image_cache, :status, :main_menu, :category_type, :category_order, :popular_homepage, :image_popular_homepage, :image_popular_homepage_overlay_text, :image_popular_homepage_cache)
+        params.require(:category).permit(:name, :image, :image_cache, :status, :main_menu, :category_type, :category_order, :popular_homepage, :image_popular_homepage, :image_popular_homepage_overlay_text, :image_popular_homepage_cache, parent_id: [], parent_category_list: [])
       end
   end
 end

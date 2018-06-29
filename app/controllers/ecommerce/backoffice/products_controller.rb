@@ -27,7 +27,6 @@ module Ecommerce
 
     # POST /backoffice/products
     def create
-      puts params
       @backoffice_product = Product.new(backoffice_product_params)
       @backoffice_product.category_list.add(backoffice_product_params[:category_id])
       @backoffice_product.permalink = @backoffice_product.name
