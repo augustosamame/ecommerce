@@ -18,7 +18,7 @@ module Ecommerce
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
     def notify_new_order
-      AdminMailer.new_order_email(self.user, self).deliver!
+      #AdminMailer.new_order_email(self.user, self).deliver!
     end
 
     def fire_envoice_worker
