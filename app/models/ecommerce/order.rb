@@ -54,7 +54,7 @@ module Ecommerce
         invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: item.price.to_f, price_subtotal: ((item.price / 1.18).to_f) }
       end
       invoice_hash = {
-        number: "B#{Ecommerce.serie_boleta}-#{131 + self.id}",
+        number: "B#{Ecommerce.serie_boleta}-#{135 + self.id}",
         currency_id: "PEN",
         id: self.id,
         zip: "030101",
