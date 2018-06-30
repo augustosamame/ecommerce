@@ -2,12 +2,12 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   class Backoffice::SlidersController < Backoffice::BaseController
-    before_action :set_backoffice_slider, only: [:show, :edit, :update, :destroy]
+    before_action :set_backoffice_slider, only: [:show, :edit, :update, :best_in_place_update, :destroy]
     authorize_resource :class => "Ecommerce::Slider"
 
     # GET /backoffice/sliders
     def index
-      @backoffice_sliders = Slider.all
+      @backoffice_sliders = Slider.all.order(:slider_order)
     end
 
     # GET /backoffice/sliders/1
@@ -40,6 +40,15 @@ module Ecommerce
         redirect_to backoffice_slider_path(@backoffice_slider), notice: 'Slider was successfully updated.'
       else
         render :edit
+      end
+    end
+
+    def best_in_place_update
+      if @backoffice_slider.update(backoffice_slider_params)
+        head :ok
+      else
+        Rails.logger.error "Unable to update slider order in place. Error: #{@backoffice_slider.errors.inspect}"
+        head :ok
       end
     end
 

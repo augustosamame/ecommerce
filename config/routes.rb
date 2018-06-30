@@ -5,11 +5,13 @@ Ecommerce::Engine.routes.draw do
     resources :users
     resources :brands
     resources :sliders
+    put '/sliders_in_place/:id' => 'sliders#best_in_place_update'
     resources :suppliers
     resources :controls
     resources :categories
     put '/categories_in_place/:id' => 'categories#best_in_place_update'
     resources :products
+    put '/products_in_place/:id' => 'products#best_in_place_update'
     resources :product_variants
     resources :product_skus
     resources :product_sku_properties
