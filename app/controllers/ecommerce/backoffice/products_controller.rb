@@ -2,7 +2,7 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   class Backoffice::ProductsController < Backoffice::BaseController
-    before_action :set_backoffice_product, only: [:show, :edit, :update, :destroy]
+    before_action :set_backoffice_product, only: [:show, :edit, :update, :best_in_place_update, :destroy]
     authorize_resource :class => "Ecommerce::Product" #we have to do this because controller and model do not have the same namespace
 
     # GET /backoffice/products
@@ -46,6 +46,15 @@ module Ecommerce
         redirect_to backoffice_product_path(@backoffice_product), notice: 'Product was successfully updated.'
       else
         render :edit
+      end
+    end
+
+    def best_in_place_update
+      if @backoffice_product.update(backoffice_product_params)
+        head :ok
+      else
+        Rails.logger.error "Unable to update product order in place. Error: #{@backoffice_product.errors.inspect}"
+        head :ok
       end
     end
 

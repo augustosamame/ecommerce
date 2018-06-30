@@ -1,10 +1,10 @@
-  <section class="noo-page-heading eff">
+  <section class="noo-page-heading eff" style="height: 120px;">
     <div class="container">
       <div class="noo-heading-content">
         <h1 class="page-title eff">Cart</h1>
-        <div class="noo-page-breadcrumb eff">
+        <!-- <div class="noo-page-breadcrumb eff">
           <a href="./" class="home">ExpatShop</a>/<span>Cart</span>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -76,7 +76,11 @@
                       <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
                       <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
                     </div>
-                    <input type="submit" class="button" name="update_cart" value="Update Cart"/>
+
+                      <input type="submit" class="button" style="background: #f4eede; color: #212121;" id="update-cart-button" name="update_cart" value="Update Cart"/>
+                      <%= link_to "Proceed to Checkout", checkout_path, class: "checkout-button button alt wc-forward" %>
+
+
                   </td>
                 </tr>
               </tbody>

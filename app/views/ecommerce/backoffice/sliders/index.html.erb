@@ -27,7 +27,7 @@
             <td><%= backoffice_slider.slider_name %></td>
             <td><%= backoffice_slider.slider_text %></td>
             <td><%= backoffice_slider.slider_view %></td>
-            <td><%= backoffice_slider.slider_order %></td>
+            <td><%= best_in_place backoffice_slider, :slider_order, :as => :input, :url => "sliders_in_place/#{backoffice_slider.id}", :method => :put %></td>
             <td><%= backoffice_slider.status %></td>
             <td><%= image_tag backoffice_slider.slider_image.thumb_120.url, height: 120 %></td>
             <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_slider_path(backoffice_slider) %></td>

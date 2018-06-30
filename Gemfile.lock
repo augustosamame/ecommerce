@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ecommerce (0.4.1.0)
+    ecommerce (0.4.3.1)
       best_in_place
       bootstrap-sass
       browser
@@ -256,4 +256,4 @@ DEPENDENCIES
   pg
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
