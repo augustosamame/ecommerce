@@ -6,7 +6,5 @@ module Ecommerce
 
     scope :active, -> { where(status: "active") }
 
-    mount_uploader :logo, Ecommerce::PaymentMethodLogoUploader
-
   end
 end
