@@ -25,8 +25,6 @@ module Ecommerce
       Rails.logger.debug "Received Order: #{order_id}"
       Rails.logger.debug "Card Token Data:"
       Rails.logger.debug card_token_data
-      Culqi.public_key = ENV['CULQI_PUBLIC_KEY']
-      Culqi.secret_key = ENV['CULQI_SECRET_KEY']
       case payment_type
       when "Recarga"
         culqi_description = "Recarga Saldo"

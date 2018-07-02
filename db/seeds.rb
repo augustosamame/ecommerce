@@ -23,9 +23,10 @@ Ecommerce::Slider.create(slider_name: 'Home Slider 3', slider_text: "", remote_s
 Ecommerce::Slider.create(slider_name: 'Home Slider 4', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image3.pngg", slider_view: "Home", slider_order: 4 )
 Ecommerce::Slider.create(slider_name: 'Home Slider 5', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image3.png", slider_view: "Home", slider_order: 5 )
 
-pm1 = Ecommerce::PaymentMethod.create(name: "Card", status: "active")
+pm1 = Ecommerce::PaymentMethod.create(name: "Card", processor: "Culqi", status: "active")
 pm2 = Ecommerce::PaymentMethod.create(name: "Bank Deposit", status: "active")
 pm3 = Ecommerce::PaymentMethod.create(name: "Manual", status: "active")
+
 Ecommerce::Brand.create!([
   {name: "Dr. Brown", logo: "organici_logo.png"},
   {name: "Babyganics", logo: "organici_logo.png"},

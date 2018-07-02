@@ -136,7 +136,6 @@
 <!-- Configurando el checkout-->
 <script>
 
-  Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
   var payment_amount = $('#payment-amount').html() * 100;
   var shipping_calculated_flag = false
 
@@ -170,6 +169,7 @@
   }
 
   function recalculate_checkout_totals() {
+    Culqi.publicKey = "<%= Culqi.public_key %>";
     var total_amount = Number($("#shipping-amount").html()) + Number($("#subtotal").html())
     $('#payment-amount').html(total_amount.toFixed(2))
     payment_amount = $('#payment-amount').html() * 100;

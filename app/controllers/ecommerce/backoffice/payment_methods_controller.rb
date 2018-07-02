@@ -37,7 +37,7 @@ module Ecommerce
     # PATCH/PUT /backoffice/payment_methods/1
     def update
       if @backoffice_payment_method.update(backoffice_payment_method_params)
-        redirect_to backoffice_payment_method(@backoffice_payment_method), notice: t('.destroyed')
+        redirect_to backoffice_payment_method_path(@backoffice_payment_method), notice: t('.updated')
       else
         render :edit
       end
@@ -57,7 +57,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_payment_method_params
-        params.require(:payment_method).permit(:name, :logo, :logo_cache, :processor, :account, :key, :secret, :callback_url, :success_marks_as_paid, :pre_message, :post_message)
+        params.require(:payment_method).permit(:name, :logo, :logo_cache, :processor, :account, :key, :secret, :callback_url, :success_marks_as_paid, :pre_message, :post_message, :status)
       end
   end
 end

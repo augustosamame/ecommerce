@@ -10,27 +10,39 @@ module Ecommerce
 
     authorize_resource
 
+    respond_to :html, :js
+
     def create
       @cart_item = CartItem.new(cart_item_params)
       @cart_item.cart_id = @cart.id
       if @cart_item.save
-        redirect_to cart_path(@cart) and return
+        @cart = Cart.where(user_id: current_user.id, status: "active").order(:id).last
+        respond_to do |format|
+          format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/create"  }
+
+          format.html {redirect_to cart_path(@cart) }
+        end
+
       else
         flash[:error] = "There was a problem adding this item to your cart"
         @product = Product.find(@cart_item.product.id)
-        redirect_to product_path(@product)
+        respond_to do |format|
+          format.js { render js: "alert('There was a problem adding this item to your cart');" }
+          format.html { redirect_to product_path(@product) }
+        end
+
       end
 
-      @product = Ecommerce::Product.find(params[:id])
-      case I18n.locale[0..1]
-      when 'en'
-        @fb_compatible_locale_code = 'en_US'
-      when 'es'
-        @fb_compatible_locale_code = 'es_LA'
-      else
-        @fb_compatible_locale_code = 'es_LA'
-      end
-      render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
+      #@product = Ecommerce::Product.find(params[:id])
+      #case I18n.locale[0..1]
+      #when 'en'
+      #  @fb_compatible_locale_code = 'en_US'
+      #when 'es'
+      #  @fb_compatible_locale_code = 'es_LA'
+      #else
+      #  @fb_compatible_locale_code = 'es_LA'
+      #end
+      #render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
     end
 
     def update

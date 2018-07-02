@@ -26,11 +26,11 @@
 								<nav class="pull-left noo-main-menu">
 									<ul class="nav-collapse navbar-nav">
 										<li class="current-menu-item">
-											<a href="<%= Ecommerce::Engine.routes.url_helpers.root_path %>">Store</a>
+											<a href="<%= Ecommerce::Engine.routes.url_helpers.root_path %>">Home</a>
 										</li>
 
-										<li><a href="our-story.html">Our Story</a></li>
-										<li class="menu-item-has-children">
+										<!-- <li><a href="our-story.html">Our Story</a></li> -->
+										<!-- <li class="menu-item-has-children">
 											<a href="<%= Blog::Engine.routes.url_helpers.root_path %>">Blog</a>
 											<ul class="sub-menu">
 												<% Blog::Post.where(post_published: true).each do |post| %>
@@ -38,7 +38,7 @@
 												<% end %>
 												<li><a href="<%= Blog::Engine.routes.url_helpers.root_path %>">See All Blog Articles</a></li>
 											</ul>
-										</li>
+										</li> -->
 										<li><a href="contact.html">Contact</a></li>
 
 										<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
@@ -76,57 +76,10 @@
 												<% end %>
 											</li>
 
+											<li class="menu-item noo-menu-item-cart minicart" id="cart-line">
+												<%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
+											</li>
 
-
-											<li class="menu-item noo-menu-item-cart minicart">
-												<% if @cart && @cart.id %>
-				                <a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
-				                  <span class="cart-item has-items">
-				                    <i class="fa fa-shopping-cart"></i>
-				                    <span>(<%= @cart.get_totals[:tot_qty] %>)</span> Items
-				                  </span>
-				                </a>
-				                <div class="noo-minicart">
-				                  <div class="minicart-header"><%= @cart.get_totals[:tot_qty] %> items in the shopping cart</div>
-				                  <div class="minicart-body">
-
-														<% @cart.cart_items.each do |item| %>
-				                    <div class="cart-product clearfix">
-				                      <div class="cart-product-image">
-				                        <a class="cart-product-img" href="shop-detail.html">
-				                          <img width="100" height="100" src="<%= item.product.image.thumb_100.url %>" alt="" />
-				                        </a>
-				                      </div>
-				                      <div class="cart-product-details">
-				                        <div class="cart-product-title">
-				                          <a href="shop-detail.html"><%= item.product.name %></a>
-				                        </div>
-				                        <div class="cart-product-price">
-				                          <span class="amount"><%= number_to_currency(item.product.current_price) %></span>
-				                        </div>
-				                        <div class="cart-product-quantity">x <%= item.quantity %></div>
-				                      </div>
-				                      <a href="#" class="remove">&times;</a>
-				                    </div>
-														<% end %>
-
-				                  </div>
-				                  <div class="minicart-footer">
-				                    <div class="minicart-total">
-				                      Subtotal <span class="amount"><%= number_to_currency(@cart.get_totals[:tot_acum]) %></span>
-				                    </div>
-				                    <div class="minicart-actions clearfix">
-				                      <a class="button btn-primary" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
-				                        <span class="text">View Cart</span>
-				                      </a>
-				                      <a class="checkout-button button btn-primary" href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
-				                        <span class="text">Checkout</span>
-				                      </a>
-				                    </div>
-				                  </div>
-				                </div>
-												<% end %>
-				              </li>
 
 											<li class="menu-item fly-right">
 												<a id="noo-search" class="search-button noo-search" href="#">

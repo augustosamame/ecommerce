@@ -1,0 +1,2 @@
+$("#cart-line").html("<%= escape_javascript(render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart}) %>");
+fly_to_cart()

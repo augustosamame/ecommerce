@@ -94,7 +94,7 @@
                         <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row2.png" alt="Credit Card Images">
                       </div>
                     </li>
-                    
+
                     <% end %>
 
                     <% if @payment_bank_deposit %>
@@ -129,7 +129,7 @@
 <!-- Configurando el checkout-->
 <script>
 
-  Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
+  Culqi.publicKey = "<%= Culqi.public_key %>";
   var payment_amount = $('#payment-amount').html() * 100;
   var shipping_calculated_flag = false
 

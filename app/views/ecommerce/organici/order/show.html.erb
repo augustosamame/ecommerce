@@ -39,7 +39,7 @@
                   </td>
                 </tr>
               </table>
-              <% if @order.payment_status == "unpaid" %>
+              <% if @order.payment_status == "unpaid" && (@payment_credit_card_culqi || @payment_credit_card_visanet) %>
                 <div class="wc-proceed-to-checkout">
                   <button class="button mt-5" id="retry-pay-now-button" class="checkout-button button alt wc-forward">Pay Order Via Credit Card Now</button>
                 </div>
@@ -117,7 +117,7 @@
 
 <script>
 
-Culqi.publicKey = "<%= ENV['CULQI_PUBLIC_KEY'] %>";
+Culqi.publicKey = "<%= Culqi.public_key %>";
 var payment_amount = $('#payment-amount').html() * 100;
 Culqi.settings({
   title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',

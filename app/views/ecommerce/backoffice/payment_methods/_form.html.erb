@@ -25,6 +25,7 @@
 
     <%= f.input :pre_message, label: "Message to show in Payment Message List" %>
     <%= f.input :post_message, label: "Message to show after Payment Method chosen" %>
+    <%= f.input :status, collection: Ecommerce::PaymentMethod.statuses.keys %>
   </div>
 
   <div class="form-actions">

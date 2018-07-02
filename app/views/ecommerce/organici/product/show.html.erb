@@ -75,7 +75,8 @@
                 </div>
               </div>
             </div>
-            <div class="commerce-tabs">
+
+            <!-- <div class="commerce-tabs">
               <ul class="nav nav-tabs tabs">
                   <li class="active">
                     <a data-toggle="tab" href="#tab-1">Description</a>
@@ -92,7 +93,7 @@
                   <div class="fb-comments" data-href="<%= request.url %>" data-width="100%" data-order-by="reverse_time" data-numposts="5"></div>
                 </div>
             </div>
-            <!--<div class="related products">
+            <div class="related products">
               <h2>Related Products</h2>
               <div class="products row product-grid">
                 <div class="masonry-item noo-product-column col-md-4 col-sm-6 product">
@@ -172,8 +173,8 @@
                 </div>
               </div>
             </div>
-          </div>-->
-        </div>
+          </div>
+        </div> -->
         </div>
         </div>
         <div class="noo-sidebar col-md-3">
@@ -271,13 +272,15 @@
 </div>
 
 <script>
-  $("#devtech_plus").click(function() {
+  $("#devtech_plus").click(function(e) {
     $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) + 1);
+    e.preventDefault();
   });
-  $("#devtech_minus").click(function() {
+  $("#devtech_minus").click(function(e) {
     if (parseInt($("#devtech_quantity_field").val()) > 1) {
       $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) - 1);
     }
+    e.preventDefault();
   });
 
 </script>

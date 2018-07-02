@@ -5766,7 +5766,7 @@ body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
     color: #ffffff;
     line-height: 16px;
     text-transform: uppercase;
-    width: 48.5%;
+    width: 45.0%;
     text-align: center;
 }
 
@@ -12523,7 +12523,7 @@ fieldset[disabled] .mailchimp-widget .mc-subscribe-form button.active {
     font-weight: 400;
     position: relative;
     text-align: center;
-	background-image: url(../images/banner/banner_1920x1080.jpg);
+	  //background-image: url(../images/banner/banner_1920x1080.jpg);
 }
 
 .noo-footer-shop-now:before {
@@ -12576,7 +12576,7 @@ fieldset[disabled] .mailchimp-widget .mc-subscribe-form button.active {
 
 .noo-footer-shop-now h3:after {
     content: '';
-    background-image: url("../images/icon-left.png");
+    //background-image: image-url("/images/icon-left.png");
     background-position: center center;
     background-repeat: no-repeat;
     -webkit-transform: translate(0, -50%);
@@ -12592,7 +12592,7 @@ fieldset[disabled] .mailchimp-widget .mc-subscribe-form button.active {
 
 .noo-footer-shop-now h3:before {
     content: '';
-    background-image: url("../images/icon-right.png");
+    //background-image: image-url("/images/icon-right.png");
     background-position: center center;
     background-repeat: no-repeat;
     -webkit-transform: translate(0, -50%);

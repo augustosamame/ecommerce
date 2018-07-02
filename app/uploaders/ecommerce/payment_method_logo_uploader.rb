@@ -59,7 +59,7 @@ class Ecommerce::PaymentMethodLogoUploader < CarrierWave::Uploader::Base
   #   # For Rails 3.1+ asset pipeline compatibility:
   # ActionController::Base.helpers.asset_path("fallback/" + [version_name, "wish_image.png"].compact.join('_'))
   #
-  "https://s3.amazonaws.com/#{ENV['CARRIERWAVE_CONFIG_FOG_DIRECTORY']}/default-brand-logo.jpg"
+  "https://s3.amazonaws.com/#{ENV['CARRIERWAVE_CONFIG_FOG_DIRECTORY']}/default-payment-method-image.jpg"
   #  "/assets/fallback/" + [version_name, "wish-image.png"].compact.join('_')
   end
 
