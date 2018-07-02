@@ -1,0 +1,35 @@
+<div class="page-header">
+  <%= link_to backoffice_payment_methods_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_payment_method_path(@backoffice_payment_method), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show Payment Method</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Payment Method Name:</dt>
+  <dd><%= @backoffice_payment_method.name %></dd>
+  <dt>Name of Credit Card Processor:</dt>
+  <dd><%= @backoffice_payment_method.processor %></dd>
+  <dt>Account Id of Payment Processor:</dt>
+  <dd><%= @backoffice_payment_method.account %></dd>
+  <dt>Auth Key for Payment Processor:</dt>
+  <dd><%= @backoffice_payment_method.key %></dd>
+  <dt>Secret Key for Payment Processor:</dt>
+  <dd><%= @backoffice_payment_method.secret %></dd>
+  <dt>Callback Url for Payment Processor:</dt>
+  <dd><%= @backoffice_payment_method.callback_url %></dd>
+  <dt>Succesful Processing Will Mark Order as Paid:</dt>
+  <dd><%= @backoffice_payment_method.success_marks_as_paid %></dd>
+  <dt>Logo:</dt>
+  <dd><%= image_tag @backoffice_payment_method.logo.medium_200.url.to_s %></dd>
+  <dt>Message to show in Payment Message List:</dt>
+  <dd><%= @backoffice_payment_method.pre_message %></dd>
+  <dt>Message to show after Payment Method chosen:</dt>
+  <dd><%= @backoffice_payment_method.post_message %></dd>
+
+</dl>

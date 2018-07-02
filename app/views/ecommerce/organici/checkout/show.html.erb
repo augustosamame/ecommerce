@@ -74,24 +74,49 @@
                 </table>
                 <div class="commerce-checkout-payment">
                   <ul class="payment_methods">
-                    <li>
-                      <input type="radio" class="input-radio" name="payment_method" value="manual" checked="checked" />
-                      <label>
-                        Manual Payment
-                      </label>
-                      <div class="payment_box payment_method_cheque">
-                        <p>We will contact you after you place your order with payment instructions.</p>
-                      </div>
-                    </li>
-                    <!--
+                    <% if @payment_credit_card_culqi %>
+
                     <li class="wc_payment_method payment_method_card">
                       <input id="payment_method_card" type="radio" checked="checked" class="input-radio" name="payment_method" value="card" />
                       <label for="payment_method_card">
                         Credit / Debit Card
+                      </label>
+                      <label for="payment_method_card">
                         <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row1.png" alt="Credit Card Images">
                         <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row2.png" alt="Credit Card Images">
                       </label>
-                    </li>-->
+                    </li>
+
+                    <% end %>
+
+                    <% if @payment_bank_deposit %>
+
+                    <li>
+                      <input id="payment_method_bank" type="radio" class="input-radio" name="payment_method" value="manual" checked="checked" />
+                      <label for="payment_method_bank">
+                        Bank Deposit
+                      </label>
+                      <div class="payment_box payment_method_cheque">
+                        <p><%= @payment_bank_deposit.pre_message %></p>
+                      </div>
+                    </li>
+
+                    <% end %>
+
+                    <% if @payment_manual %>
+
+                    <li>
+                      <input id="payment_method_manual" type="radio" class="input-radio" name="payment_method" value="manual" checked="checked" />
+                      <label for="payment_method_manual">
+                        Manual Payment
+                      </label>
+                      <div class="payment_box payment_method_cheque">
+                        <p><%= @payment_manual.pre_message %></p>
+                      </div>
+                    </li>
+
+                    <% end %>
+
                   </ul>
                 </div>
                 <button class="button mt-5" id ="pay-now-button">Place Order</button>

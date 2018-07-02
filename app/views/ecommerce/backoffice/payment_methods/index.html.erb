@@ -1,0 +1,41 @@
+<div class="page-header">
+  <%= link_to new_backoffice_payment_method_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Payment Method
+  <% end %>
+  <h1>Listing Payment Method</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Processor</th>
+        <th>Account Id</th>
+        <th>Marks As Paid</th>
+        <th>Logo</th>
+        <th>Pre Message</th>
+        <th>Post Message</th>
+        <th>Show</th>
+        <th>Edit</th>
+        <th>Destroy</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @backoffice_payment_methods) do |backoffice_payment_method| %>
+            <td><%= backoffice_payment_method.name %></td>
+            <td><%= backoffice_payment_method.processor %></td>
+            <td><%= backoffice_payment_method.account %></td>
+            <td><%= backoffice_payment_method.success_marks_as_paid %></td>
+            <td><%= image_tag backoffice_payment_method.logo.thumb_80.url, height: 80 %></td>
+            <td><%= backoffice_payment_method.pre_message %></td>
+            <td><%= backoffice_payment_method.post_message %></td>
+            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_payment_method_path(backoffice_payment_method) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_payment_method_path(backoffice_payment_method) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_payment_method_path(backoffice_payment_method), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

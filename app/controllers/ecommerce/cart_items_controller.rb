@@ -6,7 +6,7 @@ module Ecommerce
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}/"
     skip_before_action :authenticate_user!
     before_action :set_menu_items
-    before_action :set_cart_item, only: [:destroy]
+    before_action :set_cart_item, only: [:destroy, :update]
 
     authorize_resource
 
@@ -33,9 +33,9 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
     end
 
-    def edit
-      @cart_item.update(cart_item_params)
-      redirect_to @cart_item.cart, notice: 'Cart edited.'
+    def update
+      @cart_item.update(quantity: cart_item_params[:quantity]) unless cart_item_params[:quantity].nil?
+      redirect_to @cart_item.cart, notice: 'Cart updated.'
     end
 
     def destroy

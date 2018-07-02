@@ -14,6 +14,7 @@ module Ecommerce
 
     after_commit :notify_new_order, on: :create
     after_commit :fire_envoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
+    after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
 
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
@@ -23,6 +24,15 @@ module Ecommerce
 
     def fire_envoice_worker
       CreateEinvoiceWorker.perform_async(self.id) if self.payment_status == "paid"
+    end
+
+    def set_stock_and_stage
+      if self.payment_status == "paid"
+        self.update_columns(stage: "stage_paid") if self.stage == "stage_new"
+        self.order_items.where(status: "active").each do |ol|
+          ol.product.update(total_quantity: ol.product.total_quantity -= ol.quantity)
+        end
+      end
     end
 
     def friendly_stage

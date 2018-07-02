@@ -43,7 +43,10 @@
                     </td>
                   </tr>
                 <% else %>
-                  <% @cart.cart_items.each do |item| %>
+
+
+                <% @cart.cart_items.each do |item| %>
+                  <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
                   <tr class="cart_item">
                     <td class="product-thumbnail">
                       <a href="<%= product_path(item.product) %>">
@@ -55,8 +58,8 @@
                       <span class="amount"><%= number_to_currency(item.product.current_price) %></span>
                     </td>
                     <td class="product-quantity">
-                      <div class="quantity">
-                          <input type="number" step="1" min="0" name="qty" value="<%= item.quantity %>" class="input-text qty text" size="4"/>
+                      <div class="quantity" style="margin-top: 20px;">
+                          <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text cart_wish_number', onchange: 'this.form.submit();' } %>
                       </div>
                     </td>
                     <td class="product-subtotal">
@@ -67,6 +70,7 @@
                     </td>
                   </tr>
                   <% end %>
+                  <% end %>
                 <% end %>
                 <tr>
                   <td colspan="5" class="actions">
@@ -76,9 +80,8 @@
                       <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
                       <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
                     </div>
-
-                      <input type="submit" class="button" style="background: #f4eede; color: #212121;" id="update-cart-button" name="update_cart" value="Update Cart"/>
-                      <%= link_to "Proceed to Checkout", checkout_path, class: "checkout-button button alt wc-forward" %>
+                    <input type="submit" class="button" style="background: #f4eede; color: #212121;" id="update-cart-button" name="update_cart" value="Update Cart"/>
+                    <%= link_to "Proceed to Checkout", checkout_path, class: "checkout-button button alt wc-forward" %>
 
 
                   </td>

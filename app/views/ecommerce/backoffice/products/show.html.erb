@@ -29,11 +29,14 @@
   <dt>Discounted Price:</dt>
   <dd><%= @backoffice_product.discounted_price_cents %></dd>
 
-  <dt>Controlar Stock?:</dt>
+  <dt>Manage Stock?:</dt>
   <dd><%= @backoffice_product.stockable %></dd>
 
-  <dt>Image:</dt>
-  <dd><%= image_tag @backoffice_product.image_url(:medium_400) %></dd>
+  <dt>Current Stock:</dt>
+  <dd><%= @backoffice_product.total_quantity %></dd>
+
+  <dt style="margin-top: 20px;">Image:</dt>
+  <dd><%= image_tag @backoffice_product.image_url(:medium_400), style: "margin-top: 20px;" %></dd>
 
 </dl>
 
