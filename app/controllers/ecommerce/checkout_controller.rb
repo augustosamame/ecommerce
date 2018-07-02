@@ -13,10 +13,10 @@ module Ecommerce
       @checkout_addresses = Address.where(user_id: current_user.id)
       @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
       #active payment methods in view
-      @payment_bank_deposit = PaymentMethod.active.find_by(name: "Bank Deposit")
-      @payment_manual = PaymentMethod.active.find_by(name: "Manual")
-      @payment_credit_card_visanet = PaymentMethod.active.find_by(name: "Card", processor: "Visanet")
-      @payment_credit_card_culqi = PaymentMethod.active.find_by(name: "Card", processor: "Culqi")
+      @payment_bank_deposit = PaymentMethod.is_active.find_by(name: "Bank Deposit")
+      @payment_manual = PaymentMethod.is_active.find_by(name: "Manual")
+      @payment_credit_card_visanet = PaymentMethod.is_active.find_by(name: "Card", processor: "Visanet")
+      @payment_credit_card_culqi = PaymentMethod.is_active.find_by(name: "Card", processor: "Culqi")
 
       render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show"
     end

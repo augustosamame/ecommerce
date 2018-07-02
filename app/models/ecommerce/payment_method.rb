@@ -4,7 +4,7 @@ module Ecommerce
 
     enum status: {active: 1, inactive: 2}
 
-    scope :active, -> { where(status: "active") }
+    scope :is_active, -> { where(status: "active") }
 
   end
 end
