@@ -4,9 +4,9 @@ module Ecommerce
 
     enum status: {active: 1, inactive: 2}
 
-    #scope :active, -> { where(status: "active") }
+    scope :active, -> { where(status: "active") }
 
-    #mount_uploader :logo, Ecommerce::PaymentMethodLogoUploader
+    mount_uploader :logo, Ecommerce::PaymentMethodLogoUploader
 
   end
 end
