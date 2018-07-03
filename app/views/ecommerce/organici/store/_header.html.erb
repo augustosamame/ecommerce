@@ -30,7 +30,7 @@
 										</li>
 
 										<!-- <li><a href="our-story.html">Our Story</a></li> -->
-										<li class="menu-item-has-children">
+										<!-- <li class="menu-item-has-children">
 											<a href="<%= Blog::Engine.routes.url_helpers.root_path %>">Blog</a>
 											<ul class="sub-menu">
 												<% Blog::Post.where(post_published: true).each do |post| %>
@@ -38,7 +38,7 @@
 												<% end %>
 												<li><a href="<%= Blog::Engine.routes.url_helpers.root_path %>">See All Blog Articles</a></li>
 											</ul>
-										</li>
+										</li>-->
 										<li><a href="contact.html">Contact</a></li>
 
 										<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
@@ -67,7 +67,7 @@
 													<li><%= link_to "Sign Out", main_app.destroy_user_session_path, method: :delete %></li>
 												</ul>
 												<% else %>
-												<a href="<%= main_app.new_user_session_path %>" class=""><i class='fa fa-user'></i>Sign In<span class="caret"></span></a>
+												<a href="<%= main_app.new_user_session_path %>" class=""><i class='fa fa-user'></i> Create Account<span class="caret"></span></a>
 												<% end %>
 											</li>
 

@@ -150,8 +150,11 @@
 												<a href="ajax/product-quickview.html" class="noo-qucik-view">
 													<i class="fa fa-search"></i>
 												</a>
-												<%= link_to "", cart_items_path(cart_item: {quantity: 1, product_id: item.id}), :method => :post, class: "button product_type_simple add_to_cart_button" %>
 
+												<%= link_to "", cart_items_path(cart_item: {quantity: 1, product_id: item.id}),
+	                                                      :method => :post,
+	                                                      :remote => true,
+	                                                      class: "button product_type_simple add_to_cart_button new_class" %>
 												<div class="yith-wcwl-add-to-wishlist">
 																											<div class="yith-wcwl-add-button">
 																												<%= link_to "", wishlist_items_path(wishlist_item: {quantity: 1, product_id: item.id}), :method => :post, class: "add_to_wishlist" %>
