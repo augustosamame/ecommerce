@@ -16,7 +16,7 @@ module Ecommerce
       @cart_item = CartItem.new(cart_item_params)
       @cart_item.cart_id = @cart.id
       if @cart_item.save
-        @cart = Cart.where(user_id: current_user.id, status: "active").order(:id).last
+        #@cart = Cart.where(user_id: current_user.id, status: "active").order(:id).last
         respond_to do |format|
           format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/create"  }
 

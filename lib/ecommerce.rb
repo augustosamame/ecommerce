@@ -85,6 +85,7 @@ module Ecommerce
           has_many :orders, :class_name => "Ecommerce::Order", :foreign_key => "user_id"
           has_many :addresses, :class_name => "Ecommerce::Address", :foreign_key => "user_id"
           has_one :cart, :class_name => "Ecommerce::Cart", :foreign_key => "user_id"
+          has_one :data_biz_invoice, :class_name => "Ecommerce::DataBizInvoice", :foreign_key => "user_id"
 
           #example of adding a method to User model
           #def moderate_posts?

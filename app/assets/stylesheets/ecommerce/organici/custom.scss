@@ -1,3 +1,10 @@
+.devtech-right-menu-custom .navbar-nav li > a {
+  font-family: 'Lato', sans-serif !important;
+  font-size: 14px;
+  font-weight: 400;
+  color: #696969;
+}
+
 /* hide up/down arrows ("spinners") on input fields marked type="number" */
 .no-spinners {
   -moz-appearance:textfield;
