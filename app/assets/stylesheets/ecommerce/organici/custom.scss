@@ -166,13 +166,24 @@
   margin-top: 20px;
 }
 
+.noo-product-title {
+  max-height: 200px;
+}
+
 @media (max-width: 767px) {
+
     .navbar-brand {
         line-height: 75px !important;
     }
+
     .navbar-brand .noo-logo-img {
         max-height: 75px;
         margin-top: -25px;
         margin-left: -18px;
     }
+
+    .noo-minicart {
+      display: none !important;
+    }
+
 }

@@ -15,33 +15,19 @@ module Ecommerce
     def create
       @cart_item = CartItem.new(cart_item_params)
       @cart_item.cart_id = @cart.id
-      if @cart_item.save
-        respond_to do |format|
-          format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/create"  }
-
-          format.html {redirect_to cart_path(@cart) }
-        end
-
+      found_same_product = @cart.cart_items.find_by(product_id: @cart_item.product_id)
+      if found_same_product
+        found_same_product.update(quantity: found_same_product.quantity += @cart_item.quantity)
       else
-        flash[:error] = "There was a problem adding this item to your cart"
-        @product = Product.find(@cart_item.product.id)
-        respond_to do |format|
-          format.js { render js: "alert('There was a problem adding this item to your cart');" }
-          format.html { redirect_to product_path(@product) }
-        end
-
+        @cart_item.save
       end
+      #refresh with latest cart so it will be repainted properly
+      set_cart
+      respond_to do |format|
+        format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/create"  }
 
-      #@product = Ecommerce::Product.find(params[:id])
-      #case I18n.locale[0..1]
-      #when 'en'
-      #  @fb_compatible_locale_code = 'en_US'
-      #when 'es'
-      #  @fb_compatible_locale_code = 'es_LA'
-      #else
-      #  @fb_compatible_locale_code = 'es_LA'
-      #end
-      #render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
+        format.html {redirect_to cart_path(@cart) }
+      end
     end
 
     def update

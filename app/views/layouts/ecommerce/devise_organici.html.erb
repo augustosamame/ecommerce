@@ -13,7 +13,9 @@
 <div style= "width: 400px; margin: auto; margin-top: 50px;">
 
   <div style= "margin-bottom: 30px;">
-    <%= image_tag Ecommerce.logo, style: "display: block; margin: auto; width: auto" %>
+    <a href="<%= root_path %>">
+      <%= image_tag Ecommerce.logo, style: "display: block; margin: auto; width: auto" %>
+    </a>
   </div>
 
   <%= render 'ecommerce/application/flashes' %>
