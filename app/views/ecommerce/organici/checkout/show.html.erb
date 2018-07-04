@@ -74,6 +74,29 @@
                 </table>
                 <div class="commerce-checkout-payment">
                   <ul class="payment_methods">
+
+                    <li class="wc_payment_method payment_method_card">
+                      <%= check_box_tag("want_factura", "0", @info_factura_available, class: "factura_checkbox") %>
+
+                      <label for="want_factura">
+                        I need a Factura
+                      </label>
+                      <div class="payment_box payment_method_cheque">
+                        <% if @info_factura_available %>
+                          <p><%= "RUC: #{@factura_vat}" %></p>
+                          <p><%= "Address: #{@factura_address}, #{@factura_city}" %></p>
+                        <% else %>
+                          <p><%= link_to "Click Here to set up Factura info", main_app.edit_user_registration_path %></p>
+                        <% end %>
+                      </div>
+
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+
                     <% if @payment_credit_card_culqi %>
 
                     <li class="wc_payment_method payment_method_card">

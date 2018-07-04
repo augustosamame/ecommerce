@@ -215,13 +215,13 @@
             clearTimeout($(this).data("timeout"));
             $(".noo-minicart").addClass("show");
         });
-        $(document).on("mouseleave", ".noo-menu-item-cart", function() {
+        $(document).on("mouseleave", ".noo-minicart", function() {
             var t = setTimeout(function() {
                 $(".noo-minicart").removeClass("show");
             }, 400);
             $(this).data("timeout", t);
         });
-		
+
 		//Blog Gallery
 		if($('.content-featured .sliders').length > 0) {
 			$(".content-featured .sliders").each(function() {
@@ -249,7 +249,7 @@
 				$(this).carouFredSel(gallerySliderOptions);
 			});
 		}
-		
+
 		if($(".full-screen").length > 0) {
 			$(".full-screen").fitVids();
 		}

@@ -18,6 +18,16 @@ module Ecommerce
       @payment_credit_card_visanet = PaymentMethod.is_active.find_by(name: "Card", processor: "Visanet")
       @payment_credit_card_culqi = PaymentMethod.is_active.find_by(name: "Card", processor: "Culqi")
 
+      info_factura_vat = !Ecommerce::DataBizInvoice.find_by(user_id: current_user.id).try(:vat).blank?
+      @info_factura_available = false
+      if info_factura_vat
+        @info_factura = Ecommerce::DataBizInvoice.find_by(user_id: current_user.id)
+        @info_factura_available = true
+        @factura_vat = @info_factura.vat
+        @factura_address = @info_factura.address
+        @factura_city = @info_factura.city
+      end
+
       render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show"
     end
 

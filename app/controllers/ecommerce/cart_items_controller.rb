@@ -24,7 +24,7 @@ module Ecommerce
       #refresh with latest cart so it will be repainted properly
       set_cart
       respond_to do |format|
-        format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/create"  }
+        format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show"  }
 
         format.html {redirect_to cart_path(@cart) }
       end
@@ -37,7 +37,11 @@ module Ecommerce
 
     def destroy
       @cart_item.destroy
-      redirect_to @cart_item.cart, notice: 'Item deleted.'
+      set_cart
+      respond_to do |format|
+        format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show" }
+        format.html {redirect_to cart_path(@cart), notice: 'Item deleted.' }
+      end
     end
 
     private

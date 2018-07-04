@@ -25,7 +25,7 @@
         </div>
         <div class="cart-product-quantity">x <%= item.quantity %></div>
       </div>
-      <a href="#" class="remove">&times;</a>
+      <%= link_to "&times;".html_safe, cart_item_path(item.id), method: :delete, remote: true, class: "remove" %>
     </div>
     <% end %>
 
