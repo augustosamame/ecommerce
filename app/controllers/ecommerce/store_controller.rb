@@ -9,14 +9,14 @@ module Ecommerce
 
     def main
       @home_brands = Brand.where(featured: true)
-      @featured_homepage_products = Ecommerce::Product.where(home_featured: true).order(:id)
+      @featured_homepage_products = Ecommerce::Product.where(home_featured: true).order(:id).in_stock
       @homepage_categories = Ecommerce::Category.where(popular_homepage: true, status: "active").order(:category_order)
       add_body_css_class('stretched')
       render "ecommerce/#{Ecommerce.ecommerce_layout}/store/main"
     end
 
     def shop_by_category
-      @products = Ecommerce::Product.where(category_id: params[:id])
+      @products = Ecommerce::Product.where(category_id: params[:id]).in_stock
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
     end
 

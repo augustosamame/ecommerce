@@ -17,7 +17,7 @@
     <p class="menu-title sm">BACKOFFICE <span class="pull-right"><a href="javascript:;"><i class="material-icons">refresh</i></a></span></p>
     <ul>
       <li class="<%= class_string({ start: true, active: controller.controller_name == 'dashboard'}) %>" >
-        <%= link_to "<i class='material-icons'>adjust</i>Dashboard".html_safe, backoffice_dashboard_path %>
+        <a href="<%= backoffice_dashboard_path %>"> <i class="material-icons">adjust</i> <span class="title">Dashboard</span></a>
       </li>
 
       <li class="<%= class_string({ active: (['products','categories','suppliers','brands','properties'].include? controller.controller_name) }) %>">
@@ -42,7 +42,7 @@
       </li>
 
       <li class="<%= class_string({ active: (['orders'].include? controller.controller_name) }) %>">
-        <a href="javascript:;"> <i class="material-icons">store</i> <span class="title">Orders</span> <span class=" arrow"></span> </a>
+        <a href="javascript:;"> <i class="material-icons">shopping_cart</i> <span class="title">Orders</span> <span class=" arrow"></span> </a>
         <ul class="sub-menu">
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.count %></span>
             <%= link_to "All Orders", backoffice_orders_path %>
@@ -76,7 +76,7 @@
         </ul>
       </li>
       <li class="">
-        <a href="javascript:;"> <i class="material-icons">autorenew</i> <span class="title">Integraciones</span> <span class=" arrow"></span> </a>
+        <a href="javascript:;"> <i class="material-icons">star</i> <span class="title">Integraciones</span> <span class=" arrow"></span> </a>
         <ul class="sub-menu">
           <li> <a href="javascript:;">Integración con ERP</a> </li>
           <li>

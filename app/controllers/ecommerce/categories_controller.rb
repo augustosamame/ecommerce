@@ -18,7 +18,7 @@ module Ecommerce
         if @child_categories.count > 0
           render "ecommerce/#{Ecommerce.ecommerce_layout}/category/index"
         else
-          @products = Product.tagged_with(@category.name)
+          @products = Product.tagged_with(@category.name).in_stock
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
         #@child_categories = Category.where(parent_id: @category.id)

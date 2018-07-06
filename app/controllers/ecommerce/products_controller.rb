@@ -20,11 +20,11 @@ module Ecommerce
         if @child_categories.count > 0
           redirect_to categories_path(parent_category: @category.id)
         else
-          @products = Product.tagged_with(@category.name).order(:product_order)
+          @products = Product.tagged_with(@category.name).order(:product_order).in_stock
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else
-        @products = Product.all.order(:product_order)
+        @products = Product.all.order(:product_order).in_stock
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
     end

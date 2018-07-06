@@ -11,6 +11,8 @@ module Ecommerce
     has_many :active_variants, -> { where(deleted_at: nil) },
     class_name: 'ProductSku'
 
+    scope :in_stock, -> { where("stockable = ? or total_quantity != ?", false, 0) }
+
     acts_as_taggable_on :categories
 
     accepts_nested_attributes_for :product_skus, reject_if: proc { |attributes| attributes['sku'].blank? }, :allow_destroy => true

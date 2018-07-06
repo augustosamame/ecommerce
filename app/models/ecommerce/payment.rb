@@ -18,6 +18,7 @@ module Ecommerce
     def check_if_order_paid
       if Payment.where(order: self.order_id).sum(:amount_cents) >= self.order.amount_cents
         self.order.update(stage: "stage_paid", payment_status: "paid")
+        TwilioIntegration.new.send_sms_to_number("Your ExpatShop Order No. #{self.order_id} has been Paid! We will let you know when we ship.", self.user.username) if Rails.env == "production"
       end
     end
 

@@ -78,7 +78,7 @@
 							<%= user.username  %>
 						</td>
 						<td>
-							<%= user.addresses.first.try(:district) %>
+							<%= user.try(:addresses).try(:first).try(:district) %>
 						</td>
 						<td>
 							<%= user.orders.count  %>
