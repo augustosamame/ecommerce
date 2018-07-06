@@ -174,7 +174,15 @@
   margin: 8px 20px 15px 10px !important;
 }
 
+.main-featured-products {
+  margin-left: 250px;
+}
+
 @media (max-width: 767px) {
+
+    .main-featured-products {
+      margin-left: 0px;
+    }
 
     .navbar-brand {
         line-height: 75px !important;

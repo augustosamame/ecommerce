@@ -26,8 +26,8 @@
               <div class="summary entry-summary">
                 <h1 class="product_title entry-title"><%= @product.name %></h1>
                 <p class="price"><span class="amount"><%= number_to_currency(@product.price) %></span></p>
-                <p class="description"><%= @product.description.gsub("**","<br>").html_safe %></p>
-                <p class="description"><%= @product.description2.gsub("**","<br>").html_safe %></p>
+                <p class="description"><%= @product.description.gsub("**","<br>").html_safe if @product.description %></p>
+                <p class="description"><%= @product.description2.try.gsub("**","<br>").html_safe if @product.description2 %></p>
                 <div class="product_meta">
                   <span class="posted_in">
                     <span>Categories: </span>
