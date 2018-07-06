@@ -12,17 +12,18 @@
     <div class="commerce commerce-page commerce-cart noo-shop-main">
       <div class="container">
         <div class="row">
-          <div class="noo-main col-md-12">
+          <div class="noo-main col-md-12 cart-mobile">
             <table class="shop_table cart">
               <thead>
                 <tr>
                   <th class="product-thumbnail">Product</th>
                   <th class="product-price">Price</th>
-                  <th class="product-quantity">Quantity</th>
+                  <th class="product-price mobile-product-quantity-header">Qty</th>
                   <th class="product-subtotal">Total</th>
                   <th class="product-remove">&nbsp;</th>
                 </tr>
               </thead>
+
               <tbody>
                 <% if @cart.cart_items.count == 0 %>
                   <tr class="cart_item">
@@ -32,7 +33,7 @@
                     <td class="product-price">
 
                     </td>
-                    <td class="product-quantity">
+                    <td class="product-price mobile-product-quantity">
 
                     </td>
                     <td class="product-subtotal">
@@ -57,8 +58,8 @@
                     <td class="product-price">
                       <span class="amount"><%= number_to_currency(item.product.current_price) %></span>
                     </td>
-                    <td class="product-quantity">
-                      <div class="quantity" style="margin-top: 20px;">
+                    <td class="product-quantity mobile-product-quantity">
+                      <div class="quantity mobile-quantity">
                           <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text cart_wish_number', onchange: 'this.form.submit();' } %>
                       </div>
                     </td>
@@ -74,15 +75,20 @@
                 <% end %>
                 <tr>
                   <td colspan="5" class="actions">
-                    <a class="continue" href="<%= root_path %>">continue shopping</a>
-                    <div class="coupon">
-                      <label for="coupon_code">Coupon:</label>
-                      <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
-                      <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
+                    <div class="row">
+                      <div class="col-md-4" style="text-align: left; margin-bottom: 10px;">
+                        <a class="button organici-continue" href="<%= root_path %>">continue shopping</a>
+                      </div>
+                      <!--<div class="coupon">
+                        <label for="coupon_code">Coupon:</label>
+                        <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
+                        <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
+                      </div>-->
+                      <div class="col-md-8">
+                        <input type="submit" class="button" style="background: #f4eede; color: #212121;" id="update-cart-button" name="update_cart" value="Update Cart"/>
+                        <%= link_to "Proceed to Checkout", checkout_path, class: "checkout-button button alt wc-forward" %>
+                      </div>
                     </div>
-                    <input type="submit" class="button" style="background: #f4eede; color: #212121;" id="update-cart-button" name="update_cart" value="Update Cart"/>
-                    <%= link_to "Proceed to Checkout", checkout_path, class: "checkout-button button alt wc-forward" %>
-
 
                   </td>
                 </tr>

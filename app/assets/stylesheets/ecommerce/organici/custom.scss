@@ -178,11 +178,115 @@
   margin-left: 250px;
 }
 
+.cart-quantity {
+  margin-top: 30px;
+}
+
+.organici-continue {
+  background: #f4eede !important;
+  color: #212121 !important;
+  text-align: left !important;
+}
+
 @media (max-width: 767px) {
 
     .main-featured-products {
       margin-left: 0px;
     }
+
+    .commerce-cart table.cart .product-quantity {
+        display: block;
+    }
+
+    .cart-mobile {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .commerce-cart table.cart th.product-thumbnail {
+        width: 28%;
+        padding-top: 18px;
+        padding-right: 2px;
+        padding-left: 2px;
+    }
+
+    .commerce-cart table.cart th.product-price {
+        width: 20%;
+        padding-top: 18px;
+        padding-right: 5px;
+        padding-left: 15px;
+    }
+
+    .commerce-cart table.cart th.product-quantity {
+        width: 16%;
+        padding-top: 18px;
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    .commerce-cart table.cart th.product-subtotal {
+        width: 20%;
+        padding-top: 18px;
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    .commerce-cart table.cart th.product-remove{
+        width: 5%;
+        padding: 18px 0px;
+    }
+
+    .commerce-cart table.cart td.product-thumbnail {
+        width: 28%;
+        padding-top: 20px;
+        padding-right: 0px;
+        padding-left: 0px;
+        text-align: left;
+        //padding-bottom: 5px;
+    }
+
+    .commerce-cart table.cart td.product-thumbnail a:last-child {
+        padding-left: 0px;
+    }
+
+    .commerce-cart table.cart td.product-price {
+        width: 20%;
+        padding-top: 0px;
+        padding-right: 2px;
+        padding-left: 10px;
+    }
+
+    .cart-quantity {
+      margin-top: 0px;
+    }
+
+    .mobile-product-quantity {
+      //height: 109px;
+    }
+
+    .cart_wish_number {
+        width: 70% !important;
+    }
+
+    .commerce-cart table.cart td.product-quantity {
+        width: 16%;
+        padding-top: 18px;
+        padding-right: 5px;
+        padding-left: 15px;
+    }
+
+    .commerce-cart table.cart td.product-subtotal {
+        width: 20%;
+        padding-top: 0px;
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    .commerce-cart table.cart td.product-remove{
+        width: 5%;
+        padding-top: 5px;
+    }
+
 
     .navbar-brand {
         line-height: 75px !important;
