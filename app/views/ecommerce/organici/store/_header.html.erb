@@ -67,7 +67,7 @@
 													<li><%= link_to "Sign Out", main_app.destroy_user_session_path, method: :delete %></li>
 												</ul>
 												<% else %>
-												<a href="<%= main_app.new_user_session_path %>" class=""><i class='fa fa-user'></i> My Account<span class="caret"></span></a>
+												<a href="<%= main_app.new_user_registration_path %>" class=""><i class='fa fa-user'></i> My Account<span class="caret"></span></a>
 												<% end %>
 											</li>
 
