@@ -34,7 +34,7 @@
             <td><%= backoffice_category.popular_homepage %></td>
             <td><%= backoffice_category.category_type %></td>
             <td><%= best_in_place backoffice_category, :category_order, :as => :input, :url => "categories_in_place/#{backoffice_category.id}", :method => :put %></td>
-            <td><%= image_tag backoffice_category.image_popular_homepage_url(:homepage), width: 180 %></td>
+            <td><%= image_tag backoffice_category.image_popular_homepage_url(:homepage), width: 100 %></td>
             <td><%= backoffice_category.status %></td>
             <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_category_path(backoffice_category) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_category_path(backoffice_category) %></td>
