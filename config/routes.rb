@@ -44,6 +44,7 @@ Ecommerce::Engine.routes.draw do
   patch '/addresses/update_map', to: 'addresses#update_map'
   resources :addresses
   get '/categories_m', to: 'store#categories_mobile'
+  get '/sub_categories_m', to: 'store#sub_categories_mobile'
   get '/houses_m', to: 'store#houses_mobile'
 
   get '/ecommerce_root', to: 'store#main'

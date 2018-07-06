@@ -30,6 +30,23 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/store/categories_mobile"
     end
 
+    def sub_categories_mobile
+      if params[:parent_category]
+        @category = Category.find(params[:parent_category])
+        @categories = Category.tagged_with(@category.name)
+        if @categories.count > 0
+          render "ecommerce/#{Ecommerce.ecommerce_layout}/store/sub_categories_mobile"
+          #redirect_to categories_m_path(category: @category.id)
+        else
+          @products = Product.tagged_with(@category.name).order(:product_order).in_stock
+          render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
+        end
+      else
+        @products = Product.all.order(:product_order).in_stock
+        render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
+      end
+    end
+
     private
 
       def set_home_items
