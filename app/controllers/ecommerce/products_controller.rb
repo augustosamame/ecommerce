@@ -20,17 +20,21 @@ module Ecommerce
         if @child_categories.count > 0
           redirect_to categories_path(parent_category: @category.id)
         else
-          @products = Product.tagged_with(@category.name).order(:product_order).in_stock
+          @products = Product.tagged_with(@category.name).order(:product_order).in_stock.page(params[:page])
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else
-        @products = Product.all.order(:product_order).in_stock
+        @products = Product.all.order(:product_order).in_stock.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
     end
 
     def show
 
+      if params[:search]
+        @products = Product.search_by_name(params[:search]).in_stock
+        render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
+      end
       #set_controller_meta_tags(action_name)
 
       @cart_item = CartItem.new

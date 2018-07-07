@@ -8,6 +8,10 @@ module Ecommerce
     skip_before_action :authenticate_user!
 
     def main
+      if params[:search]
+        @products = Product.search_by_name(params[:search]).in_stock
+        render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
+      end
       @home_brands = Brand.where(featured: true)
       @featured_homepage_products = Ecommerce::Product.where(home_featured: true).order(:id).in_stock
       @homepage_categories = Ecommerce::Category.where(popular_homepage: true, status: "active").order(:category_order)

@@ -11,7 +11,12 @@ module Ecommerce
     has_many :active_variants, -> { where(deleted_at: nil) },
     class_name: 'ProductSku'
 
+    include PgSearch
+    pg_search_scope :search_by_name, :against => :name, :using => {:tsearch => {:prefix => true}}
+
     scope :in_stock, -> { where("stockable = ? or total_quantity != ?", false, 0) }
+
+    paginates_per 12
 
     acts_as_taggable_on :categories
 
