@@ -32,7 +32,7 @@ module Ecommerce
     def show
 
       if params[:search]
-        @products = Product.search_by_name(params[:search]).in_stock
+        @products = Product.search_by_name(params[:search]).in_stock.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
       end
       #set_controller_meta_tags(action_name)

@@ -28,7 +28,7 @@
     <tbody>
       <%= content_tag_for(:tr, @backoffice_categories) do |backoffice_category| %>
             <td><%= backoffice_category.name %></td>
-            <td><%= backoffice_category.parent_id ? Ecommerce::Category.find(backoffice_category.parent_id).name : "Raíz" %></td>
+            <td><%= backoffice_category.parent_category_list.blank? ? "Root" : backoffice_category.parent_category_list.to_s %></td>
             <td><%= image_tag backoffice_category.image_url(:medium_400), width: 100 %></td>
             <td><%= backoffice_category.main_menu %></td>
             <td><%= backoffice_category.popular_homepage %></td>

@@ -9,7 +9,7 @@ module Ecommerce
 
     def main
       if params[:search]
-        @products = Product.search_by_name(params[:search]).in_stock
+        @products = Product.search_by_name(params[:search]).in_stock.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
       end
       @home_brands = Brand.where(featured: true)
@@ -42,11 +42,11 @@ module Ecommerce
           render "ecommerce/#{Ecommerce.ecommerce_layout}/store/sub_categories_mobile"
           #redirect_to categories_m_path(category: @category.id)
         else
-          @products = Product.tagged_with(@category.name).order(:product_order).in_stock
+          @products = Product.tagged_with(@category.name).order(:product_order).in_stock.page(params[:page])
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else
-        @products = Product.all.order(:product_order).in_stock
+        @products = Product.all.order(:product_order).in_stock.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
     end
