@@ -5,6 +5,7 @@
     <%= f.association :category, as: :tags, :value_method => lambda { |category| "#{category.name}" }, :label_method => lambda { |category| "#{category.name}" }, label: "Categories (you can choose more than one)" %>
     <%= f.association :brand, :label_method => lambda { |brand| "#{brand.name}" }  %>
     <%= f.association :supplier, :label_method => lambda { |supplier| "#{supplier.name}" }  %>
+    <%= f.input :status, collection: Ecommerce::Product.statuses.keys %>
     <%= f.input :name %>
     <%= f.input :short_description, label: "Short Description" %>
     <%= f.input :description, label: "Long Description" %>

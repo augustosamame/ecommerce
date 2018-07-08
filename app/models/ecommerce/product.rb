@@ -15,8 +15,11 @@ module Ecommerce
     pg_search_scope :search_by_name, :against => :name, :using => {:tsearch => {:prefix => true}}
 
     scope :in_stock, -> { where("stockable = ? or total_quantity != ?", false, 0) }
+    scope :active, -> { where(status: "active") }
 
     paginates_per 8
+
+    enum status: {active: 0, inactive: 1}
 
     acts_as_taggable_on :categories
 

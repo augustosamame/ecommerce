@@ -67,6 +67,11 @@ $(document).ready(function(){
   /* Activating Best In Place */
   jQuery(".best_in_place").best_in_place();
 
+  // set sidebar state
+  if (getCookie('collapsed-sidebar') == 'true') {
+    $('#layout-condensed-toggle').click();
+  }
+
   users_tags = jQuery.parseJSON(<%=raw @users_array.to_json.inspect %>);
   products_tags = jQuery.parseJSON(<%=raw @products_array.to_json.inspect %>);
   category_products_tags = jQuery.parseJSON(<%=raw @category_products_array.to_json.inspect %>);
@@ -104,6 +109,19 @@ $(document).ready(function(){
       },
   });
 });
+</script>
+
+<script type="text/javascript">
+        function setCookie(key, value) {
+            var expires = new Date();
+            expires.setTime(expires.getTime() + (1 * 24 * 60 * 60 * 1000));
+            document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+        }
+
+        function getCookie(key) {
+            var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+            return keyValue ? keyValue[2] : null;
+        }
 </script>
 
 <% parent_layout "ecommerce/base" %>

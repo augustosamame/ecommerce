@@ -483,6 +483,7 @@ $(document).ready(function () {
             console.log("Menu is already condensed");
         } else {
             if ($('#main-menu').hasClass('mini')) {
+                setCookie('collapsed-sidebar','false');
                 $('body').removeClass('grey');
                 $('body').removeClass('condense-menu');
                 $('#main-menu').removeClass('mini');
@@ -493,6 +494,7 @@ $(document).ready(function () {
                 $('.header-seperation').css('height', '61px');
                 $('.footer-widget').show();
             } else {
+                setCookie('collapsed-sidebar','true');
                 $('body').addClass('grey');
                 $('#main-menu').addClass('mini');
                 $('.page-content').addClass('condensed');

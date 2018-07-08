@@ -8,26 +8,25 @@
 #u1 = User.create(first_name: 'Augusto', last_name: "Samame", username: "986976377", email: "augustosamame@gmail.com", password: "marianna", role: "admin", status: 0)
 #u2 = User.create(first_name: 'Arnaldo', last_name: "Azabache", username: "993306393", email: "oxxono@gmail.com", password: "123456", role: "admin", status: 0)
 #u3 = User.create(first_name: 'Hemant', last_name: "Nangia", username: "989080023", email: "hemant@expatshop.pe", password: "123456", role: "admin", status: 0)
-#Ecommerce::Control.create(name: 'remove_no_stock_products', localized_name: 'Remove No Stock Products', value_field_type: "boolean", boolean_value: true)
-#Ecommerce::Control.create(name: 'invoice_terms_and_conditions', localized_name: 'Terms and Conditions for Invoices', value_field_type: "text", text_value: "No se aceptan cambios o devoluciones")
-#Ecommerce::Control.create(name: 'show_top_bar', localized_name: 'Show Top Bar', value_field_type: "boolean", boolean_value: true )
-#Ecommerce::Control.create(name: 'top_bar_cookie_read_hash', localized_name: 'Top Bar Cookie Read Hash', internal: true, value_field_type: "text")
-#Ecommerce::Control.create(name: 'top_bar_html', localized_name: 'Top Bar HTML', value_field_type: "text", text_value: "Back to the future of awesome Bags: Introducing the best bags in the world. <a href='#'>Shop Now</a>")
-#Ecommerce::Control.create(name: 'store_title', localized_name: 'Store Title', value_field_type: "text", text_value: "Put Store Title Here")
-#Ecommerce::Control.create(name: 'auto_invoice', localized_name: 'Auto Invoice', value_field_type: "boolean", boolean_value: false )
-#Ecommerce::Control.create(name: 'auto_ship', localized_name: 'Auto Ship', value_field_type: "boolean", boolean_value: false )
+Ecommerce::Control.create(name: 'remove_no_stock_products', localized_name: 'Remove No Stock Products', value_field_type: "boolean", boolean_value: true)
+Ecommerce::Control.create(name: 'invoice_terms_and_conditions', localized_name: 'Terms and Conditions for Invoices', value_field_type: "text", text_value: "No se aceptan cambios o devoluciones")
+Ecommerce::Control.create(name: 'show_top_bar', localized_name: 'Show Top Bar', value_field_type: "boolean", boolean_value: true )
+Ecommerce::Control.create(name: 'top_bar_cookie_read_hash', localized_name: 'Top Bar Cookie Read Hash', internal: true, value_field_type: "text")
+Ecommerce::Control.create(name: 'top_bar_html', localized_name: 'Top Bar HTML', value_field_type: "text", text_value: "Back to the future of awesome Bags: Introducing the best bags in the world. <a href='#'>Shop Now</a>")
+Ecommerce::Control.create(name: 'store_title', localized_name: 'Store Title', value_field_type: "text", text_value: "Put Store Title Here")
+Ecommerce::Control.create(name: 'auto_invoice', localized_name: 'Auto Invoice', value_field_type: "boolean", boolean_value: false )
+Ecommerce::Control.create(name: 'auto_ship', localized_name: 'Auto Ship', value_field_type: "boolean", boolean_value: false )
 
-#Ecommerce::Slider.create(slider_name: 'Home Slider 1', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/marinmeko+slider.jpg", slider_view: "Home", slider_order: 1 )
-#Ecommerce::Slider.create(slider_name: 'Home Slider 2', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/babyganics.jpg", slider_view: "Home", slider_order: 2 )
-#Ecommerce::Slider.create(slider_name: 'Home Slider 3', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image3.png", slider_view: "Home", slider_order: 3 )
-#Ecommerce::Slider.create(slider_name: 'Home Slider 4', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image3.pngg", slider_view: "Home", slider_order: 4 )
-#Ecommerce::Slider.create(slider_name: 'Home Slider 5', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image3.png", slider_view: "Home", slider_order: 5 )
+Ecommerce::Slider.create(slider_name: 'Home Slider 1', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/marinmeko+slider.jpg", slider_view: "Home", slider_order: 1 )
+Ecommerce::Slider.create(slider_name: 'Home Slider 2', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/babyganics.jpg", slider_view: "Home", slider_order: 2 )
+Ecommerce::Slider.create(slider_name: 'Home Slider 3', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image3.png", slider_view: "Home", slider_order: 3 )
+Ecommerce::Slider.create(slider_name: 'Home Slider 4', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image3.pngg", slider_view: "Home", slider_order: 4 )
+Ecommerce::Slider.create(slider_name: 'Home Slider 5', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/slider_image3.png", slider_view: "Home", slider_order: 5 )
 
-#pm1 = Ecommerce::PaymentMethod.create(name: "Card", processor: "Culqi", status: "active")
-#pm2 = Ecommerce::PaymentMethod.create(name: "Bank Deposit", status: "active")
-#pm3 = Ecommerce::PaymentMethod.create(name: "Manual", status: "active")
+pm1 = Ecommerce::PaymentMethod.create(name: "Card", processor: "Culqi", status: "active")
+pm2 = Ecommerce::PaymentMethod.create(name: "Bank Deposit", status: "active")
+pm3 = Ecommerce::PaymentMethod.create(name: "Manual", status: "active")
 
-=begin
 Ecommerce::Brand.create!([
   {name: "Dr. Brown", logo: "organici_logo.png"},
   {name: "Babyganics", logo: "organici_logo.png"},
@@ -67,7 +66,6 @@ Ecommerce::Category.create!([
   {name: "House of Arab", parent_id: nil, remote_image_url: "https://devtechperu-expatshop-dev.s3.amazonaws.com/uploads/ecommerce/category/image/7/blue_mosque.jpeg", status: "inactive", category_type: "secondary", category_order: 16, main_menu: true, popular: false, popular_homepage: true, image_popular_homepage: nil, image_popular_homepage_overlay_text: "House of Arab", homepage_cat_image_width: "400.0", homepage_cat_image_height: "233.0"},
   {name: "Textile Touch Napkins", parent_id: 16, remote_image_url: "https://devtechperu-expatshop-dev.s3.amazonaws.com/uploads/ecommerce/category/image/22/Textile_Touch_Napkins.jpg", status: "active", category_type: "primary", category_order: 5, main_menu: true, popular: false, popular_homepage: false, image_popular_homepage: nil, image_popular_homepage_overlay_text: "Textile Touch Napkins", homepage_cat_image_width: nil, homepage_cat_image_height: nil}
 ])
-=end
 Ecommerce::Product.create!([
   {category_list: ["House of Germany", "Cocktail Napkins"], brand_id: 6, supplier_id: 3, name: "Hearts", short_description: "", description: "Hearts", remote_image_url: "https://devtechperu-expatshop-dev.s3.amazonaws.com/uploads/ecommerce/product/image/8/C_767991.jpg", permalink: "Hearts", price_cents: 890, discounted_price_cents: 890, meta_keywords: nil, meta_description: nil, stockable: true, home_featured: false, category_featured: false, available_at: nil, deleted_at: nil, description2: ""},
   {category_list: ["House of Germany", "Cocktail Napkins"], brand_id: 6, supplier_id: 3, name: "Bunnies in Love", short_description: "", description: "Bunnies in Love", remote_image_url: "https://devtechperu-expatshop-dev.s3.amazonaws.com/uploads/ecommerce/product/image/9/C_702600.jpg", permalink: "Bunnies in Love", price_cents: 890, discounted_price_cents: 890, meta_keywords: nil, meta_description: nil, stockable: true, home_featured: false, category_featured: false, available_at: nil, deleted_at: nil, description2: ""},
