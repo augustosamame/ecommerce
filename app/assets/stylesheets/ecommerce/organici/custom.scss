@@ -188,6 +188,30 @@
   text-align: left !important;
 }
 
+div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-product-action .noo-action .add_to_cart_button {
+    left: 0%;
+    width: 33%;
+}
+
+div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-product-action .noo-action .add_to_cart_button.loading:after {
+    right: 41%;
+}
+
+
+div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-product-action .noo-action .yith-wcwl-add-to-wishlist {
+    left: 33%;
+    width: 33%;
+}
+
+div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-product-action .noo-action .link-detail {
+    left: 66%;
+    width: 34%;
+}
+
+.commerce .product-grid .noo-product-inner:hover .noo-product-title .noo-product-action {
+  background: white;
+}
+
 @media (max-width: 767px) {
 
     .main-featured-products {

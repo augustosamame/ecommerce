@@ -17,7 +17,7 @@
                     </div>
                     <div class="noo-product-grid products row product-grid noo-grid-4 product-index-container">
 
-                      <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", object: @products %>
+                      <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item %>
 
                     </div>
                   </div>
@@ -37,12 +37,22 @@
 <script>
 $(document).ready(function(){
 
-  $('.product-index-container').infiniteScroll({
+  var $container = $('.product-index-container').infiniteScroll({
     // options
     path: 'nav.pagination a[rel=next]',
     append: '.product',
     history: 'push',
+    status: '.page-load-status',
+    scrollThreshold: 10
   });
 
+  $container.on( 'request.infiniteScroll', function( event, response, path, items ) {
+    var $loading = $('.spinner').show();
+  });
+
+  $container.on( 'append.infiniteScroll', function( event, response, path, items ) {
+    var $loading = $('.spinner').hide();
+  });
 });
+
 </script>

@@ -128,49 +128,7 @@
 							</ul>
 						</div>
 						<div class="noo-product-grid products row product-grid noo-grid-4">
-							<% @featured_homepage_products.each do |item| %>
-							<div class="bread masonry-item noo-product-column col-md-4 col-sm-6 product">
-								<div class="noo-product-inner">
-									<div class="noo-product-thumbnail max-height-400">
-										<a href="<%= product_path(item) %>">
-											<%= image_tag item.image.url, width: 600, height: 760, alt: "" %>
-										</a>
-										<!--<div class="noo-rating">
-											<div class="star-rating">
-												<span style="width:0%"></span>
-											</div>
-										</div>-->
-									</div>
-									<div class="noo-product-title">
-										<h3><%= link_to item.name, product_path(item) %></h3>
-										<span class="short-descrip" style="font-size:13px;"><%= item.short_description %></span><br>
-										<span class="price"><span class="amount"><%= number_to_currency(item.price) %></span></span>
-										<div class="noo-product-action">
-											<div class="noo-action">
-												<a href="ajax/product-quickview.html" class="noo-qucik-view">
-													<i class="fa fa-search"></i>
-												</a>
-
-												<%= link_to "", cart_items_path(cart_item: {quantity: 1, product_id: item.id}),
-	                                                      :method => :post,
-	                                                      :remote => true,
-	                                                      class: "button product_type_simple add_to_cart_button new_class" %>
-												<div class="yith-wcwl-add-to-wishlist">
-																											<div class="yith-wcwl-add-button">
-																												<%= link_to "", wishlist_items_path(wishlist_item: {quantity: 1, product_id: item.id}), :method => :post, class: "add_to_wishlist" %>
-
-																											</div>
-																									</div>
-												<div class="clear"></div>
-												<a href="shop-detail.html" class="link-detail">
-													<i class="fa fa-link"></i>
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<% end %>
+							<%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @featured_homepage_products, as: :item %>
 						</div>
 					</div>
 				</div>

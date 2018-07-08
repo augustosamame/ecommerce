@@ -16,7 +16,7 @@ module Ecommerce
 
     scope :in_stock, -> { where("stockable = ? or total_quantity != ?", false, 0) }
 
-    paginates_per 12
+    paginates_per 8
 
     acts_as_taggable_on :categories
 

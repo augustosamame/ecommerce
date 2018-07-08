@@ -157,6 +157,7 @@
                 masonry: masonry_options
             });
             imagesLoaded(self, function() {
+                console.log("ImagesLoaded fired");
                 $container.isotope("layout");
             });
             $(window).resize(function() {
