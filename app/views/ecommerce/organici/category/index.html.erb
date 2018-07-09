@@ -10,18 +10,16 @@
                   <div class="noo-product-grid-wrap commerce product-style2">
                     <div class="noo-product-grid products row product-grid noo-grid-4" >
                       <% @child_categories.each do |item| %>
-                      <div class="bread masonry-item noo-product-column col-md-4 col-sm-6 product">
-                        <div class="noo-product-inner">
-                          <div class="noo-product-thumbnail">
-                            <a href="<%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: item.id ) %>">
-                              <%= image_tag item.image.medium_400.url, height: 200, width: 400, alt: "", class: "category-desktop-image" %>
-                            </a>
-                          </div>
-                          <div class="noo-product-title">
-                            <h3><%= link_to item.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: item.id ) %></h3><br>
-                          </div>
-                        </div>
-                      </div>
+
+                      <div class="dvt_categories_contenedor hidden-xs hidden-sm" >
+        								<a href=" <%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: item.id ) %> ">
+        									<%= image_tag item.image.medium_400.url, width: 400, height: 200, alt: "", class: "dvt_categories_img", style: "" %>
+        									<span class="dvt_categories_titulos" style="text-align:center;"><%= item.name %></span>
+        								</a>
+        							</div>
+
+
+
                       <% end %>
                     </div>
                   </div>

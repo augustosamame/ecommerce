@@ -17431,15 +17431,50 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
   margin-right: auto;
 }
 
+.dvt_categories_contenedor{
+    position: relative;
+    height: 270px;
+    width: 300px;
+    //min-height: 200px;
+    //min-width: 300px;
+    background-color: #398cd8;
+    background-image: linear-gradient(0deg, #398cd8 0%, #242424 36%, #398cd8 16%);
+    margin-left: 20px;
+    margin-bottom: 12px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+    -webkit-box-shadow: 0 3px 4px 2px #D4D4D4;
+    box-shadow: 0 3px 4px 2px #747474;
+    transition: all 0.3s ease-out;
+    box-shadow:
+    inset 0 3px 2px rgba(255,255,255,.22),
+    inset 0 -3px 2px rgba(0,0,0,.17),
+    inset 0 10px 10px rgba(255,255,255,.12),
+    0 0 4px 1px rgba(0,0,0,.1),
+    0 3px 2px rgba(0,0,0,.2);
 
-.dvt_houses_tituos{
-z-index: 100;
-position: absolute;
+}
+    .dvt_categories_contenedor:hover{
+    box-shadow:
+    inset 0 -2px 1px rgba(255,255,255,0.2),
+    inset 0 3px 2px rgba(0,0,0,0.12);
+    }
+
+.dvt_categories_contenedor span{
+    color:#ffffff;
+    font-size:15px;
+     display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.dvt_categories_titulos{
 color: white;
-font-size: 13px;
-font-weight: bold;
-bottom:50px;
-
+font-size: 18px !important;
+font-weight: bold !important;
+padding-top: 20px;
+text-transform: uppercase;
 }
 
 .dvt_houses_layer{
@@ -17456,6 +17491,18 @@ bottom:50px;
 .dvt_houses_img{
 height: 49px;
 width: 187px;
+vertical-align: middle;
+margin-bottom: 2px;
+-webkit-border-radius: 5px 5px 0 0;
+border-radius: 5px 5px 0 0;
+-moz-border-radius: 5px 5px 0 0;
+background-size: cover;
+display: block;
+}
+
+.dvt_categories_img{
+height: 200px;
+width: 300px;
 vertical-align: middle;
 margin-bottom: 2px;
 -webkit-border-radius: 5px 5px 0 0;
