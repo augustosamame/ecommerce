@@ -6,12 +6,12 @@
           <div class="noo-height-product pt-8 pb-10">
             <div class="container">
               <div class="row">
-                <div class="col-sm-12">
+                <div class="col-md-4 col-sm-4">
                   <div class="noo-product-grid-wrap commerce product-style2">
                     <div class="noo-product-grid products row product-grid noo-grid-4" >
                       <% @child_categories.each do |item| %>
 
-                      <div class="dvt_categories_contenedor hidden-xs hidden-sm" >
+                      <div class="dvt_categories_contenedor noo-product-column" >
         								<a href=" <%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: item.id ) %> ">
         									<%= image_tag item.image.medium_400.url, width: 400, height: 200, alt: "", class: "dvt_categories_img", style: "" %>
         									<span class="dvt_categories_titulos" style="text-align:center;"><%= item.name %></span>
