@@ -35,6 +35,7 @@ module Ecommerce
       @order_details = Order.find(@backoffice_order.id).order_items.includes(:product)
       if @backoffice_order.efact_response_text == "OK"
         @epdf = @backoffice_order.efact_invoice_url
+        @erefund_pdf = @backoffice_order.efact_refund_url
       else
         @einvoice_error_message = @backoffice_order.efact_response_text
       end
@@ -104,7 +105,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_order_params
-        params.require(:order).permit(:customer_comments, :process_comments, :delivery_comments, :user_id, :amount_cents, :shipping_amount_cents, :stage, :shipping_address_id, :billing_address_id, :coupon_id, :payment_status, :status, order_items_attributes: [:id, :product_id, :price_cents, :quantity, :status, :_destroy])
+        params.require(:order).permit(:efact_type, :customer_comments, :process_comments, :delivery_comments, :user_id, :amount_cents, :shipping_amount_cents, :stage, :shipping_address_id, :billing_address_id, :coupon_id, :payment_status, :status, order_items_attributes: [:id, :product_id, :price_cents, :quantity, :status, :_destroy])
       end
   end
 end

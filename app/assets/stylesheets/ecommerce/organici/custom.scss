@@ -212,6 +212,16 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
   background: white;
 }
 
+.category-desktop-image {
+  width: 400px;
+  height: 200px;
+}
+
+.commerce .product-grid .noo-product-inner {
+  border-width: 1px;
+  border-color: black;
+}
+
 @media (max-width: 767px) {
 
     .main-featured-products {

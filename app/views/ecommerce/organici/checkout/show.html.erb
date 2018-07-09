@@ -238,7 +238,8 @@
           amount: payment_amount,
           shipping_amount: shipping_amount,
           picked_shipping_address_id: picked_shipping_address_id,
-          cart_id: '<%= "#{@cart.id}" if @cart %>'
+          cart_id: '<%= "#{@cart.id}" if @cart %>',
+          want_factura: $('#want_factura').is(":checked")
           },
           function(data) {
           }
@@ -263,7 +264,8 @@
       amount: payment_amount,
       shipping_amount: shipping_amount,
       picked_shipping_address_id: picked_shipping_address_id,
-      cart_id: '<%= "#{@cart.id}" if @cart %>'
+      cart_id: '<%= "#{@cart.id}" if @cart %>',
+      want_factura: $('#want_factura').is(":checked")
       },
       function(data) {
       }

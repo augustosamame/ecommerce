@@ -6,6 +6,7 @@
     <%= f.input :stage, collection: Ecommerce::Order.stages.keys %>
     <%= f.input :shipping_address_id %>
     <%= f.input :billing_address_id %>
+    <%= f.input :efact_type, collection: Ecommerce::Order.efact_types.keys %>
     <%= f.input :customer_comments %>
     <%= f.input :process_comments %>
     <%= f.input :delivery_comments %>

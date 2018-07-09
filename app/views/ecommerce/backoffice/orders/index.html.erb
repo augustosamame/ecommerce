@@ -14,6 +14,7 @@
         <th>User</th>
         <th>Amount</th>
         <th>Stage</th>
+        <th>Efact</th>
         <th>Shipping address</th>
         <th>Coupon</th>
         <th>Payment status</th>
@@ -32,6 +33,7 @@
         <td><%= backoffice_order.user.name %></td>
         <td><%= number_to_currency(backoffice_order.amount) %></td>
         <td><%= backoffice_order.friendly_stage %></td>
+        <td><%= backoffice_order.efact_type %></td>
         <td><%= backoffice_order.friendly_shipping_address %></td>
         <td><%= backoffice_order.coupon_id %></td>
         <td><%= backoffice_order.payment_status %></td>

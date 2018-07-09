@@ -16,6 +16,8 @@ Ecommerce::Control.create(name: 'top_bar_html', localized_name: 'Top Bar HTML', 
 Ecommerce::Control.create(name: 'store_title', localized_name: 'Store Title', value_field_type: "text", text_value: "Put Store Title Here")
 Ecommerce::Control.create(name: 'auto_invoice', localized_name: 'Auto Invoice', value_field_type: "boolean", boolean_value: false )
 Ecommerce::Control.create(name: 'auto_ship', localized_name: 'Auto Ship', value_field_type: "boolean", boolean_value: false )
+Ecommerce::Control.create(name: 'efact_url', localized_name: 'Efact Url', value_field_type: "text", text_value: "http://localhost:3001/invoice" )
+Ecommerce::Control.create(name: 'efact_token', localized_name: 'Efact Token', value_field_type: "text", text_value: "12345678901234566111" )
 
 Ecommerce::Slider.create(slider_name: 'Home Slider 1', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/marinmeko+slider.jpg", slider_view: "Home", slider_order: 1 )
 Ecommerce::Slider.create(slider_name: 'Home Slider 2', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/babyganics.jpg", slider_view: "Home", slider_order: 2 )

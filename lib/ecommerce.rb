@@ -35,6 +35,7 @@ module Ecommerce
   mattr_accessor :electronic_invoicing
   mattr_accessor :serie_boleta
   mattr_accessor :serie_factura
+  mattr_accessor :serie_nota_de_credito
   mattr_accessor :shipping_integrator
   mattr_accessor :company_legal_name
   mattr_accessor :company_city

@@ -1,7 +1,21 @@
 <h3>Electronic Invoice Data</h3>
-<% if @epdf %>
-  <p>Link: <%= link_to @epdf %></p>
-  <embed src="<%= @epdf %>" width="500" height="375">
-<% else %>
-  <%= "Error generating electronic invoice: #{@einvoice_error_message}" %>
-<% end %>
+<div class="row well">
+  <div class="col-lg-6">
+    <h4>Electronic Invoice</h4>
+    <% if @epdf %>
+      <p>Link: <%= link_to @epdf %></p>
+      <embed src="<%= @epdf %>" width="500" height="375">
+    <% else %>
+      <%= "Error generating electronic invoice: #{@einvoice_error_message}" unless @epdf %>
+    <% end %>
+  </div>
+  <div class="col-lg-6">
+    <h4>Electronic Refund</h4>
+    <% if @erefund_pdf %>
+      <p>Link: <%= link_to @erefund_pdf %></p>
+      <embed src="<%= @erefund_pdf %>" width="500" height="375">
+    <% else %>
+      <%= "Error generating electronic refund: #{@einvoice_error_message}" if (@epdf && !@erefund_pdf) %>
+    <% end %>
+  </div>
+</div>

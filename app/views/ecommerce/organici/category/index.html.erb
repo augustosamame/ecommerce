@@ -3,58 +3,34 @@
     <div class="container">
       <div class="row" >
         <div class="noo-main col-md-9" style="margin-top: 30px;">
-          <!--<div class="noo-product-grid-wrap commerce product-style2">
-            <p class="commerce-result-count">Showing 1&ndash;9 of 18 results</p>
-            <div class="product-style-control pull-right">
-              <span class="noo-list"><a href="shop-list.html"><i class="fa fa-th-list"></i></a></span>
-              <span class="noo-grid active"><i class="fa fa-th-large"></i></span>
-            </div>
-            <form class="commerce-ordering">
-              <select name="orderby" class="orderby">
-                <option value="" selected='selected'>Default sorting</option>
-                <option value="">Sort by popularity</option>
-                <option value="">Sort by average rating</option>
-                <option value="">Sort by newness</option>
-                <option value="">Sort by price: low to high</option>
-              </select>
-            </form>
-          </div>-->
-
-<div class="noo-height-product pt-8 pb-10">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="noo-product-grid-wrap commerce product-style2">
-          <div class="noo-product-grid products row product-grid noo-grid-4" >
-            <% @child_categories.each do |item| %>
-            <div class="bread masonry-item noo-product-column col-md-4 col-sm-6 product">
-              <div class="noo-product-inner">
-                <div class="noo-product-thumbnail">
-                  <a href="<%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: item.id ) %>">
-                    <%= image_tag item.image.medium_400.url, width: 400, alt: "" %>
-                  </a>
-                  <!--<div class="noo-rating">
-                    <div class="star-rating">
-                      <span style="width:0%"></span>
+          <div class="noo-height-product pt-8 pb-10">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="noo-product-grid-wrap commerce product-style2">
+                    <div class="noo-product-grid products row product-grid noo-grid-4" >
+                      <% @child_categories.each do |item| %>
+                      <div class="bread masonry-item noo-product-column col-md-4 col-sm-6 product">
+                        <div class="noo-product-inner">
+                          <div class="noo-product-thumbnail">
+                            <a href="<%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: item.id ) %>">
+                              <%= image_tag item.image.medium_400.url, height: 200, width: 400, alt: "", class: "category-desktop-image" %>
+                            </a>
+                          </div>
+                          <div class="noo-product-title">
+                            <h3><%= link_to item.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: item.id ) %></h3><br>
+                          </div>
+                        </div>
+                      </div>
+                      <% end %>
                     </div>
-                  </div>-->
-                </div>
-                <div class="noo-product-title">
-                  <h3><%= link_to item.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: item.id ) %></h3><br>
+                  </div>
                 </div>
               </div>
             </div>
-            <% end %>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-
-
-
-
     </div>
   </div>
   <%= render "ecommerce/organici/store/prefooter" %>

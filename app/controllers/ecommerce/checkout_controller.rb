@@ -46,6 +46,7 @@ module Ecommerce
                         shipping_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
                         billing_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
                         payment_status: "unpaid",
+                        efact_type: params[:want_factura] == "true" ? "factura" : "boleta",
                         status: "active"
                         )
           if @order.save

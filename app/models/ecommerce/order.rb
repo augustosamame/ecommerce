@@ -7,8 +7,9 @@ module Ecommerce
     accepts_nested_attributes_for :order_items, reject_if: :all_blank, allow_destroy: true
 
     enum stage: {stage_new: 0, stage_paid: 1, stage_shipped: 2, stage_delivered: 3, stage_closed: 4, stage_void: 5 }
-    enum payment_status: {unpaid: 0, paid: 1, refunded: 2 }
+    enum payment_status: {unpaid: 0, paid: 1, refunded: 2, payment_void: 3 }
     enum status: {active: 0, void: 2 }
+    enum efact_type: {boleta: 0, factura: 1 }
 
     monetize :amount_cents, :shipping_amount_cents
 
@@ -23,7 +24,7 @@ module Ecommerce
     end
 
     def fire_envoice_worker
-      CreateEinvoiceWorker.perform_async(self.id) if self.payment_status == "paid"
+      CreateEinvoiceWorker.perform_async(self.id) unless self.payment_status == "unpaid"
     end
 
     def set_stock_and_stage
@@ -63,43 +64,152 @@ module Ecommerce
       OrderItem.where(order_id: self.id).includes(:product).each do |item|
         invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: item.price.to_f, price_subtotal: ((item.price / 1.18).to_f) }
       end
-      invoice_hash = {
-        number: "B#{Ecommerce.serie_boleta}-#{135 + self.id}",
-        currency_id: "PEN",
-        id: self.id,
-        zip: "030101",
-        catalog_06_id: "1 - DNI",
-        partner_id: Ecommerce.company_legal_name,
-        company_id: Ecommerce.company_legal_name,
-        email: self.user.email,
-        vat: "09344556",
-        street: order_billing_address.try(:street),
-        company_id_city: Ecommerce.company_city,
-        company_id_street: Ecommerce.company_street,
-        date_invoice: Time.now.to_s[0..9],
-        payment_term_id: "Contado",
-        date: Time.now.to_s[0..9],
-        amount_total: self.amount.to_f,
-        company_id_zip: 33,
-        partner_shipping_id: "shipping_id",
-        company_id_vat: Ecommerce.company_vat,
-        district_id: order_billing_address.try(:district),
-        province_id: order_billing_address.try(:city),
-        state_id: order_billing_address.try(:state),
-        invoice_line_ids: invoice_lines_array
-      }
-      url = URI(ENV['DEVTECH_EFACT_ENDPOINT'])
+      case self.payment_status
+        when "paid"
+          return false if efact_number
+          case self.efact_type
+            when "boleta"
+              invoice_hash = {
+                einvoice_type: "boleta",
+                number: "B#{Ecommerce.serie_boleta}-#{135 + self.id}",
+                currency_id: "PEN",
+                id: self.id,
+                zip: "030101",
+                catalog_06_id: "1 - DNI",
+                partner_id: Ecommerce.company_legal_name,
+                company_id: Ecommerce.company_legal_name,
+                email: self.user.email,
+                vat: "09344556",
+                street: order_billing_address.try(:street),
+                company_id_city: Ecommerce.company_city,
+                company_id_street: Ecommerce.company_street,
+                date_invoice: Time.now.to_s[0..9],
+                payment_term_id: "Contado",
+                date: Time.now.to_s[0..9],
+                amount_total: self.amount.to_f,
+                company_id_zip: 33,
+                partner_shipping_id: "shipping_id",
+                company_id_vat: Ecommerce.company_vat,
+                district_id: order_billing_address.try(:district),
+                province_id: order_billing_address.try(:city),
+                state_id: order_billing_address.try(:state),
+                invoice_line_ids: invoice_lines_array
+              }
+            when "factura"
+              invoice_hash = {
+                einvoice_type: "factura",
+                number: "F#{Ecommerce.serie_factura}-#{1 + self.id}",
+                currency_id: "PEN",
+                id: self.id,
+                zip: "030101",
+                catalog_06_id: "6 - RUC",
+                partner_id: Ecommerce.company_legal_name,
+                company_id: Ecommerce.company_legal_name,
+                email: self.user.email,
+                vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
+                street: order_billing_address.try(:street),
+                company_id_city: Ecommerce.company_city,
+                company_id_street: Ecommerce.company_street,
+                date_invoice: Time.now.to_s[0..9],
+                payment_term_id: "Contado",
+                date: Time.now.to_s[0..9],
+                amount_total: self.amount.to_f,
+                company_id_zip: 33,
+                partner_shipping_id: "shipping_id",
+                company_id_vat: Ecommerce.company_vat,
+                district_id: order_billing_address.try(:district),
+                province_id: order_billing_address.try(:city),
+                state_id: order_billing_address.try(:state),
+                invoice_line_ids: invoice_lines_array
+              }
+          end
+        when "refunded"
+          return false if !efact_number || efact_refund_number
+          case self.efact_number[0]
+            when "B"
+              invoice_hash = {
+                einvoice_type: "nota_de_credito",
+                number: "B#{Ecommerce.serie_nota_de_credito}-#{1 + self.id}",
+                affected_document: self.efact_number,
+                currency_id: "PEN",
+                id: self.id,
+                zip: "030101",
+                catalog_06_id: "1 - DNI",
+                partner_id: Ecommerce.company_legal_name,
+                company_id: Ecommerce.company_legal_name,
+                email: self.user.email,
+                vat: "09344556",
+                street: order_billing_address.try(:street),
+                company_id_city: Ecommerce.company_city,
+                company_id_street: Ecommerce.company_street,
+                date_invoice: Time.now.to_s[0..9],
+                payment_term_id: "Contado",
+                date: Time.now.to_s[0..9],
+                amount_total: self.amount.to_f,
+                company_id_zip: 33,
+                partner_shipping_id: "shipping_id",
+                company_id_vat: Ecommerce.company_vat,
+                district_id: order_billing_address.try(:district),
+                province_id: order_billing_address.try(:city),
+                state_id: order_billing_address.try(:state),
+                invoice_line_ids: invoice_lines_array
+              }
+            when "F"
+              invoice_hash = {
+                einvoice_type: "nota_de_credito",
+                number: "F#{Ecommerce.serie_nota_de_credito}-#{1 + self.id}",
+                affected_document: self.efact_number,
+                currency_id: "PEN",
+                id: self.id,
+                zip: "030101",
+                catalog_06_id: "6 - RUC",
+                partner_id: Ecommerce.company_legal_name,
+                company_id: Ecommerce.company_legal_name,
+                email: self.user.email,
+                vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
+                street: order_billing_address.try(:street),
+                company_id_city: Ecommerce.company_city,
+                company_id_street: Ecommerce.company_street,
+                date_invoice: Time.now.to_s[0..9],
+                payment_term_id: "Contado",
+                date: Time.now.to_s[0..9],
+                amount_total: self.amount.to_f,
+                company_id_zip: 33,
+                partner_shipping_id: "shipping_id",
+                company_id_vat: Ecommerce.company_vat,
+                district_id: order_billing_address.try(:district),
+                province_id: order_billing_address.try(:city),
+                state_id: order_billing_address.try(:state),
+                invoice_line_ids: invoice_lines_array
+              }
+          end
+        when "void"
+          return false if !efact_number
+          invoice_hash = {
+            einvoice_type: "anulacion",
+            affected_document: self.efact_number,
+            void_reason: "Cancelación"
+          }
+      end
+      url = URI(Ecommerce::Control.find_by(name: 'efact_url').text_value)
       http = Net::HTTP.new(url.host, url.port)
       request = Net::HTTP::Post.new(url)
       request["Content-Type"] = 'application/json'
-      request["authorization"] = ENV['DEVTECH_EFACT_TOKEN']
+      request["authorization"] = Ecommerce::Control.find_by!(name: "efact_token").text_value
       request["Cache-Control"] = 'no-cache'
       request.body = invoice_hash.to_json
       response = http.request(request)
       if response.code == "200"
         response_body = JSON.parse(response.read_body)
         if response.read_body && response_body["response_text"] == "OK"
-          self.update_columns(efact_response_text: "OK", efact_invoice_url: response_body["response_url"], efact_sent_text: invoice_hash.to_json)
+          case invoice_hash[:einvoice_type]
+            when "nota_de_credito"
+              self.update_columns(efact_response_text: "OK", efact_refund_url: response_body["response_url"], efact_sent_text: invoice_hash.to_json, efact_refund_number: invoice_hash[:number] )
+            when "anulacion"
+              self.update_columns(efact_response_text: "OK", efact_void_url: response_body["response_url"], efact_sent_text: invoice_hash.to_json )
+            else
+              self.update_columns(efact_response_text: "OK", efact_invoice_url: response_body["response_url"], efact_sent_text: invoice_hash.to_json, efact_number: invoice_hash[:number] )
+          end
         else
           self.update_columns(efact_response_text: "Internal Error #{response.code} - #{response_body["response_text"]}")
         end
