@@ -103,9 +103,15 @@ module Ecommerce
                       description: "ExpatShop Product List",
                       og: {
                         title:    :full_title,
-                        image:    'http://ia.media-imdb.com/rock.jpg'
+                        image:    'https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
                       }
-
+      when "store:main"
+        set_meta_tags title: "Home",
+                      description: "ExpatShop Perú - your one stop shop for products from all the world to Perú",
+                      og: {
+                        title:    :full_title,
+                        image:    'https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
+                      }
       else
         set_meta_tags description: "No match for meta_tags"
       end

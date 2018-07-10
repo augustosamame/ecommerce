@@ -8,6 +8,9 @@ module Ecommerce
     skip_before_action :authenticate_user!
 
     def main
+
+      set_main_meta_tags
+
       if params[:search]
         @products = Product.search_by_name(params[:search]).in_stock.active.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
@@ -56,6 +59,15 @@ module Ecommerce
       def set_home_items
         @top_bar_new_hash = Ecommerce::Control.find_by(name: 'top_bar_cookie_read_hash').text_value #this will be set as a cookie via javascript if user closes top_bar
         @secondary_menu_categories = Ecommerce::Category.where(main_menu: true, category_type: "secondary", status: "active").order(:category_order)
+      end
+
+      def set_main_meta_tags
+        set_meta_tags title: "Home",
+                      description: "ExpatShop Perú - your one stop shop for products from all the world to Perú",
+                      og: {
+                        title:    :full_title,
+                        image:    Ecommerce.logo
+                      }
       end
 
   end
