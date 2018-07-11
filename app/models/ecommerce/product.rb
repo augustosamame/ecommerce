@@ -11,6 +11,9 @@ module Ecommerce
     has_many :active_variants, -> { where(deleted_at: nil) },
     class_name: 'ProductSku'
 
+    extend FriendlyId
+    friendly_id :permalink_candidates, use: :slugged, slug_column: :permalink
+
     include PgSearch
     pg_search_scope :search_by_name, :against => :name, :using => {:tsearch => {:prefix => true}}
 
@@ -35,6 +38,13 @@ module Ecommerce
     #validates :category_id, presence: true
     validates_presence_of :category_list
     validates :name, presence: true,   length: { maximum: 165 }
+
+    def permalink_candidates
+      [
+        :name,
+        [:name, :id]
+      ]
+    end
 
     def discounted?
       self.discounted_price_cents < self.price_cents

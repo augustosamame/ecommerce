@@ -29,7 +29,7 @@ module Ecommerce
     def create
       @backoffice_product = Product.new(backoffice_product_params)
       @backoffice_product.category_list.add(backoffice_product_params[:category_id])
-      @backoffice_product.permalink = @backoffice_product.name
+      #@backoffice_product.permalink = @backoffice_product.name
       if @backoffice_product.save
         redirect_to backoffice_product_path(@backoffice_product), notice: 'Product was successfully created.'
       else
@@ -67,7 +67,7 @@ module Ecommerce
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_backoffice_product
-        @backoffice_product = Product.find(params[:id])
+        @backoffice_product = Product.friendly.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ecommerce (0.4.5.8)
+    ecommerce (0.4.6.7)
       best_in_place
       bootstrap-sass
       browser
