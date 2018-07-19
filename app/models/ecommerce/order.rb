@@ -193,8 +193,8 @@ module Ecommerce
           }
       end
       url = URI(Ecommerce::Control.find_by(name: 'efact_url').text_value)
-      http = Net::HTTP.new(url.host, 443)
-      http.use_ssl = true
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true if url.scheme == "https"
       request = Net::HTTP::Post.new(url)
       request["Content-Type"] = 'application/json'
       request["authorization"] = Ecommerce::Control.find_by!(name: "efact_token").text_value
