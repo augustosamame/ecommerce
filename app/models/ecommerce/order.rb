@@ -21,6 +21,7 @@ module Ecommerce
 
     def notify_new_order
       AdminMailer.new_order_email(self.user, self).deliver!
+      UserMailer.new_order_email(self.user, self).deliver!
     end
 
     def fire_envoice_worker
@@ -192,7 +193,8 @@ module Ecommerce
           }
       end
       url = URI(Ecommerce::Control.find_by(name: 'efact_url').text_value)
-      http = Net::HTTP.new(url.host, url.port)
+      http = Net::HTTP.new(url.host, 443)
+      http.use_ssl = true
       request = Net::HTTP::Post.new(url)
       request["Content-Type"] = 'application/json'
       request["authorization"] = Ecommerce::Control.find_by!(name: "efact_token").text_value
