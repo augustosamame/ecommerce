@@ -81,7 +81,7 @@
 							<%= user.try(:addresses).try(:first).try(:district) %>
 						</td>
 						<td>
-							<%= user.orders.count  %>
+							<%= user.try(:orders).try(:count)  %>
 						</td>
 						<td style=" padding-top: 2px !important; padding-bottom: 2px !important;">
 							<%= link_to "+", new_backoffice_order_path(user_id: user.id), :class => 'btn btn-primary', style: "padding-top: 0px; padding-bottom: 0px;" %>

@@ -14,6 +14,7 @@ module Ecommerce
     monetize :amount_cents, :shipping_amount_cents
 
     after_commit :notify_new_order, on: :create
+    after_commit :blank_user_carts, on: :create
     after_commit :fire_envoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
     after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
 
@@ -22,6 +23,10 @@ module Ecommerce
     def notify_new_order
       AdminMailer.new_order_email(self.user, self).deliver!
       UserMailer.new_order_email(self.user, self).deliver!
+    end
+
+    def blank_user_carts
+      Cart.where(user_id: self.user).destroy_all
     end
 
     def fire_envoice_worker
