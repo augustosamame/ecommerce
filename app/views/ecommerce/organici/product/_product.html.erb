@@ -10,6 +10,9 @@
       <h3><%= link_to item.name, product_path(item) %></h3><br>
       <span class="short-descrip" style="font-size:13px;"><%= item.short_description %></span><br>
       <span class="price"><span class="amount"><%= number_to_currency(item.price) %></span></span>
+      <% unless item.in_stock? %>
+        <p class="out_of_stock" style="font-size: 18px;"><span class="">Out of Stock</span></p>
+      <% end %>
       <div class="noo-product-action">
         <div class="noo-action">
           <!--<a href="ajax/product-quickview.html" class="noo-qucik-view">

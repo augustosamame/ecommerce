@@ -12,18 +12,18 @@ module Ecommerce
       set_main_meta_tags
 
       if params[:search]
-        @products = Product.search_by_name(params[:search]).in_stock.active.page(params[:page])
+        @products = Product.search_by_name(params[:search]).active.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
       end
       @home_brands = Brand.where(featured: true)
-      @featured_homepage_products = Ecommerce::Product.where(home_featured: true).order(:id).in_stock.active
+      @featured_homepage_products = Ecommerce::Product.where(home_featured: true).order(:id).active
       @homepage_categories = Ecommerce::Category.where(popular_homepage: true, status: "active").order(:category_order)
       add_body_css_class('stretched')
       render "ecommerce/#{Ecommerce.ecommerce_layout}/store/main"
     end
 
     def shop_by_category
-      @products = Ecommerce::Product.where(category_id: params[:id]).in_stock.active
+      @products = Ecommerce::Product.where(category_id: params[:id]).active
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
     end
 
@@ -45,11 +45,11 @@ module Ecommerce
           render "ecommerce/#{Ecommerce.ecommerce_layout}/store/sub_categories_mobile"
           #redirect_to categories_m_path(category: @category.id)
         else
-          @products = Product.tagged_with(@category.name).order(:product_order).in_stock.active.page(params[:page])
+          @products = Product.tagged_with(@category.name).order(:product_order).active.page(params[:page])
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else
-        @products = Product.all.order(:product_order).in_stock.active.page(params[:page])
+        @products = Product.all.order(:product_order).active.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
     end

@@ -46,6 +46,11 @@ module Ecommerce
       ]
     end
 
+    def in_stock?
+      
+      return self.total_quantity > 0
+    end
+
     def discounted?
       self.discounted_price_cents < self.price_cents
     end

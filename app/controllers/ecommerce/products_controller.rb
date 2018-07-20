@@ -20,11 +20,11 @@ module Ecommerce
         if @child_categories.count > 0
           redirect_to categories_path(parent_category: @category.id)
         else
-          @products = Product.tagged_with(@category.name).order(:product_order).in_stock.active.page(params[:page])
+          @products = Product.tagged_with(@category.name).order(:product_order).active.page(params[:page])
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else
-        @products = Product.all.order(:product_order).in_stock.active.page(params[:page])
+        @products = Product.all.order(:product_order).active.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
     end
@@ -32,7 +32,7 @@ module Ecommerce
     def show
 
       if params[:search]
-        @products = Product.search_by_name(params[:search]).in_stock.active.page(params[:page])
+        @products = Product.search_by_name(params[:search]).active.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
       end
       #set_controller_meta_tags(action_name)
