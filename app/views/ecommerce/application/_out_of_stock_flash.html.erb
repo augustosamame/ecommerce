@@ -1,0 +1,5 @@
+<div id="flash_out_of_stock">
+  <% flash.each do |key, value| %>
+    <%= alert_box value, context: flash_class(key), dismissible: true if value == "Product Out of Stock" %>
+  <% end %>
+</div>

@@ -1,11 +1,21 @@
 function fly_to_cart() {
-  console.log ("function fly_to_cart fired!");
+  //console.log ("function fly_to_cart fired!");
   $('#shopping-cart').shake({
       interval: 100,
       distance: 20,
       times: 5
   });
-  };
+};
+
+function add_to_cart_no_stock() {
+  //console.log ("function fly_to_cart fired!");
+  //$('#shopping-cart').shake({
+  //    interval: 100,
+  //    distance: 20,
+  //    times: 5
+  //});
+  alert("Product is Out of Stock");
+};
 
   $.fn.shake = function(settings) {
         if(typeof settings.interval == 'undefined'){

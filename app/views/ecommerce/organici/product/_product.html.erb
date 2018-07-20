@@ -18,10 +18,14 @@
           <!--<a href="ajax/product-quickview.html" class="noo-qucik-view">
             <i class="fa fa-search"></i>
           </a>-->
+
           <%= link_to "", cart_items_path(cart_item: {quantity: 1, product_id: item.id}),
                                           :method => :post,
                                           :remote => true,
-                                          class: "button product_type_simple add_to_cart_button" %>
+                                          :disabled => !item.in_stock?,
+                                          class: "button product_type_simple add_to_cart_button #{item.in_stock? ? '' : 'no_stock'}" %>
+
+
 
           <div class="yith-wcwl-add-to-wishlist">
                                         <div class="yith-wcwl-add-button">

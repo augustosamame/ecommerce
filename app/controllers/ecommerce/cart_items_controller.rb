@@ -14,19 +14,28 @@ module Ecommerce
 
     def create
       @cart_item = CartItem.new(cart_item_params)
-      @cart_item.cart_id = @cart.id
-      found_same_product = @cart.cart_items.find_by(product_id: @cart_item.product_id)
-      if found_same_product
-        found_same_product.update(quantity: found_same_product.quantity += @cart_item.quantity)
-      else
-        @cart_item.save
-      end
-      #refresh with latest cart so it will be repainted properly
-      set_cart
-      respond_to do |format|
-        format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show"  }
+      @product = Product.find(@cart_item.product_id)
+      if @product.in_stock?
+        @cart_item.cart_id = @cart.id
+        found_same_product = @cart.cart_items.find_by(product_id: @cart_item.product_id)
+        if found_same_product
+          found_same_product.update(quantity: found_same_product.quantity += @cart_item.quantity)
+        else
+          @cart_item.save
+        end
+        #refresh with latest cart so it will be repainted properly
+        set_cart
+        respond_to do |format|
+          format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show"  }
 
-        format.html {redirect_to cart_path(@cart) }
+          format.html {redirect_to cart_path(@cart) }
+        end
+      else
+        respond_to do |format|
+          format.js { flash.now[:notice] = "Product Out of Stock"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/no_stock"  }
+
+          format.html {redirect_to cart_path(@cart), notice: 'Product is out of stock. Not added to cart' }
+        end
       end
     end
 
