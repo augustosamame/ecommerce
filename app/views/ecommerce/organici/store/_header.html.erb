@@ -64,7 +64,7 @@
 												<ul class="sub-menu">
 													<li><%= link_to "My Orders", Ecommerce::Engine.routes.url_helpers.orders_path %></li>
 													<li><%= link_to "My Account", main_app.edit_user_registration_path %></li>
-													<li><%= link_to "Sign Out", main_app.destroy_user_session_path, method: :delete %></li>
+													<li><%= link_to "Sign Out", main_app.destroy_user_session_path, method: :delete, id: "sign_out_link" %></li>
 												</ul>
 												<% else %>
 												<a href="<%= main_app.new_user_registration_path %>" class=""><i class='fa fa-user'></i> My Account<span class="caret"></span></a>
