@@ -19,7 +19,9 @@ module Ecommerce
         @cart_item.cart_id = @cart.id
         found_same_product = @cart.cart_items.find_by(product_id: @cart_item.product_id)
         if found_same_product
-          found_same_product.update(quantity: found_same_product.quantity += @cart_item.quantity)
+          new_quantity = found_same_product.quantity += @cart_item.quantity
+          new_quantity = @product.total_quantity if new_quantity > @product.total_quantity
+          found_same_product.update(quantity: new_quantity)
         else
           @cart_item.save
         end

@@ -59,10 +59,12 @@
                 </div>
                 <div class="clear"></div>
 
+                <p class="out_of_stock"><span class="" id="out_of_stock_text">No more stock available</span></p>
+
                 <% unless @product.in_stock? %>
                   <p class="out_of_stock"><span class="">Out of Stock</span></p>
                 <% end %>
-                
+
                 <div class="noo-social-share">
                   <span>Share:</span>
                   <a href='<%= "https://www.facebook.com/sharer/sharer.php?u=#{request.original_url}" %>' target="_blank" rel="noopener" class="noo-share" title="Share on Facebook">
@@ -278,13 +280,18 @@
 
 <script>
   $("#devtech_plus").click(function(e) {
-    $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) + 1);
+    if ($("#devtech_quantity_field").val() < <%= @product.total_quantity %>) {
+      $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) + 1);
+    } else {
+      $("#out_of_stock_text").show();
+    }
     e.preventDefault();
   });
   $("#devtech_minus").click(function(e) {
     if (parseInt($("#devtech_quantity_field").val()) > 1) {
       $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) - 1);
     }
+    $("#out_of_stock_text").hide();
     e.preventDefault();
   });
 
