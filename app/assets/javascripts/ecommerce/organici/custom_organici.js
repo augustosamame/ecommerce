@@ -156,8 +156,8 @@ $(document).ready(function() {
             } else {
                 link.addClass("hover");
                 $(".navbar-nav").find(".menu-item-has-children").find("a").not(this).removeClass("hover");
-                e.preventDefault();
-                return false;
+                //e.preventDefault();
+                //return false;
             }
         });
     }
