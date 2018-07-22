@@ -12974,27 +12974,27 @@ a.go-to-top:hover a.go-to-top:focus.on:hover {
         font-size: 14px;
         line-height: 50px;
     }
-    .exit-cavas {
-        position: absolute;
-        top: 10px;
-        right: -289px;
-        width: 30px;
-        height: 30px;
-        display: block;
-        background-image: asset-url("ecommerce/img/quickview-close.png");
-        background-position: center center;
-        background-repeat: no-repeat;
-        cursor: pointer;
-        border: 1px solid white;
-        -webkit-transform: scale(0);
-        -ms-transform: scale(0);
-        -o-transform: scale(0);
-        transform: scale(0);
-        z-index: 9;
-    }
-    .exit-cavas:hover {
-        border-color: #212121;
-    }
+  //  .exit-cavas {
+  //      position: absolute;
+  //      top: 10px;
+  //      right: -289px;
+  //      width: 30px;
+  //      height: 30px;
+  //      display: block;
+  //      background-image: asset-url("ecommerce/img/quickview-close.png");
+  //      background-position: center center;
+  //      background-repeat: no-repeat;
+  //      cursor: pointer;
+  //      border: 1px solid white;
+  //      -webkit-transform: scale(0);
+  //      -ms-transform: scale(0);
+  //      -o-transform: scale(0);
+  //    transform: scale(0);
+  //      z-index: 9;
+  //  }
+  //  .exit-cavas:hover {
+  //      border-color: #212121;
+  //  }
     .nav-collapse {
         height: 0;
         overflow: hidden;

@@ -1,13 +1,22 @@
-<header class="noo-header header-3 inner-relative">
+<header class="noo-header header-3 inner-relative" id="organici-fixed-header">
 				<div class="navbar-wrapper">
 					<div class="navbar navbar-default">
 						<div class="container">
 							<div class="menu-position">
 								<div class="navbar-header pull-left">
 									<div class="noo_menu_canvas">
-										<div class="btn-search noo-search">
-											<i class="fa fa-search"></i>
-										</div>
+
+										<% if browser.device.mobile? %>
+											<div class="mobile_cart_div">
+												<ul class="mobile_cart">
+
+													<li class="menu-item noo-menu-item-cart minicart" id="cart-line">
+														<%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
+													</li>
+												</ul>
+											</div>
+										<% end %>
+
 										<div data-target=".nav-collapse" class="btn-navbar">
 											<span></span>
 											<span></span>
@@ -16,7 +25,7 @@
 									</div>
 									<a href="<%= root_path %>" class="navbar-brand">
 									<% if browser.device.mobile? %>
-											<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal", style: "margin-top: -18px; width: 88%;" %>
+											<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal noo-logo-mobile", style: "margin-top: -18px;" %>
 									<% else %>
 											<%= image_tag Ecommerce.header_landing_logo, style: "margin-top: -22px;", alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 140 %>
 									<% end %>
@@ -24,6 +33,9 @@
 								</div>
 
 								<nav class="pull-left noo-main-menu">
+									<ul class="nav-collapse navbar-nav">
+										<a class="exit-cavas exit-cavas-invisible" href="#">&nbsp;</a>
+									</ul>
 									<ul class="nav-collapse navbar-nav">
 										<li class="current-menu-item">
 											<a href="<%= Ecommerce::Engine.routes.url_helpers.root_path %>">Home</a>
@@ -58,19 +70,22 @@
 										<!--<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>-->
 
 										<ul class="nav-collapse navbar-nav">
-											<li class="menu-item-has-children">
-												<% if current_user %>
-												<a href="#"><%= "<i class='fa fa-user'></i> #{current_user.name} <span class='caret'></span>".html_safe %></a>
-												<ul class="sub-menu">
-													<li><%= link_to "My Orders", Ecommerce::Engine.routes.url_helpers.orders_path, class: "off-canvas-nav-my-orders" %></li>
-													<li><%= link_to "My Account", main_app.edit_user_registration_path, class: "off-canvas-nav-my-account" %></li>
-													<li><%= link_to "Sign Out", main_app.logout_path %></li>
+											<% if current_user %>
+												<li class="menu-item-has-children">
+													<a href="#"><%= "<i class='fa fa-user'></i> #{current_user.name} <span class='caret'></span>".html_safe %></a>
+													<ul class="sub-menu">
+														<li><%= link_to "My Orders", Ecommerce::Engine.routes.url_helpers.orders_path, class: "off-canvas-nav-my-orders" %></li>
+														<li><%= link_to "My Account", main_app.edit_user_registration_path, class: "off-canvas-nav-my-account" %></li>
+														<li><%= link_to "Sign Out", main_app.logout_path %></li>
 
-												</ul>
-												<% else %>
-												<a href="<%= main_app.new_user_registration_path %>" class=""><i class='fa fa-user'></i> My Account<span class="caret"></span></a>
-												<% end %>
-											</li>
+													</ul>
+												</li>
+											<% else %>
+												<li class="menu-item">
+													<a href="<%= main_app.new_user_registration_path %>" class=""><i class='fa fa-user'></i> My Account</a>
+												</li>
+											<% end %>
+
 
 
 											<li class="menu-item fly-right">
@@ -81,10 +96,11 @@
 												<% end %>
 											</li>
 
-											<li class="menu-item noo-menu-item-cart minicart" id="cart-line">
+											<% unless browser.device.mobile? %>
+											<li class="menu-item noo-menu-item-cart minicart fly-right" id="cart-line">
 												<%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
 											</li>
-
+											<% end %>
 
 											<li class="menu-item fly-right">
 												<a id="noo-search" class="search-button noo-search" href="#">

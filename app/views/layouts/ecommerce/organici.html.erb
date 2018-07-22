@@ -37,3 +37,25 @@
 <%= javascript_include_tag "ecommerce/organici" %>
 
 <% parent_layout "ecommerce/base" %>
+
+<script>
+
+// When the user scrolls the page, execute myFunction
+window.onscroll = function() {fixOrganiciHeader()};
+
+// Get the header
+var header = document.getElementById("organici-fixed-header");
+
+// Get the offset position of the navbar
+var sticky = header.offsetTop;
+
+// Add the oganici-sticky-header class to the header when you reach its scroll position. Remove "oganici-sticky-header" when you leave the scroll position
+function fixOrganiciHeader() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("oganici-sticky-header");
+  } else {
+    header.classList.remove("oganici-sticky-header");
+  }
+}
+
+</script>

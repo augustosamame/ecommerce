@@ -1,3 +1,16 @@
+.noo-logo-mobile {
+   width: 70vw;
+}
+
+.mobile_cart {
+  list-style: none;
+  padding-left: 0px;
+  right: 10px;
+  position: absolute;
+  width: 70px;
+  top: -5px;
+}
+
 .out_of_stock {
   margin-bottom: 30px;
   color: red;
@@ -239,6 +252,42 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
 
 @media (max-width: 767px) {
 
+    .exit-cavas {
+        position: absolute;
+        top: 10px;
+        right: 9px;
+        width: 30px;
+        height: 30px;
+        display: block;
+        background-image: asset-url("ecommerce/img/quickview-close.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        border: 1px solid white;
+        //-webkit-transform: scale(0);
+        //-ms-transform: scale(0);
+        //-o-transform: scale(0);
+        //transform: scale(0);
+        //z-index: 9;
+    }
+    .exit-cavas:hover {
+        border-color: #212121;
+    }
+
+    .exit-cavas-invisible {
+      display: none !important;
+    }
+
+    .oganici-sticky-header {
+      position: fixed;
+      top: 0;
+      width: 100%
+    }
+
+    .noo_menu_canvas .btn-navbar {
+      left: 28px;
+    }
+
     .main-featured-products {
       margin-left: 0px;
     }
@@ -344,7 +393,7 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
     .navbar-brand .noo-logo-img {
         max-height: 75px;
         margin-top: -25px;
-        margin-left: -18px;
+        margin-left: -28px;
     }
 
     .noo-minicart {

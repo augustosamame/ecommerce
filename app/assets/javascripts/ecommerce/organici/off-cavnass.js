@@ -1,6 +1,7 @@
 ! function($) {
     $(document).ready(function() {
         var $btn = $('.btn-navbar'),
+            $btn_2 = $('.exit-cavas'),
             $nav = null,
             $fixeditems = null;
         if (!$btn.length) {
@@ -14,8 +15,14 @@
                 hideNav();
             } else {
                 showNav();
-                $('body').append('<a class="exit-cavas" href="#">&nbsp;</a>');
+                setTimeout(function(){ $('.exit-cavas').removeClass('exit-cavas-invisible'); }, 750);
+                //$('body').append('<a class="exit-cavas" href="#">&nbsp;</a>');
             }
+            return false;
+        });
+        $('.exit-cavas').click(function(e) {
+            console.log("click secondary button");
+            hideNav();
             return false;
         });
         var posNav = function() {
@@ -36,7 +43,7 @@
                     $('html').addClass('off-canvas-enabled');
                     $(window).bind('scroll touchmove', posNav);
                     $('#off-canvas-nav').bind('click', function(e) {
-                        console.log("clicked on off-canvas-nav child element");
+                        //console.log("clicked on off-canvas-nav child element");
                         if (e.target.id === "sign_out_link") {
                             $.post("/users/sign_out", {
                                 _method: 'delete'
@@ -49,6 +56,7 @@
                     $('html').bind('click', bdHideNav);
                 }, 50);
                 setTimeout(function() {}, 1000);
+
             },
             hideNav = function() {
                 $('.btn-navbar').removeClass('eff');
@@ -61,7 +69,8 @@
                 setTimeout(function() {
                     $('html').removeClass('off-canvas');
                 }, 600);
-                $('.exit-cavas').remove();
+                //$('.exit-cavas').remove();
+                $('.exit-cavas').addClass('exit-cavas-invisible');
             },
             wpfix = function(step) {
                 if ($fixeditems == -1) {
