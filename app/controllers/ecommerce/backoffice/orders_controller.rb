@@ -85,8 +85,10 @@ module Ecommerce
     # PATCH/PUT /backoffice/orders/1
     def update
       if @backoffice_order.update(backoffice_order_params)
+
         redirect_to backoffice_order_path(@backoffice_order), notice: 'Order was successfully updated.'
       else
+
         render :edit
       end
     end

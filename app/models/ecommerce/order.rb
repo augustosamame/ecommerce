@@ -2,8 +2,8 @@ module Ecommerce
   class Order < ApplicationRecord
 
     belongs_to :user
-    belongs_to :cart
-    has_many :order_items, inverse_of: :order
+    belongs_to :cart, optional: true
+    has_many :order_items, inverse_of: :order, dependent: :destroy
     accepts_nested_attributes_for :order_items, reject_if: :all_blank, allow_destroy: true
 
     enum stage: {stage_new: 0, stage_paid: 1, stage_shipped: 2, stage_delivered: 3, stage_closed: 4, stage_void: 5 }

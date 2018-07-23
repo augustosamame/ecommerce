@@ -11,6 +11,7 @@ module Ecommerce
       @address = Address.new(user_id: current_user.id)
       @picked_address = Address.new(user_id: current_user.id)
       @checkout_addresses = Address.where(user_id: current_user.id)
+      @districts = ['San Isidro', 'Miraflores', 'Barranco', 'La Molina']
       @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
       #active payment methods in view
       @payment_bank_deposit = PaymentMethod.is_active.find_by(name: "Bank Deposit")
