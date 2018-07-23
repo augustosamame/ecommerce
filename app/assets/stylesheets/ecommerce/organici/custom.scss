@@ -1,3 +1,7 @@
+.noo-action {
+  display: none !important;
+}
+
 .noo-logo-mobile {
    width: 70vw;
 }
@@ -251,6 +255,10 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
 }
 
 @media (max-width: 767px) {
+
+    .js_now_flash_class {
+      margin-bottom: 0px !important;
+    }
 
     .navbar-wrapper {
       height: 70px !important;

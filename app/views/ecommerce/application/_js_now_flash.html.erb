@@ -1,0 +1,5 @@
+<div id="js_now_flash">
+  <% flash.each do |key, value| %>
+    <%= alert_box value.gsub("NOW_FLASH_", ""), class: :js_now_flash_class, context: flash_class(key), dismissible: true if value.start_with?("NOW_FLASH_") %>
+  <% end %>
+</div>

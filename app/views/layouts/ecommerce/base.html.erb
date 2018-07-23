@@ -51,3 +51,11 @@ var $loading = $('.spinner').hide();
     );
 })
 </script>
+
+<script>
+    window.setTimeout(function() {
+        $("#js_now_flash").slideUp(500, function() {
+            $(this).remove();
+        });
+    }, 8000);
+</script>

@@ -28,13 +28,13 @@ module Ecommerce
         #refresh with latest cart so it will be repainted properly
         set_cart
         respond_to do |format|
-          format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show"  }
+          format.js { flash.now[:notice] = "NOW_FLASH_Qty: #{@cart_item.quantity} #{@product.name} Added to Cart"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show"  }
 
           format.html {redirect_to cart_path(@cart) }
         end
       else
         respond_to do |format|
-          format.js { flash.now[:notice] = "Product Out of Stock"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/no_stock"  }
+          format.js { flash.now[:notice] = "NOW_FLASH_Product Out of Stock"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/no_stock"  }
 
           format.html {redirect_to cart_path(@cart), notice: 'Product is out of stock. Not added to cart' }
         end

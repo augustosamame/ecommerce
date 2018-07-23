@@ -1,4 +1,9 @@
 <header class="noo-header header-3 inner-relative" id="organici-fixed-header">
+	<div id="js_now_flash">
+    <% if notice.present? %>
+      <%= render partial: "ecommerce/application/js_now_flash" %>
+    <% end %>
+  </div>
 				<div class="navbar-wrapper">
 					<div class="navbar navbar-default">
 						<div class="container">
