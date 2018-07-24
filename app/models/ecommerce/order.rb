@@ -202,7 +202,8 @@ module Ecommerce
       http.use_ssl = true if url.scheme == "https"
       request = Net::HTTP::Post.new(url)
       request["Content-Type"] = 'application/json'
-      request["authorization"] = Ecommerce::Control.find_by!(name: "efact_token").text_value
+      #TODO add type of authentication field in backoffice to support Bearer Token
+      request["Authorization"] = "Bearer #{Ecommerce::Control.find_by!(name: "efact_token").text_value}"
       request["Cache-Control"] = 'no-cache'
       request.body = invoice_hash.to_json
       response = http.request(request)
