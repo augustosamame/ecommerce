@@ -25,6 +25,7 @@ module Ecommerce
         @info_factura = Ecommerce::DataBizInvoice.find_by(user_id: current_user.id)
         @info_factura_available = true
         @factura_vat = @info_factura.vat
+        @factura_razon_social = @info_factura.razon_social
         @factura_address = @info_factura.address
         @factura_city = @info_factura.city
       end

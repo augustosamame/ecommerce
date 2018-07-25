@@ -109,7 +109,7 @@ module Ecommerce
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: "6 - RUC",
-                partner_id: Ecommerce.company_legal_name,
+                partner_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social),
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
                 vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),

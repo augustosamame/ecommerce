@@ -84,6 +84,7 @@
                       <div class="payment_box payment_method_cheque">
                         <% if @info_factura_available %>
                           <p><%= "RUC: #{@factura_vat}" %></p>
+                          <p><%= "Razón Social: #{@factura_razon_social}" %></p>
                           <p><%= "Address: #{@factura_address}, #{@factura_city}" %></p>
                         <% else %>
                           <p><%= link_to "Click Here to set up Factura info", main_app.edit_user_registration_path %></p>
