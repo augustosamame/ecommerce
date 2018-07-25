@@ -68,7 +68,7 @@ module Ecommerce
       order_billing_address = Address.find_by(id: self.billing_address_id)
       invoice_lines_array = Array.new
       OrderItem.where(order_id: self.id).includes(:product).each do |item|
-        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: item.price.to_f, price_subtotal: ((item.price / 1.18).to_f) }
+        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: item.price.to_f * item.quantity, price_subtotal: ((item.price / 1.18).to_f) }
       end
       case self.payment_status
         when "paid"
@@ -109,8 +109,8 @@ module Ecommerce
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: "6 - RUC",
-                partner_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social),
-                company_id: Ecommerce.company_legal_name,
+                partner_id: Ecommerce.company_legal_name,
+                company_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social),
                 email: self.user.email,
                 vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
                 street: order_billing_address.try(:street),
@@ -169,7 +169,7 @@ module Ecommerce
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: "6 - RUC",
-                partner_id: Ecommerce.company_legal_name,
+                partner_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social),
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
                 vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
