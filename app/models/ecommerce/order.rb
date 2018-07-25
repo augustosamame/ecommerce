@@ -77,7 +77,7 @@ module Ecommerce
             when "boleta"
               invoice_hash = {
                 einvoice_type: "boleta",
-                number: "B#{Ecommerce.serie_boleta}-#{135 + self.id}",
+                number: "B#{Ecommerce.serie_boleta}-#{Ecommerce::Control.find_by!(name: "next_boleta_number").integer_value}",
                 currency_id: "PEN",
                 id: self.id,
                 zip: "030101",
@@ -104,7 +104,7 @@ module Ecommerce
             when "factura"
               invoice_hash = {
                 einvoice_type: "factura",
-                number: "F#{Ecommerce.serie_factura}-#{1 + self.id}",
+                number: "F#{Ecommerce.serie_factura}-#{Ecommerce::Control.find_by!(name: "next_factura_number").integer_value}",
                 currency_id: "PEN",
                 id: self.id,
                 zip: "030101",
@@ -135,7 +135,7 @@ module Ecommerce
             when "B"
               invoice_hash = {
                 einvoice_type: "nota_de_credito",
-                number: "B#{Ecommerce.serie_nota_de_credito}-#{1 + self.id}",
+                number: "B#{Ecommerce.serie_nota_de_credito}-#{Ecommerce::Control.find_by!(name: "next_nota_de_credito_boleta_number").integer_value}",
                 affected_document: self.efact_number,
                 currency_id: "PEN",
                 id: self.id,
@@ -163,7 +163,7 @@ module Ecommerce
             when "F"
               invoice_hash = {
                 einvoice_type: "nota_de_credito",
-                number: "F#{Ecommerce.serie_nota_de_credito}-#{1 + self.id}",
+                number: "F#{Ecommerce.serie_nota_de_credito}-#{Ecommerce::Control.find_by!(name: "next_nota_de_credito_factura_number").integer_value}",
                 affected_document: self.efact_number,
                 currency_id: "PEN",
                 id: self.id,
@@ -196,7 +196,13 @@ module Ecommerce
             affected_document: self.efact_number,
             void_reason: "Cancelación"
           }
+        else
+          invoice_hash = {
+            error: "invoice is unpaid"
+          }
       end
+      puts "invoice_hash: #{invoice_hash.to_json}"
+      Rails.logger.debug "invoice_hash: #{invoice_hash.to_json}"
       url = URI(Ecommerce::Control.find_by(name: 'efact_url').text_value)
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true if url.scheme == "https"

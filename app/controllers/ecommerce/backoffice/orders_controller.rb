@@ -7,7 +7,7 @@ module Ecommerce
 
     def einvoice
       @backoffice_order = Order.find(params[:format])
-      @order_details = Cart.find(@backoffice_order.id).cart_items.includes(:product)
+      @order_details = Order.find(@backoffice_order.id).order_items.includes(:product)
       #begin
         @einvoice = JSON.parse(@backoffice_order.generate_einvoice)
       #rescue Net::OpenTimeout
