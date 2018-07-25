@@ -15,7 +15,7 @@
     <tbody>
       <%= content_tag_for(:tr, @backoffice_controls) do |backoffice_control| %>
         <td><%= backoffice_control.localized_name %></td>
-        <td><%= single_set_value(backoffice_control) %></td>
+        <td class="control-column"><%= single_set_value(backoffice_control) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_control_path(backoffice_control) %></td>
       <% end %>
     </tbody>

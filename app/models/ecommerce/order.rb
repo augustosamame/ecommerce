@@ -203,7 +203,7 @@ module Ecommerce
       request = Net::HTTP::Post.new(url)
       request["Content-Type"] = 'application/json'
       #TODO add type of authentication field in backoffice to support Bearer Token
-      request["Authorization"] = "Bearer #{Ecommerce::Control.find_by!(name: "efact_token").text_value}"
+      request["Authorization"] = "#{Ecommerce::Control.find_by!(name: "efact_token").text_value}"
       request["Cache-Control"] = 'no-cache'
       request.body = invoice_hash.to_json
       response = http.request(request)
