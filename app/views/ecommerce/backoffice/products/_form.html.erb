@@ -12,6 +12,14 @@
     <%= f.input :description2, label: "Spanish Description" %>
     <%= f.input :price_cents, :input_html => { :id => 'price-cents' } %>
     <%= f.input :discounted_price_cents, :input_html => { :id => 'discounted-price-cents' } %>
+
+    <%= f.input :tax_1_check, as: :boolean %>
+    <%= f.input :tax_1_amount %>
+    <%= f.input :tax_2_check, as: :boolean %>
+    <%= f.input :tax_2_amount %>
+    <%= f.input :tax_3_check, as: :boolean %>
+    <%= f.input :tax_3_amount %>
+
     <%= f.input :stockable %>
     <%= f.input :total_quantity, label: "Quantity" %>
     <%= f.input :home_featured %>

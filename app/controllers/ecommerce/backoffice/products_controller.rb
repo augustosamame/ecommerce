@@ -23,6 +23,7 @@ module Ecommerce
 
     # GET /backoffice/products/1/edit
     def edit
+      #@backoffice_product.tax_1_check = @backoffice_product.product_taxes.try(:first).try(:tax).try(:name)
     end
 
     # POST /backoffice/products

@@ -201,9 +201,10 @@ module Ecommerce
             error: "invoice is unpaid"
           }
       end
-      puts "invoice_hash: #{invoice_hash.to_json}"
-      Rails.logger.debug "invoice_hash: #{invoice_hash.to_json}"
+      
       url = URI(Ecommerce::Control.find_by(name: 'efact_url').text_value)
+      puts "invoice_hash: #{invoice_hash.to_json} sent to #{url}"
+      Rails.logger.debug "invoice_hash: #{invoice_hash.to_json} sent to #{url}"
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true if url.scheme == "https"
       request = Net::HTTP::Post.new(url)

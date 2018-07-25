@@ -32,6 +32,13 @@
   <dt>Discounted Price:</dt>
   <dd><%= @backoffice_product.discounted_price_cents %></dd>
 
+  <dt>Applicable Taxes:</dt>
+  <dd>
+    <% @backoffice_product.product_taxes.each do |pt| %>
+      <%= "#{pt.tax.tax_name}: #{pt.tax_amount} %" %></br>
+    <% end %>
+  </dd>
+
   <dt>Manage Stock?:</dt>
   <dd><%= @backoffice_product.stockable %></dd>
 
