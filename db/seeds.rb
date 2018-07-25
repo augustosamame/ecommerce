@@ -23,6 +23,8 @@ Ecommerce::Control.create(name: 'next_boleta_number', localized_name: 'Next Fact
 Ecommerce::Control.create(name: 'next_nota_de_credito_boleta_number', localized_name: 'Next Nota de Crédito Boleta Number', value_field_type: "integer", integer_value: 1 )
 Ecommerce::Control.create(name: 'next_nota_de_credito_factura_number', localized_name: 'Next Nota de Crédito Factura Number', value_field_type: "integer", integer_value: 1 )
 Ecommerce::Control.create(name: 'default_taxes', localized_name: 'Default Tax list (tax1,amount1,tax2,amount2)', value_field_type: "text", text_value: "IGV,18" )
+Ecommerce::Tax.create(tax_name: "IGV", tax_friendly_name: "Impuesto General a las Ventas")
+Ecommerce::Tax.create(tax_name: "ISC", tax_friendly_name: "Impuesto Selectivo al Consumo")
 
 Ecommerce::Slider.create(slider_name: 'Home Slider 1', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/marinmeko+slider.jpg", slider_view: "Home", slider_order: 1 )
 Ecommerce::Slider.create(slider_name: 'Home Slider 2', slider_text: "", remote_slider_image_url: "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/babyganics.jpg", slider_view: "Home", slider_order: 2 )

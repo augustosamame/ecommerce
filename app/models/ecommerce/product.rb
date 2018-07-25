@@ -62,5 +62,13 @@ module Ecommerce
       [self.price, self.discounted_price].min
     end
 
+    def create_product_taxes
+      default_taxes = Ecommerce::Control.find_by!(name: "default_taxes").text_value.split(",")
+      default_taxes.each_cons(2) { |tax, amount|
+        found_tax = Ecommerce::Tax.find_by!(tax_name: tax)
+        Ecommerce::ProductTax.create(tax_id: found_tax.id , product_id: self.id, tax_amount: amount.to_f)
+      }
+    end
+
   end
 end
