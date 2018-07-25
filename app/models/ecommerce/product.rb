@@ -7,6 +7,9 @@ module Ecommerce
     has_many :product_properties
     has_many :properties, through: :product_properties
     has_many :product_skus, inverse_of: :product
+    has_many :product_taxes, inverse_of: :product, dependent: :destroy
+
+    after_commit :create_product_taxes, on: :create
 
     has_many :active_variants, -> { where(deleted_at: nil) },
     class_name: 'ProductSku'
@@ -47,7 +50,7 @@ module Ecommerce
     end
 
     def in_stock?
-      
+
       return self.total_quantity > 0
     end
 
