@@ -1,7 +1,7 @@
   <section class="noo-page-heading eff" style="height: 120px;">
     <div class="container">
       <div class="noo-heading-content">
-        <h1 class="page-title eff">Cart</h1>
+        <h1 class="page-title eff"><%= t('.cart_title') %></h1>
         <!-- <div class="noo-page-breadcrumb eff">
           <a href="./" class="home">ExpatShop</a>/<span>Cart</span>
         </div> -->
@@ -16,10 +16,10 @@
             <table class="shop_table cart">
               <thead>
                 <tr>
-                  <th class="product-thumbnail">Product</th>
-                  <th class="product-price">Price</th>
-                  <th class="product-price mobile-product-quantity-header">Qty</th>
-                  <th class="product-subtotal">Total</th>
+                  <th class="product-thumbnail"><%= t('.product_column_title') %></th>
+                  <th class="product-price"><%= t('.price_column_title') %></th>
+                  <th class="product-price mobile-product-quantity-header"><%= t('.qty_column_title') %></th>
+                  <th class="product-subtotal"><%= t('.total_column_title') %></th>
                   <th class="product-remove">&nbsp;</th>
                 </tr>
               </thead>
@@ -28,7 +28,7 @@
                 <% if @cart.cart_items.count == 0 %>
                   <tr class="cart_item">
                     <td class="product-thumbnail">
-                      <h4> No items in Cart </h4>
+                      <h4><%= t('.no_items_in_cart') %></h4>
                     </td>
                     <td class="product-price">
 
@@ -77,7 +77,7 @@
                   <td colspan="5" class="actions">
                     <div class="row">
                       <div class="col-md-4" style="text-align: left; margin-bottom: 10px;">
-                        <a class="button organici-continue" href="<%= root_path %>">continue shopping</a>
+                        <a class="button organici-continue" href="<%= root_path %>"><%= t('.continue_shopping') %></a>
                       </div>
                       <!--<div class="coupon">
                         <label for="coupon_code">Coupon:</label>
@@ -85,8 +85,8 @@
                         <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
                       </div>-->
                       <div class="col-md-8">
-                        <input type="submit" class="button" style="background: #f4eede; color: #212121;" id="update-cart-button" name="update_cart" value="Update Cart"/>
-                        <%= link_to "Proceed to Checkout", checkout_path, class: "checkout-button button alt wc-forward" %>
+                        <input type="submit" class="button" style="background: #f4eede; color: #212121;" id="update-cart-button" name="update_cart" value="<%= t('.update_cart') %>">
+                        <%= link_to t('.proceed_to_checkout'), checkout_path, class: "checkout-button button alt wc-forward" %>
                       </div>
                     </div>
 
@@ -124,20 +124,20 @@
               </div>
             -->
               <div class="cart_totals" style="padding-top: 0px;">
-                <h2>Cart Totals</h2>
+                <h2><%= t('.cart_totals') %></h2>
                 <table>
                   <tr class="cart-subtotal">
-                    <th>Total Items</th>
+                    <th><%= t('.total_items') %></th>
                     <td><span class="amount" id="qty-subtotal-amount"><%= @cart_qty_subtotal %></span></td>
                   </tr>
                   <tr class="cart-subtotal">
-                    <th>Subtotal</th>
+                    <th><%= t('.subtotal') %></th>
                     <td><span class="amount" id="subtotal-amount"><%= number_to_currency(@cart_subtotal) %></span></td>
                   </tr>
                   <tr class="shipping">
-                    <th>Shipping</th>
+                    <th><%= t('.shipping') %></th>
                     <td>
-                      <p>Shipping costs will be calculated once you have provided your address.</p>
+                      <p><%= t('.shipping_costs_text') %></p>
                     </td>
                   </tr>
                   <tr class="order-total">
@@ -146,7 +146,7 @@
                   </tr>
                 </table>
                 <div class="wc-proceed-to-checkout">
-                  <%= link_to "Proceed to Checkout", checkout_path, class: "checkout-button button alt wc-forward" %>
+                  <%= link_to t('.proceed_to_checkout'), checkout_path, class: "checkout-button button alt wc-forward" %>
                 </div>
               </div>
             </div>

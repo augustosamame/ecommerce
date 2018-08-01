@@ -58,6 +58,22 @@ en-PE:
           new_products_subtitle: "From all over the world the best products money can buy"
           free_shipping: "Free Shipping on Orders over S/.100"
           payment_methods: "We accept all credit and debit cards"
+      cart:
+        show:
+          cart_title: "Cart"
+          product_column_title: "Product"
+          price_column_title: "Price"
+          qty_column_title: "Qty"
+          total_column_title: "Total"
+          no_items_in_cart: "No items in Cart"
+          continue_shopping: "Continue Shopping"
+          update_cart: "Update Cart"
+          proceed_to_checkout: "Proceed to Checkout"
+          cart_totals: "Cart Totals"
+          total_items: "Total Items"
+          subtotal: "Subtotal"
+          shipping: "Shipping"
+          shipping_costs_text: "Shipping costs will be calculated once you have provided your address."
       canvas_ecommerce:
         header:
           home_menu: "Store"

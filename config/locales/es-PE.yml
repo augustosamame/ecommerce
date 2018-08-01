@@ -23,6 +23,23 @@ es-PE:
           browse_categories: 'Mira nuestros productos por categoría'
           best_selling_products: 'Nuestros Productos más Vendidos'
           free_shipping: 'Envío sin costo para pedidos mayores a <strong>S/.199</strong>.'
+    organici:
+      cart:
+        show:
+          cart_title: "Carrito de Compras"
+          product_column_title: "Producto"
+          price_column_title: "Precio"
+          qty_column_title: "Cant"
+          total_column_title: "Total"
+          no_items_in_cart: "No hay items en el Carrito"
+          continue_shopping: "Continuar Comprando"
+          update_cart: "Actualizar Carrito"
+          proceed_to_checkout: "Proceder a Checkout"
+          cart_totals: "Totales"
+          total_items: "Cant de Items"
+          subtotal: "Subtotal"
+          shipping: "Costo de Envío"
+          shipping_costs_text: "El costo de envío será calculado una vez proporcione su dirección."
     canvas_shop:
       store:
         top_bar:
