@@ -12,13 +12,24 @@
     <%= f.input :description2, label: "Spanish Description" %>
     <%= f.input :price_cents, :input_html => { :id => 'price-cents' } %>
     <%= f.input :discounted_price_cents, :input_html => { :id => 'discounted-price-cents' } %>
+    <h4>Taxes</h4>
+    <div class="well">
 
-    <%= f.input :tax_1_check, as: :boolean %>
-    <%= f.input :tax_1_amount %>
-    <%= f.input :tax_2_check, as: :boolean %>
-    <%= f.input :tax_2_amount %>
-    <%= f.input :tax_3_check, as: :boolean %>
-    <%= f.input :tax_3_amount %>
+      <div class="row">
+        <div class="col-lg-3">
+          <%= f.input :tax_1_check, as: :boolean, label: "#{@tax1} taxable?" if @tax1 %>
+          <%= f.input :tax_1_amount, label: "#{@tax1} amount" if @tax1 %>
+        </div>
+        <div class="col-lg-3">
+          <%= f.input :tax_2_check, as: :boolean, label: "#{@tax2} taxable?" if @tax2 %>
+          <%= f.input :tax_2_amount, label: "#{@tax2} amount" if @tax2 %>
+        </div>
+        <div class="col-lg-3">
+          <%= f.input :tax_3_check, as: :boolean, label: "#{@tax3} taxable?" if @tax3 %>
+          <%= f.input :tax_3_amount, label: "#{@tax3} amount" if @tax3 %>
+        </div>
+      </div>
+    </div>
 
     <%= f.input :stockable %>
     <%= f.input :total_quantity, label: "Quantity" %>

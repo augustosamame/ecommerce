@@ -10,7 +10,7 @@ module Ecommerce
     has_many :product_taxes, inverse_of: :product, dependent: :destroy
     has_many :active_variants, -> { where(deleted_at: nil) }, class_name: 'ProductSku'
 
-    after_commit :create_product_taxes, on: :create
+    #after_commit :create_product_taxes, on: :create
 
     attr_accessor :tax_1_check, :tax_2_check, :tax_3_check, :tax_1_amount, :tax_2_amount, :tax_3_amount
 
