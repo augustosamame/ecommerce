@@ -119,6 +119,7 @@ module Ecommerce
                 state_id: order_billing_address.try(:state),
                 invoice_line_ids: invoice_lines_array
               }
+              correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_boleta_number")
             when "factura"
               invoice_hash = {
                 einvoice_type: "factura",
@@ -146,6 +147,7 @@ module Ecommerce
                 state_id: order_billing_address.try(:state),
                 invoice_line_ids: invoice_lines_array
               }
+              correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_factura_number")
           end
         when "refunded"
           return false if !efact_number || efact_refund_number
@@ -178,6 +180,7 @@ module Ecommerce
                 state_id: order_billing_address.try(:state),
                 invoice_line_ids: invoice_lines_array
               }
+              correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_nota_de_credito_boleta_number")
             when "F"
               invoice_hash = {
                 einvoice_type: "nota_de_credito",
@@ -206,6 +209,7 @@ module Ecommerce
                 state_id: order_billing_address.try(:state),
                 invoice_line_ids: invoice_lines_array
               }
+              correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_nota_de_credito_factura_number")
           end
         when "void"
           return false if !efact_number
@@ -244,6 +248,7 @@ module Ecommerce
             else
               self.update_columns(efact_response_text: "OK", efact_invoice_url: response_body["response_url"], efact_number: invoice_hash[:number] )
           end
+          correlativo_to_update_on_200.update_columns(integer_value: correlativo_to_update_on_200.integer_value + 1) if correlativo_to_update_on_200
         else
           self.update_columns(efact_response_text: "Internal Error #{response.code} - #{response_body["response_text"]}")
         end
