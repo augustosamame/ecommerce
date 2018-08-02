@@ -7,6 +7,7 @@
       <embed src="<%= @epdf %>" width="500" height="750">
     <% else %>
       <%= "Error generating electronic invoice: #{@einvoice_error_message}" unless @epdf %>
+      <%= "Data sent to einvoice processor: #{@einvoice_sent_text}" unless @epdf %>
     <% end %>
   </div>
   <div class="col-lg-6">
@@ -16,6 +17,7 @@
       <embed src="<%= @erefund_pdf %>" width="500" height="750">
     <% else %>
       <%= "Error generating electronic refund: #{@einvoice_error_message}" if (@epdf && !@erefund_pdf) %>
+      <%= "Data sent to einvoice processor: #{@einvoice_sent_text}" if (@epdf && !@erefund_pdf) %>
     <% end %>
   </div>
 </div>

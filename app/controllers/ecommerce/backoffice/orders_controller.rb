@@ -38,6 +38,7 @@ module Ecommerce
         @erefund_pdf = @backoffice_order.efact_refund_url || @backoffice_order.efact_void_url
       else
         @einvoice_error_message = @backoffice_order.efact_response_text
+        @einvoice_sent_text = @backoffice_order.efact_sent_text
       end
     end
 
