@@ -60,6 +60,16 @@ es-PE:
           search: "Buscar"
           search_instructions: "Escriba el término de búsqueda y presione Enter"
           search_placeholder: "Buscar..."
+        footer:
+          slogan: "ExpatShop se especializa en importar productos innovadores de la más alta calidad desde todo el mundo hasta Perú."
+          developed_with_love: "Desarollado con _love_icon por DevtechPeru."
+          contact: "Contacto"
+          address: "Dirección"
+          email: "Correo Electrónico"
+          terms_and_conditions: "Términos y Condiciones"
+          privacy_policy: "Política de Privacidad"
+          social_responsibility: "Responsabilidad Social"
+          press: "Prensa"
         cart:
           items: "Ítems"
           items_in_shopping_cart: "ítems en el Carrito"

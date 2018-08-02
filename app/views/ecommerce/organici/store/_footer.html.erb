@@ -8,7 +8,7 @@
 							<%= image_tag Ecommerce.footer_logo, alt: "Store Logo", height: 100 %>
 						</a>
 						<p>
-							ExpatShop specializes in bringing innovative, high quality products from all over the world to Perú.
+							<%= t('.slogan') %>
 						</p>
 					</div>
 				</div>
@@ -27,20 +27,20 @@
 					<div class="textwidget">
 						<div class="copyright">
 							Copyright 2018 ExpatShop Perú<br/>
-							Developed with <i class="fa fa-heart-o"></i> by DevtechPeru.
+							<%= t('.developed_with_love').gsub('_love_icon','<i class="fa fa-heart-o"></i>').html_safe %>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-3 col-sm-6 item-footer-four">
 				<div class="widget widget_text">
-					<h4 class="widget-title">Contact</h4>
+					<h4 class="widget-title"><%= t('.contact') %></h4>
 					<div class="textwidget">
-						<h5>Address</h5>
+						<h5><%= t('.address') %></h5>
 						<p>Av. Santo Toribio 173 - Via Central 125</p>
 						<p>Torre Real Ocho, Piso 16, San Isidro</p>
 						<p>Lima 33, Perú</p>
-						<h5>Email</h5>
+						<h5><%= t('.email') %></h5>
 						<p>
 							<a href="mailto:support@expatshop.pe">
 								support@expatshop.pe
@@ -62,21 +62,21 @@
 			</div>
 			<div class="col-md-2 col-sm-4 item-footer-four">
 					<div class="widget widget_text">
-						<h4 class="widget-title">Links</h4>
+						<h4 class="widget-title"><%= t('.links') %></h4>
 						<div class="textwidget">
 					<ul>
 						<li>
-							<h5>Terms and Conditions</h5>
+							<h5><%= t('.terms_and_conditions') %></h5>
 
 						</li>
 						<li>
-							<h5>Privacy Policy </h5>
+							<h5><%= t('.privacy_policy') %> </h5>
 						</li>
 						<li>
-							<h5>Social Responsability </h5>
+							<h5><%= t('.social_responsibility') %> </h5>
 						</li>
 						<li>
-							<h5>Press </h5>
+							<h5><%= t('.press') %> </h5>
 						</li>
 						<li>
 							<div class="widget widget_about">

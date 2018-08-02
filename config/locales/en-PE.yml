@@ -61,6 +61,16 @@ en-PE:
           sign_out: "Sign Out"
           search_instructions: "Type and Press Enter to Search"
           search_placeholder: "Search..."
+        footer:
+          slogan: "ExpatShop specializes in bringing innovative, high quality products from all over the world to Perú."
+          developed_with_love: "Developed with _love_icon by DevtechPeru."
+          contact: "Contact"
+          address: "Address"
+          email: "Email"
+          terms_and_conditions: "Terms and Conditions"
+          privacy_policy: "Privacy Policy"
+          social_responsibility: "Social Responsibility"
+          press: "Press"
         cart:
           items: "Items"
           items_in_shopping_cart: "items in the Shopping Cart"
