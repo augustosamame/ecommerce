@@ -2,11 +2,11 @@
 <a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
   <span class="cart-item has-items" id="shopping-cart">
     <i class="fa fa-shopping-cart"></i>
-    <span>(<%= @cart.get_totals[:tot_qty] %>)</span> Items
+    <span>(<%= @cart.get_totals[:tot_qty] %>)</span> <%= t('.items') %>
   </span>
 </a>
 <div class="noo-minicart">
-  <div class="minicart-header"><%= @cart.get_totals[:tot_qty] %> items in the shopping cart</div>
+  <div class="minicart-header"><%= @cart.get_totals[:tot_qty] %> <%= t('.items_in_shopping_cart') %></div>
   <div class="minicart-body">
 
     <% @cart.cart_items.each do |item| %>
@@ -36,10 +36,10 @@
     </div>
     <div class="minicart-actions clearfix">
       <a class="button btn-primary" style:"width: 40%;" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
-        <span class="text">View Cart</span>
+        <span class="text"><%= t('.view_cart') %></span>
       </a>
       <a class="checkout-button button btn-primary" style:"width: 40%;" href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
-        <span class="text">Checkout</span>
+        <span class="text"><%= t('.checkout') %></span>
       </a>
     </div>
   </div>

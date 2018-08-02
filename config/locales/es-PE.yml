@@ -40,6 +40,41 @@ es-PE:
           subtotal: "Subtotal"
           shipping: "Costo de Envío"
           shipping_costs_text: "El costo de envío será calculado una vez proporcione su dirección."
+      store:
+        header:
+          home_menu: "Inicio"
+          blog_menu: "Blog"
+          contact_us_menu: "Contáctanos"
+          about_us_menu: "Quiénes Somos"
+          manage_blog_posts: "Administrar Blog"
+          my_orders: "Mis Pedidos"
+          my_account: "Mi Cuenta"
+          sign_out: "Cerrar Sesión"
+          search_string: "Ingrese el término de búsqueda y presione Enter.."
+          my_account: "Mi Cuenta"
+          log_out: "Cerrar Sesión"
+          backoffice: "Backoffice"
+          cart: "Carrito de Compras"
+          view_cart: "Ver Carrito"
+          wishlist: "Lista de Deseos"
+          search: "Buscar"
+          search_instructions: "Escriba el término de búsqueda y presione Enter"
+          search_placeholder: "Buscar..."
+        cart:
+          items: "Ítems"
+          items_in_shopping_cart: "ítems en el Carrito"
+          view_cart: "Ver Carrito"
+          checkout: "Checkout"
+        main:
+          all_products: "Todos los Productos"
+          new_products: "Productos Destacados"
+          new_products_subtitle: "Los mejores productos del mundo a Perú"
+          free_shipping: "Envío gratis en pedidos superiores a S/.100"
+          payment_methods: "Aceptamos Todas las Tarjetas de Crédito y Débito"
+          subscribe_to_us: "Suscríbete a nuestro Newsletter"
+          subscribe_to_us_text: "Ingresa tu correo a nuestra lista de y te avisaremos sobre nuevos productos y promociones."
+          email: "Correo Electrónico"
+          submit: "Enviar"
     canvas_shop:
       store:
         top_bar:
@@ -56,6 +91,7 @@ es-PE:
           backoffice: "Backoffice"
           cart: "Carrito de Compras"
           view_cart: "Ver Carrito"
+          wishlist: "Lista de Deseos"
         footer:
           select_language: "Selecciona tu Lenguaje:"
           language_button: "Seleccionar"

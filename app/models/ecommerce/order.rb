@@ -69,13 +69,13 @@ module Ecommerce
       invoice_lines_array = Array.new
       OrderItem.where(order_id: self.id).includes(:product).each do |item|
         invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: item.price.to_f * item.quantity, price_subtotal: ((item.price / 1.18).to_f) }
-        igv_found = item.product_taxes.find_by(tax_id: Ecommerce::Tax.first.try(:id))
+        igv_found = item.product.product_taxes.find_by(tax_id: Ecommerce::Tax.first.try(:id))
         if igv_found
           invoice_lines_array << {igv_tax: true, igv_amount: igv_found.try(:tax_amount)}
         else
           invoice_lines_array << {igv_tax: false, igv_amount: 0 }
         end
-        isc_found = item.product_taxes.find_by(tax_id: Ecommerce::Tax.second.try(:id))
+        isc_found = item.product.product_taxes.find_by(tax_id: Ecommerce::Tax.second.try(:id))
         if isc_found
           invoice_lines_array << {isc_tax: true, isc_amount: isc_found.try(:tax_amount)}
         else

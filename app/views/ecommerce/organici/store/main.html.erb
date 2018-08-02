@@ -117,7 +117,7 @@
 							<ul class="noo-header-filter">
 								<li>
 									<a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>" class="selected">
-										<span>All Products</span>
+										<span><%= t('.all_products') %></span>
 									</a>
 								</li>
 								<% @primary_menu_categories.each do |category| %>
@@ -165,16 +165,16 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-5 col-xs-12">
-						<h3 class="noo-mail-title">Subscribe to us!</h3>
+						<h3 class="noo-mail-title"><%= t('.subscribe_to_us') %></h3>
 						<p class="noo-mail-desc">
-							Enter Your email address for our mailing list to keep yourself update.
+							<%= t('.subscribe_to_us_text') %>
 						</p>
 					</div>
 					<div class="col-md-7 col-xs-12">
 						<form>
 							<div class="newsletter-form-fields">
-								<input type="email" name="EMAIL" placeholder="Email address" required />
-								<input type="submit" value="submit"/>
+								<input type="email" name="EMAIL" placeholder="<%= t('.email') %>" required />
+								<input type="submit" value="<%= t('.submit') %>"/>
 							</div>
 						</form>
 					</div>

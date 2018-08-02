@@ -43,7 +43,7 @@
 									</ul>
 									<ul class="nav-collapse navbar-nav">
 										<li class="current-menu-item">
-											<a href="<%= Ecommerce::Engine.routes.url_helpers.root_path %>">Home</a>
+											<a href="<%= Ecommerce::Engine.routes.url_helpers.root_path %>"><%= t('.home_menu') %></a>
 										</li>
 
 										<!-- <li><a href="our-story.html">Our Story</a></li> -->
@@ -56,14 +56,14 @@
 												<li><a href="<%= Blog::Engine.routes.url_helpers.root_path %>">See All Blog Articles</a></li>
 											</ul>
 										</li>-->
-										<li><a href="contact.html">Contact</a></li>
+										<li><a href="contact.html"><%= t('.contact_us_menu') %></a></li>
 
 										<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
 											<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
 										<% end %>
 
 										<% if current_user && ["admin", "blogger"].include?(current_user.role) && controller_name == "blog" %>
-											<li><%= link_to "Manage Blog Posts", Blog::Engine.routes.url_helpers.posts_path, style: "color: red;" %></li>
+											<li><%= link_to t('.manage_blog_posts'), Blog::Engine.routes.url_helpers.posts_path, style: "color: red;" %></li>
 										<% end %>
 
 									</ul>
@@ -79,15 +79,15 @@
 												<li class="menu-item-has-children">
 													<a href="#"><%= "<i class='fa fa-user'></i> #{current_user.name} <span class='caret'></span>".html_safe %></a>
 													<ul class="sub-menu">
-														<li><%= link_to "My Orders", Ecommerce::Engine.routes.url_helpers.orders_path, class: "off-canvas-nav-my-orders" %></li>
-														<li><%= link_to "My Account", main_app.edit_user_registration_path, class: "off-canvas-nav-my-account" %></li>
-														<li><%= link_to "Sign Out", main_app.logout_path %></li>
+														<li><%= link_to t('.my_orders'), Ecommerce::Engine.routes.url_helpers.orders_path, class: "off-canvas-nav-my-orders" %></li>
+														<li><%= link_to t('.my_account'), main_app.edit_user_registration_path, class: "off-canvas-nav-my-account" %></li>
+														<li><%= link_to t('.sign_out'), main_app.logout_path %></li>
 
 													</ul>
 												</li>
 											<% else %>
 												<li class="menu-item">
-													<a href="<%= main_app.new_user_registration_path %>" class=""><i class='fa fa-user'></i> My Account</a>
+													<a href="<%= main_app.new_user_registration_path %>" class=""><i class='fa fa-user'></i> <%= t('.my_account')%></a>
 												</li>
 											<% end %>
 
@@ -147,7 +147,7 @@
 					<div class="remove-form"></div>
 					<div class="container">
 						<form class="form-horizontal">
-							<label class="note-search">Type and Press Enter to Search</label>
+							<label class="note-search"><%= t('.search_instructions') %></label>
 							<input type="search" name="search" class="form-control" value="" placeholder="Search..." autocomplete="off">
 							<input type="submit" value="Search">
 						</form>
