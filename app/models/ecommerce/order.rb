@@ -225,17 +225,18 @@ module Ecommerce
       request["Authorization"] = "Bearer #{Ecommerce::Control.find_by!(name: "efact_token").text_value}"
       request["Cache-Control"] = 'no-cache'
       request.body = invoice_hash.to_json
+      self.update_columns(efact_sent_text: invoice_hash.to_json)
       response = http.request(request)
       if response.code == "200"
         response_body = JSON.parse(response.read_body)
         if response.read_body && response_body["response_text"] == "OK"
           case invoice_hash[:einvoice_type]
             when "nota_de_credito"
-              self.update_columns(efact_response_text: "OK", efact_refund_url: response_body["response_url"], efact_sent_text: invoice_hash.to_json, efact_refund_number: invoice_hash[:number] )
+              self.update_columns(efact_response_text: "OK", efact_refund_url: response_body["response_url"], efact_refund_number: invoice_hash[:number] )
             when "anulacion"
-              self.update_columns(efact_response_text: "OK", efact_void_url: response_body["response_url"], efact_sent_text: invoice_hash.to_json )
+              self.update_columns(efact_response_text: "OK", efact_void_url: response_body["response_url"] )
             else
-              self.update_columns(efact_response_text: "OK", efact_invoice_url: response_body["response_url"], efact_sent_text: invoice_hash.to_json, efact_number: invoice_hash[:number] )
+              self.update_columns(efact_response_text: "OK", efact_invoice_url: response_body["response_url"], efact_number: invoice_hash[:number] )
           end
         else
           self.update_columns(efact_response_text: "Internal Error #{response.code} - #{response_body["response_text"]}")
