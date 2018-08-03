@@ -132,7 +132,7 @@ module Ecommerce
                 company_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social),
                 email: self.user.email,
                 vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
-                street: order_billing_address.try(:street),
+                street: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:address),
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
                 date_invoice: Time.now.to_s[0..9],
@@ -142,9 +142,9 @@ module Ecommerce
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
-                district_id: order_billing_address.try(:district),
-                province_id: order_billing_address.try(:city),
-                state_id: order_billing_address.try(:state),
+                district_id: "",
+                province_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
+                state_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
                 invoice_line_ids: invoice_lines_array
               }
               correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_factura_number")
