@@ -12,12 +12,17 @@
   </div>
   <div class="col-lg-6">
     <h4>Electronic Refund</h4>
-    <% if @erefund_pdf %>
-      <p>Link: <%= link_to @erefund_pdf, @erefund_pdf, target: "blank"  %></p>
-      <embed src="<%= @erefund_pdf %>" width="500" height="750">
+    <% if @erefund_pdf || @evoid_string %>
+      <% if @erefund_pdf%>
+        <p>Link: <%= link_to @erefund_pdf, @erefund_pdf, target: "blank"  %></p>
+        <embed src="<%= @erefund_pdf %>" width="500" height="750">
+      <% end %>
+      <% if @evoid_string %>
+        <p>Void Confirmation: <%= @evoid_string %></p>
+      <% end %>
     <% else %>
-      <%= "Error generating electronic refund: #{@einvoice_error_message}" if (@epdf && !@erefund_pdf) %>
-      <%= "Data sent to einvoice processor: #{@einvoice_sent_text}" if (@epdf && !@erefund_pdf) %>
+      <%= "Error generating electronic refund: #{@einvoice_error_message}" if (@epdf && !@erefund_pdf && !@evoid_string) %>
+      <%= "Data sent to einvoice processor: #{@einvoice_sent_text}" if (@epdf && !@erefund_pdf && !@evoid_string) %>
     <% end %>
   </div>
 </div>

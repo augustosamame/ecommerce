@@ -43,7 +43,7 @@
         <% if backoffice_order.efact_response_text == "OK" %>
           <td><%= link_to "Link", backoffice_order.efact_invoice_url, target: "blank" %></td>
         <% else %>
-          <% if backoffice_order.payment_status == "unpaid" %>
+          <% if backoffice_order.payment_status != "unpaid" && backoffice_order.efact_response_text != "OK" %>
             <td><%= link_to "Resend", backoffice_orders_einvoice_path(backoffice_order), method: :post %></td>
           <% else %>
             <td></td>

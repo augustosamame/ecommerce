@@ -35,7 +35,8 @@ module Ecommerce
       @order_details = Order.find(@backoffice_order.id).order_items.includes(:product)
       @epdf = @backoffice_order.efact_invoice_url
       if @backoffice_order.efact_response_text == "OK"
-        @erefund_pdf = @backoffice_order.efact_refund_url || @backoffice_order.efact_void_url
+        @erefund_pdf = @backoffice_order.efact_refund_url
+        @evoid_string = @backoffice_order.efact_void_url
       else
         @einvoice_error_message = @backoffice_order.efact_response_text
         @einvoice_sent_text = @backoffice_order.efact_sent_text
