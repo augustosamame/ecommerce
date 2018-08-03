@@ -9,7 +9,21 @@
     <div class="noo-product-title">
       <h3><%= link_to item.name, product_path(item) %></h3><br>
       <span class="short-descrip" style="font-size:13px;"><%= item.short_description %></span><br>
-      <span class="price"><span class="amount"><%= number_to_currency(item.price) %></span></span>
+
+      <% if item.price == item.discounted_price %>
+        <span class="price"><span class="amount"><%= number_to_currency(item.price) %></span></span>
+      <% else %>
+
+        <span class="price">
+          <span class="amount original-price-index"><%= number_to_currency(item.price) %></span>
+          <span class="amount"><%= number_to_currency(item.discounted_price) %></span>
+        </span>
+
+      <% end %>
+
+
+
+
       <% unless item.in_stock? %>
         <p class="out_of_stock" style="font-size: 18px;"><span class="">Out of Stock</span></p>
       <% end %>
