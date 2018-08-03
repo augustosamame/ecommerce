@@ -107,6 +107,18 @@
 											</li>
 											<% end %>
 
+											<li class="menu-item-has-children">
+												<% if session[:locale] == "es-PE" %>
+													<a href=""><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a>
+												<% else %>
+													<a href=""><%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a>
+												<% end %>
+												<ul class="sub-menu flag-sub-menu">
+													<li><a id="en-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a></li>
+													<li><a id="es-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a></li>
+												</ul>
+											</li>
+
 											<li class="menu-item fly-right">
 												<a id="noo-search" class="search-button noo-search" href="#">
 													<i class="fa fa-search"></i><%= " #{t('.search')}" %>

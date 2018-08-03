@@ -49,6 +49,15 @@ var $loading = $('.spinner').hide();
             $(this).toggleClass('open');
         }
     );
+
+    $("#en-lang").click(function(e) {
+      window.location.href = window.location.pathname+"?lang=en-PE"
+    });
+
+    $("#es-lang").click(function(e) {
+      window.location.href = window.location.pathname+"?lang=es-PE"
+    });
+
 })
 </script>
 
