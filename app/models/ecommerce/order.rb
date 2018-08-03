@@ -211,7 +211,7 @@ module Ecommerce
               }
               correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_nota_de_credito_factura_number")
           end
-        when "void"
+        when "payment_void"
           return false if !efact_number
           invoice_hash = {
             einvoice_type: "anulacion",
