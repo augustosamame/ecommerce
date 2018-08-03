@@ -30,7 +30,7 @@
                 <p class="description"><%= @product.description2.gsub("**","<br>").html_safe if @product.description2 %></p>
                 <div class="product_meta">
                   <span class="posted_in">
-                    <span>Categories: </span>
+                    <span><%= t('.categories') %></span>
                     <% @product.category_list.each do |cl| %>
                     <span><%= link_to cl, products_path(category_id: Ecommerce::Category.find_by("lower(name) = ?", cl.downcase).try(:id)), style: "margin-left: 10px;" %></span>
                     <% end %>
@@ -48,7 +48,7 @@
                     <a href="#" class="add_to_wishlist">+</a>
                   </div>
                   <%= f.hidden_field :product_id, value: @product.id %>
-                  <%= f.button :submit, "Add to cart", class: "single_add_to_cart_button button" %>
+                  <%= f.button :submit, t('.add_to_cart'), class: "single_add_to_cart_button button" %>
                 <% end %>
 
 
@@ -62,11 +62,11 @@
                 <p class="out_of_stock"><span class="" id="out_of_stock_text">No more stock available</span></p>
 
                 <% unless @product.in_stock? %>
-                  <p class="out_of_stock"><span class="">Out of Stock</span></p>
+                  <p class="out_of_stock"><span class=""><%= t('.out_of_stock') %></span></p>
                 <% end %>
 
                 <div class="noo-social-share">
-                  <span>Share:</span>
+                  <span><%= t('.share') %>:</span>
                   <a href='<%= "https://www.facebook.com/sharer/sharer.php?u=#{request.original_url}" %>' target="_blank" rel="noopener" class="noo-share" title="Share on Facebook">
                     <i class="fa fa-facebook"></i>
                   </a>
@@ -190,9 +190,9 @@
               <a href="#" title="Brand Logo" class="d-none d-md-block"><img class="image_fade" src="<%= @product.brand.logo.medium_200.url %>" alt="Brand Logo"></a>
               <div class="divider divider-center"><i class="icon-circle-blank"></i></div>
               <div class="widget commerce widget_product_search">
-                <h3 class="widget-title">Search</h3>
+                <h3 class="widget-title"><%= t('.search') %></h3>
                 <form class="commerce-product-search">
-                  <input type="search" id="commerce-product-search-field" class="search-field"  autocomplete="off" placeholder="Search Products&hellip;" value="" name="search"/>
+                  <input type="search" id="commerce-product-search-field" class="search-field"  autocomplete="off" placeholder="<%= t('.search_placeholder') %>&hellip;" value="" name="search"/>
                   <input type="submit" value="Search"/>
                 </form>
               </div>

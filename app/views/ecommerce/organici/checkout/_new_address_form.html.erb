@@ -1,11 +1,11 @@
 <%= simple_form_for(@address, remote: true) do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs">
-    <%= f.input :name, collection: ["Home", "Doorman", "Office", "Warehouse", "Other"], label: "Type", prompt: "Select Type of Address" %>
-    <%= f.input :street, label: "Street" %>
-    <%= f.input :district, collection: @districts, prompt: "Select District", label: "District" %>
-    <%= f.input :city, as: :hidden, input_html: {value: "Lima"}, label: "City"  %>
-    <%= f.input :state, as: :hidden, input_html: {value: "Lima"}, label: "State" %>
+    <%= f.input :name, collection: ["Home", "Doorman", "Office", "Warehouse", "Other"], label: t('.type'), prompt: t('.select_type_of_address') %>
+    <%= f.input :street, label: t('.street') %>
+    <%= f.input :district, collection: @districts, prompt: t('.select_district'), label: t('.district') %>
+    <%= f.input :city, as: :hidden, input_html: {value: "Lima"}, label: t('.city')  %>
+    <%= f.input :state, as: :hidden, input_html: {value: "Lima"}, label: t('.state') %>
     <%= f.input :country, as: :hidden, input_html: {value: "Peru"}, label: "Peru" %>
     <%= f.input :shipping_or_billing, as: :hidden, input_html: {value: "shipping"} %>
     <!-- <%= f.input :phone, label: "Phone Number" %>
@@ -13,11 +13,11 @@
   </div>
 
   <div class="form-actions", style="margin-bottom: 30px;">
-    <%= f.button :submit, "Save Address", class: "button mt-1", id: "save-address-button", style: "background: lightgrey;" %>
-    <span class="hide-ok-label" id="submit-address-ok">Address has been saved!</span>
+    <%= f.button :submit, t('.save_address'), class: "button mt-1", id: "save-address-button", style: "background: lightgrey;" %>
+    <span class="hide-ok-label" id="submit-address-ok">t('.address_has_been_saved')</span>
   </div>
 
-  <div style="font-weight: bold;">Location on Map</div>
+  <div style="font-weight: bold;"><%= t('.location_on_map') %></div>
   <div id="map_partial">
     <%= render :partial => "ecommerce/addresses/google_map" %>
   </div>
