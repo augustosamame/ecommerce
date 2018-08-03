@@ -25,7 +25,7 @@
 
 
       <% unless item.in_stock? %>
-        <p class="out_of_stock" style="font-size: 18px;"><span class="">Out of Stock</span></p>
+        <p class="out_of_stock" style="font-size: 18px;"><span class=""><%= t('.out_of_stock') %></span></p>
       <% end %>
       <div class="noo-product-action">
         <div class="noo-action">

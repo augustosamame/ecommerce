@@ -34,7 +34,7 @@ module Ecommerce
         end
       else
         respond_to do |format|
-          format.js { flash.now[:notice] = "NOW_FLASH_Product Out of Stock"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/no_stock"  }
+          format.js { flash.now[:notice] = "NOW_FLASH_#{t('.product_out_of_stock')}"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/no_stock"  }
 
           format.html {redirect_to cart_path(@cart), notice: 'Product is out of stock. Not added to cart' }
         end

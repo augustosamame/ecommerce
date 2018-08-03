@@ -36,6 +36,9 @@ en-PE:
       stage_closed: "Closed"
       stage_void: "Void"
   ecommerce:
+    cart_items:
+      create:
+        product_out_of_stock: "Product Out of Stock"
     processor:
       culqi:
         payment_popup_title: "ExpatShop Payment"
@@ -94,9 +97,12 @@ en-PE:
           add_to_cart: "Add To Cart"
           categories: "Categories: "
           out_of_stock: "Out of Stock"
+          no_more_stock_available: "No More Stock Available"
           share: "Share"
           search: "Search"
           search_placeholder: "Search Products"
+        product:
+          out_of_stock: "Out of Stock"
       checkout:
         show:
           shipping_address: "Shipping Address"

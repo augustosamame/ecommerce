@@ -66,7 +66,7 @@
                 </div>
                 <div class="clear"></div>
 
-                <p class="out_of_stock"><span class="" id="out_of_stock_text">No more stock available</span></p>
+                <p class="out_of_stock"><span class="" id="out_of_stock_text"><%= t('.no_more_stock_available') %></span></p>
 
                 <% unless @product.in_stock? %>
                   <p class="out_of_stock"><span class=""><%= t('.out_of_stock') %></span></p>

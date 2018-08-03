@@ -1,5 +1,8 @@
 es-PE:
   ecommerce:
+    cart_items:
+      create:
+        product_out_of_stock: "Producto Fuera de Stock"
     processor:
       culqi:
         payment_popup_title: "Pago ExpatShop"
@@ -29,9 +32,12 @@ es-PE:
           add_to_cart: "Agr Carrito"
           categories: "Categorías: "
           out_of_stock: "Fuera de Stock"
+          no_more_stock_available: "No hay más unidades dsiponibles"
           share: "Compartir"
           search: "Buscar"
           search_placeholder: "Buscar Productos"
+        product:
+          out_of_stock: "Fuera de Stock"
       checkout:
         show:
           shipping_address: "Dirección de Envío"
