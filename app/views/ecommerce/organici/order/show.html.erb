@@ -1,9 +1,9 @@
   <section class="noo-page-heading eff">
     <div class="container">
       <div class="noo-heading-content">
-        <h1 class="page-title eff">Order # <%= @order.id %></h1>
+        <h1 class="page-title eff"><%= t('.order') %> # <%= @order.id %></h1>
         <div class="noo-page-breadcrumb eff">
-          <a href="./" class="home">ExpatShop</a>/<span>Order</span>
+          <a href="./" class="home">ExpatShop</a>/<span><%= t('.order') %></span>
         </div>
       </div>
     </div>
@@ -14,27 +14,27 @@
         <div class="row">
           <div class="noo-main col-md-4">
             <div class="cart_totals">
-              <h2>Order Status</h2>
+              <h2><%= t('.order_status') %></h2>
               <table>
                 <tr class="cart-subtotal">
-                  <th>Order Total</th>
+                  <th><%= t('.order_total') %></th>
                   <td><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="payment-amount"><%= number_with_precision(@order.amount) %></span></strong></td>
                 </tr>
                 <tr class="cart-subtotal">
-                  <th>Payment</th>
+                  <th><%= t('.payment') %></th>
                   <td><span class="show-order-payment-status" id="qty-subtotal-amount"><%= @order.payment_status.upcase %></span></td>
                 </tr>
                 <tr class="cart-subtotal">
-                  <th>Shipping</th>
+                  <th><%= t('.shipping') %></th>
                   <td><span class="amount" id="subtotal-amount"><%= "Not yet shipped" %></span></td>
                 </tr>
                 <tr class="shipping">
-                  <th>Invoice</th>
+                  <th><%= t('.invoice') %></th>
                   <td>
                     <% if @order.efact_invoice_url %>
-                      <p><%= link_to "See Invoice", @order.efact_invoice_url, target: "blank" %></p>
+                      <p><%= link_to t('.see_invoice'), @order.efact_invoice_url, target: "blank" %></p>
                     <% else %>
-                      <p><%= "Not yet invoiced" %></p>
+                      <p><%= t('.not_yet_invoiced') %></p>
                     <% end %>
                   </td>
                 </tr>
@@ -47,7 +47,7 @@
             </div>
           </div>
           <div class="noo-main col-md-8">
-            <h3>Manual Payment Instructions:</h3>
+            <h3><%= t('.manual_payment_instructions') %>:</h3>
             <p>
               Instructions Line #1</br>
               Instructions Line #2</br>
@@ -60,14 +60,14 @@
         <div class="row">
 
           <div class="noo-main col-md-12">
-            <h2>Order Details</h2>
+            <h2><%= t('.order_details') %></h2>
             <table class="shop_table cart">
               <thead>
                 <tr>
-                  <th class="product-thumbnail">Image</th>
-                  <th class="product-price">Price</th>
-                  <th class="product-quantity">Quantity</th>
-                  <th class="product-subtotal">Total</th>
+                  <th class="product-thumbnail"><%= t('.image') %></th>
+                  <th class="product-price"><%= t('.price') %></th>
+                  <th class="product-quantity"><%= t('.quantity') %></th>
+                  <th class="product-subtotal"><%= t('.total') %></th>
                   <th class="product-remove">&nbsp;</th>
                 </tr>
               </thead>
@@ -95,7 +95,7 @@
                 <% end %>
                 <tr>
                   <td colspan="5" class="actions">
-                    <a class="continue" href="<%= orders_path %>">My Orders</a>
+                    <a class="continue" href="<%= orders_path %>"><%= t('.my_orders') %></a>
                     <div class="coupon">
                       <label for="coupon_code">Coupon:</label>
                       <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>

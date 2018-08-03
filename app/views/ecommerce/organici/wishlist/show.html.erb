@@ -1,9 +1,9 @@
   <section class="noo-page-heading eff">
     <div class="container">
       <div class="noo-heading-content">
-        <h1 class="page-title eff">Wishlist</h1>
+        <h1 class="page-title eff"><%= t('.title') %></h1>
         <div class="noo-page-breadcrumb eff">
-          <a href="./" class="home">ExpatShop</a>/<span>Wishlist</span>
+          <a href="./" class="home">ExpatShop</a>/<span><%= t('.title') %></span>
         </div>
       </div>
     </div>
@@ -16,10 +16,10 @@
             <table class="shop_table cart">
               <thead>
                 <tr>
-                  <th class="product-thumbnail">Image</th>
-                  <th class="product-price">Price</th>
-                  <th class="product-quantity">Quantity</th>
-                  <th class="product-subtotal">Total</th>
+                  <th class="product-thumbnail"><%= t('.image') %></th>
+                  <th class="product-price"><%= t('.price') %></th>
+                  <th class="product-quantity"><%= t('.quantity') %></th>
+                  <th class="product-subtotal"><%= t('.total') %></th>
                   <th class="product-remove">&nbsp;</th>
                 </tr>
               </thead>
@@ -50,33 +50,33 @@
                 <% end %>
                 <tr>
                   <td colspan="5" class="actions">
-                    <a class="continue" href="shop.html">continue shopping</a>
+                    <a class="continue" href="shop.html"><%= t('.continue_shopping') %></a>
                     <div class="coupon">
                       <label for="coupon_code">Coupon:</label>
                       <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
                       <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
                     </div>
-                    <input type="submit" class="button" name="update_cart" value="Update Wishlist"/>
+                    <input type="submit" class="button" name="update_cart" value="<%= t('.update_wishlist') %>"/>
                   </td>
                 </tr>
               </tbody>
             </table>
             <div class="cart-collaterals">
               <div class="cart_totals">
-                <h2>Wishlist Totals</h2>
+                <h2><%= t('.wishlist_totals') %></h2>
                 <table>
                   <tr class="cart-subtotal">
-                    <th>Total Items</th>
+                    <th><%= t('.total_items') %></th>
                     <td><span class="amount" id="qty-subtotal-amount"><%= @wishlist_qty_subtotal %></span></td>
                   </tr>
                   <tr class="cart-subtotal">
-                    <th>Subtotal</th>
+                    <th><%= t('.subtotal') %></th>
                     <td><span class="amount" id="subtotal-amount"><%= number_to_currency(@wishlist_subtotal) %></span></td>
                   </tr>
                   <tr class="shipping">
-                    <th>Shipping</th>
+                    <th><%= t('.shipping') %></th>
                     <td>
-                      <p>Shipping costs will be calculated once you have provided your address.</p>
+                      <p><%= t('.shipping_cost_text') %></p>
                     </td>
                   </tr>
                   <tr class="order-total">
@@ -85,7 +85,7 @@
                   </tr>
                 </table>
                 <div class="wc-proceed-to-checkout">
-                  <%= link_to "Proceed to Checkout", checkout_path, class: "checkout-button button alt wc-forward" %>
+                  <%= link_to t('.proceed_to_checkout'), checkout_path, class: "checkout-button button alt wc-forward" %>
                 </div>
               </div>
             </div>

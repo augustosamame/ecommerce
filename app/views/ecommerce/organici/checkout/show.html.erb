@@ -15,18 +15,18 @@
           <div class="noo-main col-md-8">
             <div class="customer-details">
               <div class="commerce-address-fields">
-                <h3>Shipping Address</h3>
+                <h3><%= t('.shipping_address') %></h3>
                 <% if @checkout_addresses.count > 0 %>
                   <div class="form-row form-row">
                     <label>
-                      <h4>Pick an Address</h4>
+                      <h4><%= t('.pick_address') %></h4>
                     </label>
                   </div>
                   <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
                 <% end %>
                 <div class="form-row form-row">
                   <label>
-                    <h4>Create a New Address</h4>
+                    <h4><%= t('.create_a_new_address') %></h4>
                   </label>
                 </div>
                 <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
@@ -35,13 +35,13 @@
           </div>
           <div class="col-md-4">
             <div class="order-review-wrap">
-              <h3>Your order</h3>
+              <h3><%= t('.your_order') %></h3>
               <div class="commerce-checkout-review-order">
                 <table class="shop_table commerce-checkout-review-order-table">
                   <thead>
                     <tr>
-                      <th class="product-name">Product</th>
-                      <th class="product-total">Total</th>
+                      <th class="product-name"><%= t('.product') %></th>
+                      <th class="product-total"><%= t('.total') %></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -59,15 +59,15 @@
                   </tbody>
                   <tfoot>
                     <tr class="cart-subtotal">
-                      <th>Subtotal</th>
+                      <th><%= t('.subtotal') %></th>
                       <td><strong><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="subtotal"><%= number_with_precision(@cart_subtotal) %></span></strong></td>
                     </tr>
                     <tr class="cart-subtotal">
-                      <th>Shipping</th>
+                      <th><%= t('.shipping') %></th>
                       <td><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="shipping-amount"><%= number_with_precision(0) %></span></td>
                     </tr>
                     <tr class="order-total">
-                      <th>Total</th>
+                      <th><%= t('.total') %></th>
                       <td><strong><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="payment-amount"><%= number_with_precision(@cart_subtotal) %></span></strong></td>
                     </tr>
                   </tfoot>
@@ -79,15 +79,15 @@
                       <%= check_box_tag("want_factura", "0", @info_factura_available, class: "factura_checkbox") %>
 
                       <label for="want_factura">
-                        I need a Factura
+                        <%= t('.i_need_a_factura') %>
                       </label>
                       <div class="payment_box payment_method_cheque">
                         <% if @info_factura_available %>
                           <p><%= "RUC: #{@factura_vat}" %></p>
                           <p><%= "Razón Social: #{@factura_razon_social}" %></p>
-                          <p><%= "Address: #{@factura_address}, #{@factura_city}" %></p>
+                          <p><%= "#{t('.address')}: #{@factura_address}, #{@factura_city}" %></p>
                         <% else %>
-                          <p><%= link_to "Click Here to set up Factura info", main_app.edit_user_registration_path %></p>
+                          <p><%= link_to t('.click_here_to_setup_factura_info'), main_app.edit_user_registration_path %></p>
                         <% end %>
                       </div>
 
@@ -103,7 +103,7 @@
                     <li class="wc_payment_method payment_method_card">
                       <input id="payment_method_card" type="radio" checked="checked" class="input-radio" name="payment_method" value="card" />
                       <label for="payment_method_card">
-                        Credit / Debit Card
+                        <%= t('.credit_debit_card') %>
                       </label>
                       <label for="payment_method_card">
                         <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row1.png" alt="Credit Card Images">
@@ -118,7 +118,7 @@
                     <li>
                       <input id="payment_method_bank" type="radio" class="input-radio" name="payment_method" value="manual" checked="checked" />
                       <label for="payment_method_bank">
-                        Bank Deposit
+                        <%= t('.bank_deposit') %>
                       </label>
                       <div class="payment_box payment_method_cheque">
                         <p><%= @payment_bank_deposit.pre_message %></p>
@@ -132,7 +132,7 @@
                     <li>
                       <input id="payment_method_manual" type="radio" class="input-radio" name="payment_method" value="manual" checked="checked" />
                       <label for="payment_method_manual">
-                        Manual Payment
+                        <%= t('.manual_payment') %>
                       </label>
                       <div class="payment_box payment_method_cheque">
                         <p><%= @payment_manual.pre_message %></p>
@@ -143,7 +143,7 @@
 
                   </ul>
                 </div>
-                <button class="button mt-5" id ="pay-now-button">Place Order</button>
+                <button class="button mt-5" id ="pay-now-button"><%= t('.place_order') %></button>
               </div>
             </div>
           </div>
