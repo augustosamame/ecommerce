@@ -8,6 +8,7 @@ module Ecommerce
     # GET /backoffice/categories
     def index
       @category_name = Category.all.order(:category_type, :category_order, :id)
+      @category_overlay = Category.all.order(:category_type, :category_order, :id)
       @product_name = Product.all.order(:product_order, id: :desc)
       @product_short_description = Product.all.order(:product_order, id: :desc)
       @product_description = Product.all.order(:product_order, id: :desc)

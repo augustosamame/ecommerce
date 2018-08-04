@@ -1,8 +1,8 @@
 module Ecommerce
   class Category < ApplicationRecord
 
-    translates :name
-    globalize_accessors :locales => [:"en-PE", :"es-PE"], :attributes => [:name]
+    translates :name, :image_popular_homepage_overlay_text
+    globalize_accessors :locales => [:"en-PE", :"es-PE"], :attributes => [:name, :image_popular_homepage_overlay_text]
 
     #has_many :products, inverse_of: :category, dependent: :restrict_with_error
 

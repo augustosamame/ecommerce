@@ -23,7 +23,20 @@
           <td style="width: 5%;"><%= "Category" %></td>
           <td style="width: 7%;"><%= "Name" %></td>
           <% Ecommerce::Category.globalize_attribute_names.each do |item| %>
-            <td style="width: 20%;"><%= best_in_place category_name, item, :as => :input, :url => "category_translations_in_place/#{category_name.id}", :method => :put %></td>
+            <% if item.to_s.starts_with?("name") %>
+              <td style="width: 20%;"><%= best_in_place category_name, item, :as => :input, :url => "category_translations_in_place/#{category_name.id}", :method => :put %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+      <% @category_overlay.each do |category_overlay| %>
+      <tr>
+          <td style="width: 5%;"><%= "Category" %></td>
+          <td style="width: 7%;"><%= "Text Overlay" %></td>
+          <% Ecommerce::Category.globalize_attribute_names.each do |item| %>
+            <% if item.to_s.starts_with?("image_popular_homepage_overlay_text") %>
+              <td style="width: 20%;"><%= best_in_place category_overlay, item, :as => :input, :url => "category_translations_in_place/#{category_overlay.id}", :method => :put %></td>
+            <% end %>
           <% end %>
         </tr>
       <% end %>
