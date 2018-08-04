@@ -79,7 +79,7 @@ module Ecommerce
       self.category_list.each do |cl|
         category_id = Ecommerce::Category::Translation.find_by(locale: Ecommerce.backoffice_default_locale, name: cl).try(:ecommerce_category_id)
         translated_category = Ecommerce::Category::Translation.find_by(locale: I18n.locale, ecommerce_category_id: category_id).try(:name)
-        tcl << translated_category
+        tcl << (translated_category || cl)
       end
       return tcl
 
