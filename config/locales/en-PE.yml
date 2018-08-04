@@ -46,6 +46,7 @@ en-PE:
     organici:
       store:
         header:
+          all_products: "All Products"
           home_menu: "Home"
           blog_menu: "Blog"
           contact_us_menu: "Contact Us"

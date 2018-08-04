@@ -125,6 +125,7 @@ es-PE:
           proceed_to_checkout: "Proceder a Checkout"
       store:
         header:
+          all_products: "Todos los Productos"
           home_menu: "Inicio"
           blog_menu: "Blog"
           contact_us_menu: "Contáctanos"

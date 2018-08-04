@@ -1,5 +1,9 @@
 module Ecommerce
   class Product < ApplicationRecord
+
+    translates :name, :short_description, :description
+    globalize_accessors :locales => [:"en-PE", :"es-PE"], :attributes => [:name, :short_description, :description]
+
     belongs_to :category, optional: true
     belongs_to :brand
     belongs_to :supplier
@@ -68,6 +72,17 @@ module Ecommerce
         found_tax = Ecommerce::Tax.find_by!(tax_name: tax)
         Ecommerce::ProductTax.create(tax_id: found_tax.id , product_id: self.id, tax_amount: amount.to_f)
       }
+    end
+
+    def translated_category_list
+      tcl = Array.new
+      self.category_list.each do |cl|
+        category_id = Ecommerce::Category::Translation.find_by(locale: Ecommerce.backoffice_default_locale, name: cl).try(:ecommerce_category_id)
+        translated_category = Ecommerce::Category::Translation.find_by(locale: I18n.locale, ecommerce_category_id: category_id).try(:name)
+        tcl << translated_category
+      end
+      return tcl
+
     end
 
   end

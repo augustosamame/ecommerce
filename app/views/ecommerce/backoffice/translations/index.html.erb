@@ -1,0 +1,65 @@
+<div class="page-header">
+  <%= link_to :back, class: 'btn btn-primary' do %>
+    Back
+  <% end %>
+  <h1>Listing Translations</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Table</th>
+        <th>Field</th>
+        <% Ecommerce::Category.globalize_locales.each do |item| %>
+        <th><%= "#{item}" %></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @category_name.each do |category_name| %>
+      <tr>
+          <td style="width: 5%;"><%= "Category" %></td>
+          <td style="width: 7%;"><%= "Name" %></td>
+          <% Ecommerce::Category.globalize_attribute_names.each do |item| %>
+            <td style="width: 20%;"><%= best_in_place category_name, item, :as => :input, :url => "category_translations_in_place/#{category_name.id}", :method => :put %></td>
+          <% end %>
+        </tr>
+      <% end %>
+      <% @product_name.each do |product_name| %>
+      <tr>
+          <td style="width: 5%;"><%= "Product" %></td>
+          <td style="width: 7%;"><%= "Name" %></td>
+          <% Ecommerce::Product.globalize_attribute_names.each do |item| %>
+            <% if item.to_s.starts_with?("name") %>
+              <td style="width: 20%;"><%= best_in_place product_name, item, :as => :input, :url => "product_translations_in_place/#{product_name.id}", :method => :put %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+      <% @product_short_description.each do |product_short_description| %>
+      <tr>
+          <td style="width: 5%;"><%= "Product" %></td>
+          <td style="width: 7%;"><%= "Short Description" %></td>
+          <% Ecommerce::Product.globalize_attribute_names.each do |item| %>
+            <% if item.to_s.starts_with?("short_description") %>
+              <td style="width: 20%;"><%= best_in_place product_short_description, item, :as => :input, :url => "product_translations_in_place/#{product_short_description.id}", :method => :put %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+      <% @product_description.each do |product_description| %>
+      <tr>
+          <td style="width: 5%;"><%= "Product" %></td>
+          <td style="width: 7%;"><%= "Description" %></td>
+          <% Ecommerce::Product.globalize_attribute_names.each do |item| %>
+            <% if item.to_s.starts_with?("description") %>
+              <td style="width: 20%;"><%= best_in_place product_description, item, :as => :input, :url => "product_translations_in_place/#{product_description.id}", :method => :put %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

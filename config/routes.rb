@@ -10,8 +10,10 @@ Ecommerce::Engine.routes.draw do
     resources :controls
     resources :categories
     put '/categories_in_place/:id' => 'categories#best_in_place_update'
+    put '/translations/category_translations_in_place/:id' => 'categories#best_in_place_translation_update'
     resources :products
     put '/products_in_place/:id' => 'products#best_in_place_update'
+    put '/translations/product_translations_in_place/:id' => 'products#best_in_place_translation_update'
     resources :product_variants
     resources :product_skus
     resources :product_sku_properties
@@ -20,6 +22,7 @@ Ecommerce::Engine.routes.draw do
     resources :orders
     post '/orders/einvoice'
     resources :payment_methods
+    get '/translations/index', :to => "translations#index"
   end
 
   post 'locale', :to => 'application#locale'

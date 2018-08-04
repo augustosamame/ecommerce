@@ -53,6 +53,7 @@ module Ecommerce
   mattr_accessor :backoffice_properties_per_page # :integer, default: Kaminari.config.default_per_page
   mattr_accessor :backoffice_promotions_per_page # :integer, default: Kaminari.config.default_per_page
   mattr_accessor :backoffice_users_per_page # :integer, default: Kaminari.config.default_per_page
+  mattr_accessor :backoffice_default_locale
   mattr_accessor :allow_checkout_on_gateway_error # :boolean, default: false
   mattr_accessor :allow_guest_checkout # :boolean, default: true
   mattr_accessor :auto_credit_card_capture# :boolean, default: false # automatically capture the credit card (as opposed to just authorize and capture later)

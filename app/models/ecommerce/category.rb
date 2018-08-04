@@ -1,5 +1,9 @@
 module Ecommerce
   class Category < ApplicationRecord
+
+    translates :name
+    globalize_accessors :locales => [:"en-PE", :"es-PE"], :attributes => [:name]
+
     #has_many :products, inverse_of: :category, dependent: :restrict_with_error
 
     mount_uploader :image, Ecommerce::CategoryImageUploader

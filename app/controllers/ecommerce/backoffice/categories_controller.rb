@@ -2,7 +2,7 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   class Backoffice::CategoriesController < Backoffice::BaseController
-    before_action :set_backoffice_category, only: [:show, :edit, :update, :best_in_place_update, :destroy]
+    before_action :set_backoffice_category, only: [:show, :edit, :update, :best_in_place_update, :best_in_place_translation_update, :destroy]
     authorize_resource :class => "Ecommerce::Category"
 
     # GET /backoffice/categories
@@ -56,6 +56,16 @@ module Ecommerce
       end
     end
 
+    def best_in_place_translation_update
+      if @backoffice_category.update(backoffice_category_params)
+        head :ok
+        #respond_with @backoffice_category
+      else
+        Rails.logger.error "Unable to update category order in place. Error: #{@backoffice_category.errors.inspect}"
+        head :ok
+      end
+    end
+
     # DELETE /backoffice/categories/1
     def destroy
       @backoffice_category.destroy
@@ -77,7 +87,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_category_params
-        params.require(:category).permit(:name, :image, :image_cache, :status, :main_menu, :category_type, :category_order, :popular_homepage, :image_popular_homepage, :image_popular_homepage_overlay_text, :image_popular_homepage_cache, parent_id: [], parent_category_list: [])
+        params.require(:category).permit(:name, :image, :image_cache, :status, :main_menu, :category_type, :category_order, :popular_homepage, :image_popular_homepage, :image_popular_homepage_overlay_text, :image_popular_homepage_cache, Category.globalize_attribute_names, parent_id: [], parent_category_list: [])
       end
   end
 end

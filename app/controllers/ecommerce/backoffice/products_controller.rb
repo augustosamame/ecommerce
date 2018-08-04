@@ -2,7 +2,7 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   class Backoffice::ProductsController < Backoffice::BaseController
-    before_action :set_backoffice_product, only: [:show, :edit, :update, :best_in_place_update, :destroy]
+    before_action :set_backoffice_product, only: [:show, :edit, :update, :best_in_place_update, :best_in_place_translation_update, :destroy]
     authorize_resource :class => "Ecommerce::Product" #we have to do this because controller and model do not have the same namespace
 
     # GET /backoffice/products
@@ -91,6 +91,15 @@ module Ecommerce
       end
     end
 
+    def best_in_place_translation_update
+      if @backoffice_product.update(backoffice_product_params)
+        head :ok
+      else
+        Rails.logger.error "Unable to update product order in place. Error: #{@backoffice_product.errors.inspect}"
+        head :ok
+      end
+    end
+
     def set_taxes_from_params
       if backoffice_product_params[:tax_1_check] == "0" || backoffice_product_params[:tax_1_check].blank?
         found_tax = Ecommerce::Tax.first
@@ -102,7 +111,7 @@ module Ecommerce
         if found_product_tax
           found_product_tax.update(tax_amount: backoffice_product_params[:tax_1_amount])
         else
-          Ecommerce::ProductTax.create(tax_id: found_tax.id , product_id: @backoffice_product.id, tax_amount: backoffice_product_params[:tax_1_amount])
+          Ecommerce::ProductTax.create(tax_id: found_tax.id, product_id: @backoffice_product.id, tax_amount: backoffice_product_params[:tax_1_amount])
         end
       end
       if backoffice_product_params[:tax_2_check] == "0" || backoffice_product_params[:tax_2_check].blank?
@@ -128,7 +137,7 @@ module Ecommerce
         if found_product_tax
           found_product_tax.update(tax_amount: backoffice_product_params[:tax_3_amount])
         else
-          Ecommerce::ProductTax.create(tax_id: found_tax.id , product_id: @backoffice_product.id, tax_amount: backoffice_product_params[:tax_3_amount])
+          Ecommerce::ProductTax.create(tax_id: found_tax.id, product_id: @backoffice_product.id, tax_amount: backoffice_product_params[:tax_3_amount])
         end
       end
     end
@@ -147,7 +156,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_params
-        params.require(:product).permit(:tax_1_check, :tax_1_amount, :tax_2_check, :tax_2_amount, :tax_3_check, :tax_3_amount, :status, :brand_id, :supplier_id, :name, :short_description, :description, :description2, :price_cents, :discounted_price_cents, :total_quantity, :stockable, :home_featured, :product_order, :image, :image_cache, category_id: [], category_list: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
+        params.require(:product).permit(:tax_1_check, :tax_1_amount, :tax_2_check, :tax_2_amount, :tax_3_check, :tax_3_amount, :status, :brand_id, :supplier_id, :name, :short_description, :description, :description2, :price_cents, :discounted_price_cents, :total_quantity, :stockable, :home_featured, :product_order, :image, :image_cache, Product.globalize_attribute_names, category_id: [], category_list: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
       end
   end
 end
