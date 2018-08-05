@@ -69,11 +69,21 @@ var $loading = $('.spinner').hide();
     });
 
     $("#usd-currency").click(function(e) {
-      window.location.href = window.location.pathname + window.location.search + "&currency=usd"
+      var url = window.location.pathname + window.location.search
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?currency=usd"
+      } else {
+        window.location.href = url + "&currency=usd"
+      }
     });
 
     $("#pen-currency").click(function(e) {
-      window.location.href = window.location.pathname + window.location.search + "&currency=pen"
+      var url = window.location.pathname + window.location.search
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?currency=pen"
+      } else {
+        window.location.href = url + "&currency=pen"
+      }
     });
 
 })
