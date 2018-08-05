@@ -107,6 +107,7 @@
 											</li>
 											<% end %>
 
+											<% if Ecommerce.enable_language_selector %>
 											<li class="menu-item-has-children">
 												<% if session[:locale] == "es-PE" %>
 													<a href=""><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a>
@@ -118,12 +119,28 @@
 													<li><a id="es-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a></li>
 												</ul>
 											</li>
+											<% end %>
+
+											<% if Ecommerce.enable_currency_selector %>
+											<li class="menu-item-has-children">
+												<% if session[:currency] == "usd" %>
+													<a href="">USD $</a>
+												<% else %>
+													<a href="">PEN S/</a>
+												<% end %>
+												<ul class="sub-menu currency-sub-menu">
+													<li><a id="usd-currency" href="#">USD $</a></li>
+													<li><a id="pen-currency" href="#">PEN S/</a></li>
+												</ul>
+											</li>
+											<% end %>
 
 											<li class="menu-item fly-right">
 												<a id="noo-search" class="search-button noo-search" href="#">
 													<i class="fa fa-search"></i><%= " #{t('.search')}" %>
 												</a>
 											</li>
+
 										</ul>
 
 									<!-- fin menu secundario  -->

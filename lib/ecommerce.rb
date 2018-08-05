@@ -71,6 +71,9 @@ module Ecommerce
   mattr_accessor :min_restock_inventory # :boolean, default: true # Determines if a return item is restocked automatically once it has been received
   mattr_accessor :shipping_instructions_text# , :text, instructions/info for shipping
   mattr_accessor :track_inventory_levels # :boolean, default: true # Determines whether to track on_hand values for variants / products.
+  mattr_accessor :default_currency
+  mattr_accessor :enable_currency_selector
+  mattr_accessor :enable_language_selector
 
   class << self
 

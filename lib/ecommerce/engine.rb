@@ -16,6 +16,8 @@ module Ecommerce
       g.templates.unshift File::expand_path('../../templates', __FILE__)
     end
 
+    config.autoload_paths += %W(#{Ecommerce::Engine.root}/lib)
+
   end
 end
 

@@ -41,7 +41,7 @@ module Ecommerce
         last_user_address = Address.where(user_id: current_user.id).order(:id).last
         ActiveRecord::Base.transaction do
           @order = Order.new( user_id: current_user.id,
-                        amount_cents: params[:amount].to_i,
+                        amount: Money.new(params[:amount].to_i, session[:currency]),
                         shipping_amount_cents: params[:shipping_amount].to_i,
                         stage: "stage_new",
                         cart_id: params[:cart_id].to_i,
@@ -57,7 +57,8 @@ module Ecommerce
               OrderItem.create!(
                 order_id: @order.id,
                 product_id: item.product_id,
-                price_cents: (item.product.current_price.to_f * 100).to_i,
+                price: Money.new((item.product.current_price.to_f * 100).to_i, session[:currency]),
+                #price_cents: (item.product.current_price.to_f * 100).to_i,
                 quantity: item.quantity,
                 status: "active"
               )

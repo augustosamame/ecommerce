@@ -52,7 +52,7 @@
                           <strong class="product-quantity">× <%= item.quantity %></strong>
                         </td>
                         <td class="product-total">
-                          <span class="amount"><%= number_to_currency(item.line_total) %></span>
+                          <span class="amount"><%= session_price(item.line_total) %></span>
                         </td>
                       </tr>
                     <% end %>
@@ -60,15 +60,15 @@
                   <tfoot>
                     <tr class="cart-subtotal">
                       <th><%= t('.subtotal') %></th>
-                      <td><strong><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="subtotal"><%= number_with_precision(@cart_subtotal) %></span></strong></td>
+                      <td><strong><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="subtotal"><%= @cart_subtotal %></span></strong></td>
                     </tr>
                     <tr class="cart-subtotal">
                       <th><%= t('.shipping') %></th>
-                      <td><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="shipping-amount"><%= number_with_precision(0) %></span></td>
+                      <td><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="shipping-amount">0.00</span></td>
                     </tr>
                     <tr class="order-total">
                       <th><%= t('.total') %></th>
-                      <td><strong><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="payment-amount"><%= number_with_precision(@cart_subtotal) %></span></strong></td>
+                      <td><strong><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="payment-amount"><%= @cart_subtotal %></span></strong></td>
                     </tr>
                   </tfoot>
                 </table>
@@ -185,6 +185,7 @@
       method: "POST",
       data: { address: street, district: district },
       success: function(data){
+         if (data.currency == "pen") { cur_sym = "S/. " } else { cur_sym = "$ " }
          $("#shipping-amount").html(data.amount.toFixed(2))
          recalculate_checkout_totals();
          shipping_calculated_flag = true
@@ -199,7 +200,7 @@
     payment_amount = $('#payment-amount').html() * 100;
     Culqi.settings({
       title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
-      currency: 'PEN',
+      currency: '<%= session[:currency].upcase %>',
       description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@cart.id}" %>',
       amount: payment_amount
     });

@@ -3,7 +3,7 @@ module Ecommerce
     belongs_to :order
     belongs_to :product
 
-    monetize :price_cents
+    monetize :price_cents, with_model_currency: :currency
 
     enum status: {active: 0, inactive: 1, void: 2 }
 

@@ -1,5 +1,6 @@
 module Ecommerce
   class Product < ApplicationRecord
+    include Ecommerce::SessionInfo
 
     translates :name, :short_description, :description
     globalize_accessors :locales => [:"en-PE", :"es-PE"], :attributes => [:name, :short_description, :description]
@@ -41,6 +42,8 @@ module Ecommerce
 
     monetize :price_cents
     monetize :discounted_price_cents
+    monetize :usd_price_cents
+    monetize :usd_discounted_price_cents
 
     #validates :category_id, presence: true
     validates_presence_of :category_list
@@ -62,8 +65,19 @@ module Ecommerce
       self.discounted_price_cents < self.price_cents
     end
 
+    def usd_current_price
+      current_price
+    end
+
     def current_price
-      [self.price, self.discounted_price].min
+      case Ecommerce::SessionInfo.current_session_currency
+      when "usd"
+        [self.usd_price, self.usd_discounted_price].min
+      when "pen"
+        [self.price, self.discounted_price].min
+      else
+        [self.price, self.discounted_price].min
+      end
     end
 
     def create_product_taxes

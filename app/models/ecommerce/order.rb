@@ -11,7 +11,7 @@ module Ecommerce
     enum status: {active: 0, void: 2 }
     enum efact_type: {boleta: 0, factura: 1 }
 
-    monetize :amount_cents, :shipping_amount_cents
+    monetize :amount_cents, :shipping_amount_cents, with_model_currency: :currency
 
     after_commit :notify_new_order, on: :create
     after_commit :blank_user_carts, on: :create
@@ -21,8 +21,8 @@ module Ecommerce
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
     def notify_new_order
-      AdminMailer.new_order_email(self.user, self).deliver!
-      UserMailer.new_order_email(self.user, self).deliver!
+      AdminMailer.new_order_email(self.user, self).deliver! unless Rails.env == "development"
+      UserMailer.new_order_email(self.user, self).deliver! unless Rails.env == "development"
     end
 
     def blank_user_carts

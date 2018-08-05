@@ -35,6 +35,42 @@ module Ecommerce
       end
     end
 
+    def session_currency_symbol
+      case session[:currency]
+      when "pen"
+          return "S/. "
+        when "usd"
+          return "$ "
+        else
+          return "S/. "
+      end
+    end
+
+    def session_currency(value)
+      case session[:currency]
+      when "pen"
+        return number_to_currency(value, locale: "en-PE")
+      when "usd"
+        return number_to_currency(value, locale: "en-US")
+      else
+        return number_to_currency(value, locale: "en-PE")
+      end
+    end
+
+    def session_price(amount, field = nil)
+      case session[:currency]
+      when "pen"
+        value = field ? eval("amount.#{field}") : amount
+        return number_to_currency(value, locale: "en-PE")
+      when "usd"
+        value = field ? eval("amount.usd_#{field}") : amount
+        return number_to_currency(value, locale: "en-US")
+      else
+        value = field ? eval("amount.#{field}") : amount
+        return number_to_currency(value, locale: "en-PE")
+      end
+    end
+
     def flash_class(level)
       case level.to_sym
         # allow either standard rails flash category symbols...

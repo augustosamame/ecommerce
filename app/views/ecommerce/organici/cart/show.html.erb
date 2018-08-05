@@ -56,7 +56,7 @@
                       <%= link_to item.product.name, product_path(item.product) %>
                     </td>
                     <td class="product-price">
-                      <span class="amount"><%= number_to_currency(item.product.current_price) %></span>
+                      <span class="amount"><%= session_price(item.product, "current_price") %></span>
                     </td>
                     <td class="product-quantity mobile-product-quantity">
                       <div class="quantity mobile-quantity">
@@ -64,7 +64,7 @@
                       </div>
                     </td>
                     <td class="product-subtotal">
-                      <span class="amount"><%= number_to_currency(item.line_total) %></span>
+                      <span class="amount"><%= session_price(item.line_total) %></span>
                     </td>
                     <td class="product-remove">
                       <%= link_to "&times;".html_safe, cart_item_path(item.id), method: :delete, class: "remove" %>
@@ -132,7 +132,7 @@
                   </tr>
                   <tr class="cart-subtotal">
                     <th><%= t('.subtotal') %></th>
-                    <td><span class="amount" id="subtotal-amount"><%= number_to_currency(@cart_subtotal) %></span></td>
+                    <td><span class="amount" id="subtotal-amount"><%= session_price(@cart_subtotal) %></span></td>
                   </tr>
                   <tr class="shipping">
                     <th><%= t('.shipping') %></th>
@@ -142,7 +142,7 @@
                   </tr>
                   <tr class="order-total">
                     <th>Total</th>
-                    <td><strong><span class="amount" id="total-amount"><%= number_to_currency(@cart_subtotal) %></span></strong> </td>
+                    <td><strong><span class="amount" id="total-amount"><%= session_price(@cart_subtotal) %></span></strong> </td>
                   </tr>
                 </table>
                 <div class="wc-proceed-to-checkout">

@@ -21,7 +21,7 @@
           <a href="shop-detail.html"><%= item.product.name %></a>
         </div>
         <div class="cart-product-price">
-          <span class="amount"><%= number_to_currency(item.product.current_price) %></span>
+          <span class="amount"><%= session_price(item.product, "current_price") %></span>
         </div>
         <div class="cart-product-quantity">x <%= item.quantity %></div>
       </div>
@@ -32,7 +32,7 @@
   </div>
   <div class="minicart-footer">
     <div class="minicart-total">
-      Subtotal <span class="amount"><%= number_to_currency(@cart.get_totals[:tot_acum]) %></span>
+      Subtotal <span class="amount"><%= session_price(@cart.get_totals[:tot_acum]) %></span>
     </div>
     <div class="minicart-actions clearfix">
       <a class="button btn-primary" style:"width: 40%;" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">

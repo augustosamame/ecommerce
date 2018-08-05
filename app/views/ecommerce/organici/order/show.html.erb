@@ -18,7 +18,7 @@
               <table>
                 <tr class="cart-subtotal">
                   <th><%= t('.order_total') %></th>
-                  <td><span class="amount" style="display: inline;"><%= t('number.currency.format.unit') %></span><span class="amount" style="display: inline;" id="payment-amount"><%= number_with_precision(@order.amount) %></span></strong></td>
+                  <td><span class="amount" style="display: inline;"><%= @order.amount.currency.symbol %></span><span class="amount" style="display: inline;" id="payment-amount"><%= @order.amount %></span></strong></td>
                 </tr>
                 <tr class="cart-subtotal">
                   <th><%= t('.payment') %></th>
@@ -81,7 +81,7 @@
                     <%= link_to item.product.name, product_path(item.product) %>
                   </td>
                   <td class="product-price">
-                    <span class="amount"><%= number_to_currency(item.price) %></span>
+                    <span class="amount"><%= humanized_money_with_symbol item.price %></span>
                   </td>
                   <td class="product-quantity">
                     <div class="quantity">
@@ -89,7 +89,7 @@
                     </div>
                   </td>
                   <td class="product-subtotal">
-                    <span class="amount"><%= number_to_currency(item.line_total) %></span>
+                    <span class="amount"><%= humanized_money_with_symbol item.line_total %></span>
                   </td>
                 </tr>
                 <% end %>
@@ -121,7 +121,7 @@ Culqi.publicKey = "<%= Culqi.public_key %>";
 var payment_amount = $('#payment-amount').html() * 100;
 Culqi.settings({
   title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
-  currency: 'PEN',
+  currency: '<%= @order.amount.currency.iso_code %>',
   description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@order.id}" %>',
   amount: payment_amount
 });

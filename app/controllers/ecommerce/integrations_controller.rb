@@ -21,6 +21,7 @@ module Ecommerce
         else
           response = {:amount => 0.00}
         end
+        response[:currency] = session[:currency] || "pen"
         respond_to do |format|
           format.json { render json: response.to_json }
         end

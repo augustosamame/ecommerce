@@ -11,12 +11,12 @@
       <span class="short-descrip" style="font-size:13px;"><%= item.short_description %></span><br>
 
       <% if item.price == item.discounted_price %>
-        <span class="price"><span class="amount"><%= number_to_currency(item.price) %></span></span>
+        <span class="price"><span class="amount"><%= session_price(item, "price") %></span></span>
       <% else %>
 
         <span class="price">
-          <span class="amount original-price-index"><%= number_to_currency(item.price) %></span>
-          <span class="amount"><%= number_to_currency(item.discounted_price) %></span>
+          <span class="amount original-price-index"><%= session_price(item, "price") %></span>
+          <span class="amount"><%= session_price(item, "discounted_price") %></span>
         </span>
 
       <% end %>
