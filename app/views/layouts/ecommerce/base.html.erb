@@ -51,19 +51,29 @@ var $loading = $('.spinner').hide();
     );
 
     $("#en-lang").click(function(e) {
-      window.location.href = window.location.pathname+"?lang=en-PE"
+      var url = window.location.pathname + window.location.search
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?lang=en-PE"
+      } else {
+        window.location.href = url + "&lang=en-PE"
+      }
     });
 
     $("#es-lang").click(function(e) {
-      window.location.href = window.location.pathname+"?lang=es-PE"
+      var url = window.location.pathname + window.location.search
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?lang=es-PE"
+      } else {
+        window.location.href = url + "&lang=es-PE"
+      }
     });
 
     $("#usd-currency").click(function(e) {
-      window.location.href = window.location.pathname+"?currency=usd"
+      window.location.href = window.location.pathname + window.location.search + "&currency=usd"
     });
 
     $("#pen-currency").click(function(e) {
-      window.location.href = window.location.pathname+"?currency=pen"
+      window.location.href = window.location.pathname + window.location.search + "&currency=pen"
     });
 
 })

@@ -27,7 +27,6 @@ module Ecommerce
     def create
       @backoffice_category = Category.new(backoffice_category_params)
       @backoffice_category.parent_category_list.add(backoffice_category_params[:parent_id])
-
       if @backoffice_category.save
         redirect_to backoffice_category_path(@backoffice_category), notice: 'Category was successfully created.'
       else

@@ -40,12 +40,16 @@ module Ecommerce
     def sub_categories_mobile
       if params[:parent_category]
         @category = Category.find(params[:parent_category])
-        @categories = Category.tagged_with(@category.name)
+        Globalize.with_locale(Ecommerce.backoffice_default_locale) do
+          @categories = Category.tagged_with(@category.name)
+        end
         if @categories.count > 0
           render "ecommerce/#{Ecommerce.ecommerce_layout}/store/sub_categories_mobile"
           #redirect_to categories_m_path(category: @category.id)
         else
-          @products = Product.tagged_with(@category.name).order(:product_order).active.page(params[:page])
+          Globalize.with_locale(Ecommerce.backoffice_default_locale) do
+            @products = Product.tagged_with(@category.name).order(:product_order).active.page(params[:page])
+          end
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else

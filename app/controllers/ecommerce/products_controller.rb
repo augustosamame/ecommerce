@@ -16,11 +16,15 @@ module Ecommerce
       if params[:category_id]
         @category = Category.find(params[:category_id])
         #@child_categories = Category.where(parent_id: @category.id)
-        @child_categories = Category.tagged_with(@category.name)
+        Globalize.with_locale(Ecommerce.backoffice_default_locale) do
+          @child_categories = Category.tagged_with(@category.name)
+        end
         if @child_categories.count > 0
           redirect_to categories_path(parent_category: @category.id)
         else
-          @products = Product.tagged_with(@category.name).order(:product_order).active.page(params[:page])
+          Globalize.with_locale(Ecommerce.backoffice_default_locale) do
+            @products = Product.tagged_with(@category.name).order(:product_order).active.page(params[:page])
+          end
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else
