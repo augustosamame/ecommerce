@@ -22,7 +22,7 @@ module Ecommerce
 
     def notify_new_order
       AdminMailer.new_order_email(self.user, self).deliver! unless Rails.env == "development"
-      UserMailer.new_order_email(self.user, self).deliver! unless Rails.env == "development"
+      UserMailer.new_order_email(self.user, self).deliver! #unless Rails.env == "development"
     end
 
     def blank_user_carts

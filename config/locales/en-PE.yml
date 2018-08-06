@@ -35,10 +35,33 @@ en-PE:
       stage_delivered: "Delivered"
       stage_closed: "Closed"
       stage_void: "Void"
+      payment_stage_unpaid: "Unpaid"
+      payment_stage_paid: "Paid"
+      payment_stage_refunded: "Refunded"
+      payment_stage_void: "Void"
   ecommerce:
     cart_items:
       create:
         product_out_of_stock: "Product Out of Stock"
+        qty: "Qty"
+        added_to_cart: "Added to Cart"
+      update:
+        cart_updated: "Cart Updated"
+      destroy:
+        item_deleted: "Item Deleted"
+    checkout:
+      pay_order_culqi_checkout:
+        your_order_was_successfully_placed: 'Your Order was successfully placed'
+        error_when_processing_payment: 'Error when processing payment'
+      pay_order_bank:
+        your_order_was_successfully_placed: 'Your Order was successfully placed'
+        error_when_processing_payment: 'Error when processing payment'
+      pay_order_manual:
+        your_order_was_successfully_placed: 'Your Order was successfully placed'
+        error_when_processing_payment: 'Error when processing payment'
+    addresses:
+      create:
+        address_was_successfully_created: 'Address was successfully created.'
     processor:
       culqi:
         payment_popup_title: "ExpatShop Payment"
@@ -121,6 +144,7 @@ en-PE:
           manual_payment: "Manual Payment"
           credit_debit_card: "Credit / Debit Card"
           place_order: "Place Order"
+          you_must_pick_or_save_an_address: "You must pick or create an address"
         pick_address_form:
           pick_an_address: "Pick An Address"
         new_address_form:

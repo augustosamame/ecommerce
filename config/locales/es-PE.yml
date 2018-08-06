@@ -33,10 +33,33 @@ es-PE:
       stage_delivered: "Entregado"
       stage_closed: "Completado"
       stage_void: "Anulado"
+      payment_stage_paid: "Pagado"
+      payment_stage_unpaid: "Aún No Pagado"
+      payment_stage_refunded: "Pago Devuelto"
+      payment_stage_void: "Pago Anulado"
   ecommerce:
     cart_items:
       create:
         product_out_of_stock: "Producto Fuera de Stock"
+        qty: "Cant"
+        added_to_cart: "Agregado al Carrito"
+      update:
+        cart_updated: "Carrito actualizado"
+      destroy:
+        item_deleted: "Ítem eliminado"
+    addresses:
+      create:
+        address_was_successfully_created: 'La dirección fue creada.'
+    checkout:
+      pay_order_culqi_checkout:
+        your_order_was_successfully_placed: 'El pedido fue creado satisfactoriamente'
+        error_when_processing_payment: 'Error al procesar el pago'
+      pay_order_bank:
+        your_order_was_successfully_placed: 'El pedido fue creado satisfactoriamente'
+        error_when_processing_payment: 'Error al procesar el pago'
+      pay_order_manual:
+        your_order_was_successfully_placed: 'El pedido fue creado satisfactoriamente'
+        error_when_processing_payment: 'Error al procesar el pago'
     processor:
       culqi:
         payment_popup_title: "Pago ExpatShop"
@@ -89,6 +112,7 @@ es-PE:
           manual_payment: "Pago Manual"
           credit_debit_card: "Tarjeta de Crédito / Débito"
           place_order: "Finalizar Pedido"
+          you_must_pick_or_save_an_address: "Debe seleccionar o crear una dirección"
         pick_address_form:
           pick_an_address: "Selecciona Una Dirección"
         new_address_form:

@@ -62,7 +62,7 @@ module Ecommerce
           #redirect_to new_service_order_path# and return
           #respond_modal_with @address, location: pedido_path
           #head :ok
-          format.html { redirect_to @address, notice: 'Address was successfully created.' }
+          format.html { redirect_to @address, notice: "#{t('.address_was_successfully_created')}" }
           format.js   { render action: 'show_address_ajax', status: :created, :layout => false }
         else
           format.html { render :new }

@@ -80,13 +80,13 @@ module Ecommerce
       card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
       payment_created = Payment.new.new_culqi_payment(current_user, card_token_created, params[:amount], "Order", @order.id, params[:payment_request_id]) if card_token_created
       if payment_created[0]
-        flash[:notice] = 'Your Order was successfully placed'
+        flash[:notice] = t('.your_order_was_successfully_placed')
         Rails.logger.info payment_created[0]
         flash.keep(:notice)
         render js: "window.location = '#{root_path}'"
         #redirect_to root_path, notice: 'Pago exitoso'
       else
-        flash[:error] = payment_created[1] || 'Error when processing payment'
+        flash[:error] = payment_created[1] || t('.error_when_processing_payment')
         Rollbar.error(payment_created[1])
         Rails.logger.error payment_created[1]
         flash.keep(:error)
@@ -97,14 +97,14 @@ module Ecommerce
 
     def pay_order_bank
       Rails.logger.debug params
-      flash[:notice] = 'Your Order was successfully placed'
+      flash[:notice] = t('.your_order_was_successfully_placed')
       flash.keep(:notice)
       render js: "window.location = '#{order_path(@order.id)}'"
     end
 
     def pay_order_manual
       Rails.logger.debug params
-      flash[:notice] = 'Your Order was successfully placed'
+      flash[:notice] = t('.your_order_was_successfully_placed')
       flash.keep(:notice)
       render js: "window.location = '#{order_path(@order.id)}'"
     end

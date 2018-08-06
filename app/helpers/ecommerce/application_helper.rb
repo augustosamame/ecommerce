@@ -116,5 +116,18 @@ module Ecommerce
       end
     end
 
+    def friendly_payment_stage(passed_payment_stage)
+      case passed_payment_stage
+      when "paid"
+        return t('model.order.payment_stage_paid')
+      when "unpaid"
+        return t('model.order.payment_stage_unpaid')
+      when "refunded"
+        return t('model.order.payment_stage_refunded')
+      when "void"
+        return t('model.order.payment_stage_void')
+      end
+    end
+
   end
 end

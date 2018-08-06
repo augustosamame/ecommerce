@@ -28,7 +28,7 @@ module Ecommerce
         #refresh with latest cart so it will be repainted properly
         set_cart
         respond_to do |format|
-          format.js { flash.now[:notice] = "NOW_FLASH_Qty: #{@cart_item.quantity} #{@product.name} Added to Cart"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show"  }
+          format.js { flash.now[:notice] = "NOW_FLASH_#{t('.qty')}: #{@cart_item.quantity} #{@product.name} #{t('.added_to_cart')}"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show"  }
 
           format.html {redirect_to cart_path(@cart) }
         end
@@ -36,14 +36,14 @@ module Ecommerce
         respond_to do |format|
           format.js { flash.now[:notice] = "NOW_FLASH_#{t('.product_out_of_stock')}"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/no_stock"  }
 
-          format.html {redirect_to cart_path(@cart), notice: 'Product is out of stock. Not added to cart' }
+          format.html {redirect_to cart_path(@cart), notice: t('.product_out_of_stock') }
         end
       end
     end
 
     def update
       @cart_item.update(quantity: cart_item_params[:quantity]) unless cart_item_params[:quantity].nil?
-      redirect_to @cart_item.cart, notice: 'Cart updated.'
+      redirect_to @cart_item.cart, notice: t('.cart_updated')
     end
 
     def destroy
@@ -51,7 +51,7 @@ module Ecommerce
       set_cart
       respond_to do |format|
         format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show" }
-        format.html {redirect_to cart_path(@cart), notice: 'Item deleted.' }
+        format.html {redirect_to cart_path(@cart), notice: t('.item_deleted') }
       end
     end
 
