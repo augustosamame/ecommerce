@@ -251,10 +251,12 @@ module Ecommerce
           correlativo_to_update_on_200.update_columns(integer_value: correlativo_to_update_on_200.integer_value + 1) if correlativo_to_update_on_200
         else
           self.update_columns(efact_response_text: "Internal Error #{response.code} - #{response_body["response_text"]}")
+          AdminMailer.einvoice_error_email(self).deliver! #unless Rails.env == "development"
         end
         return response_body.to_json
       else
         self.update_columns(efact_response_text: "Internal Error #{response.code}")
+        AdminMailer.einvoice_error_email(self).deliver! #unless Rails.env == "development"
         return response.read_body
       end
     end

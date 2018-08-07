@@ -20,7 +20,7 @@
     <tbody>
       <% @category_name.each do |category_name| %>
       <tr>
-          <td style="width: 5%;"><%= "Category" %></td>
+          <td style="width: 5%;"><span data-toggle="tooltip" title='<%= "#{category_name.id} #{category_name.name}" %>'><%= "Category" %></span></td>
           <td style="width: 7%;"><%= "Name" %></td>
           <% Ecommerce::Category.globalize_attribute_names.each do |item| %>
             <% if item.to_s.starts_with?("name") %>
@@ -31,7 +31,7 @@
       <% end %>
       <% @category_overlay.each do |category_overlay| %>
       <tr>
-          <td style="width: 5%;"><%= "Category" %></td>
+          <td style="width: 5%;"><span data-toggle="tooltip" title='<%= "#{category_overlay.id} #{category_overlay.name}" %>'><%= "Category" %></span></td>
           <td style="width: 7%;"><%= "Text Overlay" %></td>
           <% Ecommerce::Category.globalize_attribute_names.each do |item| %>
             <% if item.to_s.starts_with?("image_popular_homepage_overlay_text") %>
@@ -42,7 +42,7 @@
       <% end %>
       <% @product_name.each do |product_name| %>
       <tr>
-          <td style="width: 5%;"><%= "Product" %></td>
+          <td style="width: 5%;"><span data-toggle="tooltip" title='<%= "#{product_name.id} #{product_name.name}" %>'><%= "Product" %></span></td>
           <td style="width: 7%;"><%= "Name" %></td>
           <% Ecommerce::Product.globalize_attribute_names.each do |item| %>
             <% if item.to_s.starts_with?("name") %>
@@ -53,7 +53,7 @@
       <% end %>
       <% @product_short_description.each do |product_short_description| %>
       <tr>
-          <td style="width: 5%;"><%= "Product" %></td>
+          <td style="width: 5%;"><span data-toggle="tooltip" title='<%= "#{product_short_description.id} #{product_short_description.name}" %>'><%= "Product" %></span></td>
           <td style="width: 7%;"><%= "Short Description" %></td>
           <% Ecommerce::Product.globalize_attribute_names.each do |item| %>
             <% if item.to_s.starts_with?("short_description") %>
@@ -64,7 +64,7 @@
       <% end %>
       <% @product_description.each do |product_description| %>
       <tr>
-          <td style="width: 5%;"><%= "Product" %></td>
+          <td style="width: 5%;"><span data-toggle="tooltip" title='<%= "#{product_description.id} #{product_description.name}" %>'><%= "Product" %></span></td>
           <td style="width: 7%;"><%= "Description" %></td>
           <% Ecommerce::Product.globalize_attribute_names.each do |item| %>
             <% if item.to_s.starts_with?("description") %>
