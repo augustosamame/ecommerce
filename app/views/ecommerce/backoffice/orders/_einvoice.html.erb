@@ -16,6 +16,7 @@
       <% if @erefund_pdf%>
         <p>Link: <%= link_to @erefund_pdf, @erefund_pdf, target: "blank"  %></p>
         <embed src="<%= @erefund_pdf %>" width="500" height="750">
+        <%= "Refund received link: #{@erefund_pdf}" %>
       <% end %>
       <% if @evoid_string %>
         <p>Void Confirmation: <%= @evoid_string %></p>
@@ -23,6 +24,7 @@
     <% else %>
       <%= "Error generating electronic refund: #{@einvoice_error_message}" if (@epdf && !@erefund_pdf && !@evoid_string) %>
       <%= "Data sent to einvoice processor: #{@einvoice_sent_text}" if (@epdf && !@erefund_pdf && !@evoid_string) %>
+      <%= "Refund received link: #{@erefund_pdf}" %>
     <% end %>
   </div>
 </div>
