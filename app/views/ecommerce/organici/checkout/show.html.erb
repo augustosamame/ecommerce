@@ -150,7 +150,7 @@
         </div>
       </div>
     </div>
-     
+
   </div>
 
 
@@ -160,7 +160,7 @@
 <!-- Configurando el checkout-->
 <script>
 
-  var payment_amount = $('#payment-amount').html() * 100;
+  var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
   var shipping_calculated_flag = false
 
   // calculate and update shipping html tag when shipping address is created
@@ -195,9 +195,11 @@
 
   function recalculate_checkout_totals() {
     Culqi.publicKey = "<%= Culqi.public_key %>";
-    var total_amount = Number($("#shipping-amount").html()) + Number($("#subtotal").html())
-    $('#payment-amount').html(total_amount.toFixed(2))
-    payment_amount = $('#payment-amount').html() * 100;
+    var total_amount = (Number($("#shipping-amount").html()) + Number($("#subtotal").html())).toFixed(2);
+
+    $('#payment-amount').html(total_amount)
+    payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
+
     Culqi.settings({
       title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
       currency: '<%= session[:currency].upcase %>',
@@ -230,8 +232,8 @@
         // Get the token ID:
         var token = Culqi.token;
         var picked_shipping_address_id = $('#address_id').val();
-        var shipping_amount = $('#shipping-amount').html() * 100;
-        var payment_amount = $('#payment-amount').html() * 100;
+        var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
+        var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
         //var payment_amount = $('#payment_amount').html() * 100;
         $.post(
           "checkout/pay_order_culqi_checkout",
@@ -257,8 +259,11 @@
 
   function manual_payment() {
     var picked_shipping_address_id = $('#address_id').val();
-    var shipping_amount = $('#shipping-amount').html() * 100;
-    var payment_amount = $('#payment-amount').html() * 100;
+    var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
+    var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+
+
+
     //var payment_amount = $('#payment_amount').html() * 100;
     $.post(
       "checkout/pay_order_manual",

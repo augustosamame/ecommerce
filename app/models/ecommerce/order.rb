@@ -15,7 +15,7 @@ module Ecommerce
 
     after_commit :notify_new_order, on: :create
     after_commit :blank_user_carts, on: :create
-    after_commit :fire_envoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
+    after_commit :fire_einvoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
     after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
 
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
@@ -29,7 +29,7 @@ module Ecommerce
       Cart.where(user_id: self.user).destroy_all
     end
 
-    def fire_envoice_worker
+    def fire_einvoice_worker
       CreateEinvoiceWorker.perform_async(self.id) unless self.payment_status == "unpaid"
     end
 
@@ -69,7 +69,7 @@ module Ecommerce
       invoice_lines_array = Array.new
       line = 0
       OrderItem.where(order_id: self.id).includes(:product).each do |item|
-        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: item.price.to_f * item.quantity, price_subtotal: item.price.to_f }
+        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: (item.price * item.quantity).to_f, price_subtotal: item.price.to_f }
         igv_found = item.product.product_taxes.find_by(tax_id: Ecommerce::Tax.first.try(:id))
         if igv_found
           invoice_lines_array[line][:igv_tax] = true
@@ -88,6 +88,10 @@ module Ecommerce
         end
         line +=1
       end
+      if self.shipping_amount_cents > 0
+        invoice_lines_array << {name: "Costo de envío (shipping)", quantity: 1, product_id: 1000, price_total: shipping_amount.to_i, price_subtotal: shipping_amount.to_i, igv_tax: true, igv_amount: 18 }
+      end
+      total_order_amount = (self.amount).to_f
       case self.payment_status
         when "paid"
           return false if efact_number
@@ -110,7 +114,7 @@ module Ecommerce
                 date_invoice: Time.now.to_s[0..9],
                 payment_term_id: "Contado",
                 date: Time.now.to_s[0..9],
-                amount_total: self.amount.to_f,
+                amount_total: total_order_amount,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
@@ -138,7 +142,7 @@ module Ecommerce
                 date_invoice: Time.now.to_s[0..9],
                 payment_term_id: "Contado",
                 date: Time.now.to_s[0..9],
-                amount_total: self.amount.to_f,
+                amount_total: total_order_amount,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
@@ -171,7 +175,7 @@ module Ecommerce
                 date_invoice: Time.now.to_s[0..9],
                 payment_term_id: "Contado",
                 date: Time.now.to_s[0..9],
-                amount_total: self.amount.to_f,
+                amount_total: total_order_amount,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
@@ -200,7 +204,7 @@ module Ecommerce
                 date_invoice: Time.now.to_s[0..9],
                 payment_term_id: "Contado",
                 date: Time.now.to_s[0..9],
-                amount_total: self.amount.to_f,
+                amount_total: total_order_amount,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,

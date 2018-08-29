@@ -80,6 +80,17 @@ module Ecommerce
       end
     end
 
+    def current_price_cents
+      case Ecommerce::SessionInfo.current_session_currency
+      when "usd"
+        [self.usd_price_cents, self.usd_discounted_price_cents].min
+      when "pen"
+        [self.price_cents, self.discounted_price_cents].min
+      else
+        [self.price_cents, self.discounted_price_cents].min
+      end
+    end
+
     def create_product_taxes
       default_taxes = Ecommerce::Control.find_by!(name: "default_taxes").text_value.split(",")
       default_taxes.each_cons(2) { |tax, amount|

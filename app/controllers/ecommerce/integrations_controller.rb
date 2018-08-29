@@ -15,7 +15,7 @@ module Ecommerce
       when "Urbaner"
         case
         when @cart.get_totals[:tot_acum].to_f < 30
-          response = {:amount => 0.00}
+          response = {:amount => 10.00}
         when @cart.get_totals[:tot_acum].to_f < 50
           response = {:amount => 0.00}
         else
