@@ -2,7 +2,7 @@ function noo_masonry(){
   "use strict";
   var $container=jQuery('.noo-product-grid');
   $container.imagesLoaded(function(){
-    console.log("noo_masonry fired");
+    //console.log("noo_masonry fired");
     $container.isotope({
       itemSelector:'.masonry-item',
       transitionDuration:'0.8s',
@@ -26,7 +26,7 @@ jQuery(document).ready(function(){
   "use strict";
   //noo_masonry2();
   var $container=jQuery('.noo-product-grid');
-  //noo_masonry();
+  noo_masonry();
   var $filter=jQuery('.masonry-filters a');
   $filter.click(function(e){
     e.stopPropagation();
@@ -46,11 +46,13 @@ jQuery(document).ready(function(){
   });
 
 jQuery(window).resize('load resize',function(){
+  console.log("fired on load resize");
   //noo_masonry();
   //noo_masonry2();
 });
 
 jQuery(document).on('noo-layout-changed',function(){
+  console.log("fired on noo-layout-changed");
   //noo_masonry();
   //noo_masonry2();
 });

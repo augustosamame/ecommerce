@@ -33,6 +33,7 @@
 </div>
 
 <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js"></script>
+<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
 
 <script>
 $(document).ready(function(){
@@ -51,7 +52,13 @@ $(document).ready(function(){
   });
 
   $container.on( 'append.infiniteScroll', function( event, response, path, items ) {
+    //console.log("appended infinite scroll");
     var $loading = $('.spinner').hide();
+    $container.isotope('appended', $(items));
+    $container.imagesLoaded(function() {
+      //console.log('images loaded');
+      $container.isotope('layout');
+    })
     //noo_masonry();
     //noo_masonry2();
   });
