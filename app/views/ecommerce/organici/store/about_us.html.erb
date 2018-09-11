@@ -1,0 +1,61 @@
+<div class="main" style="margin-bottom: 250px;">
+		<div class="container-fluid dvt_houses_tope">
+			<div class="row">
+				<!--menu izquierda -->
+				<div class="col-md-2 dvt_houses" >
+					<ul class="dvt_houses_lista " style="margin-top:30px;">
+						<li>
+							<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
+
+								<a href=" <%= houses_m_path %> ">
+								<button type="button" class="btn btn-primary btn-lg btn-block dvt_houses_spac_btn"></button>
+								</a>
+							</div>
+							<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
+								<a href=" <%= categories_m_path %> ">
+								<button type="button" class="btn btn-primary btn-lg btn-block dvt_categ_spac_btn"></button>
+								</a>
+							</div>
+						</li>
+						<li >
+
+						<% @secondary_menu_categories.each do |category| %>
+							<div class="dvt_houses_contenedor hidden-xs hidden-sm" >
+								<a href=" <%= products_path(category_id: category.id) %> ">
+									<%= image_tag category.image.url, width: 187, height: 49, alt: "", class: "dvt_houses_img" %>
+									<span class="dvt_houses_titulos" style="text-align:center;"><%= category.image_popular_homepage_overlay_text %></span>
+								</a>
+							</div>
+						<% end %>
+
+					</li>
+					</ul>
+
+				</div>
+					<!--fin menu izquierda -->
+		</div>
+
+	</div>
+	<div class="section dark nobottommargin" style="margin-top: -120px;">
+	  <div class="container clearfix">
+				<h1> About Us </h1>
+	    <div class="row" style="margin-top: 30px;">
+				<p>
+				Born out of frustration from the lack of global products available in Peru at affordable pricing, we are a wholesale importer of products, offering international products at a reasonable price directly to Peruvian customers.
+			</p>
+<p>We carry a reasonable amount of stock of all our consumer products in Peru and deliver products Same-Day or Next-Day depending on the time the order is placed on our platform.</p>
+
+<p>Our aim is to import high quality international consumer products at comparable price points to those available in the home country of said products. In particular our focus is on products that are currently not available in Peru and/or over priced in the Peruvian market. We also offer locally produced goods on our online platform, at better prices by working directly with the manufacturer, especially products that we think would be highly appealing to our customer base.</p>
+
+<p style="margin-top: 30px;"><h4 style="margin-bottom: 30px;">Business Objective</h4></p>
+
+<p>1.      To disrupt the market by importing selected high demand products and selling them directly to our target consumers (as opposed to using traditional channels), thus keeping our prices at international & locally competitive rates.</p>
+
+<p>2.      To create a market for products unavailable in the Peruvian arena and provide alternative consumer goods options to those offered locally.</p>
+
+<p>3.      To provide a robust solution to the inconvenience of bringing certain products as personal items from abroad.</p>
+	    </div>
+	  </div>
+	</div>
+
+</div>

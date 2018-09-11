@@ -50,6 +50,8 @@ Ecommerce::Engine.routes.draw do
   get '/sub_categories_m', to: 'store#sub_categories_mobile'
   get '/houses_m', to: 'store#houses_mobile'
   get '/about_us', to: 'store#about_us'
+  get '/contact_us', to: 'store#contact_us'
+  post '/contact_us', to: 'store#post_contact_us'
   get '/ecommerce_root', to: 'store#main'
   root to: 'store#main'
 

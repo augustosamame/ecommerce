@@ -22,6 +22,20 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/store/main"
     end
 
+    def about_us
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/about_us"
+    end
+
+    def contact_us
+      @contact_message = Ecommerce::ContactMessage.new
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/contact_us"
+    end
+
+    def post_contact_us
+      AdminMailer.contact_us_email(params[:contact_message][:name], params[:contact_message][:email], params[:contact_message][:phone], params[:contact_message][:message]).deliver_later!# unless Rails.env == "development"
+      redirect_back fallback_location: contact_us_path, notice: "Thank you for your message. We will be in touch soon"
+    end
+
     def shop_by_category
       @products = Ecommerce::Product.where(category_id: params[:id]).active
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"

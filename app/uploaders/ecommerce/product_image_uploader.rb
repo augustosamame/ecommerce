@@ -40,6 +40,10 @@ class Ecommerce::ProductImageUploader < CarrierWave::Uploader::Base
   #   process resize_to_fit: [50, 50]
   # end
 
+  version :medium_260 do
+    process resize_to_limit: [260, 260]
+  end
+
   version :medium_400 do
     process resize_to_limit: [400, 400]
   end

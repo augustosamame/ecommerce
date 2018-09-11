@@ -88,7 +88,7 @@ module Ecommerce
     end
 
     def set_header_menu_items
-      @primary_menu_categories = Ecommerce::Category.where(main_menu: true, category_type: "primary", status: "active").order(:category_order)
+      @primary_menu_categories = Ecommerce::Category.includes(:translations).where(main_menu: true, category_type: "primary", status: "active").order(:category_order)
     end
 
     def merge_abilities
