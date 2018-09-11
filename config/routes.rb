@@ -52,6 +52,8 @@ Ecommerce::Engine.routes.draw do
   get '/about_us', to: 'store#about_us'
   get '/contact_us', to: 'store#contact_us'
   post '/contact_us', to: 'store#post_contact_us'
+  get '/wishlist_message', to: 'store#wishlist'
+  post '/wishlist_message', to: 'store#post_wishlist'
   get '/ecommerce_root', to: 'store#main'
   root to: 'store#main'
 

@@ -93,12 +93,18 @@
 
 
 
-											<li class="menu-item fly-right">
+											<!-- <li class="menu-item fly-right">
 												<% if @wishlist && @wishlist.id %>
 												<a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.wishlist_path(@wishlist.id) %>">
 													<i class="fa fa-heart-o"></i><%= " #{t('.wishlist')}" %>
 												</a>
 												<% end %>
+											</li> -->
+
+											<li class="menu-item fly-right">
+												<a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.wishlist_message_path %>">
+													<i class="fa fa-heart-o"></i><%= " #{t('.wishlist')}" %>
+												</a>
 											</li>
 
 											<% unless browser.device.mobile? %>

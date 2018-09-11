@@ -36,6 +36,21 @@ module Ecommerce
       redirect_back fallback_location: contact_us_path, notice: "Thank you for your message. We will be in touch soon"
     end
 
+    def wishlist
+      @wishlist_message = Ecommerce::WishlistMessage.new
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/wishlist"
+    end
+
+    def post_wishlist
+      wishparams = params[:wishlist_message]
+      if current_user
+        AdminMailer.wishlist_email(current_user.name, current_user.email, current_user.username, wishparams[:product_name], wishparams[:brand], wishparams[:attributes], wishparams[:country], wishparams[:comment]).deliver_later!# unless Rails.env == "development"
+      else
+        AdminMailer.wishlist_email(wishparams[:name], wishparams[:email], wishparams[:phone], wishparams[:product_name], wishparams[:brand], wishparams[:attributes], wishparams[:country], wishparams[:comment]).deliver_later!# unless Rails.env == "development"
+      end
+      redirect_back fallback_location: wishlist_message_path, notice: "Thank you letting us know your wish. We'll be in touch soon"
+    end
+
     def shop_by_category
       @products = Ecommerce::Product.where(category_id: params[:id]).active
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"

@@ -1,45 +1,9 @@
 <div class="main" style="margin-bottom: 250px;">
-		<div class="container-fluid dvt_houses_tope">
-			<div class="row">
-				<!--menu izquierda -->
-				<div class="col-md-2 dvt_houses" >
-					<ul class="dvt_houses_lista " style="margin-top:30px;">
-						<li>
-							<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
 
-								<a href=" <%= houses_m_path %> ">
-								<button type="button" class="btn btn-primary btn-lg btn-block dvt_houses_spac_btn"></button>
-								</a>
-							</div>
-							<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
-								<a href=" <%= categories_m_path %> ">
-								<button type="button" class="btn btn-primary btn-lg btn-block dvt_categ_spac_btn"></button>
-								</a>
-							</div>
-						</li>
-						<li >
-
-						<% @secondary_menu_categories.each do |category| %>
-							<div class="dvt_houses_contenedor hidden-xs hidden-sm" >
-								<a href=" <%= products_path(category_id: category.id) %> ">
-									<%= image_tag category.image.url, width: 187, height: 49, alt: "", class: "dvt_houses_img" %>
-									<span class="dvt_houses_titulos" style="text-align:center;"><%= category.image_popular_homepage_overlay_text %></span>
-								</a>
-							</div>
-						<% end %>
-
-					</li>
-					</ul>
-
-				</div>
-					<!--fin menu izquierda -->
-		</div>
-
-	</div>
-	<div class="section dark nobottommargin" style="margin-top: -120px;">
+	<div class="section dark nobottommargin" style="margin-top: 30px;">
 	  <div class="container clearfix">
 				<h1> <%= t('.about_us') %> </h1>
-	    <div class="row" style="margin-top: 30px;">
+	    <div class="row" style="margin-top: 30px; margin-left: 10px; margin-right: 10px;">
 				<p>
 				Born out of frustration from the lack of global products available in Peru at affordable pricing, we are a wholesale importer of products, offering international products at a reasonable price directly to Peruvian customers.
 			</p>
