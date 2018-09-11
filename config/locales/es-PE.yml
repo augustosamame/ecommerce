@@ -187,7 +187,7 @@ es-PE:
           home_menu: "Inicio"
           blog_menu: "Blog"
           contact_us_menu: "Contáctanos"
-          about_us_menu: "Quiénes Somos"
+          about_us_menu: "Acerca de Nosotros"
           manage_blog_posts: "Administrar Blog"
           my_orders: "Mis Pedidos"
           my_account: "Mi Cuenta"
@@ -233,6 +233,8 @@ es-PE:
           subscribe_to_us_text: "Ingresa tu correo a nuestra lista de y te avisaremos sobre nuevos productos y promociones."
           email: "Correo Electrónico"
           submit: "Enviar"
+        about_us:
+          about_us: "Acerca de Nosotros"
     canvas_shop:
       store:
         top_bar:
