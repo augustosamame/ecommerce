@@ -19,7 +19,7 @@ module Ecommerce
       @payment_credit_card_visanet = PaymentMethod.is_active.find_by(name: "Card", processor: "Visanet")
       @payment_credit_card_culqi = PaymentMethod.is_active.find_by(name: "Card", processor: "Culqi")
 
-      @dni_required = (@cart_subtotal.to_f >= 7)
+      @dni_required = (@cart_subtotal.to_f >= 700)
 
       info_factura_vat = !Ecommerce::DataBizInvoice.find_by(user_id: current_user.id).try(:vat).blank?
       @info_factura_available = false
