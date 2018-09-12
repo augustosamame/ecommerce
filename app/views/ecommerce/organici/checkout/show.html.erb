@@ -72,6 +72,29 @@
                     </tr>
                   </tfoot>
                 </table>
+
+                <% if @dni_required %>
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+
+                    <li class="wc_payment_method payment_method_card">
+                      <p> <%= t('.text_over_700') %> </p>
+
+                      <div class="payment_box payment_method_cheque">
+
+                          <label for="dni_required">
+                            <%= t('.docs_over_700') %>
+                          </label>
+                          <input type="text" name="dni_required" id="dni-required" />
+
+                      </div>
+
+                    </li>
+                  </ul>
+                </div>
+                <% end %>
+
+
                 <div class="commerce-checkout-payment">
                   <ul class="payment_methods">
 
@@ -210,20 +233,27 @@
 
   $('#pay-now-button').on('click', function(e) {
     // Abre el formulario con las opciones de Culqi.settings
-    if (shipping_calculated_flag) {
-      if ($('input[name=payment_method]:checked').val() == "card") {
-        Culqi.open();
-        e.preventDefault();
+    var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+    if (payment_amount >= 700 && $('#dni-required').val().length === 0 ) {
+      alert("<%= t('.you_must_enter_doc') %>");
       }
-      else if ($('input[name=payment_method]:checked').val() == "manual") {
-        manual_payment();
-        e.preventDefault();
-      }
-    }
     else {
-      // place error message here
-      alert("<%= t('.you_must_pick_or_save_an_address') %>");
+      if (shipping_calculated_flag) {
+        if ($('input[name=payment_method]:checked').val() == "card") {
+          Culqi.open();
+          e.preventDefault();
+        }
+        else if ($('input[name=payment_method]:checked').val() == "manual") {
+          manual_payment();
+          e.preventDefault();
+        }
+      }
+      else {
+        // place error message here
+        alert("<%= t('.you_must_pick_or_save_an_address') %>");
+      }
     }
+
   });
 
   function culqi() {
@@ -243,7 +273,8 @@
           shipping_amount: shipping_amount,
           picked_shipping_address_id: picked_shipping_address_id,
           cart_id: '<%= "#{@cart.id}" if @cart %>',
-          want_factura: $('#want_factura').is(":checked")
+          want_factura: $('#want_factura').is(":checked"),
+          required_doc: $('#dni-required').val()
           },
           function(data) {
           }
@@ -272,7 +303,8 @@
       shipping_amount: shipping_amount,
       picked_shipping_address_id: picked_shipping_address_id,
       cart_id: '<%= "#{@cart.id}" if @cart %>',
-      want_factura: $('#want_factura').is(":checked")
+      want_factura: $('#want_factura').is(":checked"),
+      required_doc: $('#dni-required').val()
       },
       function(data) {
       }

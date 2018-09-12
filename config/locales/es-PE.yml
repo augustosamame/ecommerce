@@ -106,6 +106,8 @@ es-PE:
           subtotal: "Subtotal"
           shipping: "Costo de Envío"
           i_need_a_factura: "Necesito Factura"
+          text_over_700: "Los pedidos sobre S/. 700 requieren DNI, CE o Pasaporte"
+          docs_over_700: "DNI / CE / Pasaporte"
           address: "Dirección"
           click_here_to_setup_factura_info: "Haga Click Aqui para Ingresar Datos de Factura"
           bank_deposit: "Depósito Bancario"
@@ -113,6 +115,7 @@ es-PE:
           credit_debit_card: "Tarjeta de Crédito / Débito"
           place_order: "Finalizar Pedido"
           you_must_pick_or_save_an_address: "Debe seleccionar o crear una dirección"
+          you_must_enter_doc: "Debe ingresar su DNI / CE o Pasaporte"
         pick_address_form:
           pick_an_address: "Selecciona Una Dirección"
         new_address_form:

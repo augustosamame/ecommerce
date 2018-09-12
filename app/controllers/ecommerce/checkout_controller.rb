@@ -19,6 +19,8 @@ module Ecommerce
       @payment_credit_card_visanet = PaymentMethod.is_active.find_by(name: "Card", processor: "Visanet")
       @payment_credit_card_culqi = PaymentMethod.is_active.find_by(name: "Card", processor: "Culqi")
 
+      @dni_required = (@cart_subtotal.to_f >= 7)
+
       info_factura_vat = !Ecommerce::DataBizInvoice.find_by(user_id: current_user.id).try(:vat).blank?
       @info_factura_available = false
       if info_factura_vat
@@ -49,6 +51,7 @@ module Ecommerce
                         billing_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
                         payment_status: "unpaid",
                         efact_type: params[:want_factura] == "true" ? "factura" : "boleta",
+                        required_doc: params[:required_doc],
                         status: "active"
                         )
           if @order.save
