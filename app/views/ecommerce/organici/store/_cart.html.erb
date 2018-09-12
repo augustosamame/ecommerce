@@ -2,8 +2,10 @@
 <a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
   <span class="cart-item has-items" id="shopping-cart">
     <i class="fa fa-shopping-cart"></i>
-    <span>(<%= @cart.get_totals[:tot_qty] %>)</span> <%= t('.items') %>
-  </span>
+    <span>(<%= @cart.get_totals[:tot_qty] %>)
+    <% unless browser.device.mobile? %>
+      </span> <%= t('.items') %> </span>
+    <% end %>
 </a>
 <div class="noo-minicart">
   <div class="minicart-header"><%= @cart.get_totals[:tot_qty] %> <%= t('.items_in_shopping_cart') %></div>
