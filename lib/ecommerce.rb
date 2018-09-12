@@ -74,6 +74,7 @@ module Ecommerce
   mattr_accessor :default_currency
   mattr_accessor :enable_currency_selector
   mattr_accessor :enable_language_selector
+  mattr_accessor :allow_coupons
 
   class << self
 

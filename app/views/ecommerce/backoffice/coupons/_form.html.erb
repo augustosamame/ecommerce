@@ -1,0 +1,32 @@
+<%= simple_form_for([:backoffice, @coupon]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :coupon_code %>
+    <%= f.input :coupon_type, collection: Ecommerce::Coupon.coupon_types.keys %>
+    <%= f.input :dicount_percentage %>
+    <%= f.input :discount_fixed %>
+    <%= f.input :discount_threshold %>
+    <%= f.input :start_date, as: :date_time_picker %>
+    <%= f.input :end_date, as: :date_time_picker %>
+    <%= f.input :max_uses_per_user %>
+    <%= f.input :max_uses %>
+    <%= f.input :current_uses %>
+    <%= f.input :free_shipping %>
+    <%= f.input :status, collection: Ecommerce::Coupon.statuses.keys %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<script>
+
+$(document).ready(function () {
+  $('#coupon_start_date, #coupon_end_date').datetimepicker({
+    locale: 'en'
+  });
+});
+
+</script>

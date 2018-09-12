@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  coupon_code: MyString
+  coupon_type: 1
+  dicount_percentage: 1
+  discount_fixed: 1
+  discount_threshold: 
+  start_date: 2018-09-12 07:51:46
+  end_date: 2018-09-12 07:51:46
+  max_uses_per_user: 1
+  max_uses: 1
+  free_shipping: false
+  status: 1
+
+two:
+  coupon_code: MyString
+  coupon_type: 1
+  dicount_percentage: 1
+  discount_fixed: 1
+  discount_threshold: 
+  start_date: 2018-09-12 07:51:46
+  end_date: 2018-09-12 07:51:46
+  max_uses_per_user: 1
+  max_uses: 1
+  free_shipping: false
+  status: 1

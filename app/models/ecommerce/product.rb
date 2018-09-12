@@ -8,6 +8,7 @@ module Ecommerce
     belongs_to :category, optional: true
     belongs_to :brand
     belongs_to :supplier
+    belongs_to :coupon, optional: true
 
     has_many :product_properties
     has_many :properties, through: :product_properties

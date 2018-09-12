@@ -7,6 +7,7 @@
     <%= f.association :supplier, :label_method => lambda { |supplier| "#{supplier.name}" }  %>
     <%= f.input :status, collection: Ecommerce::Product.statuses.keys %>
     <%= f.input :name %>
+    <%= f.association :coupon, :value_method => lambda { |coupon| "#{coupon.id}" }, :label_method => lambda { |coupon| "#{coupon.coupon_code}" }, label: "Any Coupon that applies to this specific product" %>
     <%= f.input :short_description, label: "Short Description" %>
     <%= f.input :description, label: "Long Description" %>
     <%= f.input :price_cents, :input_html => { :id => 'price-cents' } %>

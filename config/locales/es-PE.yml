@@ -25,6 +25,8 @@ es-PE:
   date:
     formats:
       default: "%d/%m/%Y"
+      long: "%A, %d de %B del %Y"
+      short: "%d de %b"
   model:
     order:
       stage_new: "Nuevo"
@@ -108,6 +110,8 @@ es-PE:
           i_need_a_factura: "Necesito Factura"
           text_over_700: "Los pedidos sobre S/. 700 requieren DNI, CE o Pasaporte"
           docs_over_700: "DNI / CE / Pasaporte"
+          enter_coupon: "Tiene un código de cupón? Ingréselo aquí:"
+          apply_coupon: "Applicar"
           address: "Dirección"
           click_here_to_setup_factura_info: "Haga Click Aqui para Ingresar Datos de Factura"
           bank_deposit: "Depósito Bancario"

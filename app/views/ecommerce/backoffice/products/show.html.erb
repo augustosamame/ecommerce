@@ -21,6 +21,9 @@
   <dt>Category:</dt>
   <dd><%= @backoffice_product.category_list.to_s %></dd>
 
+  <dt>Associated Coupon:</dt>
+  <dd><%= @backoffice_product.coupon.try(:coupon_code) %></dd>
+
   <dt>Description:</dt>
   <dd><%= @backoffice_product.description %></dd>
 

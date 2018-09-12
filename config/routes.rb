@@ -23,6 +23,7 @@ Ecommerce::Engine.routes.draw do
     post '/orders/einvoice'
     resources :payment_methods
     get '/translations/index', :to => "translations#index"
+    resources :coupons
   end
 
   post 'locale', :to => 'application#locale'

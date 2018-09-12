@@ -21,6 +21,8 @@ module Ecommerce
 
       @dni_required = (@cart_subtotal.to_f >= 700)
 
+      @coupons_active = Ecommerce::allow_coupons
+
       info_factura_vat = !Ecommerce::DataBizInvoice.find_by(user_id: current_user.id).try(:vat).blank?
       @info_factura_available = false
       if info_factura_vat

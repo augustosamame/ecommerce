@@ -1,0 +1,51 @@
+<div class="page-header">
+  <%= link_to new_backoffice_coupon_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Coupon
+  <% end %>
+  <h1>Listing Coupons</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Coupon Code</th>
+        <th>Coupon Type</th>
+        <th>Discount Percentage</th>
+        <th>Fixed Discount</th>
+        <th>Discount Threshold</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Max Uses per Customer</th>
+        <th>Max Uses Total</th>
+        <th>Current Uses</th>
+        <th>Free Shipping?</th>
+        <th>Status</th>
+        <th>Show</th>
+        <th>Edit</th>
+        <th>Destroy</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @coupons) do |coupon| %>
+        <td><%= coupon.coupon_code %></td>
+        <td><%= coupon.coupon_type %></td>
+        <td><%= coupon.dicount_percentage %></td>
+        <td><%= coupon.discount_fixed %></td>
+        <td><%= coupon.discount_threshold %></td>
+        <td><%= coupon.start_date %></td>
+        <td><%= coupon.end_date %></td>
+        <td><%= coupon.max_uses_per_user %></td>
+        <td><%= coupon.max_uses %></td>
+        <td><%= coupon.current_uses %></td>
+        <td><%= coupon.free_shipping %></td>
+        <td><%= coupon.status %></td>
+        <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_coupon_path(coupon) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_coupon_path(coupon) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_coupon_path(coupon), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -94,6 +94,30 @@
                 </div>
                 <% end %>
 
+                <% if @coupons_active %>
+
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+
+                    <li class="wc_payment_method">
+
+                      <div class="payment_box payment_method_cheque">
+
+                          <label for="coupon_code" style="font-size: 12px;">
+                            <%= t('.enter_coupon') %>
+                          </label>
+
+                          <input type="text" name="coupon_code" id="coupon-code" />
+                          <button type="button" class="btn btn-info coupon-apply"><%= t('.apply_coupon') %></button>
+
+                      </div>
+
+                    </li>
+                  </ul>
+                </div>
+
+                <% end %>
+
 
                 <div class="commerce-checkout-payment">
                   <ul class="payment_methods">

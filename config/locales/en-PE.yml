@@ -1,4 +1,15 @@
 en-PE:
+  activerecord:
+    errors:
+      models:
+        ecommerce/coupon:
+          attributes:
+            coupon_code:
+              blank: "Coupon Code cannot be blank"
+            coupon_type:
+              blank: "Coupon Type cannot be blank"
+            status:
+              blank: "Coupon Status cannot be blank"
   number:
     currency:
       format:
@@ -27,6 +38,10 @@ en-PE:
       default: "%d/%m/%Y"
       long: "%A, %d de %B del %Y"
       short: "%d de %b"
+    order:
+    - :year
+    - :month
+    - :day
   model:
     order:
       stage_new: "New"
@@ -142,6 +157,8 @@ en-PE:
           i_need_a_factura: "I need a Factura"
           text_over_700: "Orders over S/. 700 require DNI / CE / Passport"
           docs_over_700: "DNI / CE / Passport"
+          enter_coupon: "Got a coupon code? Enter it Here:"
+          apply_coupon: "Apply"
           address: "Address"
           click_here_to_setup_factura_info: "Click Here to Setup Factura Info"
           bank_deposit: "Bank Deposit"
