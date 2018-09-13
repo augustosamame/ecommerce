@@ -262,6 +262,13 @@
           $("#coupon-subtotal-id").removeClass('coupon-subtotal-hidden');
           $("#coupon-error").html("");
           applied_coupon = coupon_code
+          console.log(data.free_shipping);
+          console.log(data.free_shipping == true);
+          if (data.free_shipping == true) {
+            $("#shipping-amount").html(0)
+          } else {
+            calculate_shipping($("#address_street").val(), $("#address_district").val());
+          }
           recalculate_checkout_totals();
         }
         else {

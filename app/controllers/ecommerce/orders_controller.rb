@@ -29,7 +29,8 @@ module Ecommerce
           discount = cart_subtotal.to_f * (found_coupon.dicount_percentage.to_f / 100)
           response = {
                       :result => "ok",
-                      :discount => - discount
+                      :discount => - discount,
+                      :free_shipping => found_coupon.free_shipping?
                      }
         when "fixed_discount_with_threshold"
           if cart_subtotal.to_f < found_coupon.discount_threshold
@@ -41,14 +42,16 @@ module Ecommerce
             discount = found_coupon.discount_fixed || 0
             response = {
                         :result => "ok",
-                        :discount => - discount
+                        :discount => - discount,
+                        :free_shipping => found_coupon.free_shipping?
                        }
           end
         when "fixed_discount_without_threshold"
           discount = found_coupon.discount_fixed || 0
           response = {
                       :result => "ok",
-                      :discount => - discount
+                      :discount => - discount,
+                      :free_shipping => found_coupon.free_shipping?
                      }
         when "percentage_discount_per_product"
 
@@ -66,7 +69,8 @@ module Ecommerce
             end
             response = {
                        :result => "ok",
-                       :discount => - discount
+                       :discount => - discount,
+                       :free_shipping => found_coupon.free_shipping?
                        }
           end
         end
