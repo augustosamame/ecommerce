@@ -40,6 +40,7 @@ Ecommerce::Engine.routes.draw do
   get '/my_account', :to => 'users#show'
 
   post '/calculate_shipping', :to => 'integrations#get_shipping_quote'
+  post '/calculate_coupon', :to => 'orders#calculate_coupon'
 
   resources :carts, except: [:index, :new, :create]
   resources :cart_items

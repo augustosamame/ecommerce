@@ -12,7 +12,7 @@ module Ecommerce
     enum status: {active: 0, void: 2 }
     enum efact_type: {boleta: 0, factura: 1 }
 
-    monetize :amount_cents, :shipping_amount_cents, with_model_currency: :currency
+    monetize :amount_cents, :shipping_amount_cents, :discount_amount_cents, with_model_currency: :currency
 
     after_commit :notify_new_order, on: :create
     after_commit :blank_user_carts, on: :create
@@ -92,7 +92,11 @@ module Ecommerce
       if self.shipping_amount_cents > 0
         invoice_lines_array << {name: "Costo de envío (shipping)", quantity: 1, product_id: 1000, price_total: shipping_amount.to_i, price_subtotal: shipping_amount.to_i, igv_tax: true, igv_amount: 18 }
       end
+      unless self.discount_amount_cents.blank?
+        invoice_lines_array << {name: "Cupón de Descuento", quantity: 1, product_id: 1000, price_total: discount_amount.to_f, price_subtotal: discount_amount.to_f, igv_tax: true, igv_amount: 18 }
+      end
       total_order_amount = (self.amount).to_f
+      discount_total = (self.discount_amount).to_f
       case self.payment_status
         when "paid"
           return false if efact_number
@@ -116,6 +120,7 @@ module Ecommerce
                 payment_term_id: "Contado",
                 date: Time.now.to_s[0..9],
                 amount_total: total_order_amount,
+                discount_total: discount_total,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
@@ -144,6 +149,7 @@ module Ecommerce
                 payment_term_id: "Contado",
                 date: Time.now.to_s[0..9],
                 amount_total: total_order_amount,
+                discount_total: discount_total,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,

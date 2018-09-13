@@ -14,11 +14,14 @@
   <dt>User:</dt>
   <dd><%= @backoffice_order.user.name %></dd>
 
-  <dt>Order Total (inc. shipping):</dt>
+  <dt>Order Total (w/ ship & disc):</dt>
   <dd><%= number_to_currency(@backoffice_order.amount) %></dd>
 
   <dt>Shipping Amount:</dt>
   <dd><%= number_to_currency(@backoffice_order.shipping_amount) %></dd>
+
+  <dt>Coupon Discount Amount:</dt>
+  <dd><%= number_to_currency(@backoffice_order.discount_amount) %></dd>
 
   <dt>Stage:</dt>
   <dd><%= @backoffice_order.friendly_stage %></dd>
@@ -33,7 +36,7 @@
   <dd><%= @backoffice_order.efact_type %></dd>
 
   <dt>Coupon:</dt>
-  <dd><%= @backoffice_order.coupon_id %></dd>
+  <dd><%= @backoffice_order.coupon.try(:coupon_code) %></dd>
 
   <dt>Payment status:</dt>
   <dd><%= @backoffice_order.payment_status %></dd>

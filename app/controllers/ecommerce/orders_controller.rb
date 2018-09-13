@@ -18,6 +18,70 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/order/show"
     end
 
+    def calculate_coupon
+      puts params
+      found_coupon = Coupon.find_by(coupon_code: params[:coupon_code])
+      if found_coupon
+        cart = Cart.find(params[:cart_id])
+        cart_subtotal = cart.cart_items.includes(:product).sum(&:line_total)
+        case found_coupon.coupon_type
+        when "percentage_discount"
+          discount = cart_subtotal.to_f * (found_coupon.dicount_percentage.to_f / 100)
+          response = {
+                      :result => "ok",
+                      :discount => - discount
+                     }
+        when "fixed_discount_with_threshold"
+          if cart_subtotal.to_f < found_coupon.discount_threshold
+            response = {
+                        :result => "error",
+                        :error_message => I18n.t('controllers.orders.calculate_coupon.order_under_coupon_threshold')
+                       }
+          else
+            discount = found_coupon.discount_fixed || 0
+            response = {
+                        :result => "ok",
+                        :discount => - discount
+                       }
+          end
+        when "fixed_discount_without_threshold"
+          discount = found_coupon.discount_fixed || 0
+          response = {
+                      :result => "ok",
+                      :discount => - discount
+                     }
+        when "percentage_discount_per_product"
+
+          qualifying_products = Product.where(coupon_id: found_coupon.id).pluck(:id)
+          qualifying_products_in_cart = cart.cart_items.where(product_id: qualifying_products)
+          if qualifying_products_in_cart.empty?
+            response = {
+                        :result => "error",
+                        :error_message => I18n.t('controllers.orders.calculate_coupon.no_qualifying_products')
+                       }
+          else
+            discount = 0
+            qualifying_products_in_cart.each do |cart_line|
+              discount += cart_line.line_total.to_f * (found_coupon.dicount_percentage.to_f / 100)
+            end
+            response = {
+                       :result => "ok",
+                       :discount => - discount
+                       }
+          end
+        end
+      else
+        response = {
+                    :result => "error",
+                    :error_message => I18n.t('controllers.orders.calculate_coupon.coupon_not_found')
+                   }
+      end
+
+      respond_to do |format|
+        format.json { render json: response.to_json }
+      end
+    end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_order

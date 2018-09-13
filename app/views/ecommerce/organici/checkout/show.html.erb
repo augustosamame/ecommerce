@@ -66,6 +66,10 @@
                       <th><%= t('.shipping') %></th>
                       <td><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="shipping-amount">0.00</span></td>
                     </tr>
+                    <tr class="cart-subtotal coupon-subtotal-hidden" id="coupon-subtotal-id">
+                      <th><%= t('.coupon_line') %></th>
+                      <td><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="coupon-amount">0.00</span></td>
+                    </tr>
                     <tr class="order-total">
                       <th><%= t('.total') %></th>
                       <td><strong><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="payment-amount"><%= @cart_subtotal %></span></strong></td>
@@ -109,6 +113,7 @@
 
                           <input type="text" name="coupon_code" id="coupon-code" />
                           <button type="button" class="btn btn-info coupon-apply"><%= t('.apply_coupon') %></button>
+                          <label id="coupon-error" style="font-size: 12px; color: red;"></label>
 
                       </div>
 
@@ -209,10 +214,15 @@
 
   var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
   var shipping_calculated_flag = false
+  var applied_coupon = ''
 
   // calculate and update shipping html tag when shipping address is created
   $("#save-address-button").click(function() {
     calculate_shipping($("#address_street").val(), $("#address_district").val());
+  });
+  // calculate coupon and recalculate_checkout_totals
+  $(".coupon-apply").click(function() {
+    calculate_coupon( $("#coupon-code").val() );
   });
   // calculate and update shipping html tag when shipping address is picked
   $('#address_id').on('change', function() {
@@ -240,9 +250,30 @@
     });
   }
 
+  function calculate_coupon(coupon_code) {
+    $.ajax({
+      url: "calculate_coupon",
+      dataType: "json",
+      method: "POST",
+      data: { coupon_code: coupon_code, cart_id: "<%= @cart.id %>" },
+      success: function(data){
+        if (data.result == "ok") {
+          $("#coupon-amount").html(Number(data.discount).toFixed(2));
+          $("#coupon-subtotal-id").removeClass('coupon-subtotal-hidden');
+          $("#coupon-error").html("");
+          applied_coupon = coupon_code
+          recalculate_checkout_totals();
+        }
+        else {
+          $("#coupon-error").html(data.error_message);
+        }
+      }
+    });
+  }
+
   function recalculate_checkout_totals() {
     Culqi.publicKey = "<%= Culqi.public_key %>";
-    var total_amount = (Number($("#shipping-amount").html()) + Number($("#subtotal").html())).toFixed(2);
+    var total_amount = (Number($("#coupon-amount").html()) + Number($("#shipping-amount").html()) + Number($("#subtotal").html())).toFixed(2);
 
     $('#payment-amount').html(total_amount)
     payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
@@ -258,7 +289,7 @@
   $('#pay-now-button').on('click', function(e) {
     // Abre el formulario con las opciones de Culqi.settings
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
-    if (payment_amount >= 700 && $('#dni-required').val().length === 0 ) {
+    if (payment_amount >= 700 && typeof $('#dni-required').val() != "undefined" && $('#dni-required').val().length === 0 ) {
       alert("<%= t('.you_must_enter_doc') %>");
       }
     else {
@@ -288,6 +319,7 @@
         var picked_shipping_address_id = $('#address_id').val();
         var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
         var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+        var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
         //var payment_amount = $('#payment_amount').html() * 100;
         $.post(
           "checkout/pay_order_culqi_checkout",
@@ -298,7 +330,9 @@
           picked_shipping_address_id: picked_shipping_address_id,
           cart_id: '<%= "#{@cart.id}" if @cart %>',
           want_factura: $('#want_factura').is(":checked"),
-          required_doc: $('#dni-required').val()
+          required_doc: $('#dni-required').val(),
+          applied_coupon: applied_coupon,
+          discount_amount: discount_amount
           },
           function(data) {
           }
@@ -316,8 +350,7 @@
     var picked_shipping_address_id = $('#address_id').val();
     var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
-
-
+    var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
 
     //var payment_amount = $('#payment_amount').html() * 100;
     $.post(
@@ -328,7 +361,9 @@
       picked_shipping_address_id: picked_shipping_address_id,
       cart_id: '<%= "#{@cart.id}" if @cart %>',
       want_factura: $('#want_factura').is(":checked"),
-      required_doc: $('#dni-required').val()
+      required_doc: $('#dni-required').val(),
+      applied_coupon: applied_coupon,
+      discount_amount: discount_amount
       },
       function(data) {
       }

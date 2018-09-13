@@ -43,6 +43,7 @@ module Ecommerce
       else
         posted_address = params[:picked_shipping_address_id]
         last_user_address = Address.where(user_id: current_user.id).order(:id).last
+        used_coupon = Coupon.find_by(coupon_code: params[:applied_coupon])
         ActiveRecord::Base.transaction do
           @order = Order.new( user_id: current_user.id,
                         amount: Money.new(params[:amount].to_i, session[:currency]),
@@ -54,8 +55,14 @@ module Ecommerce
                         payment_status: "unpaid",
                         efact_type: params[:want_factura] == "true" ? "factura" : "boleta",
                         required_doc: params[:required_doc],
+                        coupon_id: used_coupon.try(:id),
+                        discount_amount: Money.new((params[:discount_amount].to_i), session[:currency]),
                         status: "active"
                         )
+          if used_coupon
+            current_uses = used_coupon.current_uses || 0
+            used_coupon.update(current_uses: current_uses + 1)
+          end
           if @order.save
             @cart_items = CartItem.where(cart_id: params[:cart_id].to_i)
             @cart_items.each do |item|

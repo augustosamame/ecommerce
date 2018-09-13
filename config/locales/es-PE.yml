@@ -27,6 +27,12 @@ es-PE:
       default: "%d/%m/%Y"
       long: "%A, %d de %B del %Y"
       short: "%d de %b"
+  controllers:
+    orders:
+      calculate_coupon:
+        coupon_not_found: "Cupón No Encontrado"
+        order_under_coupon_threshold: "No ha llegado al monto mínimo del cupón"
+        no_qualifying_products: "No hay productos en su carrito que califiquen para este cupón"
   model:
     order:
       stage_new: "Nuevo"
@@ -112,6 +118,8 @@ es-PE:
           docs_over_700: "DNI / CE / Pasaporte"
           enter_coupon: "Tiene un código de cupón? Ingréselo aquí:"
           apply_coupon: "Applicar"
+          coupon_line: "Cupón Aplicado"
+          coupon_error: "Cupón Inválido"
           address: "Dirección"
           click_here_to_setup_factura_info: "Haga Click Aqui para Ingresar Datos de Factura"
           bank_deposit: "Depósito Bancario"

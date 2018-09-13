@@ -42,6 +42,12 @@ en-PE:
     - :year
     - :month
     - :day
+  controllers:
+    orders:
+      calculate_coupon:
+        coupon_not_found: "Coupon Not Found"
+        order_under_coupon_threshold: "Order total under coupon threshold"
+        no_qualifying_products: "No qualifying products in cart for this coupon code"
   model:
     order:
       stage_new: "New"
@@ -159,6 +165,8 @@ en-PE:
           docs_over_700: "DNI / CE / Passport"
           enter_coupon: "Got a coupon code? Enter it Here:"
           apply_coupon: "Apply"
+          coupon_line: "Applied Coupon"
+          coupon_error: "Invalid Coupon"
           address: "Address"
           click_here_to_setup_factura_info: "Click Here to Setup Factura Info"
           bank_deposit: "Bank Deposit"

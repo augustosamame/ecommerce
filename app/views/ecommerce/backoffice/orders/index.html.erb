@@ -35,7 +35,7 @@
         <td><%= backoffice_order.friendly_stage %></td>
         <td><%= backoffice_order.efact_type %></td>
         <td><%= backoffice_order.friendly_shipping_address %></td>
-        <td><%= backoffice_order.coupon_id %></td>
+        <td><%= backoffice_order.coupon.try(:coupon_code) %></td>
         <td><%= backoffice_order.payment_status %></td>
         <td><%= backoffice_order.status %></td>
         <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_order_path(backoffice_order) %></td>
