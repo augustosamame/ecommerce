@@ -255,7 +255,7 @@
       url: "calculate_coupon",
       dataType: "json",
       method: "POST",
-      data: { coupon_code: coupon_code, cart_id: "<%= @cart.id %>" },
+      data: { coupon_code: coupon_code.toUpperCase(), cart_id: "<%= @cart.id %>" },
       success: function(data){
         if (data.result == "ok") {
           $("#coupon-amount").html(Number(data.discount).toFixed(2));
