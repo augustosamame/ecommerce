@@ -22,8 +22,7 @@ module Ecommerce
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
     def notify_new_order
-      AdminMailer.new_order_email(self.user, self).deliver! unless Rails.env == "development"
-      UserMailer.new_order_email(self.user, self).deliver! #unless Rails.env == "development"
+      SendOrderEmailsWorker.perform_in(30.seconds, self.id)
     end
 
     def blank_user_carts
