@@ -46,27 +46,28 @@
 							</div>
 
 							<div class="col_one_third">
-								<label for="template-contactform-message">Product Brand <small>*</small></label>
-								<%= f.input :brand, label: false, as: :text, input_html: { class: 'sm-form-control required' } %>
+								<label for="template-contactform-message">Product Brand <small></small></label>
+								<%= f.input :brand, label: false, as: :text, input_html: { class: 'sm-form-control' } %>
 							</div>
 
 							<div class="col_full">
-								<label for="template-contactform-message">Color, Size, Flavor? <small>*</small></label>
-								<%= f.input :attributes, label: false, as: :text, input_html: { class: 'required sm-form-control', rows: 6, cols: 30 } %>
+								<label for="template-contactform-message">Color, Size, Flavor? <small></small></label>
+								<%= f.input :attributes, label: false, as: :text, input_html: { class: 'sm-form-control', rows: 6, cols: 30 } %>
 							</div>
 
 							<div class="col_one_third">
-								<label for="template-contactform-message">Country of Origin <small>*</small></label>
-								<%= f.input :country, label: false, as: :text, input_html: { class: 'required sm-form-control required' } %>
+								<label for="template-contactform-message">Wished Product Country of Origin <small></small></label>
+								<%= f.input :country, label: false, as: :text, input_html: { class: 'sm-form-control' } %>
+							</div>
+
+							<div class="col_full" style="margin-bottom: 40px;">
+								<label for="template-contactform-message">Any additional thoughts about this product <small></small></label>
+								<%= f.input :comment, label: false, as: :text, input_html: { class: 'sm-form-control', rows: 6, cols: 30 } %>
+								<small>(*) Required Fields</small>
 							</div>
 
 							<div class="col_full">
-								<label for="template-contactform-message">Any additional thoughts about this product <small>*</small></label>
-								<%= f.input :comment, label: false, as: :text, input_html: { class: 'required sm-form-control', rows: 6, cols: 30 } %>
-							</div>
-
-							<div class="col_full">
-								<%= f.button :submit, "Send Message", class: "button button-3d nomargin contact-button", id: "contact-form" %>
+								<%= f.button :submit, "Send Message", class: "button button-3d nomargin contact-button btn btn-primary", id: "contact-form" %>
 							</div>
 
 						<% end %>

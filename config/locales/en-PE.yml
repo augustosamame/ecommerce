@@ -48,6 +48,19 @@ en-PE:
         coupon_not_found: "Coupon Not Found"
         order_under_coupon_threshold: "Order total under coupon threshold"
         no_qualifying_products: "No qualifying products in cart for this coupon code"
+  activemodel:
+    errors:
+      models:
+        ecommerce/wishlist_message:
+          attributes:
+            name:
+              blank: "This field cannot be blank"
+            email:
+              blank: "This field cannot be blank"
+            phone:
+              blank: "This field cannot be blank"
+            product_name:
+              blank: "This field cannot be blank"
   model:
     order:
       stage_new: "New"

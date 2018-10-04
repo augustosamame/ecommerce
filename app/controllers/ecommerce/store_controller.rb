@@ -43,12 +43,18 @@ module Ecommerce
 
     def post_wishlist
       wishparams = params[:wishlist_message]
-      if current_user
-        AdminMailer.wishlist_email(current_user.name, current_user.email, current_user.username, wishparams[:product_name], wishparams[:brand], wishparams[:attributes], wishparams[:country], wishparams[:comment]).deliver_later!# unless Rails.env == "development"
+      @wishlist_message = Ecommerce::WishlistMessage.new(name: wishparams[:name], email: wishparams[:email], phone: wishparams[:phone], product_name: wishparams[:product_name], brand: wishparams[:brand], attributes: wishparams[:attributes], country: wishparams[:country], comment: wishparams[:comment])
+      if @wishlist_message.valid?
+        if current_user
+          AdminMailer.wishlist_email(current_user.name, current_user.email, current_user.username, wishparams[:product_name], wishparams[:brand], wishparams[:attributes], wishparams[:country], wishparams[:comment]).deliver_later!# unless Rails.env == "development"
+        else
+          AdminMailer.wishlist_email(wishparams[:name], wishparams[:email], wishparams[:phone], wishparams[:product_name], wishparams[:brand], wishparams[:attributes], wishparams[:country], wishparams[:comment]).deliver_later!# unless Rails.env == "development"
+        end
+        redirect_back fallback_location: wishlist_message_path, notice: "Thank you letting us know your wish. We'll be in touch soon"
       else
-        AdminMailer.wishlist_email(wishparams[:name], wishparams[:email], wishparams[:phone], wishparams[:product_name], wishparams[:brand], wishparams[:attributes], wishparams[:country], wishparams[:comment]).deliver_later!# unless Rails.env == "development"
+        flash[:error] = "Wishlist missing a required field"
+        render "ecommerce/#{Ecommerce.ecommerce_layout}/store/wishlist"
       end
-      redirect_back fallback_location: wishlist_message_path, notice: "Thank you letting us know your wish. We'll be in touch soon"
     end
 
     def shop_by_category

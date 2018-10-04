@@ -33,6 +33,19 @@ es-PE:
         coupon_not_found: "Cupón No Encontrado"
         order_under_coupon_threshold: "No ha llegado al monto mínimo del cupón"
         no_qualifying_products: "No hay productos en su carrito que califiquen para este cupón"
+  activemodel:
+    errors:
+      models:
+        ecommerce/wishlist_message:
+          attributes:
+            name:
+              blank: "Este campo no debe estar vacío"
+            email:
+              blank: "Este campo no debe estar vacío"
+            phone:
+              blank: "Este campo no debe estar vacío"
+            product_name:
+              blank: "Este campo no debe estar vacío"
   model:
     order:
       stage_new: "Nuevo"
