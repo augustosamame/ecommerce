@@ -55,6 +55,18 @@
   <dt style="margin-top: 20px;">Image:</dt>
   <dd><%= image_tag @backoffice_product.image_url(:medium_400), style: "margin-top: 20px;" %></dd>
 
+  <h2>Translations</h2>
+  <% Globalize.with_locale(:"es-PE") do %>
+    <dt>Name (in Spanish):</dt>
+    <dd><%= @backoffice_product.name %></dd>
+
+    <dt>Short Description (in Spanish):</dt>
+    <dd><%= @backoffice_product.short_description %></dd>
+
+    <dt>Long Description (in Spanish):</dt>
+    <dd><%= @backoffice_product.description %></dd>
+  <% end %>
+
 </dl>
 
 Product SKUs

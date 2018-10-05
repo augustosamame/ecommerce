@@ -35,4 +35,13 @@
   <dt>Status:</dt>
   <dd><%= @backoffice_category.status %></dd>
 
+  <h2>Translations</h2>
+  <% Globalize.with_locale(:"es-PE") do %>
+    <dt>Name (in Spanish):</dt>
+    <dd><%= @backoffice_category.name %></dd>
+
+    <dt>Text for Image Overlay in Popular HomePage Categories (in Spanish):</dt>
+    <dd><%= @backoffice_category.image_popular_homepage_overlay_text %></dd>
+  <% end %>
+
 </dl>

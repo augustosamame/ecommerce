@@ -37,6 +37,12 @@
       <%= f.hidden_field :image_popular_homepage_cache %>
     </div>
 
+    <h2>Translations</h2>
+    <% Globalize.with_locale(:"es-PE") do %>
+      <%= f.input :name_es_pe, label: "Name (in Spanish)"%>
+      <%= f.input :image_popular_homepage_overlay_text_es_pe, label: "Text for Image Overlay in Popular HomePage Categories (in Spanish)" %>
+    <% end %>
+
 
   </div>
 

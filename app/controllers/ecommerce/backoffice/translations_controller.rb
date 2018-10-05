@@ -5,7 +5,7 @@ module Ecommerce
     #before_action :set_backoffice_, only: [:show, :edit, :update, :best_in_place_update, :destroy]
     authorize_resource :class => false
 
-    # GET /backoffice/categories
+    # GET /backoffice/translations
     def index
       @category_name = Category.all.order(:category_type, :category_order, :id)
       @category_overlay = Category.all.order(:category_type, :category_order, :id)
@@ -14,7 +14,7 @@ module Ecommerce
       @product_description = Product.all.order(:product_order, id: :desc)
     end
 
-    # GET /backoffice/categories/1
+    # GET /backoffice/translations/1
     def show
     end
 

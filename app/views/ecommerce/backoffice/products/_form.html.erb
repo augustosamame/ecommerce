@@ -47,6 +47,14 @@
       </span>
       <%= f.hidden_field :image_cache %>
     </div>
+
+    <h2>Translations</h2>
+    <% Globalize.with_locale(:"es-PE") do %>
+      <%= f.input :name_es_pe, label: "Name (in Spanish)"%>
+      <%= f.input :short_description_es_pe, label: "Short Description (in Spanish)" %>
+      <%= f.input :description_es_pe, label: "Long Description (in Spanish)" %>
+    <% end %>
+
     <%= link_to_add_association 'Add SKU Variant', f, :product_skus %>
 
     <%= f.simple_fields_for :product_skus do |h| %>
