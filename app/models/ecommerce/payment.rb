@@ -56,7 +56,7 @@ module Ecommerce
       :phone_number => current_user.phone || "986976377",
       :amount => amount.to_i,
       :capture => true,
-      :currency_code => 'PEN',
+      :currency_code => 'USD',
       :description => culqi_description,
       :email => card_token_data.payment_email,
       :antifraud_details => (antifraud_hash),

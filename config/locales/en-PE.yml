@@ -19,7 +19,7 @@ en-PE:
         separator: "."
         significant: false
         strip_insignificant_zeros: false
-        unit: "S/. "
+        unit: "$ "
     format:
       delimiter: ","
       precision: 2
@@ -145,7 +145,7 @@ en-PE:
           all_products: "All Products"
           new_products: "Featured Products"
           new_products_subtitle: "From all over the world the best products money can buy"
-          free_shipping: "Free Shipping on Orders over S/.100"
+          free_shipping: "Free Shipping on Orders over $ 30"
           payment_methods: "We accept all credit and debit cards"
           subscribe_to_us: "Subscribe to Us!"
           subscribe_to_us_text: "Enter Your email address for our mailing list and we'll let you know new product arrivals and promotions."
@@ -153,6 +153,9 @@ en-PE:
           submit: "Submit"
         about_us:
           about_us: "About Us"
+          about_us_p_html: "<p>Born out of frustration from the lack of global products available in Peru at affordable pricing, we are a wholesale importer of products, offering international products at a reasonable price directly to Peruvian customers.</p><p>We carry a reasonable amount of stock of all our consumer products in Peru and deliver products Same-Day or Next-Day depending on the time the order is placed on our platform.</p><p>Our aim is to import high quality international consumer products at comparable price points to those available in the home country of said products. In particular our focus is on products that are currently not available in Peru and/or over priced in the Peruvian market. We also offer locally produced goods on our online platform, at better prices by working directly with the manufacturer, especially products that we think would be highly appealing to our customer base.</p>"
+          business_objective: "Business Objective"
+          business_objective_p_html: "<p>1.      To disrupt the market by importing selected high demand products and selling them directly to our target consumers (as opposed to using traditional channels), thus keeping our prices at international & locally competitive rates.</p><p>2.      To create a market for products unavailable in the Peruvian arena and provide alternative consumer goods options to those offered locally.</p><p>3.      To provide a robust solution to the inconvenience of bringing certain products as personal items from abroad.</p>"
         shipping_policy:
           shipping_policy: "Shipping Policy"
           shipping_rates: "Shipping Rates"

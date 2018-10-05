@@ -6,21 +6,93 @@
 			<div class="row">
 				<!--menu izquierda -->
 				<div class="col-md-2 dvt_houses" >
-					<ul class="dvt_houses_lista " style="margin-top:30px;">
+					<ul class="dvt_houses_lista " style="margin-top: 20px; margin-top:30px;">
 						<li>
 							<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
 
-								<a href=" <%= houses_m_path %> ">
+								<div class="noo-button-creative" style="margin-bottom: 30px;">
+									<a href=" <%= houses_m_path %> ">
+										<span class="first"></span>
+										<span class="second"></span>
+										By Country
+										<span class="three"></span>
+										<span class="four"></span>
+									</a>
+								</div>
+
+								<div class="noo-button-creative" style="margin-bottom: 30px;">
+									<a href=" <%= categories_m_path %> ">
+										<span class="first"></span>
+										<span class="second"></span>
+										By Product
+										<span class="three"></span>
+										<span class="four"></span>
+									</a>
+								</div>
+
+								<!-- <a href=" <%= houses_m_path %> ">
 								<button type="button" class="btn btn-primary btn-lg btn-block dvt_houses_spac_btn"></button>
+								</a>-->
+
+								<ul class="noo-services-columns row">
+									<a href=" <%= houses_m_path %> ">
+									<li class="col-md-3 col-sm-6">
+										<div class="noo-service-item" style="margin-bottom: 180px;">
+											<span class="line-top style-2">
+												<span></span>
+												<span></span>
+											</span>
+											<span class="line-left style-2">
+												<span></span>
+												<span></span>
+											</span>
+											<div class="service-content">
+												<h3>- By Country -</h3>
+												<img width="87" height="73" src= <%= image_url("ecommerce/img/icons/icon-country.png") %> alt=""/>
+												<p>
+
+												</p>
+											</div>
+										</div>
+									</li>
 								</a>
+
+
+								</ul>
+
+
 							</div>
 							<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
-								<a href=" <%= categories_m_path %> ">
+
+								<ul class="noo-services-columns row">
+									<a href=" <%= categories_m_path %> ">
+								<li class="col-md-3 col-sm-6">
+									<div class="noo-service-item" style="margin-bottom: 210px;">
+										<span class="line-top style-2">
+											<span></span>
+											<span></span>
+										</span>
+										<span class="line-left style-2">
+											<span></span>
+											<span></span>
+										</span>
+										<div class="service-content">
+											<h3>- By Product -</h3>
+											<img width="93" height="82" src= <%= image_url("ecommerce/img/icons/icon-product.png") %> alt=""/>
+											<p>
+
+											</p>
+										</div>
+									</div>
+								</li>
+							</a>
+								</ul>
+								<!-- <a href=" <%= categories_m_path %> ">
 								<button type="button" class="btn btn-primary btn-lg btn-block dvt_categ_spac_btn"></button>
-								</a>
+								</a>-->
 							</div>
 						</li>
-						<li >
+						<li>
 
 						<% @secondary_menu_categories.each do |category| %>
 							<div class="dvt_houses_contenedor hidden-xs hidden-sm" >

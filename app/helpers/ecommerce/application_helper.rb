@@ -38,11 +38,11 @@ module Ecommerce
     def session_currency_symbol
       case session[:currency]
       when "pen"
-          return "S/. "
+          return "$ "
         when "usd"
           return "$ "
         else
-          return "S/. "
+          return "$ "
       end
     end
 
