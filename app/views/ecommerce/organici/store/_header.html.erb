@@ -75,7 +75,6 @@
 												<li><a href="<%= Blog::Engine.routes.url_helpers.root_path %>">See All Blog Articles</a></li>
 											</ul>
 										</li>-->
-										<li><a href="<%= contact_us_path %>"><%= t('.contact_us_menu') %></a></li>
 
 										<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
 											<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>

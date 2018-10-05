@@ -23,6 +23,8 @@ module Ecommerce
 
       @coupons_active = Ecommerce::allow_coupons
 
+      @exchange_rate = Ecommerce::Control.get_control_value("exchange_rate") || 3.3
+
       info_factura_vat = !Ecommerce::DataBizInvoice.find_by(user_id: current_user.id).try(:vat).blank?
       @info_factura_available = false
       if info_factura_vat
@@ -90,7 +92,7 @@ module Ecommerce
     def pay_order_culqi_checkout
       Rails.logger.debug params
       card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
-      payment_created = Payment.new.new_culqi_payment(current_user, card_token_created, params[:amount], "Order", @order.id, params[:payment_request_id]) if card_token_created
+      payment_created = Payment.new.new_culqi_payment(current_user, card_token_created, params[:culqi_payment_amount], params[:currency], "Order", @order.id, params[:payment_request_id]) if card_token_created
       if payment_created[0]
         flash[:notice] = t('.your_order_was_successfully_placed')
         Rails.logger.info payment_created[0]

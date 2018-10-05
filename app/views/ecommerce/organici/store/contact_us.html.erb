@@ -9,7 +9,7 @@
 			<div class="row clearfix">
 				<div class="col-md-8">
 
-					<h3 style = "margin-bottom: 50px;">Send us a Message</h3>
+					<h3 style = "margin-bottom: 50px;"><%= t('.send_us_a_message') %></h3>
 
 					<div class="">
 
@@ -21,29 +21,29 @@
 							<div class="form-process"></div>
 
 							<div class="col_one_third">
-								<label for="template-contactform-name">Name <small>*</small></label>
+								<label for="template-contactform-name"><%= t('.name') %> <small>*</small></label>
 								<%= f.input :name, label: false, input_html: { class: 'sm-form-control required' } %>
 							</div>
 
 							<div class="col_one_third">
-								<label for="template-contactform-email">Email <small>*</small></label>
+								<label for="template-contactform-email"><%= t('.email') %> <small>*</small></label>
 								<%= f.input :email, label: false, input_html: { class: 'required email sm-form-control' } %>
 							</div>
 
 							<div class="col_one_third col_last">
-								<label for="template-contactform-phone">Phone</label>
+								<label for="template-contactform-phone"><%= t('.phone') %></label>
 								<%= f.input :phone, label: false, input_html: { class: 'sm-form-control' } %>
 							</div>
 
 							<div class="clear"></div>
 
 							<div class="col_full">
-								<label for="template-contactform-message">Message <small>*</small></label>
+								<label for="template-contactform-message"><%= t('.message') %> <small>*</small></label>
 								<%= f.input :message, label: false, as: :text, input_html: { class: 'required sm-form-control', rows: 6, cols: 30 } %>
 							</div>
 
 							<div class="col_full">
-								<%= f.button :submit, "Send Message", class: "button button-3d nomargin contact-button", id: "contact-form" %>
+								<%= f.button :submit, t('.send_message'), class: "button button-3d nomargin contact-button", id: "contact-form" %>
 							</div>
 
 						<% end %>

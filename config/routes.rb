@@ -53,6 +53,7 @@ Ecommerce::Engine.routes.draw do
   get '/houses_m', to: 'store#houses_mobile'
   get '/about_us', to: 'store#about_us'
   get '/shipping_policy', to: 'store#shipping_policy'
+  get '/terms_and_conditions', to: 'store#terms_and_conditions'
   get '/contact_us', to: 'store#contact_us'
   post '/contact_us', to: 'store#post_contact_us'
   get '/wishlist_message', to: 'store#wishlist'

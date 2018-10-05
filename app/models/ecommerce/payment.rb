@@ -22,7 +22,7 @@ module Ecommerce
       end
     end
 
-    def new_culqi_payment(current_user, card_token_data, amount, payment_type, order_id = nil, payment_request_id = nil)
+    def new_culqi_payment(current_user, card_token_data, amount, currency, payment_type, order_id = nil, payment_request_id = nil)
       Rails.logger.debug "Received Order: #{order_id}"
       Rails.logger.debug "Card Token Data:"
       Rails.logger.debug card_token_data
@@ -56,7 +56,7 @@ module Ecommerce
       :phone_number => current_user.phone || "986976377",
       :amount => amount.to_i,
       :capture => true,
-      :currency_code => 'USD',
+      :currency_code => currency,
       :description => culqi_description,
       :email => card_token_data.payment_email,
       :antifraud_details => (antifraud_hash),

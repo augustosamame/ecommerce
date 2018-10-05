@@ -78,6 +78,23 @@
                   </tfoot>
                 </table>
 
+
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+
+                    <li class="wc_payment_method" style: "margin-bottom: 0px;">
+                      <%= check_box_tag("pay_in_soles", "0", false, class: "pay_in_soles_checkbox") %>
+                      <label for="pay_in_soles" style="font-size: 12px;">
+                        <%= t('.pay_in_soles') %>
+                        <label style="font-size: 14px; margin-left: 40px; padding-right: 0px;">S/. </label>
+                        <label id="payment-amount-in-soles" style="font-size: 14px;"><%= @cart_subtotal * @exchange_rate %></label>
+                      </label>
+
+
+                    </li>
+                  </ul>
+                </div>
+
                 <% if @dni_required %>
                 <div class="commerce-checkout-payment">
                   <ul class="payment_methods">
@@ -214,8 +231,10 @@
 <script>
 
   var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+  var culqi_payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
   var shipping_calculated_flag = false
   var applied_coupon = ''
+  var exchange_rate = <%= @exchange_rate %>
 
   // calculate and update shipping html tag when shipping address is created
   $("#save-address-button").click(function() {
@@ -235,6 +254,10 @@
       $("#free-shipping-text").hide()
       shipping_calculated_flag = false
     }
+  })
+  // recalculate totals (basically for culqi) when pay_in_soles checkbox changes
+  $('#pay_in_soles').on('change', function() {
+    recalculate_checkout_totals();
   })
 
   function calculate_shipping(street, district) {
@@ -287,20 +310,23 @@
     var total_amount = (Number($("#coupon-amount").html()) + Number($("#shipping-amount").html()) + Number($("#subtotal").html())).toFixed(2);
 
     $('#payment-amount').html(total_amount)
+    $('#payment-amount-in-soles').html((total_amount * exchange_rate).toFixed(2));
     payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
+    culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
 
     Culqi.settings({
       title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
-      currency: '<%= session[:currency].upcase %>',
+      //currency: '<%= session[:currency].upcase %>',
+      currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
       description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@cart.id}" %>',
-      amount: payment_amount
+      amount: culqi_payment_amount
     });
   }
 
   $('#pay-now-button').on('click', function(e) {
     // Abre el formulario con las opciones de Culqi.settings
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
-    if (payment_amount >= 700 && typeof $('#dni-required').val() != "undefined" && $('#dni-required').val().length === 0 ) {
+    if ((payment_amount * exchange_rate) >= 700 && typeof $('#dni-required').val() != "undefined" && $('#dni-required').val().length === 0 ) {
       alert("<%= t('.you_must_enter_doc') %>");
       }
     else {
@@ -329,7 +355,7 @@
         var token = Culqi.token;
         var picked_shipping_address_id = $('#address_id').val();
         var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
-        var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+        var culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2);
         var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
         //var payment_amount = $('#payment_amount').html() * 100;
         $.post(
@@ -337,13 +363,15 @@
           {
           culqi_token: token,
           amount: payment_amount,
+          culqi_payment_amount: culqi_payment_amount,
           shipping_amount: shipping_amount,
           picked_shipping_address_id: picked_shipping_address_id,
           cart_id: '<%= "#{@cart.id}" if @cart %>',
           want_factura: $('#want_factura').is(":checked"),
           required_doc: $('#dni-required').val(),
           applied_coupon: applied_coupon,
-          discount_amount: discount_amount
+          discount_amount: discount_amount,
+          currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD"
           },
           function(data) {
           }

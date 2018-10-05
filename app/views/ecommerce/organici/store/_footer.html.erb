@@ -61,23 +61,12 @@
 						<h4 class="widget-title"><%= t('.links') %></h4>
 						<div class="textwidget">
 					<ul>
-						<li>
-							<h5><%= t('.terms_and_conditions') %></h5>
-
-						</li>
-						<li>
-							<h5><%= t('.privacy_policy') %> </h5>
-						</li>
-						<li>
-							<h5><%= t('.social_responsibility') %> </h5>
-						</li>
-						<li>
-							<h5><%= t('.press') %> </h5>
-						</li>
+						<li><h5><%= link_to t('.terms_and_conditions'), terms_and_conditions_path %></h5></li>
+						<li><h5><a href="<%= contact_us_path %>"><%= t('.contact_us_menu') %></a></h5></li>
 						<li>
 							<div class="widget widget_about">
 								<div class="noo_about_widget">
-									<a href="#">
+									<a href="https://librodereclamacionesperu.com/72627295.html">
 										<%= image_tag "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/libro_de_reclamaciones.jpg", alt: "Store Logo", height: 50, style: "margin-top: 30px;" %>
 									</a>
 								</div>
