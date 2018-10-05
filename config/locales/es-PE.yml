@@ -216,6 +216,7 @@ es-PE:
           blog_menu: "Blog"
           contact_us_menu: "Contáctanos"
           about_us_menu: "Acerca de Nosotros"
+          shipping_policy_menu: "Política de Envíos"
           manage_blog_posts: "Administrar Blog"
           my_orders: "Mis Pedidos"
           my_account: "Mi Cuenta"
@@ -263,6 +264,12 @@ es-PE:
           submit: "Enviar"
         about_us:
           about_us: "Acerca de Nosotros"
+        shipping_policy:
+          shipping_policy: "Política de Envíos"
+          shipping_rates: "Tarifas de Envíos"
+          shipping_rates_p_html: "Costo de envío: $3 </br>Envío gratis por pedidos sobre $30"
+          shipping_times: "Tiempos de Envíos"
+          shipping_times_p_html: "Los pedidos colocados antes de las 11:30am serán entregados el mismo día.</br>Los pedidos colocados después de las 11:30am serán entregados al día siguiente"
     canvas_shop:
       store:
         top_bar:
@@ -328,6 +335,7 @@ es-PE:
           total: "Total"
           subtotal: "Subtotal"
           shipping: "Costo de envío"
+          free_shipping: "(Envío gratis en pedidos sobre $30)"
           bank_deposit_instructions: "Te enviaremos el número de cuenta bancaria a depositar luego de confirmar tu pedido"
         new_address_form:
           type: "Tipo"

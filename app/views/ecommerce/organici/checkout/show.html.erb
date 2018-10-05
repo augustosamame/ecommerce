@@ -63,7 +63,8 @@
                       <td><strong><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="subtotal"><%= @cart_subtotal %></span></strong></td>
                     </tr>
                     <tr class="cart-subtotal">
-                      <th><%= t('.shipping') %></th>
+                      <th><%= t('.shipping') %></br>
+                      <span id="free-shipping-text" class="amount" style="color: red; font-size: 12px; display: none;"><%= t('.free_shipping') %></span></th>
                       <td><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="shipping-amount">0.00</span></td>
                     </tr>
                     <tr class="cart-subtotal coupon-subtotal-hidden" id="coupon-subtotal-id">
@@ -231,6 +232,7 @@
     } else {
       var my_zero = 0
       $("#shipping-amount").html(my_zero.toFixed(2))
+      $("#free-shipping-text").hide()
       shipping_calculated_flag = false
     }
   })
@@ -244,6 +246,7 @@
       success: function(data){
          if (data.currency == "pen") { cur_sym = "S/. " } else { cur_sym = "$ " }
          $("#shipping-amount").html(data.amount.toFixed(2))
+         $("#free-shipping-text").show()
          recalculate_checkout_totals();
          shipping_calculated_flag = true
       }
@@ -266,6 +269,7 @@
           console.log(data.free_shipping == true);
           if (data.free_shipping == true) {
             $("#shipping-amount").html(0)
+            $("#free-shipping-text").hide()
           } else {
             calculate_shipping($("#address_street").val(), $("#address_district").val());
           }

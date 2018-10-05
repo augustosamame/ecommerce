@@ -26,6 +26,10 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/store/about_us"
     end
 
+    def shipping_policy
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/store/shipping_policy"
+    end
+
     def contact_us
       @contact_message = Ecommerce::ContactMessage.new
       render "ecommerce/#{Ecommerce.ecommerce_layout}/store/contact_us"

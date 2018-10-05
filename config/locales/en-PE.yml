@@ -108,6 +108,7 @@ en-PE:
           blog_menu: "Blog"
           contact_us_menu: "Contact Us"
           about_us_menu: "About Us"
+          shipping_policy_menu: "Shipping Policy"
           my_account: "My Account"
           manage_blog_posts: "Manage Blog Posts"
           cart: "Cart"
@@ -152,6 +153,12 @@ en-PE:
           submit: "Submit"
         about_us:
           about_us: "About Us"
+        shipping_policy:
+          shipping_policy: "Shipping Policy"
+          shipping_rates: "Shipping Rates"
+          shipping_rates_p_html: "$3 Flat Shipping </br>Free shipping on orders over $30"
+          shipping_times: "Shipping Times"
+          shipping_times_p_html: "All orders placed before 11:30am will be delivered same day </br>All Orders placed after 11:30am will be delivered next day"
       product:
         show:
           add_to_cart: "Add To Cart"
@@ -173,6 +180,7 @@ en-PE:
           total: "Total"
           subtotal: "Subtotal"
           shipping: "Shipping"
+          free_shipping: "(Free shipping on orders over $30)"
           i_need_a_factura: "I need a Factura"
           text_over_700: "Orders over S/. 700 require DNI / CE / Passport"
           docs_over_700: "DNI / CE / Passport"
@@ -262,6 +270,7 @@ en-PE:
           home_menu: "Store"
           blog_menu: "Blog"
           contact_us_menu: "Contact Us"
+          shipping_policy_menu: "Shipping Policy"
           search_string: "Type &amp; Hit Enter.."
           my_account: "My Account"
           log_out: "Log Out"
