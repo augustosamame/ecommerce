@@ -1,4 +1,4 @@
-<div class="main" style="overflow: -webkit-paged-y;">
+<div class="main">
   <div class="commerce noo-shop-main">
     <div class="container">
       <div class="row" >
@@ -15,7 +15,7 @@
                       <a class="page-numbers" href="#">3</a>
                       <a class="next page-numbers" href="#"><i class="fa fa-long-arrow-right"></i></a>-->
                     </div>
-                    <div class="noo-product-grid products row product-grid noo-grid-4 product-index-container">
+                    <div class="noo-product-grid products row product-grid noo-grid-4 product-index-container" style= "display: contents;">
 
                       <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item %>
 
