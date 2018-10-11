@@ -84,7 +84,7 @@ module Ecommerce
     def current_price_cents
       case Ecommerce::SessionInfo.current_session_currency
       when "usd"
-        [self.usd_price_cents, self.usd_discounted_price_cents].min
+        [self.price_cents, self.discounted_price_cents].min #all prices in dollars
       when "pen"
         [self.price_cents, self.discounted_price_cents].min
       else
