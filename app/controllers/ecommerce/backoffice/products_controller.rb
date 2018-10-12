@@ -59,6 +59,8 @@ module Ecommerce
     # POST /backoffice/products
     def create
       @backoffice_product = Product.new(backoffice_product_params)
+      @backoffice_product.usd_price_cents = @backoffice_product.price_cents
+      @backoffice_product.usd_discounted_price_cents = @backoffice_product.discounted_price_cents
       @backoffice_product.category_list.add(backoffice_product_params[:category_id])
       #@backoffice_product.permalink = @backoffice_product.name
       if @backoffice_product.save
@@ -75,6 +77,8 @@ module Ecommerce
       if @backoffice_product.update(backoffice_product_params)
         set_taxes_from_params
         @backoffice_product.category_list = backoffice_product_params[:category_id]
+        @backoffice_product.usd_price_cents = @backoffice_product.price_cents
+        @backoffice_product.usd_discounted_price_cents = @backoffice_product.discounted_price_cents
         @backoffice_product.save
         redirect_to backoffice_product_path(@backoffice_product), notice: 'Product was successfully updated.'
       else
