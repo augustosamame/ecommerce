@@ -68,12 +68,16 @@ module Ecommerce
       order_billing_address = Address.find_by(id: self.billing_address_id)
       invoice_lines_array = Array.new
       line = 0
+      total_order_amount = (self.amount).to_f
+      discount_total = (self.discount_amount).to_f.abs
+      tax_discount_factor = 1 - (discount_total / (total_order_amount + discount_total))
+      #since igv amount is taken by certifact as the sum of igv lines, the igv in tax lines need to be reduced based on the discount
       OrderItem.where(order_id: self.id).includes(:product).each do |item|
         invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: (item.price * item.quantity).to_f, price_subtotal: item.price.to_f }
         igv_found = item.product.product_taxes.find_by(tax_id: Ecommerce::Tax.first.try(:id))
         if igv_found
           invoice_lines_array[line][:igv_tax] = true
-          invoice_lines_array[line][:igv_amount] = igv_found.try(:tax_amount)
+          invoice_lines_array[line][:igv_amount] = ( igv_found.try(:tax_amount) * tax_discount_factor )
         else
           invoice_lines_array[line][:igv_tax] = false
           invoice_lines_array[line][:igv_amount] = 0
@@ -81,7 +85,7 @@ module Ecommerce
         isc_found = item.product.product_taxes.find_by(tax_id: Ecommerce::Tax.second.try(:id))
         if isc_found
           invoice_lines_array[line][:isc_tax] = true
-          invoice_lines_array[line][:isc_amount] = isc_found.try(:tax_amount)
+          invoice_lines_array[line][:isc_amount] = ( isc_found.try(:tax_amount) * tax_discount_factor )
         else
           invoice_lines_array[line][:isc_tax] = false
           invoice_lines_array[line][:isc_amount] = 0
@@ -91,8 +95,7 @@ module Ecommerce
       if self.shipping_amount_cents > 0
         invoice_lines_array << {name: "Costo de envío (shipping)", quantity: 1, product_id: 1000, price_total: shipping_amount.to_i, price_subtotal: shipping_amount.to_i, igv_tax: true, igv_amount: 18 }
       end
-      total_order_amount = (self.amount).to_f
-      discount_total = (self.discount_amount).to_f.abs
+
       case self.payment_status
         when "paid"
           return false if efact_number
