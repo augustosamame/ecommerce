@@ -91,11 +91,8 @@ module Ecommerce
       if self.shipping_amount_cents > 0
         invoice_lines_array << {name: "Costo de envío (shipping)", quantity: 1, product_id: 1000, price_total: shipping_amount.to_i, price_subtotal: shipping_amount.to_i, igv_tax: true, igv_amount: 18 }
       end
-      unless self.discount_amount_cents.blank?
-        invoice_lines_array << {name: "Cupón de Descuento", quantity: 1, product_id: 1000, price_total: discount_amount.to_f, price_subtotal: discount_amount.to_f, igv_tax: true, igv_amount: 18 }
-      end
       total_order_amount = (self.amount).to_f
-      discount_total = (self.discount_amount).to_f
+      discount_total = (self.discount_amount).to_f.abs
       case self.payment_status
         when "paid"
           return false if efact_number
@@ -111,7 +108,7 @@ module Ecommerce
                 partner_id: "#{self.user.first_name} #{self.user.last_name}",
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
-                vat: self.amount.to_i >= 700 ? self.required_doc : "",
+                vat: self.amount.to_i >= 210 ? self.required_doc : "",
                 street: order_billing_address.try(:street),
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
@@ -174,7 +171,7 @@ module Ecommerce
                 partner_id: "#{self.user.first_name} #{self.user.last_name}",
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
-                vat: self.amount.to_i >= 700 ? self.required_doc : "",
+                vat: self.amount.to_i >= 210 ? self.required_doc : "",
                 street: order_billing_address.try(:street),
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
