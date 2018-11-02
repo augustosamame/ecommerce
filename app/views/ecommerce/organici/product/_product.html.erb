@@ -8,7 +8,7 @@
     </div>
     <div class="noo-product-title">
       <h3><%= link_to item.name, product_path(item) %></h3><br>
-      <span class="short-descrip" style="font-size:13px;"><%= item.short_description %></span><br>
+      <span class="short-descrip" style="font-size:13px;"><%= item.short_description.gsub("**","<br>").html_safe if item.short_description %></span><br>
 
       <% if item.price == item.discounted_price %>
         <span class="price"><span class="amount"><%= session_price(item, "price") %></span></span>

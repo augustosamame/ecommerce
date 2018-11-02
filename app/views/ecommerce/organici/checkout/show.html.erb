@@ -171,7 +171,7 @@
                     <% if @payment_credit_card_culqi %>
 
                     <li class="wc_payment_method payment_method_card">
-                      <input id="payment_method_card" type="radio" checked="checked" class="input-radio" name="payment_method" value="card" />
+                      <input id="payment_method_card" type="radio" checked="checked" class="input-radio" name="payment_method" value="card" checked="checked" />
                       <label for="payment_method_card">
                         <%= t('.credit_debit_card') %>
                       </label>
@@ -186,7 +186,7 @@
                     <% if @payment_bank_deposit %>
 
                     <li>
-                      <input id="payment_method_bank" type="radio" class="input-radio" name="payment_method" value="manual" checked="checked" />
+                      <input id="payment_method_bank" type="radio" class="input-radio" name="payment_method" value="manual" />
                       <label for="payment_method_bank">
                         <%= t('.bank_deposit') %>
                       </label>
@@ -200,7 +200,7 @@
                     <% if @payment_manual %>
 
                     <li>
-                      <input id="payment_method_manual" type="radio" class="input-radio" name="payment_method" value="manual" checked="checked" />
+                      <input id="payment_method_manual" type="radio" class="input-radio" name="payment_method" value="manual" />
                       <label for="payment_method_manual">
                         <%= t('.manual_payment') %>
                       </label>
