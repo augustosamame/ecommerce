@@ -270,5 +270,13 @@ module Ecommerce
       end
     end
 
+    def clear_einvoice
+      self.efact_sent_text = nil
+      self.efact_response_text = nil
+      self.efact_invoice_url = nil
+      self.efact_number = nil
+      self.save
+    end
+
   end
 end
