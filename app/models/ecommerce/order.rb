@@ -275,6 +275,7 @@ module Ecommerce
       self.efact_response_text = nil
       self.efact_invoice_url = nil
       self.efact_number = nil
+      self.efact_void_url = nil
       self.save
     end
 
