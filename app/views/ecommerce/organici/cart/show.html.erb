@@ -144,6 +144,12 @@
                     <th>Total</th>
                     <td><strong><span class="amount" id="total-amount"><%= session_price(@cart_subtotal) %></span></strong> </td>
                   </tr>
+                  <% if session[:currency] != "PEN" %>
+                  <tr >
+                    <th></th>
+                    <td><strong><span class="amount" id="total-amount-soles" style="font-size: 12px;">( S/. <%= @cart_subtotal * @exchange_rate %> )</span></strong> </td>
+                  </tr>
+                  <% end %>
                 </table>
                 <div class="wc-proceed-to-checkout">
                   <%= link_to t('.proceed_to_checkout'), checkout_path, class: "checkout-button button alt wc-forward" %>
