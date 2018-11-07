@@ -38,7 +38,7 @@
     </div>
     <% if session[:currency] != "PEN" %>
       <div class="minicart-total">
-        <span class="amount" style="font-size: 14px; margin-top: -15px;">( S/. <%= @cart.get_totals[:tot_acum] * @exchange_rate %> )</span>
+        <span class="amount" style="margin-top: -15px;">S/. <%= @cart.get_totals[:tot_acum] * @exchange_rate %></span>
       </div>
     <% end %>
     <div class="minicart-actions clearfix">

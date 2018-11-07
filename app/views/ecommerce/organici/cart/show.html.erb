@@ -147,7 +147,7 @@
                   <% if session[:currency] != "PEN" %>
                   <tr >
                     <th></th>
-                    <td><strong><span class="amount" id="total-amount-soles" style="font-size: 12px;">( S/. <%= @cart_subtotal * @exchange_rate %> )</span></strong> </td>
+                    <td><strong><span class="amount" id="total-amount-soles" style="">S/. <%= @cart_subtotal * @exchange_rate %></span></strong> </td>
                   </tr>
                   <% end %>
                 </table>
