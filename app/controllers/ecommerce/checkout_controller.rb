@@ -23,8 +23,6 @@ module Ecommerce
 
       @coupons_active = Ecommerce::allow_coupons
 
-      @exchange_rate = Ecommerce::Control.get_control_value("exchange_rate") || 3.3
-
       info_factura_vat = !Ecommerce::DataBizInvoice.find_by(user_id: current_user.id).try(:vat).blank?
       @info_factura_available = false
       if info_factura_vat

@@ -36,6 +36,11 @@
     <div class="minicart-total">
       Subtotal <span class="amount"><%= session_price(@cart.get_totals[:tot_acum]) %></span>
     </div>
+    <% if session[:currency] != "PEN" %>
+      <div class="minicart-total">
+        <span class="amount" style="font-size: 14px; margin-top: -15px;">( S/. <%= @cart.get_totals[:tot_acum] * @exchange_rate %> )</span>
+      </div>
+    <% end %>
     <div class="minicart-actions clearfix">
       <a class="button btn-primary" style:"width: 40%;" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
         <span class="text"><%= t('.view_cart') %></span>

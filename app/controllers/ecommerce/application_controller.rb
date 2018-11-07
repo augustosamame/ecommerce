@@ -89,6 +89,7 @@ module Ecommerce
 
     def set_header_menu_items
       @primary_menu_categories = Ecommerce::Category.includes(:translations).where(main_menu: true, category_type: "primary", status: "active").order(:category_order)
+      @exchange_rate = Ecommerce::Control.get_control_value("exchange_rate") || 3.3
     end
 
     def merge_abilities
