@@ -1,5 +1,10 @@
 .fixed-column {
-  height: 680px;
+  min-height: 480px;
+  max-height: 780px;
+}
+
+.noo-product-title {
+  max-height: 340px;
 }
 
 #coupon-code {
@@ -246,10 +251,6 @@
 
 .noo-main-menu {
   margin-top: 20px;
-}
-
-.noo-product-title {
-  max-height: 240px;
 }
 
 .factura_checkbox {
