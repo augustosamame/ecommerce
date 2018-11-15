@@ -25,7 +25,7 @@ module Ecommerce
 
         #check max_uses_per_user
         if found_coupon.max_uses_per_user && found_coupon.max_uses_per_user > 0
-          times_used_by_user = Order.where(coupon_id: found_coupon.id, status: "active").count
+          times_used_by_user = Order.where(coupon_id: found_coupon.id, user_id: current_user.id, status: "active").count
           if times_used_by_user >= found_coupon.max_uses_per_user
             response = {
                         :result => "error",
