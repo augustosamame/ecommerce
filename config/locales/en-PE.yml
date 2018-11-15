@@ -206,7 +206,7 @@ en-PE:
           credit_debit_card: "Credit / Debit Card"
           place_order: "Place Order"
           you_must_pick_or_save_an_address: "You must pick or create an address"
-          you_must_enter_doc: "You must enter your DNI / CE or Passport"
+          you_must_enter_doc: "You must enter a valid DNI / CE or Passport number (digits only)"
         pick_address_form:
           pick_an_address: "Pick An Address"
         new_address_form:

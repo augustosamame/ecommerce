@@ -326,7 +326,7 @@
   $('#pay-now-button').on('click', function(e) {
     // Abre el formulario con las opciones de Culqi.settings
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
-    if ((payment_amount * exchange_rate) >= 700 && typeof $('#dni-required').val() != "undefined" && $('#dni-required').val().length === 0 ) {
+    if ((payment_amount * exchange_rate) >= 700 && typeof $('#dni-required').val() != "undefined" && !$.isNumeric( $('#dni-required').val() ) ) {
       alert("<%= t('.you_must_enter_doc') %>");
       }
     else {
