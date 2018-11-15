@@ -22,6 +22,35 @@ module Ecommerce
       puts params
       found_coupon = Coupon.find_by(coupon_code: params[:coupon_code])
       if found_coupon
+
+        #check max_uses_per_user
+        if found_coupon.max_uses_per_user && found_coupon.max_uses_per_user > 0
+          times_used_by_user = Order.where(coupon_id: found_coupon.id, status: "active").count
+          if times_used_by_user >= found_coupon.max_uses_per_user
+            response = {
+                        :result => "error",
+                        :error_message => I18n.t('controllers.orders.calculate_coupon.max_times_per_user_exceeded')
+                       }
+            respond_to do |format|
+              format.json { render json: response.to_json and return}
+            end
+          end
+        end
+
+        #check max_uses_total
+        if found_coupon.max_uses && found_coupon.max_uses > 0
+          times_used = Order.where(coupon_id: found_coupon.id, status: "active").count
+          if times_used >= found_coupon.max_uses
+            response = {
+                        :result => "error",
+                        :error_message => I18n.t('controllers.orders.calculate_coupon.max_times_exceeded')
+                       }
+            respond_to do |format|
+              format.json { render json: response.to_json and return}
+            end
+          end
+        end
+
         cart = Cart.find(params[:cart_id])
         cart_subtotal = cart.cart_items.includes(:product).sum(&:line_total)
         case found_coupon.coupon_type

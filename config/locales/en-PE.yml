@@ -48,6 +48,8 @@ en-PE:
         coupon_not_found: "Coupon Not Found"
         order_under_coupon_threshold: "Order total under coupon threshold"
         no_qualifying_products: "No qualifying products in cart for this coupon code"
+        max_times_per_user_exceeded: "Coupon has exceeded the max number of times it can be used"
+        max_times_exceeded: "Coupon has exceeded the max number of times it can be used"
   activemodel:
     errors:
       models:
