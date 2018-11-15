@@ -263,6 +263,8 @@ es-PE:
           subscribe_to_us_text: "Ingresa tu correo a nuestra lista de y te avisaremos sobre nuevos productos y promociones."
           email: "Correo Electrónico"
           submit: "Enviar"
+          by_country: "Por País"
+          by_product: "Por Producto"
         about_us:
           about_us: "Acerca de Nosotros"
           about_us_p_html: "<p>Nacemos de la frustración de no poder encontrar en el Perú, ciertos productos extranjeros a precios cómodos.  Somos un importador mayorista de productos de consumo masivo que ofrecemos directamente  al consumidor peruano productos extranjeros a precios razonables.</p><p>Manejamos un buen stock  en el Perú de todos los productos que importamos y hacemos la entrega de los mismos el mismo día o al día siguiente dependiendo de la hora en que se coloque el pedido en nuestra plataforma.</p><p>Nuestro objetivo es importar productos de consumo de alta calidad con un nivel de precios  comparables a los precios de su país de origen.  En especial nos focalizaremos en aquellos productos que no se encuentran fácilmente en Perú y/o  si se encuentran con precios muy elevados.  También ofrecemos en nuestra plataforma virtual, algunos productos nacionales, especialmente aquellos que consideramos que son de interés para nuestros clientes, los que encontraran con precios muy atractivos, ya que trabajamos directamente con productores locales.</p>"
