@@ -8,8 +8,9 @@
     </div>
     <div class="noo-product-title">
       <h3><%= link_to item.name, product_path(item) %></h3><br>
+      <a href="<%= product_path(item) %>">
       <span class="short-descrip" style="font-size:13px;"><%= item.short_description.gsub("**","<br>").html_safe if item.short_description %></span><br>
-
+      </a>
       <% if item.price == item.discounted_price %>
         <span class="price"><span class="amount"><%= session_price(item, "price") %></span></span>
       <% else %>
