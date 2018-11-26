@@ -1,3 +1,15 @@
+.floating-buttons-div {
+  width: 100%;
+  //margin-top: -30px;
+  display: none;
+}
+
+.floating-button {
+  width: 120px;
+  margin: auto;
+  display: block;
+}
+
 .fixed-column {
   min-height: 480px;
   max-height: 780px;
@@ -89,6 +101,10 @@
   font-size: 14px;
   font-weight: 400;
   color: #696969;
+}
+
+.header_margin_6 {
+  margin-top: 6px !important;
 }
 
 /* hide up/down arrows ("spinners") on input fields marked type="number" */
@@ -328,6 +344,10 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
       height: 70px !important;
     }
 
+    .navbar-wrapper-with-buttons {
+      height: 105px !important;
+    }
+
     .exit-cavas {
         position: absolute;
         top: 10px;
@@ -354,7 +374,7 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
       display: none !important;
     }
 
-    .oganici-sticky-header {
+    .organici-sticky-header {
       position: fixed;
       top: 0;
       width: 100%

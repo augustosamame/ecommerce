@@ -35,21 +35,45 @@
 <script>
 
 // When the user scrolls the page, execute myFunction
-window.onscroll = function() {fixOrganiciHeader()};
+window.onscroll = function() {
+  fixOrganiciHeader();
+  showFloatingButtons();
+};
 
 // Get the header
 var header = document.getElementById("organici-fixed-header");
 
+//Get the floating button elements
+var floatingbuttondiv = document.getElementById("floating-buttons-div");
+var headerwrapper = document.getElementById("navbar-wrapper");
+var nav1 = document.getElementById("nav1");
+var nav2 = document.getElementById("nav2");
+
 // Get the offset position of the navbar
 var sticky = header.offsetTop;
 
-// Add the oganici-sticky-header class to the header when you reach its scroll position. Remove "oganici-sticky-header" when you leave the scroll position
+// Add the organici-sticky-header class to the header when you reach its scroll position. Remove "organici-sticky-header" when you leave the scroll position
 function fixOrganiciHeader() {
   if (window.pageYOffset > sticky) {
-    header.classList.add("oganici-sticky-header");
+    header.classList.add("organici-sticky-header");
   } else {
-    header.classList.remove("oganici-sticky-header");
+    header.classList.remove("organici-sticky-header");
   }
 }
+
+function showFloatingButtons() {
+  if (window.pageYOffset > (sticky + 0)) {
+    $('#floating-buttons-div').show();
+    headerwrapper.classList.add("navbar-wrapper-with-buttons");
+    nav1.classList.add("header_margin_6");
+    nav2.classList.add("header_margin_6");
+  } else {
+    $('#floating-buttons-div').hide();
+    headerwrapper.classList.remove("navbar-wrapper-with-buttons");
+    nav1.classList.remove("header_margin_6");
+    nav2.classList.remove("header_margin_6");
+  }
+}
+
 
 </script>
