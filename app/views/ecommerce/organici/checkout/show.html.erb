@@ -324,28 +324,27 @@
   }
 
   $('#pay-now-button').on('click', function(e) {
+    var errors_present = false
     // Abre el formulario con las opciones de Culqi.settings
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
     if ((payment_amount * exchange_rate) >= 700 && typeof $('#dni-required').val() != "undefined" && !$.isNumeric( $('#dni-required').val() ) ) {
+      errors_present = true ;
       alert("<%= t('.you_must_enter_doc') %>");
       }
-    else {
-      if (shipping_calculated_flag) {
-        if ($('input[name=payment_method]:checked').val() == "card") {
-          Culqi.open();
-          e.preventDefault();
-        }
-        else if ($('input[name=payment_method]:checked').val() == "manual") {
-          manual_payment();
-          e.preventDefault();
-        }
+    if (!shipping_calculated_flag) {
+      errors_present = true ;
+      alert("<%= t('.you_must_pick_or_save_an_address') %>");
       }
-      else {
-        // place error message here
-        alert("<%= t('.you_must_pick_or_save_an_address') %>");
+    if (!errors_present) {
+      if ($('input[name=payment_method]:checked').val() == "card") {
+        Culqi.open();
+        e.preventDefault();
+      }
+      else if ($('input[name=payment_method]:checked').val() == "manual") {
+        manual_payment();
+        e.preventDefault();
       }
     }
-
   });
 
   function culqi() {
