@@ -147,6 +147,7 @@ function culqi() {
         culqi_token: token,
         amount: payment_amount,
         culqi_payment_amount: culqi_payment_amount,
+        currency: "<%= @order.currency %>",
         order_id: '<%= "#{@order.id}" if @order %>'
         },
         function(data) {
