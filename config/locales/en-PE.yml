@@ -206,7 +206,7 @@ en-PE:
           address: "Address"
           click_here_to_setup_factura_info: "Click Here to Setup Factura Info"
           bank_deposit: "Bank Deposit"
-          manual_payment: "Manual Payment"
+          manual_payment: "Internal Process"
           credit_debit_card: "Credit / Debit Card"
           place_order: "Place Order"
           you_must_pick_or_save_an_address: "You must pick or create an address"

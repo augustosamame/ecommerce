@@ -139,7 +139,7 @@ es-PE:
           address: "Dirección"
           click_here_to_setup_factura_info: "Haga Click Aqui para Ingresar Datos de Factura"
           bank_deposit: "Depósito Bancario"
-          manual_payment: "Pago Manual"
+          manual_payment: "Proceso Interno"
           credit_debit_card: "Tarjeta de Crédito / Débito"
           place_order: "Finalizar Pedido"
           you_must_pick_or_save_an_address: "Debe seleccionar o crear una dirección"
