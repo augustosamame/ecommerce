@@ -16,6 +16,7 @@ module Ecommerce
 
     after_commit :notify_new_order, on: :create
     after_commit :blank_user_carts, on: :create
+    after_commit :notify_unpaid_to_paid, on: :update, if: :saved_change_to_payment_status
     after_commit :fire_einvoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
     after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
 
@@ -31,6 +32,10 @@ module Ecommerce
 
     def fire_einvoice_worker
       CreateEinvoiceWorker.perform_async(self.id) unless self.payment_status == "unpaid"
+    end
+
+    def notify_unpaid_to_paid
+      SendUnpaidToPaidEmailsWorker.perform_async(self.id) if self.payment_status == "paid"
     end
 
     def set_stock_and_stage

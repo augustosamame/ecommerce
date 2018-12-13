@@ -90,7 +90,7 @@ module Ecommerce
 
         redirect_to backoffice_order_path(@backoffice_order), notice: 'Order was successfully updated.'
       else
-
+        puts @backoffice_order.errors.inspect
         render :edit
       end
     end
