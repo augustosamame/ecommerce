@@ -35,7 +35,7 @@ module Ecommerce
     end
 
     def notify_unpaid_to_paid
-      SendUnpaidToPaidEmailsWorker.perform_async(self.id) if self.payment_status == "paid"
+      SendUnpaidToPaidEmailsWorker.perform_async(self.id) if self.payment_status == "paid" && Time.now > (self.created_at + 1.minute)
     end
 
     def set_stock_and_stage
