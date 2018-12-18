@@ -17,7 +17,7 @@ class SnitchWorker
 
   def perform
     if ENV['ROLLBAR_ENV'] == 'production'
-      return unless url = self.class.snitch_url
+      #return unless url = self.class.snitch_url
       #Net::HTTP.get(URI(url))
 
       url2 = "https://api.IsItWorking.info/c/ukcukscvpf"
