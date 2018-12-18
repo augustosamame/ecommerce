@@ -146,7 +146,7 @@
                   <ul class="payment_methods">
 
                     <li class="wc_payment_method payment_method_card">
-                      <%= check_box_tag("want_factura", "0", @info_factura_available, class: "factura_checkbox") %>
+                      <%= check_box_tag("want_factura", "0", @info_factura_available, class: "factura_checkbox", id: "factura-checkbox") %>
 
                       <label for="want_factura">
                         <%= t('.i_need_a_factura') %>
@@ -235,6 +235,7 @@
   var shipping_calculated_flag = false
   var applied_coupon = ''
   var exchange_rate = <%= @exchange_rate %>
+  var info_factura_blank = <%= @info_factura_available.blank? %>
 
   // calculate and update shipping html tag when shipping address is created
   $("#save-address-button").click(function() {
@@ -331,9 +332,17 @@
       errors_present = true ;
       alert("<%= t('.you_must_enter_doc') %>");
       }
+    if ($('#dni-required').val().length > 12) {
+      errors_present = true ;
+      alert("<%= t('.you_must_enter_doc') %>");
+      }
     if (!shipping_calculated_flag) {
       errors_present = true ;
       alert("<%= t('.you_must_pick_or_save_an_address') %>");
+      }
+    if ($('#factura-checkbox').is(':checked') && info_factura_blank) {
+      errors_present = true ;
+      alert("<%= t('.you_must_enter_factura_info') %>");
       }
     if (!errors_present) {
       if ($('input[name=payment_method]:checked').val() == "card") {
