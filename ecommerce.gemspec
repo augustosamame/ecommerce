@@ -38,8 +38,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'best_in_place'
   s.add_dependency 'money-rails'
   s.add_dependency 'pg_search'
-  s.add_dependency 'rails-assets-sweetalert2', '~> 5.1.1', source: 'https://rails-assets.org'
-  s.add_dependency 'sweet-alert2-rails'
 
   s.add_development_dependency "pg"
   s.add_development_dependency "jquery-rails"

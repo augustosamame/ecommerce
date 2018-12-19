@@ -236,6 +236,9 @@
 <!-- Incluyendo .js de Culqi Checkout-->
 <script src="https://checkout.culqi.com/v2"></script>
 
+<!-- SWEETALERT2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+
 <!-- Configurando el checkout-->
 <script>
 
@@ -347,7 +350,12 @@
       }
     if (!shipping_calculated_flag) {
       errors_present = true ;
-      alert("<%= t('.you_must_pick_or_save_an_address') %>");
+      //alert("<%= t('.you_must_pick_or_save_an_address') %>");
+      Swal({
+          type: 'error',
+          title: 'Order Not Placed',
+          text: "<%= t('.you_must_pick_or_save_an_address') %>"
+        });
       }
     if ($('#factura-checkbox').is(':checked') && info_factura_blank) {
       errors_present = true ;

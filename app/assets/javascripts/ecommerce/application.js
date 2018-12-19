@@ -17,5 +17,3 @@
 //= require moment/es
 //= require bootstrap-datetimepicker
 //= require cocoon
-//= require sweetalert2
-//= require sweet-alert2-rails
