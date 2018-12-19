@@ -152,8 +152,14 @@
                         <%= t('.i_need_a_factura') %>
                       </label>
                       <div class="payment_box payment_method_cheque">
-                          <p><%= "#{t('.address')}: #{@factura_address}, #{@factura_city}" %></p>
 
+                        <% if @info_factura_available %>
+                           <p><%= "RUC: #{@factura_vat}" %></p>
+                           <p><%= "Razón Social: #{@factura_razon_social}" %></p>
+                           <p><%= "#{t('.address')}: #{@factura_address}, #{@factura_city}" %></p>                           <p><%= "#{t('.address')}: #{@factura_address}, #{@factura_city}" %></p>
+                         <% else %>
+                            <p><%= link_to t('.click_here_to_setup_factura_info'), main_app.edit_user_registration_path(origin: "checkout"), style: "color: red; font-weight: bold;" %></p>
+                         <% end %>
                       </div>
 
                     </li>
