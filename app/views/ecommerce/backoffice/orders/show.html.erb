@@ -38,8 +38,11 @@
   <dt>Coupon:</dt>
   <dd><%= @backoffice_order.coupon.try(:coupon_code) %></dd>
 
+  <dt>Delivery Special Instructions:</dt>
+  <dd><%= @backoffice_order.delivery_comments %></dd>
+
   <dt>Payment status:</dt>
-  <dd><%= @backoffice_order.payment_status %></dd>
+  <dd style= "<%= @backoffice_order.unpaid? ? 'color: red; font-size: 18px;' : '' %>"><%= @backoffice_order.payment_status %></dd>
 
   <dt>Status:</dt>
   <dd><%= @backoffice_order.status %></dd>

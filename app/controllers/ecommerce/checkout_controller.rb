@@ -18,7 +18,7 @@ module Ecommerce
       @payment_manual = PaymentMethod.is_active.find_by(name: "Manual")
       @payment_credit_card_visanet = PaymentMethod.is_active.find_by(name: "Card", processor: "Visanet")
       @payment_credit_card_culqi = PaymentMethod.is_active.find_by(name: "Card", processor: "Culqi")
-
+      @current_doc_id = current_user.doc_id
       @dni_required = (@cart_subtotal.to_f >= 210)
 
       @coupons_active = Ecommerce::allow_coupons
@@ -55,6 +55,7 @@ module Ecommerce
                         payment_status: "unpaid",
                         efact_type: params[:want_factura] == "true" ? "factura" : "boleta",
                         required_doc: params[:required_doc],
+                        delivery_comments: params[:delivery_instructions].try(:strip),
                         coupon_id: used_coupon.try(:id),
                         discount_amount: Money.new((params[:discount_amount].to_i), session[:currency]),
                         status: "active"
@@ -64,6 +65,7 @@ module Ecommerce
             used_coupon.update(current_uses: current_uses + 1)
           end
           if @order.save
+            current_user.update(doc_id: @order.required_doc) unless @order.required_doc.blank?
             @cart_items = CartItem.where(cart_id: params[:cart_id].to_i)
             @cart_items.each do |item|
               OrderItem.create!(

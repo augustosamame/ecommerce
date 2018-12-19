@@ -200,6 +200,7 @@ en-PE:
           pay_in_soles: "Pay in soles"
           docs_over_700: "DNI / CE / Passport"
           enter_coupon: "Got a coupon code? Enter it Here:"
+          delivery_instructions: "Enter any special delivery instructions"
           apply_coupon: "Apply"
           coupon_line: "Applied Coupon"
           coupon_error: "Invalid Coupon"

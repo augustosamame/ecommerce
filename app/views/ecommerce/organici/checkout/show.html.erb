@@ -107,7 +107,7 @@
                           <label for="dni_required">
                             <%= t('.docs_over_700') %>
                           </label>
-                          <input type="text" name="dni_required" id="dni-required" />
+                          <input type="text" name="dni_required" id="dni-required" value="<%= @current_doc_id %>" />
 
                       </div>
 
@@ -152,13 +152,8 @@
                         <%= t('.i_need_a_factura') %>
                       </label>
                       <div class="payment_box payment_method_cheque">
-                        <% if @info_factura_available %>
-                          <p><%= "RUC: #{@factura_vat}" %></p>
-                          <p><%= "Razón Social: #{@factura_razon_social}" %></p>
                           <p><%= "#{t('.address')}: #{@factura_address}, #{@factura_city}" %></p>
-                        <% else %>
-                          <p><%= link_to t('.click_here_to_setup_factura_info'), main_app.edit_user_registration_path(origin: "checkout") %></p>
-                        <% end %>
+
                       </div>
 
                     </li>
@@ -213,6 +208,20 @@
 
                   </ul>
                 </div>
+
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+
+                    <li class="wc_payment_method payment_method_card">
+                      <label for="delivery_instructions" style="font-size: 12px;">
+                        <%= t('.delivery_instructions') %>
+                      </label>
+                      <textarea rows="2" type="text" name="delivery_instructions" id="delivery-instructions">
+                      </textarea>
+                    </li>
+                  </ul>
+                </div>
+
                 <button class="button mt-5" id ="pay-now-button"><%= t('.place_order') %></button>
               </div>
             </div>
@@ -332,7 +341,7 @@
       errors_present = true ;
       alert("<%= t('.you_must_enter_doc') %>");
       }
-    if ($('#dni-required').val().length > 12) {
+    if (typeof $('#dni-required').val() != "undefined" && $('#dni-required').val().length > 12) {
       errors_present = true ;
       alert("<%= t('.you_must_enter_doc') %>");
       }
@@ -377,6 +386,7 @@
           cart_id: '<%= "#{@cart.id}" if @cart %>',
           want_factura: $('#want_factura').is(":checked"),
           required_doc: $('#dni-required').val(),
+          delivery_instructions: $('#delivery-instructions').val(),
           applied_coupon: applied_coupon,
           discount_amount: discount_amount,
           currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD"
@@ -409,6 +419,7 @@
       cart_id: '<%= "#{@cart.id}" if @cart %>',
       want_factura: $('#want_factura').is(":checked"),
       required_doc: $('#dni-required').val(),
+      delivery_instructions: $('#delivery-instructions').val(),
       applied_coupon: applied_coupon,
       discount_amount: discount_amount
       },

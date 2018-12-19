@@ -36,7 +36,7 @@
         <td><%= backoffice_order.efact_type %></td>
         <td><%= backoffice_order.friendly_shipping_address %></td>
         <td><%= backoffice_order.coupon.try(:coupon_code) %></td>
-        <td><%= backoffice_order.payment_status %></td>
+        <td style= "<%= backoffice_order.unpaid? ? 'color: red; font-size: 18px;' : '' %>"><%= backoffice_order.payment_status %></td>
         <td><%= backoffice_order.status %></td>
         <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_order_path(backoffice_order) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>

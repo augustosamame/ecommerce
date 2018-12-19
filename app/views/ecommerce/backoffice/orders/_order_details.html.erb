@@ -3,8 +3,8 @@
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
-        <th>Product</th>
         <th>Qty</th>
+        <th>Product</th>
         <th>Price</th>
         <th>Total</th>
       </tr>
@@ -13,10 +13,10 @@
       <% @order_details.each do |item| %>
         <tr>
           <td>
-            <%= item.product.name %>
+            <%= item.quantity %>
           </td>
           <td>
-            <%= item.quantity %>
+            <%= item.product.name %>
           </td>
           <td>
             <%= number_to_currency(item.product.current_price) %>
