@@ -342,24 +342,35 @@
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
     if ((payment_amount * exchange_rate) >= 700 && typeof $('#dni-required').val() != "undefined" && !$.isNumeric( $('#dni-required').val() ) ) {
       errors_present = true ;
-      alert("<%= t('.you_must_enter_doc') %>");
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_enter_doc') %>"
+        });
       }
     if (typeof $('#dni-required').val() != "undefined" && $('#dni-required').val().length > 12) {
       errors_present = true ;
-      alert("<%= t('.you_must_enter_doc') %>");
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_enter_doc') %>"
+        });
       }
     if (!shipping_calculated_flag) {
       errors_present = true ;
-      //alert("<%= t('.you_must_pick_or_save_an_address') %>");
       Swal({
           type: 'error',
-          title: 'Order Not Placed',
+          title: '<%= t('.order_not_placed') %>',
           text: "<%= t('.you_must_pick_or_save_an_address') %>"
         });
       }
     if ($('#factura-checkbox').is(':checked') && info_factura_blank) {
       errors_present = true ;
-      alert("<%= t('.you_must_enter_factura_info') %>");
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_enter_factura_info') %>"
+        });
       }
     if (!errors_present) {
       if ($('input[name=payment_method]:checked').val() == "card") {

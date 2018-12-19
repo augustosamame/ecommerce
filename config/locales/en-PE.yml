@@ -210,6 +210,7 @@ en-PE:
           manual_payment: "Internal Process"
           credit_debit_card: "Credit / Debit Card"
           place_order: "Place Order"
+          order_not_placed: "ERROR: Order Not Placed"
           you_must_pick_or_save_an_address: "You must pick or create an address"
           you_must_enter_factura_info: "You must enter factura information"
           you_must_enter_doc: "You must enter a valid DNI / CE or Passport number (max 12 digits)"

@@ -143,6 +143,7 @@ es-PE:
           manual_payment: "Proceso Interno"
           credit_debit_card: "Tarjeta de Crédito / Débito"
           place_order: "Finalizar Pedido"
+          order_not_placed: "ERROR: El Pedido no fue creado"
           you_must_pick_or_save_an_address: "Debe seleccionar o crear una dirección"
           you_must_enter_factura_info: "Debe ingresar los datos para su factura"
           you_must_enter_doc: "Debe ingresar un DNI / CE o Pasaporte válido (max 12 dígitos numéricos)"
