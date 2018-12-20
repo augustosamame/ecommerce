@@ -71,10 +71,12 @@ en-PE:
       stage_delivered: "Delivered"
       stage_closed: "Closed"
       stage_void: "Void"
-      payment_stage_unpaid: "Unpaid"
+      payment_stage_unpaid: "UNPAID"
       payment_stage_paid: "Paid"
       payment_stage_refunded: "Refunded"
       payment_stage_void: "Void"
+      today_afternoon: "today afternoon"
+      tomorrow_afternoon: "tomorrow afternoon"
   ecommerce:
     cart_items:
       create:

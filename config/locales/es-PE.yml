@@ -57,9 +57,11 @@ es-PE:
       stage_closed: "Completado"
       stage_void: "Anulado"
       payment_stage_paid: "Pagado"
-      payment_stage_unpaid: "Aún No Pagado"
+      payment_stage_unpaid: "AÚN NO PAGADO"
       payment_stage_refunded: "Pago Devuelto"
       payment_stage_void: "Pago Anulado"
+      today_afternoon: "hoy en la tarde"
+      tomorrow_afternoon: "mañana en la tarde"
   ecommerce:
     cart_items:
       create:
