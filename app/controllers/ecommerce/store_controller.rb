@@ -66,7 +66,7 @@ module Ecommerce
     end
 
     def shop_by_category
-      @products = Ecommerce::Product.where(category_id: params[:id]).active
+      @products = Ecommerce::Product.where(category_id: params[:id]).active.order(:product_order)
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
     end
 
@@ -84,7 +84,7 @@ module Ecommerce
       if params[:parent_category]
         @category = Category.find(params[:parent_category])
         Globalize.with_locale(Ecommerce.backoffice_default_locale) do
-          @categories = Category.tagged_with(@category.name)
+          @categories = Category.tagged_with(@category.name).order(:category_order)
         end
         if @categories.count > 0
           render "ecommerce/#{Ecommerce.ecommerce_layout}/store/sub_categories_mobile"
@@ -96,7 +96,7 @@ module Ecommerce
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else
-        @products = Product.all.order(:product_order).active.page(params[:page])
+        @products = Product.all.order(:product_order).active.order(:product_order).page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
     end
