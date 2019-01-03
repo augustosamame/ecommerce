@@ -79,12 +79,15 @@ es-PE:
       pay_order_culqi_checkout:
         your_order_was_successfully_placed: 'El pedido fue creado satisfactoriamente'
         error_when_processing_payment: 'Error al procesar el pago'
+        error_cart_already_placed: 'Ha intentado colocar un pedido que ya había sido creado. Favor revisar sus pedidos de la lista'
       pay_order_bank:
         your_order_was_successfully_placed: 'El pedido fue creado satisfactoriamente'
         error_when_processing_payment: 'Error al procesar el pago'
+        error_cart_already_placed: 'Ha intentado colocar un pedido que ya había sido creado. Favor revisar sus pedidos de la lista'
       pay_order_manual:
         your_order_was_successfully_placed: 'El pedido fue creado satisfactoriamente'
         error_when_processing_payment: 'Error al procesar el pago'
+        error_cart_already_placed: 'Ha intentado colocar un pedido que ya había sido creado. Favor revisar sus pedidos de la lista'
     processor:
       culqi:
         payment_popup_title: "Pago ExpatShop"

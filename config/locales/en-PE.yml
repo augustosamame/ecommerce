@@ -91,12 +91,15 @@ en-PE:
       pay_order_culqi_checkout:
         your_order_was_successfully_placed: 'Your Order was successfully placed'
         error_when_processing_payment: 'Error when processing payment'
+        error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
       pay_order_bank:
         your_order_was_successfully_placed: 'Your Order was successfully placed'
         error_when_processing_payment: 'Error when processing payment'
+        error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
       pay_order_manual:
         your_order_was_successfully_placed: 'Your Order was successfully placed'
         error_when_processing_payment: 'Error when processing payment'
+        error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
     addresses:
       create:
         address_was_successfully_created: 'Address was successfully created.'
