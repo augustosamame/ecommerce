@@ -181,6 +181,7 @@ es-PE:
           quantity: "Cantidad"
           total: "Total"
           my_orders: "Mis Pedidos"
+          order_not_placed: "ERROR: El Pedido no fue creado"
         index:
           title: "Mis Pedidos"
           date: "Fecha"

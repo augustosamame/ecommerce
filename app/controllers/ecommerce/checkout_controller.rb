@@ -110,7 +110,7 @@ module Ecommerce
         Rollbar.error(payment_created[1])
         Rails.logger.error payment_created[1]
         flash.keep(:error)
-        render js: "window.location = '#{order_path(@order.id)}'"
+        render js: "window.location = '#{order_path(@order.id, :error => t('.error_when_processing_payment'))}'"
         #redirect_to "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show", error: 'Error al realizar el Pago'
       end
     end

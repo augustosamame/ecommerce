@@ -13,6 +13,7 @@ module Ecommerce
     end
 
     def show
+      @error_alert = params[:error]
       @payment_credit_card_visanet = PaymentMethod.is_active.find_by(name: "Card", processor: "Visanet")
       @payment_credit_card_culqi = PaymentMethod.is_active.find_by(name: "Card", processor: "Culqi")
       render "ecommerce/#{Ecommerce.ecommerce_layout}/order/show"

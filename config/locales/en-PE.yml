@@ -248,7 +248,7 @@ en-PE:
           quantity: "Quantity"
           total: "Total"
           my_orders: "My Orders"
-
+          order_not_placed: "ERROR: Order Not Placed"
         index:
           title: "My Orders"
           date: "Date"
