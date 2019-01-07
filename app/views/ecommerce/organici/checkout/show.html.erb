@@ -254,10 +254,11 @@
   var applied_coupon = ''
   var exchange_rate = <%= @exchange_rate %>
   var info_factura_blank = <%= @info_factura_available.blank? %>
+  var address_saved_flag = false
 
   // calculate and update shipping html tag when shipping address is created
   $("#save-address-button").click(function() {
-    calculate_shipping($("#address_street").val(), $("#address_district").val());
+    calculate_shipping($("#address_street").val(), $("#address_district").val(), 'save_address');
   });
   // calculate coupon and recalculate_checkout_totals
   $(".coupon-apply").click(function() {
@@ -266,7 +267,7 @@
   // calculate and update shipping html tag when shipping address is picked
   $('#address_id').on('change', function() {
     if ( this.value ) {
-      calculate_shipping($("#address_street").val(), $("#address_district").val());
+      calculate_shipping($("#address_street").val(), $("#address_district").val(), 'save_address');
     } else {
       var my_zero = 0
       $("#shipping-amount").html(my_zero.toFixed(2))
@@ -279,18 +280,21 @@
     recalculate_checkout_totals();
   })
 
-  function calculate_shipping(street, district) {
+  function calculate_shipping(street, district, origin) {
     $.ajax({
       url: "calculate_shipping",
       dataType: "json",
       method: "POST",
       data: { address: street, district: district },
       success: function(data){
-         if (data.currency == "pen") { cur_sym = "S/. " } else { cur_sym = "$ " }
-         $("#shipping-amount").html(data.amount.toFixed(2))
-         $("#free-shipping-text").show()
-         recalculate_checkout_totals();
-         shipping_calculated_flag = true
+        if (data.currency == "pen") { cur_sym = "S/. " } else { cur_sym = "$ " }
+        $("#shipping-amount").html(data.amount.toFixed(2))
+        $("#free-shipping-text").show()
+        recalculate_checkout_totals();
+        shipping_calculated_flag = true
+        if (origin == 'save_address') {
+          address_saved_flag = true
+        }
       }
     });
   }
@@ -307,13 +311,11 @@
           $("#coupon-subtotal-id").removeClass('coupon-subtotal-hidden');
           $("#coupon-error").html("");
           applied_coupon = coupon_code
-          console.log(data.free_shipping);
-          console.log(data.free_shipping == true);
           if (data.free_shipping == true) {
             $("#shipping-amount").html(0)
             $("#free-shipping-text").hide()
           } else {
-            calculate_shipping($("#address_street").val(), $("#address_district").val());
+            calculate_shipping($("#address_street").val(), $("#address_district").val(), 'coupon');
           }
           recalculate_checkout_totals();
         }
@@ -362,7 +364,7 @@
           text: "<%= t('.you_must_enter_doc') %>"
         });
       }
-    if (!shipping_calculated_flag) {
+    if (!address_saved_flag && !$('#address_id').val()) {
       errors_present = true ;
       Swal({
           type: 'error',
