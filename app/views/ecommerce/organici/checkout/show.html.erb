@@ -99,7 +99,7 @@
                 <div class="commerce-checkout-payment">
                   <ul class="payment_methods">
 
-                    <li class="wc_payment_method payment_method_card">
+                    <li class="wc_payment_method payment_method_card" style="margin-left: 10px;">
                       <p> <%= t('.text_over_700') %> </p>
 
                       <div class="payment_box payment_method_cheque">
@@ -348,7 +348,7 @@
     var errors_present = false
     // Abre el formulario con las opciones de Culqi.settings
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
-    if ((payment_amount * exchange_rate) >= 700 && typeof $('#dni-required').val() != "undefined" && !$.isNumeric( $('#dni-required').val() ) ) {
+    if ((payment_amount * exchange_rate) >= 700 && !$('#factura-checkbox').is(':checked') && typeof $('#dni-required').val() != "undefined" && !$.isNumeric( $('#dni-required').val() ) ) {
       errors_present = true ;
       Swal({
           type: 'error',
@@ -356,7 +356,7 @@
           text: "<%= t('.you_must_enter_doc') %>"
         });
       }
-    if (typeof $('#dni-required').val() != "undefined" && $('#dni-required').val().length > 12) {
+    if (typeof $('#dni-required').val() != "undefined" && !$('#factura-checkbox').is(':checked') && $('#dni-required').val().length > 12) {
       errors_present = true ;
       Swal({
           type: 'error',

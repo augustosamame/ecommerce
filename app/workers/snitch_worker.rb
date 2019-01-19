@@ -26,6 +26,7 @@ class SnitchWorker
       # groundhog day!
       tot_snitch_jobs = Sidekiq::ScheduledSet.new.count { |x| x.klass == "SnitchWorker" }
       SnitchWorker.perform_in(5.minutes) unless tot_snitch_jobs > 2
+      SnitchWorker.perform_in(2.minutes) unless tot_snitch_jobs > 4
     end
   end
 end

@@ -134,7 +134,7 @@ es-PE:
           subtotal: "Subtotal"
           shipping: "Costo de Envío"
           i_need_a_factura: "Necesito Factura"
-          text_over_700: "Los pedidos sobre S/. 700 requieren DNI, CE o Pasaporte"
+          text_over_700: "Los pedidos con boleta sobre S/. 700 requieren DNI, CE o Pasaporte"
           pay_in_soles: "Pagar en soles"
           docs_over_700: "DNI / CE / Pasaporte"
           enter_coupon: "Tiene un código de cupón? Ingréselo aquí:"
@@ -151,7 +151,7 @@ es-PE:
           order_not_placed: "ERROR: El Pedido no fue creado"
           you_must_pick_or_save_an_address: "Debe seleccionar o crear una dirección"
           you_must_enter_factura_info: "Debe ingresar los datos para su factura"
-          you_must_enter_doc: "Debe ingresar un DNI / CE o Pasaporte válido (max 12 dígitos numéricos)"
+          you_must_enter_doc: "Para pedidos con boleta sobre S/ 700, debe ingresar un DNI / CE o Pasaporte válido (max 12 dígitos numéricos)"
         pick_address_form:
           pick_an_address: "Selecciona Una Dirección"
         new_address_form:

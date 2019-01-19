@@ -20,6 +20,7 @@ module Ecommerce
       @payment_credit_card_culqi = PaymentMethod.is_active.find_by(name: "Card", processor: "Culqi")
       @current_doc_id = current_user.doc_id
       @dni_required = (@cart_subtotal.to_f >= 210)
+      #@dni_required = (@cart_subtotal.to_f >= 10)
 
       @coupons_active = Ecommerce::allow_coupons
 
