@@ -241,6 +241,7 @@
 
 <!-- Incluyendo .js de Culqi Checkout-->
 <script src="https://checkout.culqi.com/v2"></script>
+<!-- <script src="https://checkout.culqi.com/js/v3"></script> -->
 
 <!-- SWEETALERT2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
@@ -249,7 +250,7 @@
 <script>
 
   var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
-  var culqi_payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+  var culqi_payment_amount = Number(($('#payment-amount').html() * 100).toFixed(2));
   var shipping_calculated_flag = false
   var applied_coupon = ''
   var exchange_rate = <%= @exchange_rate %>
@@ -335,13 +336,9 @@
     payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
     culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
 
-    Culqi.settings({
-      title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
-      //currency: '<%= session[:currency].upcase %>',
-      currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
-      description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@cart.id}" %>',
-      amount: culqi_payment_amount
-    });
+    console.log('recalculate_checkout_totals')
+
+
   }
 
   $('#pay-now-button').on('click', function(e) {
@@ -382,6 +379,14 @@
       }
     if (!errors_present) {
       if ($('input[name=payment_method]:checked').val() == "card") {
+
+        Culqi.settings({
+          title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+          amount: Number(culqi_payment_amount),
+          currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+          description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>'
+        });
+
         Culqi.open();
         e.preventDefault();
       }
@@ -399,7 +404,7 @@
         var token = Culqi.token;
         var picked_shipping_address_id = $('#address_id').val();
         var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
-        var culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2);
+        var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
         var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
         //var payment_amount = $('#payment_amount').html() * 100;
         $.post(

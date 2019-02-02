@@ -169,7 +169,7 @@
     Culqi.settings({
       title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
       currency: 'PEN',
-      description: '<%= "#{t('ecommerce.processor.culqi.order_label')} # #{@cart.id}" %>',
+      description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
       amount: payment_amount
     });
   }
