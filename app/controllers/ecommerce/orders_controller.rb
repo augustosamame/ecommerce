@@ -20,8 +20,10 @@ module Ecommerce
     end
 
     def culqi_webhook
+      puts 'CULQI_WEBHOOK EVENT RECEIVED'
       puts params
       Rails.logger.debug params
+      Rails.logger.debug 'CULQI_WEBHOOK EVENT RECEIVED'
       head :ok
     end
 
