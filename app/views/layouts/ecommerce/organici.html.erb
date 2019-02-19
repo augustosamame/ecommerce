@@ -56,8 +56,11 @@ var sticky = header.offsetTop;
 function fixOrganiciHeader() {
   if (window.pageYOffset > sticky) {
     header.classList.add("organici-sticky-header");
+    nav1.classList.add("desktop-sticky-header");
+    nav1.classList.remove("header_margin_6");
   } else {
     header.classList.remove("organici-sticky-header");
+    nav1.classList.remove("desktop-sticky-header");
   }
 }
 
@@ -65,7 +68,7 @@ function showFloatingButtons() {
   if (window.pageYOffset > (sticky + 0)) {
     $('#floating-buttons-div').show();
     headerwrapper.classList.add("navbar-wrapper-with-buttons");
-    nav1.classList.add("header_margin_6");
+    //nav1.classList.add("header_margin_6");
     nav2.classList.add("header_margin_6");
   } else {
     $('#floating-buttons-div').hide();
