@@ -42,6 +42,8 @@ Ecommerce::Engine.routes.draw do
   post '/calculate_shipping', :to => 'integrations#get_shipping_quote'
   post '/calculate_coupon', :to => 'orders#calculate_coupon'
 
+  post '/culqi_webhook', :to => 'orders#culqi_webhook'
+
   resources :carts, except: [:index, :new, :create]
   resources :cart_items
   resources :wishlists, except: [:index, :new, :create]

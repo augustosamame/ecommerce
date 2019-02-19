@@ -19,6 +19,12 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/order/show"
     end
 
+    def culqi_webhook
+      puts params
+      Rails.logger.debug params
+      head :ok
+    end
+
     def calculate_coupon
       puts params
       found_coupon = Coupon.find_by(coupon_code: params[:coupon_code])

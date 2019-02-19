@@ -22,6 +22,11 @@ module Ecommerce
       @dni_required = (@cart_subtotal.to_f >= 210)
       #@dni_required = (@cart_subtotal.to_f >= 10)
 
+      @current_user_first_name = current_user.first_name
+      @current_user_last_name = current_user.last_name
+      @current_user_email = current_user.email
+      @current_user_phone = "+51#{current_user.username}"
+
       @coupons_active = Ecommerce::allow_coupons
 
       info_factura_vat = !Ecommerce::DataBizInvoice.find_by(user_id: current_user.id).try(:vat).blank?

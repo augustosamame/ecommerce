@@ -240,8 +240,9 @@
 
 
 <!-- Incluyendo .js de Culqi Checkout-->
-<script src="https://checkout.culqi.com/v2"></script>
-<!-- <script src="https://checkout.culqi.com/js/v3"></script> -->
+<!--<script src="https://checkout.culqi.com/v2"></script> -->
+<script src="https://checkout.culqi.com/js/v3"></script>
+
 
 <!-- SWEETALERT2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
@@ -329,6 +330,7 @@
 
   function recalculate_checkout_totals() {
     Culqi.publicKey = "<%= Culqi.public_key %>";
+    Culqi.orderKey = "<%= Culqi.secret_key %>";
     var total_amount = (Number($("#coupon-amount").html()) + Number($("#shipping-amount").html()) + Number($("#subtotal").html())).toFixed(2);
 
     $('#payment-amount').html(total_amount)
@@ -380,15 +382,47 @@
     if (!errors_present) {
       if ($('input[name=payment_method]:checked').val() == "card") {
 
-        Culqi.settings({
-          title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
-          amount: Number(culqi_payment_amount),
-          currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
-          description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>'
+        data_to_send = {
+              title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+              amount: Number(culqi_payment_amount),
+              currency_code: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+              description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
+              order_number: <%= session[:cart_id] %> + '-cart-' + (Math.floor(Math.random() * 10000)).toString(),
+              expiration_date: 2323423432,
+              confirm: false,
+              client_details: {
+                 first_name: '<%= @current_user_first_name %>',
+                 last_name: '<%= @current_user_last_name %>',
+                 email: '<%= @current_user_email %>',
+                 phone_number: '<%= @current_user_phone %>'
+               },
+              }
+        $.ajax({
+          url: "https://api.culqi.com/v2/orders",
+          dataType: "json",
+          method: "POST",
+          headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'authorization': 'Bearer ' + Culqi.orderKey
+          },
+          data: JSON.stringify(data_to_send),
+          success: function(data){
+            console.log(data.id, '<= Culqi Order Id');
+            Culqi.settings({
+              title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+              amount: Number(culqi_payment_amount),
+              currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+              description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
+              order: data.id,
+              version: 2
+            });
+
+            Culqi.open();
+            e.preventDefault();
+          }
         });
 
-        Culqi.open();
-        e.preventDefault();
       }
       else if ($('input[name=payment_method]:checked').val() == "manual") {
         manual_payment();
@@ -396,6 +430,39 @@
       }
     }
   });
+
+  function create_culqi_v3_order() {
+    data_to_send = {
+          title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+          amount: Number(culqi_payment_amount),
+          currency_code: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+          description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
+          order_number: <%= session[:cart_id] %> + '-cart-' + (Math.floor(Math.random() * 10000)).toString(),
+          expiration_date: 2323423432,
+          confirm: false,
+          client_details: {
+             first_name: '<%= @current_user_first_name %>',
+             last_name: '<%= @current_user_last_name %>',
+             email: '<%= @current_user_email %>',
+             phone_number: '<%= @current_user_phone %>'
+           },
+          }
+    $.ajax({
+      url: "https://api.culqi.com/v2/orders",
+      dataType: "json",
+      method: "POST",
+      headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'authorization': 'Bearer ' + Culqi.orderKey
+      },
+      data: JSON.stringify(data_to_send),
+      success: function(data){
+        console.log(data.id, '<= Culqi Order Id');
+        return data.id
+      }
+    });
+  }
 
   function culqi() {
 
@@ -431,7 +498,6 @@
     }else{ // ¡Hubo algún problema!
         // Mostramos JSON de objeto error en consola
         console.log(Culqi.error);
-        alert(Culqi.error.mensaje);
     }
   };
 
