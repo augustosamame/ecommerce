@@ -29,7 +29,7 @@ module Ecommerce
       @address = Address.new(user: current_user)
       @address.latitude = "-12.1051699"
       @address.longitude = "-76.9849161"
-      @districts = ["Barranco", "Miraflores", "San Borja", "San Isidro", "Surco"]
+      @districts = ["Barranco", "Miraflores", "San Borja", "San Isidro", "Surco", "Callao"]
       respond_with @address
     end
 

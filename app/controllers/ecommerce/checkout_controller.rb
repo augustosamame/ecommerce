@@ -11,7 +11,7 @@ module Ecommerce
       @address = Address.new(user_id: current_user.id)
       @picked_address = Address.new(user_id: current_user.id)
       @checkout_addresses = Address.where(user_id: current_user.id)
-      @districts = ['San Isidro', 'Miraflores', 'Barranco', 'Santiago de Surco', 'La Molina','Chorrillos','San Borja','San Luis','Surquillo','San Miguel','Pueblo Libre','La Victoria','Magdalena','Jesus María','Lince','Breña'].sort
+      @districts = ['San Isidro', 'Miraflores', 'Barranco', 'Santiago de Surco', 'La Molina','Chorrillos','San Borja','San Luis','Surquillo','San Miguel','Pueblo Libre','La Victoria','Magdalena','Jesus María','Lince','Breña','Callao'].sort
       @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
       #active payment methods in view
       @payment_bank_deposit = PaymentMethod.is_active.find_by(name: "Bank Deposit")
