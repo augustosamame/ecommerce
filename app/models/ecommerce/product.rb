@@ -70,15 +70,44 @@ module Ecommerce
       current_price
     end
 
+    def pricelist_price_cents(pricelist)
+      return ProductPrice.find_by(product_id: self.id, pricelist_id: pricelist.id).try(:price_cents)
+    end
+
+    def pricelist_discounted_price_cents(pricelist)
+      return ProductPrice.find_by(product_id: self.id, pricelist_id: pricelist.id).try(:discounted_price_cents)
+    end
+
+    def pricelist_price(pricelist)
+      return ProductPrice.find_by(product_id: self.id, pricelist_id: pricelist.id).try(:price)
+    end
+
+    def pricelist_discounted_price(pricelist)
+      return ProductPrice.find_by(product_id: self.id, pricelist_id: pricelist.id).try(:discounted_price)
+    end
+
     def current_price
-      case Ecommerce::SessionInfo.current_session_currency
-      when "usd"
-        [self.price, self.discounted_price].min  #all prices in dollars
-      when "pen"
-        [self.price, self.discounted_price].min
-      else
-        [self.price, self.discounted_price].min
-      end
+      #if Current.user.pricelist_id.blank?
+        case Ecommerce::SessionInfo.current_session_currency
+        when "usd"
+          return [self.price, self.discounted_price].min  #all prices in dollars
+        when "pen"
+          return [self.price, self.discounted_price].min
+        else
+          return [self.price, self.discounted_price].min
+        end
+      #else
+      #  new_price = Ecommerce::Pricelist.find_by(product_id: self.id, pricelist_id: Current.user.pricelist_id).price
+      #  new_discounted_price = Ecommerce::Pricelist.find_by(product_id: self.id, pricelist_id: Current.user.pricelist_id).discounted_price
+      #  case Ecommerce::SessionInfo.current_session_currency
+      #  when "usd"
+      #    return [new_price, new_discounted_price].min  #all prices in dollars
+      #  when "pen"
+      #    return [new_price, new_discounted_price].min
+      #  else
+      #    return [new_price, new_discounted_price].min
+      #  end
+      #end
     end
 
     def current_price_cents

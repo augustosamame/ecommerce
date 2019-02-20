@@ -26,6 +26,12 @@
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'products' && controller.action_name == 'index')}) %>">
             <%= link_to t('.products'), backoffice_products_path %>
           </li>
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'pricelists' && controller.action_name == 'index')}) %>">
+            <%= link_to t('.pricelists'), backoffice_pricelists_path %>
+          </li>
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'product_prices' && controller.action_name == 'index')}) %>">
+            <%= link_to 'Product Prices', backoffice_product_prices_path %>
+          </li>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'categories' && controller.action_name == 'index')}) %>">
             <%= link_to t('.categories'), backoffice_categories_path %>
           </li>

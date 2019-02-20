@@ -84,7 +84,6 @@ module Ecommerce
                 order_id: @order.id,
                 product_id: item.product_id,
                 price: item.product.current_price,
-                #price_cents: (item.product.current_price.to_f * 100).to_i,
                 quantity: item.quantity,
                 status: "active"
               )

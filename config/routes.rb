@@ -24,6 +24,8 @@ Ecommerce::Engine.routes.draw do
     resources :payment_methods
     get '/translations/index', :to => "translations#index"
     resources :coupons
+    resources :pricelists
+    resources :product_prices
   end
 
   post 'locale', :to => 'application#locale'

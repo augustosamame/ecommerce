@@ -7,7 +7,7 @@
     <span class="glyphicon glyphicon-pencil"></span>
     Edit
   <% end %>
-  <h1>Show backoffice_user</h1>
+  <h1>Show User</h1>
 </div>
 
 <dl class="dl-horizontal">
@@ -19,5 +19,8 @@
 
   <dt>Role:</dt>
   <dd><%= @backoffice_user.role %></dd>
+
+  <dt>Pricelist:</dt>
+  <dd><%= @backoffice_user.pricelist.try(:name) %></dd>
 
 </dl>
