@@ -1,0 +1,26 @@
+<div class="page-header">
+  <%= link_to backoffice_product_prices_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_product_price_path(@product_price), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show Product Price</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Product Name:</dt>
+  <dd><%= @product_price.try(:product).try(:name) %></dd>
+
+  <dt>Price List Name:</dt>
+  <dd><%= @product_price.try(:pricelist).try(:name) %></dd>
+
+  <dt>Price:</dt>
+  <dd><%= @product_price.price %></dd>
+
+  <dt>Discounted Price:</dt>
+  <dd><%= @product_price.discounted_price %></dd>
+
+</dl>

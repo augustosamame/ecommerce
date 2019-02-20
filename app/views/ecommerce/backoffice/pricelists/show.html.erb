@@ -1,0 +1,53 @@
+<div class="page-header">
+  <%= link_to backoffice_pricelists_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_pricelist_path(@pricelist), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show Pricelist</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Pricelist Name:</dt>
+  <dd><%= @pricelist.name %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @pricelist.status %></dd>
+
+</dl>
+
+<h2>Specific Products associated with this Price List</h2>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Default Price</th>
+        <th>Default Discounted Price</th>
+        <th>Pricelist Price</th>
+        <th>Pricelist Discounted Price</th>
+        <th>Tot Quantity</th>
+        <th>Image</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @backoffice_products) do |backoffice_product| %>
+            <td><%= backoffice_product.product.name %></td>
+            <td><%= backoffice_product.product.category_list.to_s %></td>
+            <td><%= backoffice_product.product.description %></td>
+            <td><%= backoffice_product.product.price_cents %></td>
+            <td><%= backoffice_product.product.discounted_price_cents %></td>
+            <td><%= backoffice_product.product.pricelist_price(@pricelist) %></td>
+            <td><%= backoffice_product.product.pricelist_discounted_price(@pricelist) %></td>
+            <td><%= backoffice_product.product.total_quantity %></td>
+            <td><%= image_tag backoffice_product.product.image_url(:thumb_100), width: 100 %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

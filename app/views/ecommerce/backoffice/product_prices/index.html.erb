@@ -1,0 +1,35 @@
+<div class="page-header">
+  <%= link_to new_backoffice_product_price_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Product Price
+  <% end %>
+  <h1>Listing Product Prices</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price List</th>
+        <th>Price</th>
+        <th>Discounted Price</th>
+        <th>Show</th>
+        <th>Edit</th>
+        <th>Destroy</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @product_prices) do |product_price| %>
+        <td><%= product_price.product.name %></td>
+        <td><%= product_price.try(:pricelist).try(:name) %></td>
+        <td><%= product_price.price %></td>
+        <td><%= product_price.discounted_price %></td>
+        <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_price_path(product_price) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_product_price_path(product_price) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_product_price_path(product_price), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
