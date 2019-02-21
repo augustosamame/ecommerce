@@ -93,7 +93,7 @@ module Ecommerce
                      }
         when "percentage_discount_per_product"
 
-          qualifying_products = Product.where(coupon_id: found_coupon.id).pluck(:id)
+          qualifying_products = found_coupon.products.pluck(:id)
           qualifying_products_in_cart = cart.cart_items.where(product_id: qualifying_products)
           if qualifying_products_in_cart.empty?
             response = {
