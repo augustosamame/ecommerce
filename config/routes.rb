@@ -26,6 +26,7 @@ Ecommerce::Engine.routes.draw do
     resources :coupons
     resources :pricelists
     resources :product_prices
+    put 'update_product_price', :to => "product_prices#bp_update", as: 'update_product_price'
   end
 
   post 'locale', :to => 'application#locale'

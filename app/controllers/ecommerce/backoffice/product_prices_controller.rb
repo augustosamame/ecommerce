@@ -36,11 +36,27 @@ module Ecommerce
 
     # PATCH/PUT /product_prices/1
     def update
-      if @product_price.update(product_price_params)
-        redirect_to [:backoffice, @product_price], notice: 'Product Price was successfully updated.'
-      else
-        render :edit
+      respond_to do |format|
+        if @product_price.update(product_price_params)
+          format.html { redirect_to [:backoffice, @product_price], notice: 'Product Price was successfully updated.' }
+          format.json { head :ok }
+        else
+          render :edit
+        end
       end
+    end
+
+    def bp_update
+      @product_price = ProductPrice.find_by(product_id: params[:product_id], pricelist_id: params[:pricelist_id])
+      @product_price = ProductPrice.new(product_id: params[:product_id], pricelist_id: params[:pricelist_id]) unless @product_price
+      respond_to do |format|
+        if @product_price.update(price_cents: params[:product][:temp_product_price])
+          format.json { head :ok }
+        else
+          format.json { head :ok }
+        end
+      end
+
     end
 
     # DELETE /product_prices/1

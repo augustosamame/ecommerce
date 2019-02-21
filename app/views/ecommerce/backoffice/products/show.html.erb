@@ -69,6 +69,35 @@
 
 </dl>
 
+<h2>Price Lists</h2>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Price List Name</th>
+        <th>Price List Price</th>
+        <th>Price List Discounted Price</th>
+        <th>Show</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <% @product_prices.each do |product_price| %>
+        <td><%= product_price.pricelist.name %></td>
+        <td><%= product_price.price %></td>
+        <td><%= product_price.discounted_price %></td>
+        <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_price_path(product_price) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_product_price_path(product_price) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_product_price_path(product_price), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
 Product SKUs
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">

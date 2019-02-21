@@ -12,6 +12,7 @@ module Ecommerce
 
     # GET /backoffice/products/1
     def show
+      @product_prices = ProductPrice.where(product_id: @backoffice_product.id)
     end
 
     # GET /backoffice/products/new

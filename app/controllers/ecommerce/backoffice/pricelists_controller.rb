@@ -12,7 +12,7 @@ module Ecommerce
 
     # GET /pricelists/1
     def show
-      @backoffice_products = @pricelist.product_prices
+      @product_prices = Product.all
     end
 
     # GET /pricelists/new

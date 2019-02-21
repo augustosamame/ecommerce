@@ -12,11 +12,11 @@
       <span class="short-descrip" style="font-size:13px;"><%= item.short_description.gsub("**","<br>").html_safe if item.short_description %></span><br>
       </a>
       <% if item.price == item.discounted_price %>
-        <span class="price"><span class="amount"><%= session_price(item, "price") %></span></span>
+        <span class="price"><span class="amount"><%= session_price(item, "current_price") %></span></span>
       <% else %>
 
         <span class="price">
-          <span class="amount original-price-index"><%= session_price(item, "price") %></span>
+          <span class="amount original-price-index"><%= session_price(item, "current_price") %></span>
           <span class="amount"><%= session_price(item, "discounted_price") %></span>
         </span>
 

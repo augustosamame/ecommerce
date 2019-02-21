@@ -15,10 +15,12 @@ module Ecommerce
     has_many :product_skus, inverse_of: :product
     has_many :product_taxes, inverse_of: :product, dependent: :destroy
     has_many :active_variants, -> { where(deleted_at: nil) }, class_name: 'ProductSku'
+    has_many :product_prices
 
     #after_commit :create_product_taxes, on: :create
 
     attr_accessor :tax_1_check, :tax_2_check, :tax_3_check, :tax_1_amount, :tax_2_amount, :tax_3_amount
+    attr_accessor :temp_product_price
 
     extend FriendlyId
     friendly_id :permalink_candidates, use: :slugged, slug_column: :permalink
@@ -87,7 +89,7 @@ module Ecommerce
     end
 
     def current_price
-      #if Current.user.pricelist_id.blank?
+      if Current.user.try(:pricelist_id).blank? || Ecommerce::ProductPrice.find_by(product_id: self.id, pricelist_id: Current.user.pricelist_id).blank?
         case Ecommerce::SessionInfo.current_session_currency
         when "usd"
           return [self.price, self.discounted_price].min  #all prices in dollars
@@ -96,18 +98,18 @@ module Ecommerce
         else
           return [self.price, self.discounted_price].min
         end
-      #else
-      #  new_price = Ecommerce::Pricelist.find_by(product_id: self.id, pricelist_id: Current.user.pricelist_id).price
-      #  new_discounted_price = Ecommerce::Pricelist.find_by(product_id: self.id, pricelist_id: Current.user.pricelist_id).discounted_price
-      #  case Ecommerce::SessionInfo.current_session_currency
-      #  when "usd"
-      #    return [new_price, new_discounted_price].min  #all prices in dollars
-      #  when "pen"
-      #    return [new_price, new_discounted_price].min
-      #  else
-      #    return [new_price, new_discounted_price].min
-      #  end
-      #end
+      else
+        new_price = Ecommerce::ProductPrice.find_by(product_id: self.id, pricelist_id: Current.user.pricelist_id).price
+        new_discounted_price = Ecommerce::ProductPrice.find_by(product_id: self.id, pricelist_id: Current.user.pricelist_id).discounted_price
+        case Ecommerce::SessionInfo.current_session_currency
+        when "usd"
+          return [new_price, new_discounted_price].min  #all prices in dollars
+        when "pen"
+          return [new_price, new_discounted_price].min
+        else
+          return [new_price, new_discounted_price].min
+        end
+      end
     end
 
     def current_price_cents
