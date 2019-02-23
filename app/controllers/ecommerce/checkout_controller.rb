@@ -4,7 +4,7 @@ module Ecommerce
   class CheckoutController < ApplicationController
     #skip_before_action :authenticate_user!, only: [:show]
     #before_action :set_checkout, only: [:show, :edit, :update, :destroy]
-    before_action :find_or_create_order, only: [:pay_order_culqi_checkout, :pay_order_bank, :pay_order_manual]
+    before_action :find_or_create_order, only: [:pay_order_culqi_checkout, :pay_order_pagoefectivo_checkout, :pay_order_bank, :pay_order_manual]
 
     # GET /checkout
     def show
@@ -118,6 +118,14 @@ module Ecommerce
         render js: "window.location = '#{order_path(@order.id, :error => t('.error_when_processing_payment'))}'"
         #redirect_to "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show", error: 'Error al realizar el Pago'
       end
+    end
+
+    def pay_order_pagoefectivo_checkout
+      Rails.logger.debug params
+      payment_created = Payment.new.new_pagoefectrivo_payment(current_user, params[:culqi_order_id], params[:culqi_payment_amount], params[:currency], "Order", @order.id, params[:payment_request_id])
+      flash[:notice] = t('.your_order_was_successfully_placed')
+      flash.keep(:notice)
+      render js: "window.location = '#{order_path(@order.id, :notice => t('.your_order_was_successfully_placed'))}'"
     end
 
     def pay_order_bank

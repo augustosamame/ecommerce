@@ -42,6 +42,19 @@ var $loading = $('.spinner').hide();
 </script>
 <script>
     $(document).ready(function(){
+      
+      if ($( "#flash" ).length > 0 )
+      {
+        console.log("flash is present")
+        var flash_text = $('#flash .alert').text().split(/\r?\n/).pop()
+        console.log(flash_text)
+        Swal({
+            type: 'info',
+            title: '',
+            text: flash_text
+          });
+      }
+
     $(".dvt_dropdown").hover(
         function() {
             $('.dvt_dropdown-menu', this).not('.in .dvt_dropdown-menu').stop( true, true ).slideDown("fast");

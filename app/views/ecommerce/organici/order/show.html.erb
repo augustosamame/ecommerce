@@ -116,19 +116,6 @@
 <script src="https://checkout.culqi.com/v2"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function(event) {
-  if ("<%= @error_alert %>") {
-    Swal({
-        type: 'error',
-        title: '<%= t('.order_not_placed') %>',
-        text: "<%= @error_alert %>"
-      });
-  }
-});
-
-</script>
-
-<script>
 
 Culqi.publicKey = "<%= Culqi.public_key %>";
 var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);

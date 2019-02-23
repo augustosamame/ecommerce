@@ -35,6 +35,7 @@ Ecommerce::Slider.create(slider_name: 'Home Slider 5', slider_text: "", remote_s
 pm1 = Ecommerce::PaymentMethod.create(name: "Card", processor: "Culqi", status: "active")
 pm2 = Ecommerce::PaymentMethod.create(name: "Bank Deposit", status: "active")
 pm3 = Ecommerce::PaymentMethod.create(name: "Manual", status: "active")
+pm4 = Ecommerce::PaymentMethod.create(name: "PagoEfectivo", status: "active")
 
 Ecommerce::Brand.create!([
   {name: "Dr. Brown", logo: "organici_logo.png"},

@@ -64,6 +64,7 @@ module Ecommerce
       end
       @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
       @cart_item_qty_total = @cart.cart_items.sum(&:quantity)
+      #flash[:error] = 'this is a flash error'
     end
 
     def set_wishlist

@@ -4,7 +4,7 @@ module Ecommerce
     belongs_to :order, optional: true
     belongs_to :payment_method
 
-    enum status: {status_exception: 0, active: 1, void: 2, refunded: 3}
+    enum status: {status_exception: 0, active: 1, void: 2, refunded: 3, pending: 4}
 
     #monetize :amount_cents, :as => "amount"
 
@@ -16,9 +16,11 @@ module Ecommerce
     end
 
     def check_if_order_paid
-      if Payment.where(order: self.order_id).sum(:amount_cents) >= self.order.amount_cents
-        self.order.update(stage: "stage_paid", payment_status: "paid")
-        TwilioIntegration.new.send_sms_to_number("Your ExpatShop Order No. #{self.order_id} has been Paid! We will let you know when we ship.", self.user.username) if Rails.env == "production"
+      unless self.pending?
+        if Payment.where(order: self.order_id).sum(:amount_cents) >= self.order.amount_cents
+          self.order.update(stage: "stage_paid", payment_status: "paid")
+          TwilioIntegration.new.send_sms_to_number("Your ExpatShop Order No. #{self.order_id} has been Paid! We will let you know when we ship.", self.user.username) if Rails.env == "production"
+        end
       end
     end
 
@@ -104,6 +106,41 @@ module Ecommerce
       end
 
     end
+
+    def new_pagoefectrivo_payment(current_user, culqi_order_id, amount, currency, payment_type, order_id = nil, payment_request_id = nil)
+      Rails.logger.debug "Received Order: #{order_id}"
+      Rails.logger.debug "Pagoefectivo Order Id:"
+      Rails.logger.debug culqi_order_id
+      case payment_type
+      when "Recarga"
+        culqi_description = "Recarga Saldo"
+        culqi_orden = "Recarga Saldo"
+        culqi_request = "Recarga Saldo"
+      when "Order"
+        culqi_description = "Order # #{order_id}"
+        culqi_order = "Order # #{order_id}"
+        culqi_request = "Request # #{payment_request_id}"
+      end
+      Payment.transaction do
+        new_payment = Payment.new
+        new_payment.user_id = current_user.id
+        new_payment.payment_method_id = PaymentMethod.find_by!(name: "PagoEfectivo").id
+        new_payment.processor_transaction_id = culqi_order_id
+        new_payment.amount_cents = amount
+        new_payment.date = Time.now
+        new_payment.status = "pending"
+        new_payment.order_id = order_id
+        new_payment.payment_request_id = payment_request_id
+
+        success = new_payment.save
+        puts new_payment.errors.inspect unless success
+        #if recharging
+        #old_saldo = current_user.saldo_cents
+        #current_user.update(saldo_cents: old_saldo + amount.to_i)
+      end
+
+    end
+
 
   end
 end
