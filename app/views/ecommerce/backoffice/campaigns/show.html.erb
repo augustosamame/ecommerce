@@ -1,0 +1,26 @@
+<div class="page-header">
+  <%= link_to backoffice_campaigns_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_campaign_path(@campaign), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show Campaign</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Campaign Name:</dt>
+  <dd><%= @campaign.name %></dd>
+
+  <dt>Coupon:</dt>
+  <dd><%= @campaign.coupon.coupon_code %></dd>
+
+  <dt>Campaign Type:</dt>
+  <dd><%= @campaign.campaign_type %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @campaign.status %></dd>
+
+</dl>

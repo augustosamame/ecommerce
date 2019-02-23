@@ -1,0 +1,14 @@
+<%= simple_form_for([:backoffice, @campaign]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name %>
+    <%= f.input :coupon_id, collection: Ecommerce::Coupon.active, label_method: lambda { |obj| obj.coupon_code} %>
+    <%= f.input :campaign_type, collection: Ecommerce::Campaign.campaign_types.keys %>
+    <%= f.input :status, collection: Ecommerce::Campaign.statuses.keys %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: "btn btn-primary" %>
+  </div>
+<% end %>
