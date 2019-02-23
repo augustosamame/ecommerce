@@ -69,7 +69,7 @@
       </li>
 
       <li class="<%= class_string({ active: (['coupons','campaigns'].include? controller.controller_name) }) %>">
-        <a href="javascript:;"> <i class="material-icons">attach_money</i> <span class="title">Coupons</span><span class=" arrow"></span>
+        <a href="javascript:;"> <i class="material-icons">attach_money</i> <span class="title">Marketing</span><span class=" arrow"></span>
         </a>
         <ul class="sub-menu">
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'coupons' && controller.action_name == 'index')}) %>">
@@ -95,15 +95,6 @@
           </li>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'controls' && controller.action_name == 'index')}) %>">
             <%= link_to "Settings", backoffice_controls_path %>
-          </li>
-        </ul>
-      </li>
-      <li class="">
-        <a href="javascript:;"> <i class="material-icons">star</i> <span class="title">Integraciones</span> <span class=" arrow"></span> </a>
-        <ul class="sub-menu">
-          <li> <a href="javascript:;">Integración con ERP</a> </li>
-          <li>
-            <a href="javascript:;"> <span class="title">Generar Comprobantes de Pago</span> <span class=" arrow"></span> </a>
           </li>
         </ul>
       </li>

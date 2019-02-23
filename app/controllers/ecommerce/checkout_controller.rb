@@ -44,11 +44,13 @@ module Ecommerce
     end
 
     def find_or_create_order
-      cart_still_active = Cart.find_by(id: params[:cart_id].to_i)
-      unless cart_still_active
-        flash[:error] = t('.error_cart_already_placed')
-        flash.keep(:error)
-        render js: "window.location = '#{orders_path}'"
+      if params[:cart_id]
+        cart_still_active = Cart.find_by(id: params[:cart_id].to_i)
+        unless cart_still_active
+          flash[:error] = t('.error_cart_already_placed')
+          flash.keep(:error)
+          render js: "window.location = '#{orders_path}'"
+        end
       end
       if params[:order_id]
         @order = Order.find(params[:order_id])

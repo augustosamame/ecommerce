@@ -28,7 +28,10 @@ Ecommerce::Engine.routes.draw do
     resources :product_prices
     put 'update_product_price', :to => "product_prices#bp_update", as: 'update_product_price'
     resources :campaigns
-    get 'send_recipients', :to => "campaigns#send_recipients", as: 'send_recipients'
+    get 'send_recipients/:id', :to => "campaigns#send_recipients", as: 'send_recipients'
+    post 'send_recipients/:id', :to => "campaigns#post_send_recipients", as: 'post_send_recipients'
+    get 'get_purchasers', :to => "campaigns#get_product_purchasers"
+    get 'get_no_purchase_within_days', :to => "campaigns#get_no_purchase_within_days"
   end
 
   post 'locale', :to => 'application#locale'

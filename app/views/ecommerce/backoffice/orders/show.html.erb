@@ -44,6 +44,9 @@
   <dt>Payment status:</dt>
   <dd style= "<%= @backoffice_order.unpaid? ? 'color: red; font-size: 18px;' : '' %>"><%= @backoffice_order.payment_status %></dd>
 
+  <dt>Payment Method:</dt>
+  <dd style= <%= @backoffice_order.process_comments %></dd>
+
   <dt>Status:</dt>
   <dd><%= @backoffice_order.status %></dd>
 

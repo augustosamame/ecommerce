@@ -1,0 +1,125 @@
+<div class="page-header">
+  <%= link_to backoffice_campaigns_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <h1>Send Bulk Email Campaign</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Campaign Name:</dt>
+  <dd><%= @campaign.name %></dd>
+
+  <dt>Coupon:</dt>
+  <dd><%= @campaign.coupon.coupon_code %></dd>
+
+  <dt>Campaign Type:</dt>
+  <dd><%= @campaign.campaign_type %></dd>
+
+</dl>
+
+<div class= "col-lg-8">
+  <div class="well" style="margin-top: 0px;">
+    <h2><strong>Filters</strong></h2>
+    <div class= "row" style="margin-bottom: 30px; margin-left: 0px;">
+      <h3>Filter by Purchasers of Product</h3>
+      <span class="add-on">Choose Product:</span>
+      <input name="" type="text" class="no-boarder search_purchaser_products" placeholder="start typing to search..." style="width:250px;">
+    </div>
+    <div class= "row" style="margin-bottom: 30px; margin-left: 0px;">
+      <h3>Filter by Purchasing Activity</h3>
+      <span style="margin-right: 5px;">No Purchases in last</span>
+      <input name="days_since_purchase" type="text" class="" style="width:50px;" id="days_since_purchase">
+      <span style="margin-left: 5px;"> days</span>
+    </div>
+
+    <%= simple_form_for([:backoffice, @campaign], url: backoffice_post_send_recipients_path(@campaign), method: :post) do |f| %>
+      <%= f.error_notification %>
+
+      <%= simple_fields_for :other do |o| %>
+        <%= o.label :user_list, 'Total Number of Recipients: ', :id => "recipientLabel" %>
+        <%= o.input :user_list, as: :string, label: false %>
+        <%= o.input :coupon_id, as: :hidden, input_html: {value: @campaign.coupon.id} %>
+
+      <% end %>
+
+      <div class="form-actions">
+        <%= f.button :submit, 'Send Bulk Email', class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function(){
+
+  products_tags = jQuery.parseJSON(<%= raw @products_array.to_json.inspect %>);
+  $(".search_purchaser_products" ).autocomplete({
+    autoFocus: false,
+    minLength: 1,
+    source: products_tags,
+    select: function (e, ui) {
+        console.log("chose " + ui.item.id);
+        $("#days_since_purchase").val("");
+        $("#other_user_list").val(getPurchasers(ui.item.id))
+      },
+  });
+
+  $("#days_since_purchase").change(function() {
+    $("#negative-selection").val("");
+    $(".search_purchaser_products").val("");
+    $("#campaign_recipient").val(getNoPurchaseWithinDays($(this).val()));
+  });
+
+  function getNoPurchaseWithinDays(numberDays) {
+
+    $.ajax({
+      url: "/store/backoffice/get_no_purchase_within_days?days=" + numberDays,
+      type:'GET',
+      dataType: "json",
+      success:function(data){
+        console.log(data);
+        if (typeof data == 'undefined') {
+          console.log("undefined response");
+        } else {
+          parsed_object = JSON.parse(data["data"]);
+          $("#other_user_list").val(parsed_object);
+          $("#recipientLabel").text("Total Number of Recipients: " + parsed_object.length);
+        }
+      },
+      error:function(data){
+          console.log('error');
+          console.log(data);
+      }
+    });
+
+  }
+
+  function getPurchasers(productId) {
+
+    $.ajax({
+      url: "/store/backoffice/get_purchasers?product_id=" + productId,
+      type:'GET',
+      dataType: "json",
+      success:function(data){
+        console.log(data);
+        if (typeof data == 'undefined') {
+          console.log("undefined response");
+        } else {
+          parsed_object = JSON.parse(data["data"]);
+          $("#other_user_list").val(parsed_object);
+          $("#recipientLabel").text("Total Number of Recipients: " + parsed_object.length);
+        }
+      },
+      error:function(data){
+          console.log('error');
+          console.log(data);
+      }
+    });
+
+
+  }
+
+});
+</script>
