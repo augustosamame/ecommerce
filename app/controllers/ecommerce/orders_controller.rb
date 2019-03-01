@@ -64,7 +64,7 @@ module Ecommerce
         cart_subtotal = cart.cart_items.includes(:product).sum(&:line_total)
         case found_coupon.coupon_type
         when "percentage_discount"
-          discount = cart_subtotal.to_f * (found_coupon.dicount_percentage.to_f / 100)
+          discount = cart_subtotal.to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
           response = {
                       :result => "ok",
                       :discount => - discount,
@@ -103,7 +103,7 @@ module Ecommerce
           else
             discount = 0
             qualifying_products_in_cart.each do |cart_line|
-              discount += cart_line.line_total.to_f * (found_coupon.dicount_percentage.to_f / 100)
+              discount += cart_line.line_total.to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
             end
             response = {
                        :result => "ok",

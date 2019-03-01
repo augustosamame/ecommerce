@@ -59,7 +59,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def coupon_params
-        params.require(:coupon).permit(:coupon_code, :coupon_type, :dicount_percentage, :discount_fixed, :discount_threshold, :start_date, :end_date, :max_uses_per_user, :max_uses, :current_uses, :free_shipping, :status)
+        params.require(:coupon).permit(:coupon_code, :coupon_type, :discount_percentage_decimal, :discount_fixed, :discount_threshold, :start_date, :end_date, :max_uses_per_user, :max_uses, :current_uses, :free_shipping, :status)
       end
   end
 end

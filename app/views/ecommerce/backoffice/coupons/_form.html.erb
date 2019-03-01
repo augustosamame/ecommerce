@@ -4,7 +4,7 @@
   <div class="form-inputs">
     <%= f.input :coupon_code %>
     <%= f.input :coupon_type, collection: Ecommerce::Coupon.coupon_types.keys %>
-    <%= f.input :dicount_percentage %>
+    <%= f.input :discount_percentage_decimal %>
     <%= f.input :discount_fixed %>
     <%= f.input :discount_threshold %>
     <%= f.input :start_date, as: :date_time_picker %>
