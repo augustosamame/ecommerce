@@ -499,8 +499,8 @@
         {
           console.log('checkout cerrado');
           console.log(Culqi);
-        } else {
-          if (Culqi.closeEvent == 'checkout_cerrado_not_multipayment') {
+          console.log(Culqi.order);
+          if (Culqi.order) {
             // async payment successfull (got ID via event webhook?)
             var picked_shipping_address_id = $('#address_id').val();
             var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
@@ -520,16 +520,18 @@
               delivery_instructions: $('#delivery-instructions').val(),
               applied_coupon: applied_coupon,
               discount_amount: discount_amount,
-              currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD"
+              currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+              pagoefectivo_payment_code: Culqi.order.payment_code
               },
               function(data) {
               })
           } else {
-            Swal({
-                type: 'error',
-                title: '<%= t('.token_not_returned') %>',
-                text: Culqi.error
-              });
+            //console.log('Checkout closed by user without choosing payment option');
+            //Swal({
+            //    type: 'error',
+            //    title: '<%= t('.token_not_returned') %>',
+            //    text: Culqi.error
+            //  });
 
           }
         }

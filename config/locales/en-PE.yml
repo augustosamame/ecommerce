@@ -93,8 +93,9 @@ en-PE:
         error_when_processing_payment: 'Error when processing payment'
         error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
       pay_order_pagoefectivo_checkout:
-        your_order_was_successfully_placed: 'Your Order was successfully placed'
+        your_order_was_successfully_placed_pagoefectivo: 'Your Order was successfully placed using PagoEfectivo. You will receive an email with instructions on how to pay for your order'
         error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
+        your_order_was_successfully_placed: 'Your Order was successfully placed'
       pay_order_bank:
         your_order_was_successfully_placed: 'Your Order was successfully placed'
         error_when_processing_payment: 'Error when processing payment'

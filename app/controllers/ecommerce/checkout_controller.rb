@@ -72,7 +72,8 @@ module Ecommerce
                         delivery_comments: params[:delivery_instructions].try(:strip),
                         coupon_id: used_coupon.try(:id),
                         discount_amount: Money.new((params[:discount_amount].to_i), session[:currency]),
-                        status: "active"
+                        status: "active",
+                        process_comments: params[:pagoefectivo_payment_code].blank? ? "" : "Pagoefectivo CIP #{params[:pagoefectivo_payment_code]}"
                         )
           if used_coupon
             current_uses = used_coupon.current_uses || 0
@@ -125,7 +126,7 @@ module Ecommerce
     def pay_order_pagoefectivo_checkout
       Rails.logger.debug params
       payment_created = Payment.new.new_pagoefectrivo_payment(current_user, params[:culqi_order_id], params[:culqi_payment_amount], params[:currency], "Order", @order.id, params[:payment_request_id])
-      flash[:notice] = t('.your_order_was_successfully_placed')
+      flash[:notice] = t('.your_order_was_successfully_placed_pagoefectivo')
       flash.keep(:notice)
       render js: "window.location = '#{order_path(@order.id, :notice => t('.your_order_was_successfully_placed'))}'"
     end
