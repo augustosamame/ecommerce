@@ -11,7 +11,7 @@
   <dd><%= @campaign.name %></dd>
 
   <dt>Coupon:</dt>
-  <dd><%= @campaign.coupon.coupon_code %></dd>
+  <dd><%= @campaign.coupon.try(:coupon_code) %></dd>
 
   <dt>Campaign Type:</dt>
   <dd><%= @campaign.campaign_type %></dd>
@@ -39,7 +39,7 @@
       <%= simple_fields_for :other do |o| %>
         <%= o.label :user_list, 'Total Number of Recipients: ', :id => "recipientLabel" %>
         <%= o.input :user_list, as: :string, label: false %>
-        <%= o.input :coupon_id, as: :hidden, input_html: {value: @campaign.coupon.id} %>
+        <%= o.input :coupon_id, as: :hidden, input_html: {value: @campaign.coupon.try(:id)} %>
 
       <% end %>
 

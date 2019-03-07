@@ -7,7 +7,12 @@ module Ecommerce
 
     # GET /coupons
     def index
-      @coupons = Coupon.all
+      @coupons = Coupon.where(dynamic: false).order(id: :desc)
+    end
+
+    def dynamic_index
+      @coupons = Coupon.where(dynamic: true).order(id: :desc)
+      render :index
     end
 
     # GET /coupons/1

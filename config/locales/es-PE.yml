@@ -35,6 +35,7 @@ es-PE:
         no_qualifying_products: "No hay productos en su carrito que califiquen para este cupón"
         max_times_per_user_exceeded: "El cupón ya ha sido utilizado el máximo de veces permitido"
         max_times_exceeded: "El cupón ya ha sido utilizado el máximo de veces permitido"
+        coupon_expired: "El cupón ha expirado"
   activemodel:
     errors:
       models:

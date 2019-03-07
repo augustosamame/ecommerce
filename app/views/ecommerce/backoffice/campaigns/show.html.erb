@@ -15,12 +15,27 @@
   <dd><%= @campaign.name %></dd>
 
   <dt>Coupon:</dt>
-  <dd><%= @campaign.coupon.coupon_code %></dd>
+  <dd><%= @campaign.coupon.try(:coupon_code) %></dd>
 
   <dt>Campaign Type:</dt>
   <dd><%= @campaign.campaign_type %></dd>
 
+  <dt>Email Subject:</dt>
+  <dd><%= @campaign.email_subject %></dd>
+
+  <dt>Email Subject Spanish:</dt>
+  <dd><%= @campaign.email_subject_es %></dd>
+
+  <dt>Email Coupon Description:</dt>
+  <dd><%= @campaign.email_coupon_description %></dd>
+
+  <dt>Email Coupon Description Spanish:</dt>
+  <dd><%= @campaign.email_coupon_description_es %></dd>
+
   <dt>Status:</dt>
   <dd><%= @campaign.status %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= image_tag @campaign.image.large.url %></dd>
 
 </dl>

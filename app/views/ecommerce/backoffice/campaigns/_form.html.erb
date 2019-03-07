@@ -6,9 +6,51 @@
     <%= f.input :coupon_id, collection: Ecommerce::Coupon.active, label_method: lambda { |obj| obj.coupon_code} %>
     <%= f.input :campaign_type, collection: Ecommerce::Campaign.campaign_types.keys %>
     <%= f.input :status, collection: Ecommerce::Campaign.statuses.keys %>
+    <%= f.input :email_subject, label: "Email Subject" %>
+    <%= f.input :email_subject_es, label: "Email Subject Spanish" %>
+    <%= f.input :email_coupon_description, label: "Email Coupon Description (will come after 'This coupon can be used to ')" %>
+    <%= f.input :email_coupon_description_es, label: "Email Coupon Description Spanish (will come after 'Este cupón puede ser usado para ')" %>
+    <%= f.label "Main Product Image" %>
+    <div class="form-group">
+      <% if f.object.image? %>
+        <%= image_tag f.object.image.url, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
+      <% end %>
+      <img alt="your image" class="img-thumbnail hidden" height="200" id="img_prev" src="#" width="200"/>
+      <br/>
+      <span class="btn btn-default btn-file">
+        <%= f.file_field :image, id: "file-image-upload", label: "Email Body Image" %>
+      </span>
+      <%= f.hidden_field :image_cache %>
+    </div>
   </div>
 
   <div class="form-actions">
     <%= f.button :submit, class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<script>
+
+  $(document).ready(function(){
+
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          $('#img_prev').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $("#file-image-upload").change(function(){
+      $('#img_prev').removeClass('hidden');
+      $('#img_actual').addClass('hidden');
+      readURL(this);
+    });
+
+  });
+
+
+</script>

@@ -24,6 +24,7 @@ Ecommerce::Engine.routes.draw do
     resources :payment_methods
     get '/translations/index', :to => "translations#index"
     resources :coupons
+    get '/dynamic_coupon_index', :to => "coupons#dynamic_index"
     resources :pricelists
     resources :product_prices
     put 'update_product_price', :to => "product_prices#bp_update", as: 'update_product_price'

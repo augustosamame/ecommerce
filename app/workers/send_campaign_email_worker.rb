@@ -1,9 +1,10 @@
 class SendCampaignEmailWorker
   include Sidekiq::Worker
 
-  def perform(user_id, coupon_id)
+  def perform(user_id, coupon_id, campaign_id)
     user = User.find(user_id)
-    coupon = Ecommerce::Coupon.find(coupon_id)
-    UserMailer.send_campaign_email(user, coupon).deliver! #unless Rails.env == "development"
+    coupon = Ecommerce::Coupon.find_by(coupon_id)
+    campaign = Ecommerce::Campaign.find(campaign_id)
+    UserMailer.send_campaign_email(user, coupon, campaign).deliver! #unless Rails.env == "development"
   end
 end

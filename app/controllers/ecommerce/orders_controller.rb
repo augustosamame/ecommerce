@@ -60,6 +60,17 @@ module Ecommerce
           end
         end
 
+        #check expiration
+        if found_coupon.end_date && Date.today > found_coupon.end_date
+          response = {
+                      :result => "error",
+                      :error_message => I18n.t('controllers.orders.calculate_coupon.coupon_expired')
+                     }
+          respond_to do |format|
+            format.json { render json: response.to_json and return}
+          end
+        end
+
         cart = Cart.find(params[:cart_id])
         cart_subtotal = cart.cart_items.includes(:product).sum(&:line_total)
         case found_coupon.coupon_type

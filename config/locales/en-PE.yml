@@ -50,6 +50,7 @@ en-PE:
         no_qualifying_products: "No qualifying products in cart for this coupon code"
         max_times_per_user_exceeded: "Coupon has exceeded the max number of times it can be used"
         max_times_exceeded: "Coupon has exceeded the max number of times it can be used"
+        coupon_expired: "Coupon has expired"
   activemodel:
     errors:
       models:

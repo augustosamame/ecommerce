@@ -22,7 +22,7 @@ module Ecommerce
       user_array = params[:other][:user_list].split(',').map(&:to_i)
       coupon_id = params[:other][:coupon_id]
       user_array.each do |user_id|
-        SendCampaignEmailWorker.perform_async(user_id, coupon_id)
+        SendCampaignEmailWorker.perform_async(user_id, coupon_id, @campaign.id)
       end
       redirect_to :backoffice_campaigns, notice: "#{user_array.length} Bulk Emails sent"
     end
@@ -92,7 +92,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def campaign_params
-        params.require(:campaign).permit(:campaign_type, :coupon, :coupon_id, :name, :email_template_id, :status)
+        params.require(:campaign).permit(:email_subject, :email_subject_es, :email_coupon_description, :email_coupon_description_es, :image, :image_cache, :campaign_type, :coupon, :coupon_id, :name, :email_template_id, :status)
       end
   end
 end

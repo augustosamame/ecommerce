@@ -24,7 +24,7 @@
     <tbody>
       <%= content_tag_for(:tr, @campaigns) do |campaign| %>
         <td><%= campaign.name %></td>
-        <td><%= campaign.coupon.coupon_code %></td>
+        <td><%= campaign.coupon.try(:coupon_code) %></td>
         <td><%= campaign.campaign_type %></td>
         <td><%= campaign.status %></td>
         <% if campaign.bulk_email? && campaign.active? %>
