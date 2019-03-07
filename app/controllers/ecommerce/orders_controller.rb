@@ -2,6 +2,9 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   class OrdersController < ApplicationController
+
+    skip_before_filter :verify_authenticity_token, only: [:culqi_webhook]
+
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}"
     before_action :set_order, only: [:show]
 
@@ -24,6 +27,22 @@ module Ecommerce
       puts params
       Rails.logger.debug params
       Rails.logger.debug 'CULQI_WEBHOOK EVENT RECEIVED'
+      if params[:object] == "event" && params[:type] == "order.status.changed"
+        culqi_data = JSON.parse(params[:data])
+        found_culqi_payment = Payment.find_by(processor_transaction_id: culqi_data.id)
+        if found_culqi_payment
+          Payment.create(
+            user_id: found_culqi_payment.user_id,
+            order_id: found_culqi_payment.order_id,
+            payment_method_id: found_culqi_payment.payment_method_id,
+            processor_transaction_id: found_culqi_payment.processor_transaction_id,
+            amount_cents: culqi_data.amount.to_i,
+            comments: params[:id],
+            date: Time.now,
+            status: 'active'
+          )
+        end
+      end
       head :ok
     end
 
