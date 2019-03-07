@@ -29,14 +29,14 @@ module Ecommerce
       Rails.logger.debug 'CULQI_WEBHOOK EVENT RECEIVED'
       if params[:object] == "event" && params[:type] == "order.status.changed"
         culqi_data = JSON.parse(params[:data])
-        found_culqi_payment = Payment.find_by(processor_transaction_id: culqi_data.id)
+        found_culqi_payment = Payment.find_by(processor_transaction_id: culqi_data["id"])
         if found_culqi_payment
           Payment.create(
             user_id: found_culqi_payment.user_id,
             order_id: found_culqi_payment.order_id,
             payment_method_id: found_culqi_payment.payment_method_id,
             processor_transaction_id: found_culqi_payment.processor_transaction_id,
-            amount_cents: culqi_data.amount.to_i,
+            amount_cents: culqi_data["amount"].to_i,
             comments: params[:id],
             date: Time.now,
             status: 'active'
