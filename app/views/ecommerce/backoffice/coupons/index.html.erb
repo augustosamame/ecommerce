@@ -11,6 +11,7 @@
     <thead>
       <tr>
         <th>Coupon Code</th>
+        <th>Dynamic User</th>
         <th>Coupon Type</th>
         <th>Discount Percentage</th>
         <th>Fixed Discount</th>
@@ -31,6 +32,11 @@
     <tbody>
       <%= content_tag_for(:tr, @coupons) do |coupon| %>
         <td><%= coupon.coupon_code %></td>
+        <% if coupon.dynamic %>
+          <td><%= User.find_by(id: coupon.dynamic_user_id).try(:name) %></td>
+        <% else %>
+          <td></td>
+        <% end %>
         <td><%= coupon.coupon_type %></td>
         <td><%= coupon.discount_percentage_decimal %></td>
         <td><%= coupon.discount_fixed %></td>
