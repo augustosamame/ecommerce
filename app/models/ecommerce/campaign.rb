@@ -30,6 +30,10 @@ module Ecommerce
           dynamic: true,
           dynamic_user_id: order_user_id
           )
+        products_with_this_coupon = original_coupon.products
+        products_with_this_coupon.each do |product|
+          product.coupons << dynamic_coupon
+        end
         SendNextOrderCouponEmailsWorker.perform_in(6.seconds, order_id, dynamic_coupon.id, to_send.id)
       end
     end
