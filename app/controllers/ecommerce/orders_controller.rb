@@ -23,6 +23,7 @@ module Ecommerce
     end
 
     def culqi_webhook
+      raise "error #{params}"
       Rollbar.info("Webhook Received",
         :request_data => params,
         :traditional => params[:object],
