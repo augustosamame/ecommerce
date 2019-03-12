@@ -23,6 +23,11 @@ module Ecommerce
     end
 
     def culqi_webhook
+      Rollbar.info("Webhook Received",
+        :request_data => params,
+        :traditional => params[:object],
+        :quotes => params["object"]
+      )
       puts 'CULQI_WEBHOOK EVENT RECEIVED'
       puts params
       Rails.logger.debug params
@@ -42,6 +47,12 @@ module Ecommerce
             status: 'active'
           )
         end
+      end
+      if params[:object] == "event" && params[:type] == "order.creation.succeeded"
+        Rollbar.info("Webhook Received",
+          :request_type => params[:type],
+          :culqi_data => JSON.parse(params[:data])
+        )
       end
       head :ok
     end
