@@ -4,6 +4,7 @@ module Ecommerce
   class OrdersController < ApplicationController
 
     skip_before_action :verify_authenticity_token, only: [:culqi_webhook]
+    skip_before_action :authenticate_user!, only: [:culqi_webhook]
 
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}"
     before_action :set_order, only: [:show]
@@ -23,16 +24,15 @@ module Ecommerce
     end
 
     def culqi_webhook
-      raise "error #{params}"
       Rollbar.info("Webhook Received",
         :request_data => params,
         :traditional => params[:object],
         :quotes => params["object"]
       )
-      puts 'CULQI_WEBHOOK EVENT RECEIVED'
+      puts 'CULQI_WEBHOOK EVENT RECEIVED (PUTS)'
       puts params
       Rails.logger.debug params
-      Rails.logger.debug 'CULQI_WEBHOOK EVENT RECEIVED'
+      Rails.logger.debug 'CULQI_WEBHOOK EVENT RECEIVED (LOGGER)'
       if params[:object] == "event" && params[:type] == "order.status.changed"
         culqi_data = JSON.parse(params[:data])
         found_culqi_payment = Payment.find_by(processor_transaction_id: culqi_data["id"])
@@ -48,12 +48,6 @@ module Ecommerce
             status: 'active'
           )
         end
-      end
-      if params[:object] == "event" && params[:type] == "order.creation.succeeded"
-        Rollbar.info("Webhook Received",
-          :request_type => params[:type],
-          :culqi_data => JSON.parse(params[:data])
-        )
       end
       head :ok
     end
