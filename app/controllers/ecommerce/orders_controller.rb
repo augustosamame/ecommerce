@@ -25,9 +25,7 @@ module Ecommerce
 
     def culqi_webhook
       Rollbar.info("Webhook Received",
-        :request_data => params,
-        :traditional => params[:object],
-        :quotes => params["object"]
+        :request_data => params
       )
       puts 'CULQI_WEBHOOK EVENT RECEIVED (PUTS)'
       puts params
@@ -43,7 +41,7 @@ module Ecommerce
             payment_method_id: found_culqi_payment.payment_method_id,
             processor_transaction_id: found_culqi_payment.processor_transaction_id,
             amount_cents: culqi_data["amount"].to_i,
-            comments: params[:id],
+            comment: params[:id],
             date: Time.now,
             status: 'active'
           )
