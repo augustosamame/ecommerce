@@ -1,0 +1,38 @@
+<div class="HeaderLogo">
+<%= image_tag "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_180x180.png", style: "position: absolute; width: 120px; height: 120px; top: 0px, margin-bottom: 50px;" %>
+</div>
+<div style="margin-top: 140px; position: absolute; top: 180px;">
+<p> <%= t('.hello_user', user_name: @user.name) %><br></p>
+<p> <%= t('.order_received_1') %> <span style="font-weight: bold;"><%= friendly_payment_stage(@order.payment_status) %></span> <%= t('.order_received_2', order_date_time: I18n.localize(@order.created_at - 5.hours, format: '%d %B %H:%M')) %><br></p>
+</br>
+<p> <%= t('.items_ordered') %></p>
+<p>
+  <% @order.order_items.each do |line| %>
+  <p>
+    <%= " #{line.quantity} " %> <%= t('.units_of') %>
+    <%= " #{line.product.name}" %>,
+    <%= " #{t('.price')}: #{@order.amount.currency.symbol} #{line.price.to_s}" %>,
+
+    <%= " #{t('.total')}: #{@order.amount.currency.symbol} #{(line.quantity * line.price).to_s}" %>
+  </p>
+  <% end %>
+  <p> <%= t('.order_amount') %> <%= "#{@order.amount.currency.symbol} #{@order.amount.to_s}" %></p>
+</br>
+<% if @order.unpaid? %>
+<p class="well"> <%= t('.delivered_after_payment') %> </p>
+<% else %>
+<p> <%= t('.will_receive_invoice') %></p>
+<p> <%= t('.will_be_delivered', friendly_delivery_window: friendly_delivery_window(@order.created_at - 5.hours)) %> <%= t('.shipping_address') %> <%= "#{@order.shipping_address.try(:street)} - #{@order.shipping_address.try(:district)}" %></p>
+<p> <%= t('.special_delivery_instructions') %> <span style="color: red;"><%= "#{@order.delivery_comments}" %></span></p>
+<p>
+   <%= t('.will_contact_you', delivery_phone: @user.username, delivery_email: @user.email) %>
+</p>
+<% end %>
+</br>
+<p> <%= t('.thank_you') %></p>
+<p> <%= t('.thank_you_2') %></p>
+</br>
+</br>
+<p><%= t('.farewell_1') %></p>
+<p><%= t('.farewell_2') %></p>
+</div>

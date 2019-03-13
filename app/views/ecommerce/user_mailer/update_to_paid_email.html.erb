@@ -1,0 +1,31 @@
+<%= image_tag "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png", style: "float: right;" %>
+<h1><%= t('.your_order_has_been_paid') %></h1>
+<p>  Hello <%= @user.name %></p>
+<p>
+  The following order has been updated from unpaid to paid:<br>
+</p>
+<p>Date: <%= @order.created_at %></p>
+<p>User Id: <%= @user.id %></p>
+<p>User: <%= @user.name %></p>
+<p>User Phone: <%= @user.username %></p>
+<p>User Email: <%= @user.email %></p>
+</br>
+<p>
+  <% @order.order_items.each do |line| %>
+  <p>
+    <%= "Product: #{line.product.name}" %>,
+    <%= " Quantity: #{@order.amount.currency.symbol} #{line.price.to_s}" %>,
+    <%= " Quantity: #{line.quantity}" %>,
+    <%= " Total: #{@order.amount.currency.symbol} #{(line.quantity * line.price).to_s}" %>
+  </p>
+  <% end %>
+  <p>Sub Total Amount: <%= "#{@order.amount.currency.symbol} #{@order.amount.to_s}" %></p>
+  <p>Shipping Amount: <%= "#{@order.amount.currency.symbol} #{@order.shipping_amount.to_s}" %></p>
+  <p>Order Total Amount: <%= "#{@order.amount.currency.symbol} #{(@order.amount + @order.shipping_amount).to_s}" %></p>
+</br>
+<p>Current Payment Status: <%= @order.payment_status %></p>
+<p>Shipping Address: <%= "#{@order.shipping_address.try(:street)} - #{@order.shipping_address.try(:district)}" %></p>
+</p>
+<p>
+  You can review the order at the Admin backoffice at the following link: <%= @url %>
+</p>

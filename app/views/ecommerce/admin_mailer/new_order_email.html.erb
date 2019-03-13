@@ -1,0 +1,32 @@
+<h1>New Order Received from, <%= @user.name %></h1>
+
+<p><strong>SPECIAL DELIVERY INSTRUCTIONS: <%= "#{@order.delivery_comments}" %></strong></p>
+<p>
+  The following order has been received:<br>
+</p>
+<p>Date: <%= @order.created_at %></p>
+<p>User Id: <%= @user.id %></p>
+<p>User: <%= @user.name %></p>
+<p>User Phone: <%= @user.username %></p>
+<p>User Email: <%= @user.email %></p>
+</br>
+<p>
+  <% @order.order_items.each do |line| %>
+  <p>
+    <%= "Product: #{line.product.name}" %>,
+    <%= " Quantity: #{@order.amount.currency.symbol} #{line.price.to_s}" %>,
+    <%= " Quantity: #{line.quantity}" %>,
+    <%= " Total: #{@order.amount.currency.symbol} #{(line.quantity * line.price).to_s}" %>
+  </p>
+  <% end %>
+  <p>Sub Total Amount: <%= "#{@order.amount.currency.symbol} #{@order.amount.to_s}" %></p>
+  <p>Shipping Amount: <%= "#{@order.amount.currency.symbol} #{@order.shipping_amount.to_s}" %></p>
+  <p>Order Total Amount: <%= "#{@order.amount.currency.symbol} #{(@order.amount + @order.shipping_amount).to_s}" %></p>
+</br>
+<p>Payment Method: <%= @order.process_comments || 'Manual' %></p>
+<p>Payment Status: <%= @order.payment_status %></p>
+<p>Shipping Address: <%= "#{@order.shipping_address.try(:street)} - #{@order.shipping_address.try(:district)}" %></p>
+</p>
+<p>
+  You can review the order at the Admin backoffice at the following link: <%= @url %>
+</p>

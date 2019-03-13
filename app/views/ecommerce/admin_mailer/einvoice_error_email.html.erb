@@ -1,0 +1,13 @@
+<h1>Error generating eInvoice for Order #<%= @order.id %></h1>
+<p>
+  The following order failed to generate an einvoice<br>
+</p>
+<p>Inspect Order Object: <%= @order.inspect.to_s %></p>
+<p>efact_sent_text: <%= @order.efact_sent_text %></p>
+<p>efact_response_text: <%= @order.efact_response_text %></p>
+<p>efact_invoice_url: <%= @order.efact_invoice_url %></p>
+<p>efact_refund_url: <%= @order.efact_refund_url %></p>
+<p>efact_void_url: <%= @order.efact_void_url %></p>
+<p>
+  You can review the order at the Admin backoffice at the following link: <%= @url %>
+</p>

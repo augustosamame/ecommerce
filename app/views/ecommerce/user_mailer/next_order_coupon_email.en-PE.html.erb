@@ -1,0 +1,18 @@
+<div class="HeaderLogo">
+<%= image_tag "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_180x180.png", style: "position: absolute; width: 120px; height: 120px; top: 0px;" %>
+</div>
+<div style="margin-top: 140px;">
+<p> Hello <%= @user.name %><br></p>
+<p> Thank you for your recent order at Expatshop.pe!<br></p>
+<p>As a token of our appreciation, we have sent you the following coupon to use in your next order:</p>
+<p>
+<h2> <%= @coupon.coupon_code %> </h2>
+  <p>
+  This coupon can be used to <%= @coupon_description_en %>
+  </p>
+<p> <%= t('.thank_you') %></p>
+<p> <%= t('.thank_you_2') %></p>
+<p><%= t('.farewell_1') %></p>
+<p><%= t('.farewell_2') %></p>
+<%= image_tag @campaign.image.large.url if @campaign.image %>
+</div>
