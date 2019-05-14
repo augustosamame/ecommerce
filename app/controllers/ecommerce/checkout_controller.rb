@@ -52,46 +52,50 @@ module Ecommerce
           render js: "window.location = '#{orders_path}'"
         end
       end
-      if params[:order_id]
-        @order = Order.find(params[:order_id])
-      else
-        posted_address = params[:picked_shipping_address_id]
-        last_user_address = Address.where(user_id: current_user.id).order(:id).last
-        used_coupon = Coupon.find_by(coupon_code: params[:applied_coupon])
-        ActiveRecord::Base.transaction do
-          @order = Order.new( user_id: current_user.id,
-                        amount: Money.new(params[:amount].to_i, session[:currency]),
-                        shipping_amount: Money.new((params[:shipping_amount].to_i), session[:currency]),
-                        stage: "stage_new",
-                        cart_id: params[:cart_id].to_i,
-                        shipping_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
-                        billing_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
-                        payment_status: "unpaid",
-                        efact_type: params[:want_factura] == "true" ? "factura" : "boleta",
-                        required_doc: params[:required_doc],
-                        delivery_comments: params[:delivery_instructions].try(:strip),
-                        coupon_id: used_coupon.try(:id),
-                        discount_amount: Money.new((params[:discount_amount].to_i), session[:currency]),
-                        status: "active",
-                        process_comments: params[:pagoefectivo_payment_code].blank? ? "" : "Pagoefectivo CIP #{params[:pagoefectivo_payment_code]}"
-                        )
-          if used_coupon
-            current_uses = used_coupon.current_uses || 0
-            used_coupon.update(current_uses: current_uses + 1)
-          end
-          if @order.save
-            current_user.update(doc_id: @order.required_doc) unless @order.required_doc.blank?
-            @cart_items = CartItem.where(cart_id: params[:cart_id].to_i)
-            @cart_items.each do |item|
-              OrderItem.create!(
-                order_id: @order.id,
-                product_id: item.product_id,
-                price: item.product.current_price,
-                quantity: item.quantity,
-                status: "active"
-              )
+      order_with_cart_exists = Order.find_by(cart_id: params[:cart_id].to_i)
+      @order = order_with_cart_exists
+      unless @order
+        if params[:order_id]
+          @order = Order.find(params[:order_id])
+        else
+          posted_address = params[:picked_shipping_address_id]
+          last_user_address = Address.where(user_id: current_user.id).order(:id).last
+          used_coupon = Coupon.find_by(coupon_code: params[:applied_coupon])
+          ActiveRecord::Base.transaction do
+            @order = Order.new( user_id: current_user.id,
+                          amount: Money.new(params[:amount].to_i, session[:currency]),
+                          shipping_amount: Money.new((params[:shipping_amount].to_i), session[:currency]),
+                          stage: "stage_new",
+                          cart_id: params[:cart_id].to_i,
+                          shipping_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
+                          billing_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
+                          payment_status: "unpaid",
+                          efact_type: params[:want_factura] == "true" ? "factura" : "boleta",
+                          required_doc: params[:required_doc],
+                          delivery_comments: params[:delivery_instructions].try(:strip),
+                          coupon_id: used_coupon.try(:id),
+                          discount_amount: Money.new((params[:discount_amount].to_i), session[:currency]),
+                          status: "active",
+                          process_comments: params[:pagoefectivo_payment_code].blank? ? "" : "Pagoefectivo CIP #{params[:pagoefectivo_payment_code]}"
+                          )
+            if used_coupon
+              current_uses = used_coupon.current_uses || 0
+              used_coupon.update(current_uses: current_uses + 1)
             end
-            close_cart_and_create_new
+            if @order.save
+              current_user.update(doc_id: @order.required_doc) unless @order.required_doc.blank?
+              @cart_items = CartItem.where(cart_id: params[:cart_id].to_i)
+              @cart_items.each do |item|
+                OrderItem.create!(
+                  order_id: @order.id,
+                  product_id: item.product_id,
+                  price: item.product.current_price,
+                  quantity: item.quantity,
+                  status: "active"
+                )
+              end
+              close_cart_and_create_new
+            end
           end
         end
       end
