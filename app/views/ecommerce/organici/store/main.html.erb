@@ -4,154 +4,223 @@
 	<div class="noo-simple-product-wrap">
 		<div class="container-fluid dvt_houses_tope">
 			<div class="row">
-				<!--menu izquierda -->
-				<div class="col-md-2 dvt_houses" >
-					<ul class="dvt_houses_lista " style="margin-top: 20px; margin-top:30px;">
-						<li>
-							<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
+		<% if browser.device.mobile? %>
+			<!--slide -->
+			<div class="col-sm-10" style="margin-top:30px;" >
+			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+					<!-- Indicators -->
+					<ol class="carousel-indicators">
+						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						<li data-target="#myCarousel" data-slide-to="1"></li>
+					</ol>
 
-								<!-- <a href=" <%= houses_m_path %> ">
-								<button type="button" class="btn btn-primary btn-lg btn-block dvt_houses_spac_btn"></button>
-								</a>-->
+					<!-- Wrapper for slides -->
 
-								<ul class="noo-services-columns row">
-									<a href=" <%= houses_m_path %> ">
-									<li class="col-md-3 col-sm-6">
-										<div class="noo-service-item" style="margin-bottom: 180px;">
-											<span class="line-top style-2">
-												<span></span>
-												<span></span>
-											</span>
-											<span class="line-left style-2">
-												<span></span>
-												<span></span>
-											</span>
-											<div class="service-content">
-												<h3>- <%= t('.by_country') %> -</h3>
-												<img width="87" height="73" src= <%= image_url("ecommerce/img/icons/icon-country.png") %> alt=""/>
-												<p>
-
-												</p>
-											</div>
-										</div>
-									</li>
-								</a>
+					<div class="carousel-inner">
 
 
-								</ul>
 
-
-							</div>
-							<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
-
-								<ul class="noo-services-columns row">
-									<a href=" <%= categories_m_path %> ">
-								<li class="col-md-3 col-sm-6">
-									<div class="noo-service-item" style="margin-bottom: 210px;">
-										<span class="line-top style-2">
-											<span></span>
-											<span></span>
-										</span>
-										<span class="line-left style-2">
-											<span></span>
-											<span></span>
-										</span>
-										<div class="service-content">
-											<h3>- <%= t('.by_product') %> -</h3>
-											<img width="93" height="82" src= <%= image_url("ecommerce/img/icons/icon-product.png") %> alt=""/>
-											<p>
-
-											</p>
-										</div>
-									</div>
-								</li>
-							</a>
-								</ul>
-								<!-- <a href=" <%= categories_m_path %> ">
-								<button type="button" class="btn btn-primary btn-lg btn-block dvt_categ_spac_btn"></button>
-								</a>-->
-							</div>
-						</li>
-						<li>
-
-						<% @secondary_menu_categories.each do |category| %>
-							<div class="dvt_houses_contenedor hidden-xs hidden-sm" >
-								<a href=" <%= products_path(category_id: category.id) %> ">
-									<%= image_tag category.image.url, width: 187, height: 49, alt: "", class: "dvt_houses_img" %>
-									<span class="dvt_houses_titulos" style="text-align:center;"><%= category.image_popular_homepage_overlay_text %></span>
-								</a>
-							</div>
+						<% if Ecommerce::Slider.order(:slider_order).first %>
+						<div class="item active">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).first.slider_text %></div>
+							<div class="dvt_slide_video"><img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif" width="100" height="80"></div>
+							<img src="<%= Ecommerce::Slider.order(:slider_order).first.slider_image.url %>">
+						</div>
 						<% end %>
 
-					</li>
-					</ul>
-
-				</div>
-					<!--fin menu izquierda -->
-						<!--slide -->
-				<div class="col-sm-10" style="margin-top:30px;" >
-					<div id="myCarousel" class="carousel slide" data-ride="carousel">
-						  <!-- Indicators -->
-						  <ol class="carousel-indicators">
-						    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-						    <li data-target="#myCarousel" data-slide-to="1"></li>
-						  </ol>
-
-						  <!-- Wrapper for slides -->
-
-						  <div class="carousel-inner">
-
-
-
-								<% if Ecommerce::Slider.order(:slider_order).first %>
-								<div class="item active">
-									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).first.slider_text %></div>
-									<div class="dvt_slide_video"><img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif" width="100" height="80"></div>
-						      <img src="<%= Ecommerce::Slider.order(:slider_order).first.slider_image.url %>">
-						    </div>
-								<% end %>
-
-								<% if Ecommerce::Slider.order(:slider_order).second %>
-								<div class="item">
-									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).second.slider_text %></div>
-						      <img src="<%= Ecommerce::Slider.order(:slider_order).second.slider_image.url %>">
-						    </div>
-								<% end %>
-
-								<% if Ecommerce::Slider.order(:slider_order).third %>
-								<div class="item">
-									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).third.slider_text %></div>
-						      <img src="<%= Ecommerce::Slider.order(:slider_order).third.slider_image.url %>">
-						    </div>
-								<% end %>
-
-								<% if Ecommerce::Slider.order(:slider_order).fourth %>
-								<div class="item">
-									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fourth.slider_text %></div>
-						      <img src="<%= Ecommerce::Slider.order(:slider_order).fourth.slider_image.url %>">
-						    </div>
-								<% end %>
-
-								<% if Ecommerce::Slider.order(:slider_order).fifth %>
-								<div class="item">
-									<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fifth.slider_text %></div>
-						      <img src="<%= Ecommerce::Slider.order(:slider_order).fifth.slider_image.url %>">
-						    </div>
-								<% end %>
-
-						  <!-- Left and right controls -->
-						  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-						    <span class="glyphicon glyphicon-chevron-left"></span>
-						    <span class="sr-only">Previous</span>
-						  </a>
-						  <a class="right carousel-control" href="#myCarousel" data-slide="next">
-						    <span class="glyphicon glyphicon-chevron-right"></span>
-						    <span class="sr-only">Next</span>
-						  </a>
+						<% if Ecommerce::Slider.order(:slider_order).second %>
+						<div class="item">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).second.slider_text %></div>
+							<img src="<%= Ecommerce::Slider.order(:slider_order).second.slider_image.url %>">
 						</div>
-					</div>
+						<% end %>
+
+						<% if Ecommerce::Slider.order(:slider_order).third %>
+						<div class="item">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).third.slider_text %></div>
+							<img src="<%= Ecommerce::Slider.order(:slider_order).third.slider_image.url %>">
+						</div>
+						<% end %>
+
+						<% if Ecommerce::Slider.order(:slider_order).fourth %>
+						<div class="item">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fourth.slider_text %></div>
+							<img src="<%= Ecommerce::Slider.order(:slider_order).fourth.slider_image.url %>">
+						</div>
+						<% end %>
+
+						<% if Ecommerce::Slider.order(:slider_order).fifth %>
+						<div class="item">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fifth.slider_text %></div>
+							<img src="<%= Ecommerce::Slider.order(:slider_order).fifth.slider_image.url %>">
+						</div>
+						<% end %>
+
+					<!-- Left and right controls -->
+					<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+						<span class="glyphicon glyphicon-chevron-left"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#myCarousel" data-slide="next">
+						<span class="glyphicon glyphicon-chevron-right"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
 			</div>
-				<!--fin slide -->
+			</div>
+			<!--fin slide -->
+		<% end %>
+		<!--menu izquierda -->
+		<div class="col-md-2 dvt_houses" >
+			<ul class="dvt_houses_lista " style="margin-top: 20px; margin-top:30px;">
+				<li>
+					<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
+
+						<!-- <a href=" <%= houses_m_path %> ">
+						<button type="button" class="btn btn-primary btn-lg btn-block dvt_houses_spac_btn"></button>
+						</a>-->
+
+						<ul class="noo-services-columns row">
+							<a href=" <%= houses_m_path %> ">
+							<li class="col-md-3 col-sm-6">
+								<div class="noo-service-item" style="margin-bottom: 180px;">
+									<span class="line-top style-2">
+										<span></span>
+										<span></span>
+									</span>
+									<span class="line-left style-2">
+										<span></span>
+										<span></span>
+									</span>
+									<div class="service-content">
+										<h3>- <%= t('.by_country') %> -</h3>
+										<img width="87" height="73" src= <%= image_url("ecommerce/img/icons/icon-country.png") %> alt=""/>
+										<p>
+
+										</p>
+									</div>
+								</div>
+							</li>
+						</a>
+
+
+						</ul>
+
+
+					</div>
+					<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
+
+						<ul class="noo-services-columns row">
+							<a href=" <%= categories_m_path %> ">
+						<li class="col-md-3 col-sm-6">
+							<div class="noo-service-item" style="margin-bottom: 210px;">
+								<span class="line-top style-2">
+									<span></span>
+									<span></span>
+								</span>
+								<span class="line-left style-2">
+									<span></span>
+									<span></span>
+								</span>
+								<div class="service-content">
+									<h3>- <%= t('.by_product') %> -</h3>
+									<img width="93" height="82" src= <%= image_url("ecommerce/img/icons/icon-product.png") %> alt=""/>
+									<p>
+
+									</p>
+								</div>
+							</div>
+						</li>
+					</a>
+						</ul>
+						<!-- <a href=" <%= categories_m_path %> ">
+						<button type="button" class="btn btn-primary btn-lg btn-block dvt_categ_spac_btn"></button>
+						</a>-->
+					</div>
+				</li>
+				<li>
+
+				<% @secondary_menu_categories.each do |category| %>
+					<div class="dvt_houses_contenedor hidden-xs hidden-sm" >
+						<a href=" <%= products_path(category_id: category.id) %> ">
+							<%= image_tag category.image.url, width: 187, height: 49, alt: "", class: "dvt_houses_img" %>
+							<span class="dvt_houses_titulos" style="text-align:center;"><%= category.image_popular_homepage_overlay_text %></span>
+						</a>
+					</div>
+				<% end %>
+
+			</li>
+			</ul>
+
+		</div>
+		<!--fin menu izquierda -->
+		<% unless browser.device.mobile? %>
+			<!--slide -->
+			<div class="col-sm-10" style="margin-top:30px;" >
+			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+					<!-- Indicators -->
+					<ol class="carousel-indicators">
+						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						<li data-target="#myCarousel" data-slide-to="1"></li>
+					</ol>
+
+					<!-- Wrapper for slides -->
+
+					<div class="carousel-inner">
+
+
+
+						<% if Ecommerce::Slider.order(:slider_order).first %>
+						<div class="item active">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).first.slider_text %></div>
+							<div class="dvt_slide_video"><img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif" width="100" height="80"></div>
+							<img src="<%= Ecommerce::Slider.order(:slider_order).first.slider_image.url %>">
+						</div>
+						<% end %>
+
+						<% if Ecommerce::Slider.order(:slider_order).second %>
+						<div class="item">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).second.slider_text %></div>
+							<img src="<%= Ecommerce::Slider.order(:slider_order).second.slider_image.url %>">
+						</div>
+						<% end %>
+
+						<% if Ecommerce::Slider.order(:slider_order).third %>
+						<div class="item">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).third.slider_text %></div>
+							<img src="<%= Ecommerce::Slider.order(:slider_order).third.slider_image.url %>">
+						</div>
+						<% end %>
+
+						<% if Ecommerce::Slider.order(:slider_order).fourth %>
+						<div class="item">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fourth.slider_text %></div>
+							<img src="<%= Ecommerce::Slider.order(:slider_order).fourth.slider_image.url %>">
+						</div>
+						<% end %>
+
+						<% if Ecommerce::Slider.order(:slider_order).fifth %>
+						<div class="item">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fifth.slider_text %></div>
+							<img src="<%= Ecommerce::Slider.order(:slider_order).fifth.slider_image.url %>">
+						</div>
+						<% end %>
+
+					<!-- Left and right controls -->
+					<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+						<span class="glyphicon glyphicon-chevron-left"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#myCarousel" data-slide="next">
+						<span class="glyphicon glyphicon-chevron-right"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+			</div>
+			</div>
+			<!--fin slide -->
+		<% end %>
+
 		</div>
 
 	</div>
