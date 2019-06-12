@@ -445,8 +445,7 @@
               amount: Number(culqi_payment_amount),
               currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
               description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
-              order: data.id,
-              version: 2
+              order: data.id
             });
 
             Culqi.open();
