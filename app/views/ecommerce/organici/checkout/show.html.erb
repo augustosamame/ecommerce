@@ -463,8 +463,12 @@
 
   function culqi() {
 
+    console.log('function Culqi just ran')
+
     if(Culqi.token) { // ¡Token creado exitosamente!
         // Get the token ID:
+        console.log('token created!');
+        console.log(Culqi.orderKey);
         var token = Culqi.token;
         var picked_shipping_address_id = $('#address_id').val();
         var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
@@ -493,18 +497,19 @@
        //alert('Se ha creado un token:' + token);
 
     }else{ // ¡Hubo algún problema!
+      // Here is Pagoefectivo
+      //console.log('token NOT created!');
+      console.log(Culqi.orderKey);
         // Mostramos JSON de objeto error en consola
-        if (Culqi.closeEvent == 'checkout_cerrado')
+        if (Culqi.orderKey !== null && Culqi.orderKey !== '')
         {
-          console.log('checkout cerrado');
-          console.log(Culqi);
-          console.log(Culqi.order);
           if (Culqi.order) {
             // async payment successfull (got ID via event webhook?)
             var picked_shipping_address_id = $('#address_id').val();
             var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
             var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
             var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
+            console.log('Order exists but no Token = Pagoefectivo');
             $.post(
               "checkout/pay_order_pagoefectivo_checkout",
               {
@@ -525,6 +530,7 @@
               function(data) {
               })
           } else {
+            // console.log('order key is null');
             //console.log('Checkout closed by user without choosing payment option');
             //Swal({
             //    type: 'error',
@@ -534,7 +540,6 @@
 
           }
         }
-
 
         console.log(Culqi.error);
 
