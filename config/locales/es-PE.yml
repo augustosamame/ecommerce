@@ -62,7 +62,7 @@ es-PE:
       payment_stage_refunded: "Pago Devuelto"
       payment_stage_void: "Pago Anulado"
       today_afternoon: "hoy en la tarde"
-      tomorrow_afternoon: "mañana en la tarde"
+      tomorrow_afternoon: "el siguiente día útil"
   ecommerce:
     cart_items:
       create:
@@ -122,7 +122,7 @@ es-PE:
           add_to_cart: "Agr Carrito"
           categories: "Categorías: "
           out_of_stock: "Fuera de Stock"
-          no_more_stock_available: "No hay más unidades dsiponibles"
+          no_more_stock_available: "No hay más unidades disponibles"
           share: "Compartir"
           search: "Buscar"
           search_placeholder: "Buscar Productos"

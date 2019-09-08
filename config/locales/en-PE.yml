@@ -77,7 +77,7 @@ en-PE:
       payment_stage_refunded: "Refunded"
       payment_stage_void: "Void"
       today_afternoon: "today afternoon"
-      tomorrow_afternoon: "tomorrow afternoon"
+      tomorrow_afternoon: "next Business Day (next working day)"
   ecommerce:
     cart_items:
       create:
