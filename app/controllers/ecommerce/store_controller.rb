@@ -84,7 +84,7 @@ module Ecommerce
       if params[:parent_category]
         @category = Category.find(params[:parent_category])
         Globalize.with_locale(Ecommerce.backoffice_default_locale) do
-          @categories = Category.tagged_with(@category.name).order(:category_order)
+          @categories = Category.active.tagged_with(@category.name).order(:category_order)
         end
         if @categories.count > 0
           render "ecommerce/#{Ecommerce.ecommerce_layout}/store/sub_categories_mobile"
