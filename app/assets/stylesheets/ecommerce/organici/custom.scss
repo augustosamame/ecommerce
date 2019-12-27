@@ -191,6 +191,12 @@
 	width: 66px;
 }
 
+.payment-cards li img{
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 .header-menu-no-wrap {
   white-space: nowrap;
 }
@@ -559,4 +565,38 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
       display: none !important;
     }
 
+}
+
+@media screen and (min-width:320px) {
+    .mobile_cart {
+        list-style: none;
+        padding-left: 0px;
+        right: 0px;
+        position: absolute;
+        width: 40px;
+        top: 15px;
+    }
+    .navbar-brand .noo-logo-img {
+    max-height: 75px;
+    margin-top: -25px;
+    margin-left: 0px;
+}
+}
+
+@media screen and (min-width:768px) {
+    .mobile_cart {
+        list-style: none;
+        padding-left: 0px;
+        right: 10px;
+        position: absolute;
+        width: 40px;
+        top: 15px;
+    }
+    
+    .navbar-brand .noo-logo-img {
+    max-height: 75px;
+    margin-top: -25px;
+    margin-left: 0px;
+}
+    
 }
