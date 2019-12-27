@@ -48,7 +48,7 @@
 /* --------------------------------------------------------------------- */
 /* 1. GLOBAL STYLING
 /* --------------------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css?family=Lobster');
+
 html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
@@ -530,8 +530,9 @@ p {
 .lead {
     margin-bottom: 20px;
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.4;
+    font-family: 'Lato', sans-serif;
 }
 
 @media (min-width: 768px) {
@@ -3570,7 +3571,7 @@ blockquote.right {
 }
 
 .widget ul li a {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 34px;
     color: #696969;
     display: inline-block;
@@ -3580,7 +3581,7 @@ blockquote.right {
 }
 
 .widget ul li a:hover {
-    color: #2b5c01;
+    color: #00c5b6;
 }
 
 .widget ul li ul {
@@ -5550,7 +5551,7 @@ body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
 }
 
 .noo-menu-item-cart .cart-item span {
-    color: #2b5c01;
+    color: #00c5b6;
 }
 
 .noo-menu-item-cart .noo-minicart {
@@ -13063,7 +13064,7 @@ a.go-to-top:hover a.go-to-top:focus.on:hover {
         padding-top: 134% !important;
     }
     .item-footer-four {
-        margin-bottom: 30px;
+        margin-bottom: 10px;
     }
     .item-footer-four:nth-child(3) {
         clear: both;
@@ -17425,7 +17426,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 
 .dvt_houses_contenedor span{
     color:#ffffff;
-    font-size:15px;
+    font-size:1em;
      display: block;
   margin-left: auto;
   margin-right: auto;
@@ -17553,18 +17554,18 @@ display: block;
 }
 .bt_allp li{
     display: inline;
-    font-family: 'Lobster', cursive;
+    font-family: 'Lato', sans-serif;
 }
 .bt_allp li a{
-   font-family: 'Lobster', cursive;
-font-size: 20px;
-text-decoration: none;
-padding: 28px 15px;
-color: #fff;
-line-height: 23px;
+   font-family: 'Lato', sans-serif;
+    font-size: 1.4em;
+    text-decoration: none;
+    
+    color: #fff;
+    line-height: 23px;
 }
 .bt_allp li a:hover{
-    color: #2586d7;
+    color: #00c5b6;
 }
 @media (max-width: 767px) {
 
@@ -17813,3 +17814,8 @@ left: 68%;
     z-index:9998;
 
 }
+.titu-foot{
+    color:#212121;
+    font-weight:600;
+}
+

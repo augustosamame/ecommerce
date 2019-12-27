@@ -24,7 +24,7 @@
   top: 0;
   width: 100%;
   background-color: white;
-  padding-left: 45%;
+  padding-left: 5%;
   margin-top: 0px !important;
 }
 
@@ -79,7 +79,20 @@
 }
 
 .bt_allp li a{
-  padding: 28px 10px !important;
+  padding: 5px 10px !important;
+  line-height: 27px;
+}
+
+.bt_allp li a{
+   font-family: 'Lato', sans-serif;
+    font-size: 1.1em;
+    text-decoration: none;
+    
+    color: #fff;
+    line-height: 23px;
+}
+.bt_allp li a:hover{
+    color: #00c5b6;
 }
 
 .original-price-show {
@@ -147,6 +160,10 @@
   color: #696969;
 }
 
+.devtech-right-menu-custom .navbar-nav li > a:hover{
+  color:#00c5b6;
+}
+
 .header_margin_6 {
   margin-top: 6px !important;
 }
@@ -164,7 +181,7 @@
 
 .payment-cards {
 	list-style: none;
-	text-align: right;
+	text-align: center;
 	margin: 0;
 }
 
@@ -294,8 +311,9 @@
   margin-top: 0px;
 }
 
-.dvt_houses_lista {
-  margin-top: 130px;
+.carousel-inner{
+  margin-top: 10px;
+  max-height: 425px;
 }
 
 .inner-relative {

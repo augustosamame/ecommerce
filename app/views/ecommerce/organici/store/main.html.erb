@@ -1,145 +1,78 @@
 <div class="main">
+	<div class="container-fluid">
 
-	<div class="container-fluid"></div>
-	<div class="noo-simple-product-wrap">
-		<div class="container-fluid dvt_houses_tope">
-			<div class="row">
+			<div class="row" >
 		<% if browser.device.mobile? %>
 			<!--slide -->
-			<div class="col-sm-10" style="margin-top:30px;" >
-			<div id="myCarousel" class="carousel slide" data-ride="carousel">
-					<!-- Indicators -->
-					<ol class="carousel-indicators">
-						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-						<li data-target="#myCarousel" data-slide-to="1"></li>
-					</ol>
-
-					<!-- Wrapper for slides -->
-
-					<div class="carousel-inner">
-
-
-
-						<% if Ecommerce::Slider.order(:slider_order).first %>
-						<div class="item active">
-							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).first.slider_text %></div>
-							<div class="dvt_slide_video"><img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif" width="100" height="80"></div>
-							<img src="<%= Ecommerce::Slider.order(:slider_order).first.slider_image.url %>">
-						</div>
-						<% end %>
-
-						<% if Ecommerce::Slider.order(:slider_order).second %>
-						<div class="item">
-							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).second.slider_text %></div>
-							<img src="<%= Ecommerce::Slider.order(:slider_order).second.slider_image.url %>">
-						</div>
-						<% end %>
-
-						<% if Ecommerce::Slider.order(:slider_order).third %>
-						<div class="item">
-							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).third.slider_text %></div>
-							<img src="<%= Ecommerce::Slider.order(:slider_order).third.slider_image.url %>">
-						</div>
-						<% end %>
-
-						<% if Ecommerce::Slider.order(:slider_order).fourth %>
-						<div class="item">
-							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fourth.slider_text %></div>
-							<img src="<%= Ecommerce::Slider.order(:slider_order).fourth.slider_image.url %>">
-						</div>
-						<% end %>
-
-						<% if Ecommerce::Slider.order(:slider_order).fifth %>
-						<div class="item">
-							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fifth.slider_text %></div>
-							<img src="<%= Ecommerce::Slider.order(:slider_order).fifth.slider_image.url %>">
-						</div>
-						<% end %>
-
-					<!-- Left and right controls -->
-					<a class="left carousel-control" href="#myCarousel" data-slide="prev">
-						<span class="glyphicon glyphicon-chevron-left"></span>
-						<span class="sr-only">Previous</span>
-					</a>
-					<a class="right carousel-control" href="#myCarousel" data-slide="next">
-						<span class="glyphicon glyphicon-chevron-right"></span>
-						<span class="sr-only">Next</span>
-					</a>
+				<div class="col-md-10 col-sm-12">
+				<div id="myCarousel" class="carousel slide" data-ride="carousel">
+						<!-- Indicators -->
+						<ol class="carousel-indicators">
+							<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+							<li data-target="#myCarousel" data-slide-to="1"></li>
+						</ol>
+	
+						<!-- Wrapper for slides -->
+	
+						<div class="carousel-inner">
+							<% if Ecommerce::Slider.order(:slider_order).first %>
+							<div class="item active">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).first.slider_text %></div>
+								<div class="dvt_slide_video"><img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif" width="100" height="80"></div>
+								<img src="<%= Ecommerce::Slider.order(:slider_order).first.slider_image.url %>">
+							</div>
+							<% end %>
+	
+							<% if Ecommerce::Slider.order(:slider_order).second %>
+							<div class="item">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).second.slider_text %></div>
+								<img src="<%= Ecommerce::Slider.order(:slider_order).second.slider_image.url %>">
+							</div>
+							<% end %>
+	
+							<% if Ecommerce::Slider.order(:slider_order).third %>
+							<div class="item">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).third.slider_text %></div>
+								<img src="<%= Ecommerce::Slider.order(:slider_order).third.slider_image.url %>">
+							</div>
+							<% end %>
+	
+							<% if Ecommerce::Slider.order(:slider_order).fourth %>
+							<div class="item">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fourth.slider_text %></div>
+								<img src="<%= Ecommerce::Slider.order(:slider_order).fourth.slider_image.url %>">
+							</div>
+							<% end %>
+	
+							<% if Ecommerce::Slider.order(:slider_order).fifth %>
+							<div class="item">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).fifth.slider_text %></div>
+								<img src="<%= Ecommerce::Slider.order(:slider_order).fifth.slider_image.url %>">
+							</div>
+							<% end %>
+	
+						<!-- Left and right controls -->
+						<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left"></span>
+							<span class="sr-only">Previous</span>
+						</a>
+						<a class="right carousel-control" href="#myCarousel" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right"></span>
+							<span class="sr-only">Next</span>
+						</a>
+					</div>
 				</div>
-			</div>
-			</div>
+				</div>
 			<!--fin slide -->
 		<% end %>
 		<!--menu izquierda -->
-		<div class="col-md-2 dvt_houses" >
-			<ul class="dvt_houses_lista " style="margin-top: 20px; margin-top:30px;">
+		
+				<div class="col-lg-2 col-md-2 dvt_houses" >
+			<ul class="dvt_houses_lista " >
 				<li>
-					<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
-
-						<!-- <a href=" <%= houses_m_path %> ">
-						<button type="button" class="btn btn-primary btn-lg btn-block dvt_houses_spac_btn"></button>
-						</a>-->
-
-						<ul class="noo-services-columns row">
-							<a href=" <%= houses_m_path %> ">
-							<li class="col-md-3 col-sm-6">
-								<div class="noo-service-item" style="margin-bottom: 180px;">
-									<span class="line-top style-2">
-										<span></span>
-										<span></span>
-									</span>
-									<span class="line-left style-2">
-										<span></span>
-										<span></span>
-									</span>
-									<div class="service-content">
-										<h3>- <%= t('.by_country') %> -</h3>
-										<img width="87" height="73" src= <%= image_url("ecommerce/img/icons/icon-country.png") %> alt=""/>
-										<p>
-
-										</p>
-									</div>
-								</div>
-							</li>
-						</a>
-
-
-						</ul>
-
-
-					</div>
-					<div class="visible-xs visible-sm col-xs-12 " style="z-index: 100;">
-
-						<ul class="noo-services-columns row">
-							<a href=" <%= categories_m_path %> ">
-						<li class="col-md-3 col-sm-6">
-							<div class="noo-service-item" style="margin-bottom: 210px;">
-								<span class="line-top style-2">
-									<span></span>
-									<span></span>
-								</span>
-								<span class="line-left style-2">
-									<span></span>
-									<span></span>
-								</span>
-								<div class="service-content">
-									<h3>- <%= t('.by_product') %> -</h3>
-									<img width="93" height="82" src= <%= image_url("ecommerce/img/icons/icon-product.png") %> alt=""/>
-									<p>
-
-									</p>
-								</div>
-							</div>
-						</li>
-					</a>
-						</ul>
-						<!-- <a href=" <%= categories_m_path %> ">
-						<button type="button" class="btn btn-primary btn-lg btn-block dvt_categ_spac_btn"></button>
-						</a>-->
-					</div>
+					
 				</li>
 				<li>
-
 				<% @secondary_menu_categories.each do |category| %>
 					<div class="dvt_houses_contenedor hidden-xs hidden-sm" >
 						<a href=" <%= products_path(category_id: category.id) %> ">
@@ -156,7 +89,7 @@
 		<!--fin menu izquierda -->
 		<% unless browser.device.mobile? %>
 			<!--slide -->
-			<div class="col-sm-10" style="margin-top:30px;" >
+					<div class="col-md-10 col-sm-12"  >
 			<div id="myCarousel" class="carousel slide" data-ride="carousel">
 					<!-- Indicators -->
 					<ol class="carousel-indicators">
@@ -168,12 +101,9 @@
 
 					<div class="carousel-inner">
 
-
-
 						<% if Ecommerce::Slider.order(:slider_order).first %>
 						<div class="item active">
 							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.order(:slider_order).first.slider_text %></div>
-							<div class="dvt_slide_video"><img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif" width="100" height="80"></div>
 							<img src="<%= Ecommerce::Slider.order(:slider_order).first.slider_image.url %>">
 						</div>
 						<% end %>
@@ -221,66 +151,42 @@
 			<!--fin slide -->
 		<% end %>
 
-		</div>
+			</div>
 
-	</div>
-	<div class="noo-height-product pt-8 pb-10">
-		<div class="container main-featured-products">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="noo-product-grid-wrap commerce product-style2">
-						<div class="noo-sh-title">
-							<%= image_tag "ecommerce/img/icon_p_azul.png", alt: "", width: 40, height: 39 %>
-							<h2><%= t('.new_products') %></h2>
-							<p> <%= t('.new_products_subtitle') %></p>
-						</div>
-						<div class="noo-product-filter masonry-filters">
-							<ul class="noo-header-filter">
-								<li>
-									<a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>" class="selected">
-										<span><%= t('.all_products') %></span>
-									</a>
-								</li>
-								<% @primary_menu_categories.each do |category| %>
-									<li>
-										<%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id) %>
-									</li>
-								<% end %>
-							</ul>
-						</div>
-						<div class="noo-product-grid products row product-grid noo-grid-4">
-							<%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @featured_homepage_products, as: :item %>
+
+				<!--<div class="noo-height-product pt-8 pb-10">
+				<div class="container main-featured-products">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="noo-product-grid-wrap commerce product-style2">
+								<div class="noo-sh-title">
+									<%= image_tag "ecommerce/img/icon_p_azul.png", alt: "", width: 40, height: 39 %>
+									<h2><%= t('.new_products') %></h2>
+									<p> <%= t('.new_products_subtitle') %></p>
+								</div>
+								<div class="noo-product-filter masonry-filters">
+									<ul class="noo-header-filter">
+										<li>
+											<a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>" class="selected">
+												<span><%= t('.all_products') %></span>
+											</a>
+										</li>
+										<% @primary_menu_categories.each do |category| %>
+											<li>
+												<%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id) %>
+											</li>
+										<% end %>
+									</ul>
+								</div>
+								<div class="noo-product-grid products row product-grid noo-grid-4">
+									<%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @featured_homepage_products, as: :item %>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-	<div class="section dark nobottommargin">
-	  <div class="container clearfix">
+			</div>-->
 
-	    <div class="row payments-info">
-	      <div class="col-md-3">
-	        <h4><p class="lead nomargin"><%= t('.payment_methods').html_safe %></p></h4>
-	      </div>
-	      <div class="col-md-9">
-	        <ul class="payment-cards clearfix" style="margin-top: 5px;">
-
-	          <li><%= image_tag "ecommerce/img/cards/visa.png", alt: "Visa" %></li>
-	          <li><%= image_tag "ecommerce/img/cards/mc.png", alt: "MasterCard" %></li>
-	          <li><%= image_tag "ecommerce/img/cards/diners.png", alt: "Diners" %></li>
-	          <li><%= image_tag "ecommerce/img/cards/amex.png", alt: "American Express" %></li>
-	          <li><%= image_tag "ecommerce/img/cards/up.png", alt: "Union Pay" %></li>
-	          <li><%= image_tag "ecommerce/img/cards/ripley.png", alt: "Ripley" %></li>
-	          <li><%= image_tag "ecommerce/img/cards/cmr.png", alt: "Banco Falabella" %></li>
-	          <li><%= image_tag "ecommerce/img/cards/oh.png", alt: "Tarjetas Oh!" %></li>
-	          <li><%= image_tag "ecommerce/img/cards/cencosud.png", alt: "Cencosud" %></li>
-
-	        </ul>
-	      </div>
-	    </div>
-	  </div>
-	</div>
 <!--
 	<div class="newsletter">
 		<div class="noo-sh-mailchimp">
@@ -306,4 +212,30 @@
 	</div>
 -->
 
+
+	</div>
+	
+	  <div class="container clearfix">
+
+	    <div class="row payments-info">
+	      <div class="col-md-12">
+	        <h4 class="lead nomargin text-center"><%= t('.payment_methods').html_safe %></h4>
+	      </div>
+	      <div class="col-md-12">
+	        <ul class="payment-cards">
+
+	          <li><%= image_tag "ecommerce/img/cards/visa.png", alt: "Visa" %></li>
+	          <li><%= image_tag "ecommerce/img/cards/mc.png", alt: "MasterCard" %></li>
+	          <li><%= image_tag "ecommerce/img/cards/diners.png", alt: "Diners" %></li>
+	          <li><%= image_tag "ecommerce/img/cards/amex.png", alt: "American Express" %></li>
+	          <li><%= image_tag "ecommerce/img/cards/up.png", alt: "Union Pay" %></li>
+	          <li><%= image_tag "ecommerce/img/cards/ripley.png", alt: "Ripley" %></li>
+	          <li><%= image_tag "ecommerce/img/cards/cmr.png", alt: "Banco Falabella" %></li>
+	          <li><%= image_tag "ecommerce/img/cards/oh.png", alt: "Tarjetas Oh!" %></li>
+	          <li><%= image_tag "ecommerce/img/cards/cencosud.png", alt: "Cencosud" %></li>
+
+	        </ul>
+	      </div>
+	    </div>
+	  </div>
 </div>
