@@ -17545,7 +17545,7 @@ display: block;
 
 .dvt_back{
     background-color:#3B3A3A;
-    margin-top:35px;
+    margin-top: 0px;
 }
 .dvt_allpt{
     color: white;
@@ -17560,7 +17560,7 @@ display: block;
    font-family: 'Lato', sans-serif;
     font-size: 1.4em;
     text-decoration: none;
-    
+
     color: #fff;
     line-height: 23px;
 }
@@ -17789,9 +17789,9 @@ z-index: 1;
     right: auto;
     left: 0;
   }
-  
-   
-  
+
+
+
 }
 .dvt_spc_drop{
     line-height: -30px;
@@ -17823,7 +17823,7 @@ left: 68%;
 }
 
 .head-nw{
-    background: white; border-bottom:1px solid #f5f5f5; height:45px; 
+    background: white; border-bottom:1px solid #f5f5f5; height:45px;
 }
 
 /* botoneS */
@@ -17831,12 +17831,12 @@ left: 68%;
     padding-left: 0;
     margin-top: 0px;
     list-style: none;
-    
+
 }
 .botones_lista li {
     max-height: 100%;
     margin-bottom: 15px;
-    
+
 }
 .botones_lista li a{
     color: #ffffff;
@@ -17844,7 +17844,7 @@ left: 68%;
 }
 .botones_lista li a:hover{
     color:#00c5b6;
-    
+
 }
 .botones_contenedor {
     text-align: center;

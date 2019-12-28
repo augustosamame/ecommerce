@@ -155,6 +155,9 @@
 							<!--<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>-->
 
 							<ul class="nav-collapse navbar-nav">
+								<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
+									<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
+								<% end %>
 								<% if current_user %>
 									<li class="menu-item-has-children">
 										<a href="#"><%= "<i class='fa fa-user'></i> #{current_user.name} <span class='caret'></span>".html_safe %></a>

@@ -4,30 +4,30 @@
 			<div class="col-md-4 col-sm-12 item-footer-four" >
 				<div class="widget widget_about">
 					<div class="noo_about_widget img-responsive text-center"  style="margin: 10px;">
-						
+
 							<%= image_tag Ecommerce.footer_logo, alt: "Store Logo", height: 100, width: 100  %>
-						
+
 							<span class="small pull-right"><%= t('.slogan') %></span>
-						
+
 					</div>
 				</div>
-				
-				
+
+
 			</div>
 			<div class="col-md-3 col-sm-12 item-footer-fou text-center small" style="margin-bottom: 10px;" >
 				<div class="widget widget_text">
 					<h4 class="widget-title"><%= t('.contact') %></h4>
 					<div class="">
 						<span class="titu-foot"><%= t('.address') %></span></br>
-						Av. Santo Toribio 999 - Via Central 125</br>
+						Av. Santo Toribio 173 - Via Central 125</br>
 						Torre Real Ocho, Piso 16, San Isidro</br>
 						Lima 33, Perú</br></br>
 						<span class="titu-foot"><%= t('.email') %></span></br>
-						
+
 							<a href="mailto:support@expatshop.pe">
 								support@expatshop.pe
 							</a>
-						
+
 					</div>
 				</div>
 			</div>
@@ -40,7 +40,7 @@
 					<script src="https://instawidget.net/js/instawidget.js?u=622d1673734ac6120f7accb6f654a66822b1a4c5e9548287abcacecba3bf8f2a&width=300px"></script>
 
 				</div>-->
-				
+
 				<div class="widget widget_text">
 						<h4 class="widget-title"><%= t('.links') %></h4>
 						<div class="text-widget">
@@ -49,23 +49,24 @@
 							<a href="<%= Ecommerce::Engine.routes.url_helpers.root_path %>"><%= t('.home') %></a>
 						</li>
 						<li><a href="<%= about_us_path %>"><%= t('.about_us') %></a></li>
+						<li><a href="<%= shipping_policy_path %>"><%= t('.shipping_policy') %></a></li>
 						<li><%= link_to t('.terms_and_conditions'), terms_and_conditions_path %></li>
 						<li><a href="<%= contact_us_path %>"><%= t('.contact_us_menu') %></a></li>
-						
+
 					</ul>
-				
+
 			</div>
-		
+
 		</div>
 	</div>
 			<div class="col-md-2 col-sm-6 item-footer-four text-center small"  style="margin-bottom: 10px;">
 					<!--<div class="widget widget_text">
 						<h4 class="widget-title"><%= t('.links') %></h4>
 						<div class="textwidget">
-					
-							
+
+
 						</div>
-						
+
 				</div>-->
 				<div class="widget widget_noo_social">
 					<div class="noo_social">
@@ -81,9 +82,9 @@
 									</a>
 								</div>
 				</div>
-				
+
 				<div class="widget widget_about">
-								
+
 							</div>
 				<!--<div class="widget widget_noo_happyhours">
 					<h4 class="widget-title">Happy Hours</h4>
