@@ -360,6 +360,7 @@
 
   function recalculate_checkout_totals() {
     Culqi.publicKey = "<%= Culqi.public_key %>";
+    console.log('Culqi.publicKey: ',Culqi.publicKey)
     Culqi.orderKey = "<%= Culqi.secret_key %>";
     var total_amount = (Number($("#coupon-amount").html()) + Number($("#shipping-amount").html()) + Number($("#subtotal").html())).toFixed(2);
 
@@ -427,6 +428,7 @@
                  phone_number: '<%= @current_user_phone %>'
                },
               }
+
         $.ajax({
           url: "https://api.culqi.com/v2/orders",
           dataType: "json",
@@ -448,10 +450,25 @@
               order: data.id
             });
 
+            console.log('Culqi.publicKey: ',Culqi.publicKey)
+            console.log('Culqi.orderKey: ',Culqi.orderKey)
             Culqi.open();
             e.preventDefault();
           }
         });
+
+      /*
+      Culqi.settings({
+        title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+        amount: Number(culqi_payment_amount),
+        currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+        description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>'
+        // order: data.id
+      });
+      console.log('Culqi.publicKey: ',Culqi.publicKey)
+      Culqi.open();
+      e.preventDefault();
+*/
 
       }
       else if ($('input[name=payment_method]:checked').val() == "manual") {
