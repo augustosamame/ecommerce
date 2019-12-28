@@ -87,7 +87,7 @@
    font-family: 'Lato', sans-serif;
     font-size: 1.1em;
     text-decoration: none;
-    
+
     color: #fff;
     line-height: 23px;
 }
@@ -244,9 +244,36 @@
 	content: "\f067";
 }
 
+.devtech_plus_class a:before {
+	content: "\f067" !important;
+}
+
 #devtech_plus {
 	margin-left: 0;
 	margin-right: 10;
+}
+
+.devtech_plus_class {
+	margin-left: 0 !important;
+	margin-right: 10 !important;
+	float: left !important;
+}
+
+.devtech_plus_a_class {
+	background: #2b5c01 !important;
+	width: 40px !important;
+	height: 40px !important;
+	overflow: hidden !important;
+	position: relative !important;
+	text-indent: -142px !important;
+	display: inline-block !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+.yith-wcwl-add-to-wishlist_index a:before {
+	font-size: 14 !important;
+	top: 5 !important;
 }
 
 #devtech_minus a:before {
@@ -254,8 +281,30 @@
 	margin-left: 0;
 }
 
+.devtech_minus_class a:before {
+	content: "\f068" !important;
+	margin-left: 0 !important;
+}
+
 #devtech_minus {
 	margin-left: 0;
+}
+
+.devtech_minus_class {
+	margin-left: 0 !important;
+	float: left !important;
+}
+
+.devtech_minus_a_class {
+	background: #2b5c01 !important;
+	width: 40px !important;
+	height: 40px !important;
+	overflow: hidden !important;
+	position: relative !important;
+	text-indent: -142px !important;
+	display: inline-block !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 .category-main-image-container {
@@ -365,7 +414,11 @@
 }
 
 #out_of_stock_text {
-  color: red;
+  color: red !important;
+  display: none;
+}
+
+.out_of_stock_text_class {
   display: none;
 }
 
@@ -592,11 +645,11 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
         width: 40px;
         top: 15px;
     }
-    
+
     .navbar-brand .noo-logo-img {
     max-height: 75px;
     margin-top: -25px;
     margin-left: 0px;
 }
-    
+
 }

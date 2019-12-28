@@ -450,8 +450,6 @@
               order: data.id
             });
 
-            console.log('Culqi.publicKey: ',Culqi.publicKey)
-            console.log('Culqi.orderKey: ',Culqi.orderKey)
             Culqi.open();
             e.preventDefault();
           }
@@ -485,7 +483,6 @@
     if(Culqi.token) { // ¡Token creado exitosamente!
         // Get the token ID:
         console.log('token created!');
-        console.log(Culqi.orderKey);
         var token = Culqi.token;
         var picked_shipping_address_id = $('#address_id').val();
         var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);

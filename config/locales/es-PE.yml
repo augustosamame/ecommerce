@@ -128,6 +128,8 @@ es-PE:
           search_placeholder: "Buscar Productos"
         product:
           out_of_stock: "Fuera de Stock"
+          add_to_cart: "Agregar al Carrito"
+          no_more_stock_available: "No hay más unidades disponibles"
       checkout:
         show:
           shipping_address: "Dirección de Envío"

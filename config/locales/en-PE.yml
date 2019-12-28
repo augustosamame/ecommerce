@@ -194,6 +194,8 @@ en-PE:
           search_placeholder: "Search Products"
         product:
           out_of_stock: "Out of Stock"
+          add_to_cart: "Add To Cart"
+          no_more_stock_available: "No More Stock Available"
       checkout:
         show:
           shipping_address: "Shipping Address"

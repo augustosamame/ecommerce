@@ -6,54 +6,74 @@
         <%= image_tag item.image.medium_260.url, width: 600, alt: "" %>
       </a>
     </div>
-    <div class="noo-product-title">
+    <div class="noo-product-title" style="height: 240px;">
       <h3><%= link_to item.name, product_path(item) %></h3><br>
       <a href="<%= product_path(item) %>">
       <span class="short-descrip" style="font-size:13px;"><%= item.short_description.gsub("**","<br>").html_safe if item.short_description %></span><br>
       </a>
-      <% if item.price == item.discounted_price %>
-        <span class="price"><span class="amount"><%= session_price(item, "current_price") %></span></span>
-      <% else %>
+      <div class='center-form'>
+        <% if item.price == item.discounted_price %>
+          <span class="price"><span class="amount"><%= session_price(item, "current_price") %></span></span>
+        <% else %>
 
-        <span class="price">
-          <span class="amount original-price-index"><%= session_price(item, "current_price") %></span>
-          <span class="amount"><%= session_price(item, "discounted_price") %></span>
-        </span>
+          <span class="price">
+            <span class="amount original-price-index"><%= session_price(item, "price") %></span>
+            <span class="amount"><%= session_price(item, "discounted_price") %></span>
+          </span>
 
-      <% end %>
-
-
-
-
-      <% unless item.in_stock? %>
-        <p class="out_of_stock" style="font-size: 18px;"><span class=""><%= t('.out_of_stock') %></span></p>
-      <% end %>
-      <div class="noo-product-action">
-        <div class="noo-action">
-          <!--<a href="ajax/product-quickview.html" class="noo-qucik-view">
-            <i class="fa fa-search"></i>
-          </a>-->
-
-          <%= link_to "", cart_items_path(cart_item: {quantity: 1, product_id: item.id}),
-                                          :method => :post,
-                                          :remote => true,
-                                          :disabled => !item.in_stock?,
-                                          class: "button product_type_simple add_to_cart_button #{item.in_stock? ? '' : 'no_stock'}" %>
+        <% end %>
 
 
 
-          <div class="yith-wcwl-add-to-wishlist">
-                                        <div class="yith-wcwl-add-button">
-                                          <%= link_to "", wishlist_items_path(wishlist_item: {quantity: 1, product_id: item.id}), :method => :post, class: "add_to_wishlist" %>
 
-                                        </div>
-                                    </div>
-
-          <a href="<%= product_path(item) %>" class="link-detail">
-            <i class="fa fa-link"></i>
-          </a>
-        </div>
+        <% unless item.in_stock? %>
+          <p class="out_of_stock" style="font-size: 18px;"><span class=""><%= t('.out_of_stock') %></span></p>
+        <% end %>
       </div>
+
+      <% if item.in_stock? %>
+
+        <div class='center-form' style='display: inline-block; height: 80;'>
+          <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart" } do |f| %>
+            <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class" id=<%= "devtech_minus_#{item.id}" %>>
+              <a href="#" class="add_to_wishlist devtech_minus_a_class">-</a>
+            </div>
+            <div class="quantity" id="devtech_quantity">
+              <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners', id: "devtech_quantity_field_#{item.id}", value: "1", size: "4", step: "1", min: "1" } %>
+            </div>
+            <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class" id= <%= "devtech_plus_#{item.id}" %>>
+              <a href="#" class="add_to_wishlist devtech_plus_a_class">+</a>
+            </div>
+            <%= f.hidden_field :product_id, value: item.id, id: "product_product_id_#{item.id}" %>
+            <%= f.button :submit, t('.add_to_cart'), class: "single_add_to_cart_button button" %>
+            <div class="out_of_stock" style="font-size: 18px;">
+            <div class="out_of_stock_text_class" style=" float: left;" id=<%= "out_of_stock_text_#{item.id}" %>><%= t('.no_more_stock_available') %></div>
+            </div>
+          <% end %>
+
+        </div>
+
+      <% end %>
+
     </div>
   </div>
 </div>
+
+<script>
+  $('<%= "#devtech_plus_#{item.id}" %>').click(function(e) {
+    if ($('<%= "#devtech_quantity_field_#{item.id}" %>').val() < <%= item.total_quantity %>) {
+      $('<%= "#devtech_quantity_field_#{item.id}" %>').val(parseInt($('<%= "#devtech_quantity_field_#{item.id}" %>').val()) + 1);
+    } else {
+      $('<%= "#out_of_stock_text_#{item.id}" %>').show();
+    }
+    e.preventDefault();
+  });
+  $('<%= "#devtech_minus_#{item.id}" %>').click(function(e) {
+    if (parseInt($('<%= "#devtech_quantity_field_#{item.id}" %>').val()) > 1) {
+      $('<%= "#devtech_quantity_field_#{item.id}" %>').val(parseInt($('<%= "#devtech_quantity_field_#{item.id}" %>').val()) - 1);
+    }
+    $('<%= "#out_of_stock_text_#{item.id}" %>').hide();
+    e.preventDefault();
+  });
+
+</script>
