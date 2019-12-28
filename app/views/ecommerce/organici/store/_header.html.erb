@@ -6,7 +6,7 @@
   </div>
   			
   			<!-- sub menu mobile -->
-  			<div class="container-fluid hidden-lg hidden-md head-nw">
+  			<div class="container-fluid hidden-lg  head-nw">
   				<div class="row">
   					<div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-left" >
 					<!-- menu carrito -->
@@ -98,7 +98,7 @@
 									<% end %>
 								<% end %>
 								
-							<div data-target="nav-collapse" class="btn-navbar" data-toggle="collapse" style="width:20px; border:1px solid red;">
+							<div data-target="nav-collapse" class="btn-navbar" data-toggle="collapse" style="width:20px;">
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
@@ -243,13 +243,12 @@
 				<!-- menu product -->
 				<% unless @hide_header_ecommerce_items %>
 				<div class="container-fluid ">
-					<div class="row" style="">
-						<div class="col-md-12 dvt_allp hidden-xs hidden-sm dvt_back">
-							<ul class="bt_allp text-center center-block" style="margin-top: 7px; margin-bottom: 9px; padding-left: 1px; margin-left: -30px;">
-								
-								<li style="color:#; padding-right:6px; border-right:1px solid #cccccc;"><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>"><%= t('.all_products') %></a></li>
+					<div class="row  menu1">
+						<div class="col-lg-12 col-md-12 dvt_back text-center dvt_allp hidden-xs hidden-sm center-block menu1">
+							<ul class="bt_allp ">
+								<li style="color:#; padding-left:10px; padding-right:6px; border-right:1px solid #cccccc;"><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>"><%= t('.all_products') %></a></li>
 								<% @primary_menu_categories.each do |category| %>
-									<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active header-menu-no-wrap" %></li>
+								<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active header-menu-no-wrap" %></li>
 								<% end %>
 				            </ul>
 						</div>
@@ -259,6 +258,9 @@
 
 				<!-- final menu product -->
 				</div>
+				
+				
+				
 
 	<!-- TODO Search should have alternate functionality if header is being shown from blog or ecommerce -->
 	<div class="search-header5">
