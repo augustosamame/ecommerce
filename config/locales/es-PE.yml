@@ -243,6 +243,7 @@ es-PE:
           my_orders: "Mis Pedidos"
           my_account: "Mi Cuenta"
           sign_out: "Cerrar Sesión"
+          sign_in: "Iniciar Sesión"
           search_string: "Ingrese el término de búsqueda y presione Enter.."
           my_account: "Mi Cuenta"
           log_out: "Cerrar Sesión"

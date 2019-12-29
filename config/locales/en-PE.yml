@@ -132,6 +132,7 @@ en-PE:
           my_orders: "My Orders"
           my_account: "My Account"
           sign_out: "Sign Out"
+          sign_in: "Sign In"
           search_instructions: "Type and Press Enter to Search"
           search_placeholder: "Search..."
         footer:
