@@ -25,9 +25,9 @@
 								<% if Ecommerce.enable_language_selector %>
 									<div class="dropdown mobile-lang-selector " style="padding-left:12px;">
 										<% if session[:locale] == "es-PE" %>
-											<a href="" data-toggle="dropdown" class="dropdown-toggle"> Idioma <%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a>
+											<a href="" data-toggle="dropdown" class="dropdown-toggle"> Language <%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a>
 										<% else %>
-											<a href="" data-toggle="dropdown" class="dropdown-toggle"> Language <%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a>
+											<a href="" data-toggle="dropdown" class="dropdown-toggle"> Idioma <%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a>
 										<% end %>
 										<ul class="sub-menu flag-sub-menu dropdown-menu" style="list-style: none;">
 											<li><a id="en-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a></li>
