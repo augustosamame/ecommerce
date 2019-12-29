@@ -286,7 +286,7 @@ es-PE:
           subscribe_to_us_text: "Ingresa tu correo a nuestra lista de y te avisaremos sobre nuevos productos y promociones."
           email: "Correo Electrónico"
           submit: "Enviar"
-          by_country: "Por País"
+          by_country: "Productos Por País"
           by_product: "Por Producto"
         about_us:
           about_us: "Acerca de Nosotros"
