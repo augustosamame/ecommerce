@@ -157,22 +157,22 @@
 			<div class="col-sm-8 hidden-lg hidden-md">
 			    <ul class="botones_lista " style="margin-top:30px;">
 			      <li>
-							<div class="botones_contenedor_p" style="margin: auto;">
-								<a href=" /store/houses_m ">
+							<a href=" /store/houses_m ">
+								<div class="botones_contenedor_p" style="margin: auto;">
 									<span class="dvt_houses_titulos" style="text-align:center;">By Country</span>
-								</a>
-				      </div>
+				      	</div>
+							</a>
 				      <div class="linea">1</div>
 						</li>
 
 						<% @primary_menu_categories.each do |category| %>
 
 			      <li>
-							<div class="botones_contenedor" style="margin: auto;">
-								<a href=" <%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id) %> ">
+							<a href=" <%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id) %> ">
+								<div class="botones_contenedor" style="margin: auto;">
 									<span class="dvt_houses_titulos" style="text-align:center;"><%= category.name %></span>
-								</a>
-							</div>
+								</div>
+							</a>
 						</li>
 
 						<% end %>
