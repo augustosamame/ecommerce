@@ -66,7 +66,7 @@
 								<% end %>
 							<% end %>
 
-							<div data-target=".nav-collapse" class="btn-navbar">
+							<div data-target=".nav-collapse" class="btn-navbar" style='margin-right: 20px;'>
 								<span></span>
 								<span></span>
 								<span></span>
@@ -152,6 +152,7 @@
 
 										<% end %>
 
+										<!--
 										<li class="menu-item-has-children">
 											<a href="#"><%= "#{current_user.name}".html_safe %></a>
 											<ul class="sub-menu">
@@ -160,6 +161,7 @@
 												<li><%= link_to t('.sign_out'), main_app.logout_path %></li>
 											</ul>
 										</li>
+										-->
 
 								</ul>
 
@@ -269,6 +271,8 @@
 			</div>
 		</div>
 	</div>
+
+	<!--
 	<% if browser.device.mobile? %>
 	<div class="floating-buttons-div" id="floating-buttons-div">
 		<div class="row">
@@ -282,6 +286,7 @@
 	</div>
 	<% end %>
 </div>
+-->
 
 	<!-- TODO Search should have alternate functionality if header is being shown from blog or ecommerce -->
 	<div class="search-header5">
