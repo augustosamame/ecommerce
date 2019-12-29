@@ -156,85 +156,27 @@
 			<div class="col-sm-2 hidden-lg hidden-md"></div>
 			<div class="col-sm-8 hidden-lg hidden-md">
 			    <ul class="botones_lista " style="margin-top:30px;">
-			        <li>
-						<div class="botones_contenedor_p" style="margin: auto;">
-							<a href=" /store/houses_m ">
-								<span class="dvt_houses_titulos" style="text-align:center;">By Country</span>
-							</a>
-			            </div>
-			            <div class="linea">1</div>
-					</li>
+			      <li>
+							<div class="botones_contenedor_p" style="margin: auto;">
+								<a href=" /store/houses_m ">
+									<span class="dvt_houses_titulos" style="text-align:center;">By Country</span>
+								</a>
+				      </div>
+				      <div class="linea">1</div>
+						</li>
 
-			        <li>
-						<div class="botones_contenedor" style="margin: auto;">
-							<a href=" /store/sub_categories_m?parent_category=47 ">
-								<span class="dvt_houses_titulos" style="text-align:center;">New Products</span>
-							</a>
-						</div>
-					</li>
+						<% @primary_menu_categories.each do |category| %>
 
+			      <li>
+							<div class="botones_contenedor" style="margin: auto;">
+								<a href=" <%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id) %> ">
+									<span class="dvt_houses_titulos" style="text-align:center;"><%= category.name %></span>
+								</a>
+							</div>
+						</li>
 
-			        <li>
-			        <div class="botones_contenedor" style="margin: auto;">
-			            <a href=" /store/sub_categories_m?parent_category=39 ">
-			                <span class="dvt_houses_titulos" style="text-align:center;">Eco-Cleaning Products</span>
-			            </a>
-			        </div>
-			        </li>
+						<% end %>
 
-
-			        <li>
-			        <div class="botones_contenedor" style="margin: auto;">
-			            <a href=" /store/sub_categories_m?parent_category=30 ">
-			                <span class="dvt_houses_titulos" style="text-align:center;">Alcohol</span>
-			            </a>
-			        </div>
-			        </li>
-
-
-			        <li>
-			        <div class="botones_contenedor" style="margin: auto;">
-			            <a href=" /store/sub_categories_m?parent_category=32 ">
-			                <span class="dvt_houses_titulos" style="text-align:center;">Food &amp; Beverages</span>
-			            </a>
-			        </div>
-			        </li>
-
-
-			        <li>
-			        <div class="botones_contenedor" style="margin: auto;">
-			            <a href=" /store/sub_categories_m?parent_category=14 ">
-			                <span class="dvt_houses_titulos" style="text-align:center;">Household</span>
-			            </a>
-			        </div>
-			        </li>
-
-
-			        <li>
-			        <div class="botones_contenedor" style="margin: auto;">
-			            <a href=" /store/sub_categories_m?parent_category=26 ">
-			                <span class="dvt_houses_titulos" style="text-align:center;">Ayurvedic Products</span>
-			            </a>
-			        </div>
-			        </li>
-
-
-			        <li>
-			        <div class="botones_contenedor" style="margin: auto;">
-			            <a href=" /store/sub_categories_m?parent_category=20 ">
-			                <span class="dvt_houses_titulos" style="text-align:center;">Body Care</span>
-			            </a>
-			        </div>
-			        </li>
-
-
-			        <li>
-			        <div class="botones_contenedor" style="margin: auto;">
-			            <a href=" /store/sub_categories_m?parent_category=45 ">
-			                <span class="dvt_houses_titulos" style="text-align:center;">Gift Options </span>
-			            </a>
-			        </div>
-			        </li>
 				</ul>
 			</div>
 			<div class="col-sm-2 hidden-lg hidden-md"></div>
