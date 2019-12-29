@@ -89,6 +89,16 @@
                         <%= link_to t('.proceed_to_checkout'), checkout_path, class: "checkout-button button alt wc-forward" %>
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="col-md-4" style="text-align: left; margin-bottom: 10px;">
+                        <a class="button organici-continue" href="<%= Ecommerce::Engine.routes.url_helpers.orders_path %>"><%= t('.my_orders') %></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4" style="text-align: left; margin-bottom: 10px;">
+                        <a class="button organici-continue" href="<%= main_app.edit_user_registration_path %>"><%= t('.my_account') %></a>
+                      </div>
+                    </div>
 
                   </td>
                 </tr>
