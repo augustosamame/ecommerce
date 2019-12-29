@@ -1,5 +1,8 @@
 <% if @cart && @cart.id %>
 <a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
+  <% if browser.device.mobile? %>
+  Checkout
+  <% end %>
   <span class="cart-item has-items" id="shopping-cart">
     <i class="fa fa-shopping-cart"></i>
     <span>(<%= @cart.get_totals[:tot_qty] %>)

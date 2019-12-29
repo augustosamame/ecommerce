@@ -13,8 +13,7 @@
 							<ul class="mobile_cart" style="border-right:1px solid #f5f5f5;">
 
 								<li class="menu-item noo-menu-item-cart minicart" id="cart-line">
-									Checkout
-											<%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
+									<%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
 								</li>
 							</ul>
 						<% end %>
