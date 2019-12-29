@@ -51,6 +51,13 @@
 							</div>
 							<% end %>
 
+							<% if Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order)[5] %>
+							<div class="item">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order)[5].slider_text %></div>
+								<img src="<%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order)[5].slider_image.url %>">
+							</div>
+							<% end %>
+
 						<!-- Left and right controls -->
 						<a class="left carousel-control" href="#myCarousel" data-slide="prev">
 							<span class="glyphicon glyphicon-chevron-left"></span>
@@ -133,6 +140,13 @@
 						<div class="item">
 							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'Desktop').order(:slider_order).fifth.slider_text %></div>
 							<img src="<%= Ecommerce::Slider.where(slider_view: 'Desktop').order(:slider_order).fifth.slider_image.url %>">
+						</div>
+						<% end %>
+
+						<% if Ecommerce::Slider.where(slider_view: 'Desktop').order(:slider_order)[5] %>
+						<div class="item">
+							<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'Desktop').order(:slider_order)[5].slider_text %></div>
+							<img src="<%= Ecommerce::Slider.where(slider_view: 'Desktop').order(:slider_order)[5].slider_image.url %>">
 						</div>
 						<% end %>
 
