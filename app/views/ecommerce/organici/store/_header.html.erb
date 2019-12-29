@@ -4,14 +4,14 @@
       <%= render partial: "ecommerce/application/js_now_flash" %>
     <% end %>
   </div>
-  
+
   <div class="container-fluid hidden-lg  head-nw">
   		<div class="row">
   			<div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-left" >
 					<!-- menu carrito -->
 						<% if browser.device.mobile? %>
 							<ul class="mobile_cart" style="border-right:1px solid #f5f5f5;">
-										
+
 								<li class="menu-item noo-menu-item-cart minicart" id="cart-line">
 											<%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
 								</li>
@@ -130,6 +130,9 @@
 							<!--<a href="#" class="button-expand-option"><i class="fa fa-ellipsis-v"></i></a>-->
 
 							<ul class="nav-collapse navbar-nav">
+								<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
+									<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
+								<% end %>
 								<% if current_user %>
 									<li class="menu-item-has-children">
 										<a href="#"><%= "<i class='fa fa-user'></i> #{current_user.name} <span class='caret'></span>".html_safe %></a>
@@ -142,7 +145,7 @@
 									</li>
 								<% else %>
 									<li class="menu-item">
-										<a href="<%= main_app.new_user_registration_path %>" class=""><i class='fa fa-user'></i> <%= t('.my_account')%></a>
+										<a href="<%= main_app.new_user_registration_path(sign_up_type: 'non-guest') %>" class=""><i class='fa fa-user'></i> <%= t('.my_account')%></a>
 									</li>
 								<% end %>
 

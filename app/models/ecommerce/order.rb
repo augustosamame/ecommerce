@@ -45,7 +45,7 @@ module Ecommerce
         self.order_items.where(status: "active").each do |ol|
           ol.product.update(total_quantity: ol.product.total_quantity -= ol.quantity)
         end
-        #TwilioIntegration.new.send_sms_to_number("Your ExpatShop Order No. #{self.id} has been Paid! We will let you know when we ship.", self.user.username) if Rails.env == "production"
+        #TwilioIntegration.new.send_sms_to_user("Your ExpatShop Order No. #{self.id} has been Paid! We will let you know when we ship.", self.user.id) if Rails.env == "production"
         Campaign.send_recipients(self.id)
       end
     end
