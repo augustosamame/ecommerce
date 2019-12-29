@@ -4,11 +4,10 @@
       <%= render partial: "ecommerce/application/js_now_flash" %>
     <% end %>
   </div>
-  			
-  			<!-- sub menu mobile -->
-  			<div class="container-fluid hidden-lg  head-nw">
-  				<div class="row">
-  					<div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-left" >
+  
+  <div class="container-fluid hidden-lg  head-nw">
+  		<div class="row">
+  			<div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-left" >
 					<!-- menu carrito -->
 						<% if browser.device.mobile? %>
 							<ul class="mobile_cart" style="border-right:1px solid #f5f5f5;">
@@ -18,10 +17,10 @@
 								</li>
 							</ul>
 						<% end %>
-					</div>		
+			</div>		
 						<!-- fin carrito -->
 						<!-- idioma -->
-					<div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-right">	
+			<div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-right">	
 							<% if browser.device.mobile? %>
 								<% if Ecommerce.enable_language_selector %>
 									<div class="dropdown mobile-lang-selector " style="padding-left:12px;">
@@ -37,88 +36,65 @@
 									</div>
 								<% end %>
 							<% end %>
-					</div>
+			</div>
 						<!-- fin idioma -->	
   				</div>
-  			</div>
-  			<!--<div class="container-fluid hidden-lg hidden-md" >
-  				<div class="row">
-  					<div class="col-sm-1 col-xs-1 hidden-lg hidden-md" style="border:0px solid red;">
-  						
-  					</div>
-                    <div class="col-sm-10 col-xs-10 hidden-lg hidden-md" style="border:0px solid red;">
-                    	<div>
-                    		<a href="<%= root_path %>" class="navbar-brand">
-								<% if browser.device.mobile? %>
-										<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal noo-logo-mobile", style: "margin-top: -18px;" %>
-								<% else %>
-										<%= image_tag Ecommerce.header_landing_logo, style: "margin-top: -22px;", alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 140 %>
-								<% end %>
-							</a>
-                    	</div>
-                    </div>
-                    <div class="col-sm-1 col-xs-1 hidden-lg hidden-md" style="border:0px solid red;">a</div>
-  				</div>
-  			</div>-->
-  			<!-- sub menu mobile final -->
-  			<!-- cabecera -->
-			<div class="container" style=" background:white;">
-	
-					<div class="menu-position">
-					<!-- aqui poner hidden-sm hidden-xs-->	
-						<div class="navbar-header " >
-							<div class="noo_menu_canvas">
-								<div class="">
-						<!-- menu mobile -->
-									<% if browser.device.mobile? %>
-										<ul class="mobile_cart hidden-sm hidden-xs">
-											
-											<li class="menu-item noo-menu-item-cart minicart" id="cart-line">
-												<%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
-											</li>
+  </div>
+  
+	<div class="navbar-wrapper" id="navbar-wrapper">
+		<div class="navbar navbar-default">
+			<div class="container">
+				<div class="menu-position">
+					<div class="navbar-header pull-left">
+						<div class="noo_menu_canvas">
+							<div class="row">
+
+							<% if browser.device.mobile? %>
+									<ul class="mobile_cart hidden-sm hidden-xs">
+
+										<li class="menu-item noo-menu-item-cart minicart" id="cart-line">
+											<%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
+										</li>
+									</ul>-
+
+							<% end %>
+
+							<% if browser.device.mobile? %>
+								<% if Ecommerce.enable_language_selector %>
+									<!--<div class="dropdown mobile-lang-selector">
+										<% if session[:locale] == "es-PE" %>
+											<a href="" data-toggle="dropdown" class="dropdown-toggle"><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a>
+										<% else %>
+											<a href="" data-toggle="dropdown" class="dropdown-toggle"><%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a>
+										<% end %>
+										<ul class="sub-menu flag-sub-menu dropdown-menu" style="list-style: none;">
+											<li><a id="en-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a></li>
+											<li><a id="es-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a></li>
 										</ul>
+									</div>-->
 
 								<% end %>
-							<!-- fin menu mobile -->
-								<% if browser.device.mobile? %>
-									<% if Ecommerce.enable_language_selector %>
-										<div class="dropdown mobile-lang-selector hidden-sm hidden-xs">
-											
-											<% if session[:locale] == "es-PE" %>
-												<a href="" data-toggle="dropdown" class="dropdown-toggle"><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a>
-											<% else %>
-												<a href="" data-toggle="dropdown" class="dropdown-toggle"><%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a>
-											<% end %>
-											<ul class="sub-menu flag-sub-menu dropdown-menu" style="list-style: none;">
-												<li><a id="en-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a></li>
-												<li><a id="es-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a></li>
-											</ul>
-										</div>
-	
-									<% end %>
-								<% end %>
-								
-							<div data-target="nav-collapse" class="btn-navbar" data-toggle="collapse" style="width:20px;">
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
+							<% end %>
+
+							<div data-target=".nav-collapse" class="btn-navbar">
+								<span></span>
+								<span></span>
+								<span></span>
 							</div>
 							</div>
 						</div>
-						<div class="navbar-brand">
 						<a href="<%= root_path %>" class="navbar-brand">
 						<% if browser.device.mobile? %>
-								<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal noo-logo-mobile", style: "margin-top: -40px;" %>
+								<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal noo-logo-mobile", style: "margin-top: -18px;" %>
 						<% else %>
 								<%= image_tag Ecommerce.header_landing_logo, style: "margin-top: -22px;", alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 140 %>
 						<% end %>
 						</a>
-						</div>
 					</div>
 
-					<!--<nav class="pull-left noo-main-menu" id="nav2">
+					<nav class="pull-left noo-main-menu hidden-lg hidden-md " id="nav2">
 						<ul class="nav-collapse navbar-nav">
-							<a class="exit-cavas exit-cavas-invisible" id="original-exit-cavas" href="#">&nbsp;</a>
+							<a class=" exit-cavas-invisible" id="original-exit-cavas" href="#">&nbsp;</a>
 						</ul>
 						<ul class="nav-collapse navbar-nav">
 							<li class="current-menu-item">
@@ -135,7 +111,7 @@
 									<% end %>
 									<li><a href="<%= Blog::Engine.routes.url_helpers.root_path %>">See All Blog Articles</a></li>
 								</ul>
-							</li>
+							</li>-->
 
 							<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
 								<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
@@ -147,7 +123,6 @@
 
 						</ul>
 						</nav>
-						
 						<!-- menu secundario -->
 
 						<nav class="pull-right noo-main-menu devtech-right-menu-custom" id="nav1">
@@ -237,30 +212,41 @@
 						<!-- fin menu secundario  -->
 						</nav>
 				</div>
-				
-			</div>	
-			<!-- fin cabecera -->
+
 				<!-- menu product -->
 				<% unless @hide_header_ecommerce_items %>
 				<div class="container-fluid ">
-					<div class="row  menu1">
-						<div class="col-lg-12 col-md-12 dvt_back text-center dvt_allp hidden-xs hidden-sm center-block menu1">
-							<ul class="bt_allp ">
-								<li style="color:#; padding-left:10px; padding-right:6px; border-right:1px solid #cccccc;"><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>"><%= t('.all_products') %></a></li>
-								<% @primary_menu_categories.each do |category| %>
-								<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active header-menu-no-wrap" %></li>
-								<% end %>
-				            </ul>
+						<div class="row  menu1">
+							<div class="col-lg-12 col-md-12 dvt_back text-center dvt_allp hidden-xs hidden-sm center-block menu1">
+								<ul class="bt_allp ">
+									<li style="color:#; padding-left:10px; padding-right:6px; border-right:1px solid #cccccc;"><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>"><%= t('.all_products') %></a></li>
+									<% @primary_menu_categories.each do |category| %>
+									<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active header-menu-no-wrap" %></li>
+									<% end %>
+					            </ul>
+							</div>
 						</div>
-					</div>
-					
 				<% end %>
 
 				<!-- final menu product -->
-				</div>
-				
-				
-				
+
+
+			</div>
+		</div>
+	</div>
+	<% if browser.device.mobile? %>
+	<div class="floating-buttons-div" id="floating-buttons-div">
+		<div class="row">
+			<div class="col-xs-6">
+				<%= link_to t('.by_country'), houses_m_path, class: "btn btn-primary floating-button" %>
+			</div>
+			<div class="col-xs-6">
+			  <%= link_to t('.by_product'), categories_m_path, class: "btn btn-primary floating-button" %>
+			</div>
+		</div>
+	</div>
+	<% end %>
+</div>
 
 	<!-- TODO Search should have alternate functionality if header is being shown from blog or ecommerce -->
 	<div class="search-header5">
