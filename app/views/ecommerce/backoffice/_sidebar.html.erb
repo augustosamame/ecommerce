@@ -60,7 +60,7 @@
       </li>
 
       <li class="<%= class_string({ active: (['users'].include? controller.controller_name) }) %>">
-        <a href="javascript:;"> <i class="material-icons">face</i> <span class="title">Users</span> <span class=" badge badge-disable pull-right "><%= User.where(status: "active").count %></span>
+        <a href="javascript:;"> <i class="material-icons">face</i> <span class="title">Users</span> <span class=" badge badge-disable pull-right "><%= User.count %></span>
         </a>
         <ul class="sub-menu">
           <li> <%= link_to "All Users", backoffice_users_path %></li>
