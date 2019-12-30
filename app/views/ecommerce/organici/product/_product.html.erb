@@ -3,10 +3,10 @@
   <div class="noo-product-inner">
     <div class="noo-product-thumbnail">
       <a href="<%= product_path(item) %>">
-        <%= image_tag item.image.medium_260.url, width: 600, alt: "" %>
+        <%= image_tag item.image.medium_260.url, {:style => "width: 350px; height: 350px;"} %>
       </a>
     </div>
-    <div class="noo-product-title" style="height: 265px;">
+    <div class="noo-product-title" style="height: 380px;">
       <h3><%= link_to item.name, product_path(item) %></h3><br>
       <a href="<%= product_path(item) %>">
       <span class="short-descrip" style="font-size:13px;"><%= item.short_description.gsub("**","<br>").html_safe if item.short_description %></span><br>

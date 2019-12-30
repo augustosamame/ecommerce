@@ -1,5 +1,15 @@
 *{padding:0;margin:0;}
 
+.menu-item-bottom {
+	position: relative;
+	margin-top: 30px;
+	list-style-type: none;
+}
+
+#nav1 {
+	margin-bottom: 10px;
+}
+
 .wa-float{
 	position:fixed;
 	width:60px;
@@ -55,7 +65,7 @@
 }
 
 .noo-product-title {
-  max-height: 340px;
+  max-height: 380px;
 }
 
 #coupon-code {
@@ -137,7 +147,7 @@
   right: 45px;
   position: absolute;
   //width: 70px;
-  width: 40px;
+  width: 100px;
   top: 15px;
   //top: -5px;
 }
@@ -414,7 +424,8 @@
 .organici-continue {
   background: #f4eede !important;
   color: #212121 !important;
-  text-align: left !important;
+  text-align: center !important;
+	width: 160px !important;
 }
 
 .no_stock {
@@ -475,7 +486,7 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
     }
 
     .navbar-wrapper-with-buttons {
-      height: 105px !important;
+      // height: 105px !important;
     }
 
     .exit-cavas {
@@ -617,7 +628,7 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
     }
 
     .navbar-brand .noo-logo-img {
-        max-height: 75px;
+        max-height: 140px;
         margin-top: -25px;
         margin-left: -28px;
     }
@@ -634,11 +645,11 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
         padding-left: 0px;
         right: 0px;
         position: absolute;
-        width: 40px;
+        width: 100px;
         top: 15px;
     }
     .navbar-brand .noo-logo-img {
-    max-height: 75px;
+    max-height: 140px;
     margin-top: -25px;
     margin-left: 0px;
 }
@@ -655,7 +666,7 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
     }
 
     .navbar-brand .noo-logo-img {
-    max-height: 75px;
+    max-height: 140px;
     margin-top: -25px;
     margin-left: 0px;
 }
