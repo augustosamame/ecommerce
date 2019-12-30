@@ -1,9 +1,9 @@
-<footer class="wrap-footer footer-2 colophon wigetized">
+<footer class="wrap-footer colophon wigetized">
 	<div class="container" style="border-top:1px solid #f8f8f8; padding:10px 0px;">
-		<div class="row">
-			<div class="col-md-4 col-sm-12 item-footer-four" >
+		<div class="row" style='margin-right: 0px; margin-left: 0px;'>
+			<div class="col-md-4 col-sm-6 item-footer-four" >
 				<div class="widget widget_about">
-					<div class="noo_about_widget img-responsive text-center"  style="margin: 10px;">
+					<div class="noo_about_widget text-center"  style="margin: 10px;">
 
 							<%= image_tag Ecommerce.footer_logo, alt: "Store Logo", height: 100, width: 100  %>
 
@@ -11,10 +11,8 @@
 
 					</div>
 				</div>
-
-
 			</div>
-			<div class="col-md-3 col-sm-12 item-footer-fou text-center small" style="margin-bottom: 10px;" >
+			<div class="col-md-3 col-sm-6 item-footer-fou text-center small" style="margin-bottom: 10px;" >
 				<div class="widget widget_text">
 					<h4 class="widget-title"><%= t('.contact') %></h4>
 					<div class="">
@@ -101,14 +99,15 @@
 				</div>-->
 			</div>
 		</div>
-		<div class="row">
-			<div class="widget widget_text small text-center" style="margin-left 20px;">
+		<div class="row"style='margin-right: 0px; margin-left: 0px;' >
+			<div class="widget widget_text small text-center" style="margin-left 0px;">
 					<div class="textwidget">
 						<div class="copyright">
 							Copyright 2018 ExpatShop Perú<br/>
 							<%= t('.developed_with_love').gsub('_love_icon','<i class="fa fa-heart-o"></i>').html_safe %><a href="https://www.devtechperu.com"> DevtechPeru.</a>
 						</div>
 					</div>
-				</div>
+			</div>
 		</div>
+	</div>
 </footer>

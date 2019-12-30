@@ -23,7 +23,7 @@
 			<div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-right">	
 							<% if browser.device.mobile? %>
 								<% if Ecommerce.enable_language_selector %>
-									<div class="dropdown mobile-lang-selector " style="padding-left:12px;">
+									<div class="dropdown mobile-lang-selector " style="padding-left:30px;">
 										<% if session[:locale] == "es-PE" %>
 											<a href="" data-toggle="dropdown" class="dropdown-toggle"> Language <%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a>
 										<% else %>
@@ -288,7 +288,7 @@
 			</div>
 		</div>
 	</div>
-
+	</div>
 	<!--
 	<% if browser.device.mobile? %>
 	<div class="floating-buttons-div" id="floating-buttons-div">

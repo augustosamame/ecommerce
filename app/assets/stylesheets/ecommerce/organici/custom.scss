@@ -641,13 +641,13 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
 
 @media screen and (min-width:320px) {
     .mobile_cart {
-        list-style: none;
-        padding-left: 0px;
-        right: 0px;
-        position: absolute;
-        width: 100px;
-        top: 15px;
-    }
+    list-style: none;
+    padding-left: 0;
+    right: 10px;
+    position: absolute;
+    width: 130px;
+    top: 15px;
+}
     .navbar-brand .noo-logo-img {
     max-height: 140px;
     margin-top: -25px;
