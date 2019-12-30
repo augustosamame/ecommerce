@@ -175,6 +175,7 @@ es-PE:
           state: "Estado"
           save_address: "Grabar Dirección"
           address_has_been_saved: "La Dirección Ha Sido Grabada!"
+          mandatory_field: "(*) Grabar o Seleccionar una Dirección es Obligatorio."
           location_on_map: "Ubicación en Mapa"
       order:
         show:

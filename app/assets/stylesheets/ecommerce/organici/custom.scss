@@ -361,6 +361,15 @@
   box-shadow: none;
 }
 
+.mandatory-address {
+	color: red;
+	font-size: 16px;
+	position: relative;
+	// top: 25px;
+	margin-left: 5px;
+	margin-bottom: 30px;
+}
+
 .hide-ok-label {
   display: none;
 }
@@ -370,6 +379,8 @@
   padding-top: 10px;
   color: red;
   vertical-align: -webkit-baseline-middle;
+	position: relative;
+	top: 20px;
 }
 
 .single-product-container {
