@@ -243,6 +243,7 @@ en-PE:
           state: "State"
           save_address: "Save Address"
           address_has_been_saved: "Address Has Been Saved!"
+          mandatory_field: "(*) Saving or Picking an address is mandatory."
           location_on_map: "Location on Map"
       order:
         show:
