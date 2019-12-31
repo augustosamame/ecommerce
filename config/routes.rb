@@ -33,6 +33,8 @@ Ecommerce::Engine.routes.draw do
     post 'send_recipients/:id', :to => "campaigns#post_send_recipients", as: 'post_send_recipients'
     get 'get_purchasers', :to => "campaigns#get_product_purchasers"
     get 'get_no_purchase_within_days', :to => "campaigns#get_no_purchase_within_days"
+    get "export_products" => "dashboard#export_products", as: :export_products
+    get "export_users" => "dashboard#export_users", as: :export_users
   end
 
   post 'locale', :to => 'application#locale'
