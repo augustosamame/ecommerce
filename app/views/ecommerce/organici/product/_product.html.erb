@@ -34,7 +34,7 @@
       <% if item.in_stock? %>
 
         <div class='center-form' style='display: inline-block; height: 105;'>
-          <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart" } do |f| %>
+          <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart", id: "new_cart_item_#{item.id}" } do |f| %>
             <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class" id=<%= "devtech_minus_#{item.id}" %>>
               <a href="#" class="add_to_wishlist devtech_minus_a_class">-</a>
             </div>
