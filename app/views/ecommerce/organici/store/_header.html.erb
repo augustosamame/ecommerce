@@ -17,10 +17,10 @@
 								</li>
 							</ul>
 						<% end %>
-			</div>		
+			</div>
 						<!-- fin carrito -->
 						<!-- idioma -->
-			<div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-right">	
+			<div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-right">
 							<% if browser.device.mobile? %>
 								<% if Ecommerce.enable_language_selector %>
 									<div class="dropdown mobile-lang-selector " style="padding-left:30px;">
@@ -37,10 +37,10 @@
 								<% end %>
 							<% end %>
 			</div>
-						<!-- fin idioma -->	
+						<!-- fin idioma -->
   				</div>
   </div>
-  
+
 	<div class="navbar-wrapper" id="navbar-wrapper">
 		<div class="navbar navbar-default">
 			<div class="container">
@@ -140,7 +140,7 @@
 															<a href="<%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id) %>"><%= category.name %></a>
 															<ul class="sub-menu">
 																<% Globalize.with_locale(:"en-PE") do %>
-																	<% Ecommerce::Category.active.tagged_with(category.name).each do |subcategory| %>
+																	<% Ecommerce::Category.active.tagged_with(category.name).order(:category_order).each do |subcategory| %>
 																		<% Globalize.with_locale(session[:locale]) do %>
 																			<li><%= link_to subcategory.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: subcategory.id) %></li>
 																		<% end %>
