@@ -25,7 +25,7 @@ module Ecommerce
       @current_user_first_name = current_user.first_name
       @current_user_last_name = current_user.last_name
       @current_user_email = current_user.email
-      @current_user_phone = "+51#{current_user.username}"
+      @current_user_phone = "+51#{current_user.username}".split(':')[0].gsub(/[^\d]/, '')
 
       @coupons_active = Ecommerce::allow_coupons
 
