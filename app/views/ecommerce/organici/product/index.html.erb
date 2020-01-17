@@ -74,15 +74,12 @@ $(document).ready(function(){
 
   function bindPlusMinusButtons() {
     $('body').on('click', ".devtech_plus_class", function(e) {
-      console.log('clicked plus')
-      console.log($(e.currentTarget).parent().children(".quantity"))
       var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
       quantityElement.val(parseInt(quantityElement.val()) + 1)
       e.preventDefault();
     });
 
     $(".devtech_minus_class").click(function(e) {
-      console.log('clicked minus')
       var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
       if (parseInt(quantityElement.val()) > 1) {
         quantityElement.val(parseInt(quantityElement.val()) - 1);
