@@ -23,11 +23,13 @@ module Ecommerce
           redirect_to categories_path(parent_category: @category.id)
         else
           Globalize.with_locale(Ecommerce.backoffice_default_locale) do
+            @all_products = Product.includes(:translations).tagged_with(@category.name).order(:product_order).active
             @products = Product.includes(:translations).tagged_with(@category.name).order(:product_order).active.page(params[:page])
           end
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else
+        @all_products = Product.all.includes(:translations).order(:product_order).active
         @products = Product.all.includes(:translations).order(:product_order).active.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
