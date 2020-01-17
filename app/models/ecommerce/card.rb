@@ -7,7 +7,6 @@ module Ecommerce
     def create_new_from_culqi(current_user, culqi_data)
       card = Card.new
       card.user_id = current_user.id
-      Rails.logger.debug culqi_data
       card.processor_token = culqi_data[:id]
       card.payment_email = culqi_data[:email]
       card.number = culqi_data[:card_number]
