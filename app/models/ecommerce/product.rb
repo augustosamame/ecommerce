@@ -27,7 +27,7 @@ module Ecommerce
     friendly_id :permalink_candidates, use: :slugged, slug_column: :permalink
 
     include PgSearch
-    pg_search_scope :search_by_name, :against => :name, :using => {:tsearch => {:prefix => true}}
+    pg_search_scope :search_by_name, associated_against: { translations: :name }, using: {tsearch: {prefix: true, any_word: true}}
 
     scope :in_stock, -> { where("stockable = ? or total_quantity != ?", false, 0) }
     scope :active, -> { where(status: "active") }
@@ -51,7 +51,7 @@ module Ecommerce
 
     #validates :category_id, presence: true
     validates_presence_of :category_list
-    validates :name, presence: true,   length: { maximum: 165 }
+    validates :name, presence: true, length: { maximum: 165 }
 
     def permalink_candidates
       [
