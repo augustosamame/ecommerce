@@ -116,6 +116,7 @@ en-PE:
       store:
         header:
           all_products: "All Products"
+          favorite_products: "Favorites"
           home_menu: "Home"
           blog_menu: "Blog"
           about_us_menu: "About Us"
@@ -156,6 +157,7 @@ en-PE:
           checkout: "Checkout"
         main:
           all_products: "All Products"
+          favorite_products: "Favorites"
           new_products: "Featured Products"
           new_products_subtitle: "From all over the world the best products money can buy"
           free_shipping: "Free Shipping on Orders over $ 30"

@@ -13,6 +13,11 @@ module Ecommerce
 
       set_index_meta_tags
 
+      if params[:search]
+        @products = Product.search_by_name(params[:search]).active.page(params[:page])
+        render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
+      end
+
       if params[:category_id]
         @category = Category.find(params[:category_id])
         #@child_categories = Category.where(parent_id: @category.id)
@@ -36,11 +41,6 @@ module Ecommerce
     end
 
     def show
-
-      if params[:search]
-        @products = Product.search_by_name(params[:search]).active.page(params[:page])
-        render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
-      end
       #set_controller_meta_tags(action_name)
 
       @cart_item = CartItem.new
@@ -49,6 +49,12 @@ module Ecommerce
       set_show_meta_tags
 
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
+    end
+
+    def favorites
+      user_orders_items = Ecommerce::OrderItem.where(order_id: current_user.orders.pluck(:id)).group(:product_id).order('COUNT(*) DESC').select('product_id').pluck(:product_id)
+      @products = Product.where(id: user_orders_items).includes(:translations).order(:product_order).active.page(params[:page])
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
     end
 
     private
