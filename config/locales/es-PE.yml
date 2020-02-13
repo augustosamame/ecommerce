@@ -236,7 +236,7 @@ es-PE:
       store:
         header:
           all_products: "Todos los Productos"
-          favorite_products: 'Favoritos'
+          favorite_products: 'Mis Productos Favoritos'
           home_menu: "Inicio"
           blog_menu: "Blog"
           about_us_menu: "Nosotros"
@@ -280,7 +280,7 @@ es-PE:
           checkout: "Checkout"
         main:
           all_products: "Todos los Productos"
-          favorite_products: 'Favoritos'
+          favorite_products: 'Mis Productos Favoritos'
           new_products: "Productos Destacados"
           new_products_subtitle: "Los mejores productos del mundo a Perú"
           free_shipping: "Envío gratis en pedidos superiores a $30"
