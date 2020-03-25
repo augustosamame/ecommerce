@@ -5,6 +5,30 @@ module Ecommerce
     #skip_before_action :authenticate_user!, only: [:show]
     #before_action :set_checkout, only: [:show, :edit, :update, :destroy]
     before_action :find_or_create_order, only: [:pay_order_culqi_checkout, :pay_order_pagoefectivo_checkout, :pay_order_bank, :pay_order_manual]
+    before_action :check_stock_cart, only: [:show]
+
+    def check_stock_cart
+      @not_in_stock_array = Array.new
+      @not_in_stock_alert_en = ''
+      @not_in_stock_alert_es = ''
+      @cart.cart_items.each do |cart_item|
+        if cart_item.product.inactive? || (cart_item.quantity > cart_item.product.total_quantity)
+          adjusted_quantity = cart_item.product.inactive? ? 0 : cart_item.product.total_quantity
+          @not_in_stock_array << { inactive: cart_item.product.inactive?, new_quantity: adjusted_quantity }
+          if cart_item.product.inactive? || cart_item.product.total_quantity == 0
+            @not_in_stock_alert_en += "#{cart_item.product.name} is no longer available. If has been removed from your cart. "
+            @not_in_stock_alert_es += "#{cart_item.product.name} ya no se encuentra disponible. Lo hemos eliminado de su carrito de compras. "
+            cart_item.destroy
+          else
+            @not_in_stock_alert_en += "#{cart_item.product.name} only has Qty: #{cart_item.product.total_quantity} available. We have adjusted the quantity in your cart. "
+            @not_in_stock_alert_es += "#{cart_item.product.name} solo tiene Cant: #{cart_item.product.total_quantity} disponible. Hemos ajustado la cantidad en su carrito. "
+            cart_item.update(quantity: adjusted_quantity)
+          end
+        end
+      end
+
+      set_cart #in order to refresh cart after modifying cart_items
+    end
 
     # GET /checkout
     def show

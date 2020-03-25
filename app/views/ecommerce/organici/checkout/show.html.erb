@@ -276,6 +276,19 @@
 <!--<script src="https://checkout.culqi.com/v2"></script> -->
 <script src="https://checkout.culqi.com/js/v3"></script>
 
+<script>
+$( document ).ready(function() {
+  if (<%= !@not_in_stock_array.blank? %>) {
+    Swal({
+        type: 'error',
+        title: '<%= session[:locale] == 'es-PE' ? 'Algunos de los productos de su carrito no están disponibles' : 'Some of the products in your cart are not available' %>',
+        text: "<%= session[:locale] == 'es-PE' ? @not_in_stock_alert_es : @not_in_stock_alert_en %>"
+      });
+  }
+});
+
+</script>
+
 <!-- Configurando el checkout-->
 <script>
 
