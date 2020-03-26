@@ -75,12 +75,22 @@ $(document).ready(function(){
   function bindPlusMinusButtons() {
     $('body').on('click', ".devtech_plus_class", function(e) {
       var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
-      quantityElement.val(parseInt(quantityElement.val()) + 1)
+      var inStockValueElement = $(e.currentTarget).parent().children(".devtech_plus_class").children(".devtech_plus_a_class").attr('id');
+      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
+      var inStockValue = parseInt(inStockValueElement.substr(inStockValueElement.indexOf('_qty') + 4));
+      if (parseInt(quantityElement.val()) < inStockValue ) {
+        quantityElement.val(parseInt(quantityElement.val()) + 1);
+        outOfStockTextElement.hide();
+      } else {
+        outOfStockTextElement.show();
+      }
       e.preventDefault();
     });
 
     $(".devtech_minus_class").click(function(e) {
       var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
+      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
+      outOfStockTextElement.hide();
       if (parseInt(quantityElement.val()) > 1) {
         quantityElement.val(parseInt(quantityElement.val()) - 1);
       }

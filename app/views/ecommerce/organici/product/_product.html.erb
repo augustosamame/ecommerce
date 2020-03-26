@@ -43,7 +43,7 @@
                 <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners', id: "devtech_quantity_field_#{item.id}", value: "1", size: "4", step: "1", min: "1" } %>
               </div>
               <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class" id= <%= "devtech_plus_#{item.id}" %>>
-                <a href="#" class="add_to_wishlist devtech_plus_a_class" id= <%= "devtech_plus_a#{item.id}" %>>+</a>
+                <a href="#" class="add_to_wishlist devtech_plus_a_class" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.total_quantity}" %>>+</a>
               </div>
               <div class='out_of_stock' style='font-size: 14px;'>
                 <div class='out_of_stock_text_class <%= "out_of_stock_text_#{item.id}" %>' style=" float: left;" %><%= t('.no_more_stock_available') %></div>
