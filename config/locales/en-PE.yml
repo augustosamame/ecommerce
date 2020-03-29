@@ -76,8 +76,8 @@ en-PE:
       payment_stage_paid: "Paid"
       payment_stage_refunded: "Refunded"
       payment_stage_void: "Void"
-      today_afternoon: "today afternoon"
-      tomorrow_afternoon: "next Business Day (next working day)"
+      today_afternoon: "today afternoon (Tuesday to Friday)"
+      tomorrow_afternoon: "next Business Day (Tuesday to Friday)"
   ecommerce:
     cart_items:
       create:
@@ -185,7 +185,7 @@ en-PE:
           shipping_rates: "Shipping Rates"
           shipping_rates_p_html: "$3 Flat Shipping </br>Free shipping on orders over $30"
           shipping_times: "Shipping Times"
-          shipping_times_p_html: "All orders placed before 11:30am will be delivered same day </br>All Orders placed after 11:30am will be delivered next day"
+          shipping_times_p_html: "All orders placed before 11:30am will be delivered same day (Tuesday to Friday) </br>All Orders placed after 11:30am will be delivered next day (Tuesday to Friday)"
       product:
         show:
           add_to_cart: "Add To Cart"

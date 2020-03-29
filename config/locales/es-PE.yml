@@ -61,8 +61,8 @@ es-PE:
       payment_stage_unpaid: "AÚN NO PAGADO"
       payment_stage_refunded: "Pago Devuelto"
       payment_stage_void: "Pago Anulado"
-      today_afternoon: "hoy en la tarde"
-      tomorrow_afternoon: "el siguiente día útil"
+      today_afternoon: "hoy en la tarde (martes a viernes)"
+      tomorrow_afternoon: "el siguiente día útil (martes a viernes)"
   ecommerce:
     cart_items:
       create:
@@ -308,7 +308,7 @@ es-PE:
           shipping_rates: "Tarifas de Envíos"
           shipping_rates_p_html: "Costo de envío: $3 </br>Envío gratis por pedidos sobre $30"
           shipping_times: "Tiempos de Envíos"
-          shipping_times_p_html: "Los pedidos colocados antes de las 11:30am serán entregados el mismo día.</br>Los pedidos colocados después de las 11:30am serán entregados al día siguiente"
+          shipping_times_p_html: "Los pedidos colocados antes de las 11:30am serán entregados el mismo día (martes a viernes).</br>Los pedidos colocados después de las 11:30am serán entregados al día siguiente (martes a viernes)"
     canvas_shop:
       store:
         top_bar:
