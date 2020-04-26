@@ -36,6 +36,7 @@ Ecommerce::Engine.routes.draw do
     get "export_products" => "dashboard#export_products", as: :export_products
     get "export_users" => "dashboard#export_users", as: :export_users
     get "export_orders" => "dashboard#export_orders", as: :export_orders
+    resources :stock_alerts
   end
 
   post 'locale', :to => 'application#locale'
@@ -64,6 +65,7 @@ Ecommerce::Engine.routes.draw do
 
   resources :carts, except: [:index, :new, :create]
   resources :cart_items
+  post 'stock_alerts', :to => 'products#stock_alert', as: 'stock_alerts'
   resources :wishlists, except: [:index, :new, :create]
   resources :wishlist_items
   patch '/addresses/update_map', to: 'addresses#update_map'

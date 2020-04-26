@@ -23,9 +23,6 @@
 
         <% end %>
 
-
-
-
         <% unless item.in_stock? %>
           <p class="out_of_stock" style="font-size: 18px;"><span class=""><%= t('.out_of_stock') %></span></p>
         <% end %>
@@ -54,6 +51,16 @@
           <% end %>
 
         </div>
+
+      <% else %>
+
+      <div class='center-form' style='display: inline-block; height: 105; margin-top: -35px;'>
+        <%= simple_form_for Ecommerce::StockAlert.new, remote: true, html: { class: "stock_alert", id: "stock_alert_#{item.id}" } do |f| %>
+          <%= f.button :submit, t('.alert_me'), class: "index_single_stock_alert_button button", style: "color: #333; background-color: #ccc;" %>
+          <%= f.hidden_field :product_id, value: item.id, id: "product_product_id_#{item.id}" %>
+        <% end %>
+
+      </div>
 
       <% end %>
 

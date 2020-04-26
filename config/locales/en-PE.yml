@@ -189,6 +189,7 @@ en-PE:
       product:
         show:
           add_to_cart: "Add To Cart"
+          alert_me: "Alert Me when back in Stock"
           categories: "Categories: "
           out_of_stock: "Out of Stock"
           no_more_stock_available: "No More Stock Available"
@@ -198,6 +199,7 @@ en-PE:
         product:
           out_of_stock: "Out of Stock"
           add_to_cart: "Add To Cart"
+          alert_me: "Alert Me when back in Stock"
           no_more_stock_available: "No More Stock Available"
       checkout:
         show:

@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="lavaggio_grid col-xs-4 t_o1">
-          <%= f.association :product, collection: Ecommerce::Product.all, input_html: { class: "product_picker"}, label: false, required: false %>
+          <%= f.association :product, collection: Ecommerce::Product.all.order(:name), input_html: { class: "product_picker"}, label: false, required: false %>
         </div>
         <div class="lavaggio_grid col-xs-2 t_o1">
           <%= f.input :quantity, label: false, input_html: { class: "quantity_picker" } %>

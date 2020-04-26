@@ -120,6 +120,7 @@ es-PE:
       product:
         show:
           add_to_cart: "Agr Carrito"
+          alert_me: "Alertarme cuando haya Stock"
           categories: "Categorías: "
           out_of_stock: "Fuera de Stock"
           no_more_stock_available: "No hay más unidades disponibles"
@@ -128,6 +129,7 @@ es-PE:
           search_placeholder: "Buscar Productos"
         product:
           out_of_stock: "Fuera de Stock"
+          alert_me: "Alertarme cuando haya Stock"
           add_to_cart: "Agregar al Carrito"
           no_more_stock_available: "No hay más unidades disponibles"
       checkout:

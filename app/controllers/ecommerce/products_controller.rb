@@ -61,6 +61,26 @@ module Ecommerce
       end
     end
 
+    def stock_alert
+      if current_user
+        @product = Ecommerce::Product.find(params[:stock_alert][:product_id])
+        stock_alert_exists = Ecommerce::StockAlert.find_by(user_id: current_user.id, product_id: @product.id)
+        if stock_alert_exists
+          stock_alert_exists.update(status: 0)
+        else
+          Ecommerce::StockAlert.create(user_id: current_user.id, product_id: @product.id, status: 0)
+        end
+        respond_to do |format|
+          format.js { flash.now[:notice] = "NOW_FLASH_#{t('.stock_alert_set')}"; render "ecommerce/#{Ecommerce.ecommerce_layout}/product/stock_alert"  }
+
+          format.html {redirect_to product_path(@product) }
+        end
+        #head :ok
+      #else
+        #redirect_to new_session_path and return
+      end
+    end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_product

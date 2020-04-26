@@ -7,6 +7,24 @@ function fly_to_cart() {
   });
 };
 
+function show_stock_alert(lang) {
+  console.log ("show_stock_alert fired!");
+  console.log(lang)
+  if (lang == 'es-PE') {
+  Swal({
+      type: 'info',
+      title: 'Le avisaremos cuando el producto esté nuevamente en Stock',
+      text: ""
+    });
+  } else {
+    Swal({
+        type: 'info',
+        title: 'We will alert you when product is back in stock',
+        text: ""
+      });
+  }
+};
+
 function add_to_cart_no_stock() {
   //console.log ("function fly_to_cart fired!");
   //$('#shopping-cart').shake({

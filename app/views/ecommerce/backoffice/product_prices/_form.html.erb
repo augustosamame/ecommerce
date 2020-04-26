@@ -2,7 +2,7 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :product_id, collection: Ecommerce::Product.all %>
+    <%= f.input :product_id, collection: Ecommerce::Product.all.order(:name) %>
     <%= f.input :pricelist_id, collection: Ecommerce::Pricelist.all %>
     <%= f.input :price %>
     <%= f.input :discounted_price %>
