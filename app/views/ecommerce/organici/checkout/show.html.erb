@@ -398,9 +398,8 @@ $( document ).ready(function() {
       url: "checkout/check_stock_cart_js_from_checkout",
       dataType: "json",
       success: function(data) {
-        console.log('response: ', data.in_stock)
         if (data.in_stock) {
-          process_payment()
+          process_payment(e)
         } else {
           window.location.replace("<%= checkout_path %>");
         }
@@ -409,7 +408,7 @@ $( document ).ready(function() {
    });
 
 
-  function process_payment() {
+  function process_payment(e) {
     var errors_present = false
     // Abre el formulario con las opciones de Culqi.settings
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
@@ -475,7 +474,7 @@ $( document ).ready(function() {
           },
           data: JSON.stringify(data_to_send),
           success: function(data){
-            console.log(data.id, '<= Culqi Order Id');
+            // console.log(data.id, '<= Culqi Order Id');
             culqi_order_id = data.id
             Culqi.settings({
               title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
@@ -513,11 +512,11 @@ $( document ).ready(function() {
 
   function culqi() {
 
-    console.log('function Culqi just ran')
+    // console.log('function Culqi just ran')
 
     if(Culqi.token) { // ¡Token creado exitosamente!
         // Get the token ID:
-        console.log('token created!');
+        // console.log('token created!');
         var token = Culqi.token;
         var picked_shipping_address_id = $('#address_id').val();
         var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
@@ -548,7 +547,7 @@ $( document ).ready(function() {
     }else{ // ¡Hubo algún problema!
       // Here is Pagoefectivo
       //console.log('token NOT created!');
-      console.log(Culqi.orderKey);
+      // console.log(Culqi.orderKey);
         // Mostramos JSON de objeto error en consola
         if (Culqi.orderKey !== null && Culqi.orderKey !== '')
         {
@@ -558,7 +557,7 @@ $( document ).ready(function() {
             var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
             var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
             var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
-            console.log('Order exists but no Token = Pagoefectivo');
+            // console.log('Order exists but no Token = Pagoefectivo');
             $.post(
               "checkout/pay_order_pagoefectivo_checkout",
               {
