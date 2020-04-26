@@ -5,6 +5,7 @@
 <p> <%= t('.hello_user', user_name: @user.name) %><br></p>
 <p> <%= t('.order_received_1') %> <span style="font-weight: bold;"><%= friendly_payment_stage(@order.payment_status) %></span> <%= t('.order_received_2', order_date_time: I18n.localize(@order.created_at - 5.hours, format: '%d %B %H:%M')) %><br></p>
 </br>
+<p> <%= "#{t('.order_number_text')} #{@order.id}"%></p>
 <p> <%= t('.items_ordered') %></p>
 <p>
   <% @order.order_items.each do |line| %>

@@ -12,7 +12,7 @@ module Ecommerce
     def new_order_email(user, order)
       @user = user
       @order = order
-      mail(to: @user.email, subject: t('.subject'))
+      mail(to: @user.email, subject: t('.subject', order_id: @order.id))
     end
 
     def next_order_coupon_email(user, order, coupon, campaign)
