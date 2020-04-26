@@ -185,7 +185,7 @@ en-PE:
           shipping_rates: "Shipping Rates"
           shipping_rates_p_html: "$3 Flat Shipping </br>Free shipping on orders over $30"
           shipping_times: "Shipping Times"
-          shipping_times_p_html: "All orders placed before 11:30am will be delivered same day (Tuesday to Friday) </br>All Orders placed after 11:30am will be delivered next day (Tuesday to Friday)"
+          shipping_times_p_html: "All Orders will be delivered next business day (Tuesday to Friday)"
       product:
         show:
           add_to_cart: "Add To Cart"

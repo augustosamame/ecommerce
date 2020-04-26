@@ -1,6 +1,8 @@
 module Ecommerce
   class Order < ApplicationRecord
 
+    paginates_per 200
+
     belongs_to :user
     belongs_to :cart, optional: true
     has_many :order_items, inverse_of: :order, dependent: :destroy
@@ -117,7 +119,7 @@ module Ecommerce
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: (self.required_doc.blank? || self.required_doc.try(:strip).try(:length) == 8) ? "1 - DNI" : "4 - CARNET DE EXTRANJERIA",
-                partner_id: "#{self.user.first_name} #{self.user.last_name}",
+                partner_id: "#{self.user.first_name} #{self.user.last_name} (#{self.user.username})",
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
                 vat: self.amount.to_i >= 210 ? self.required_doc : "",
@@ -147,7 +149,7 @@ module Ecommerce
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: "6 - RUC",
-                partner_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social),
+                partner_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social) + " (#{self.user.username})",
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
                 vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),

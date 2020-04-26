@@ -5,7 +5,29 @@ module Ecommerce
     #skip_before_action :authenticate_user!, only: [:show]
     #before_action :set_checkout, only: [:show, :edit, :update, :destroy]
     before_action :find_or_create_order, only: [:pay_order_culqi_checkout, :pay_order_pagoefectivo_checkout, :pay_order_bank, :pay_order_manual]
+    before_action :consolidate_cart, only: [:show]
     before_action :check_stock_cart, only: [:show]
+
+    def consolidate_cart
+      already_added = Array.new
+      @cart.cart_items.each do |cart_item|
+        unless already_added.include? cart_item.id
+          found_same_product = @cart.cart_items.where(product_id: cart_item.product_id).where.not(id: cart_item.id).first
+          if found_same_product
+            new_quantity = found_same_product.quantity + cart_item.quantity
+            cart_item.update(quantity: new_quantity)
+            found_same_product.update(quantity: 0)
+            already_added << found_same_product.id
+          end
+        end
+      end
+      # destroy all zero rows
+      non_cached_cart = Ecommerce::Cart.find(@cart.id)
+      non_cached_cart.cart_items.each do |cart_item|
+        cart_item.destroy if cart_item.quantity < 1
+      end
+      set_cart
+    end
 
     def check_stock_cart
       @not_in_stock_array = Array.new
@@ -28,6 +50,21 @@ module Ecommerce
       end
 
       set_cart #in order to refresh cart after modifying cart_items
+
+    end
+
+    def check_stock_cart_js_from_checkout
+      not_in_stock = false
+      @cart.cart_items.each do |cart_item|
+        if cart_item.product.inactive? || (cart_item.quantity > cart_item.product.total_quantity)
+          not_in_stock = true
+        end
+      end
+      respond_to do |format|
+        format.json {
+          render json: { in_stock: !not_in_stock }.to_json and return
+        }
+      end
     end
 
     # GET /checkout
@@ -35,7 +72,7 @@ module Ecommerce
       @address = Address.new(user_id: current_user.id)
       @picked_address = Address.new(user_id: current_user.id)
       @checkout_addresses = Address.where(user_id: current_user.id)
-      @districts = ['San Isidro', 'Miraflores', 'Barranco', 'Santiago de Surco', 'La Molina','Chorrillos','San Borja','San Luis','Surquillo','San Miguel','Pueblo Libre','La Victoria','Magdalena','Jesus María','Lince','Breña','Callao'].sort
+      @districts = ['San Isidro', 'Miraflores', 'Barranco', 'Santiago de Surco', 'La Molina','Chorrillos','San Borja','San Luis','Surquillo','San Miguel','Pueblo Libre','La Victoria','Magdalena','Jesus María','Lince'].sort
       @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
       #active payment methods in view
       @payment_bank_deposit = PaymentMethod.is_active.find_by(name: "Bank Deposit")

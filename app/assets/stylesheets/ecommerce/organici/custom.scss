@@ -14,7 +14,7 @@
 	position:fixed;
 	width:60px;
 	height:60px;
-	bottom:40px;
+	bottom:20px;
 	right:20px;
 	background-color:#0C9;
 	color:#FFF;
@@ -27,6 +27,25 @@
 .wa-my-float{
 	margin-top:11px;
   font-size: 40px;
+}
+
+.wa-search{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:90px;
+	right:20px;
+	background-color:#666;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+  z-index: 1000;
+}
+
+.search-my-float{
+	margin-top:14px;
+  font-size: 32px;
 }
 
 .desktop-sticky-header {

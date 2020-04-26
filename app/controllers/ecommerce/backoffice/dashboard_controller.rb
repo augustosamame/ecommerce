@@ -52,5 +52,37 @@ module Ecommerce
       end
     end
 
+    def export_orders
+      @orders = Order.all.order(id: :desc).page(params[:page])
+
+      respond_to do |format|
+
+        format.html {
+          p = Axlsx::Package.new
+          wb = p.workbook
+          wb.add_worksheet(:name => "Exported Orders") do |sheet|
+            sheet.add_row ["id","user","amount","stage","efact", "shipping address", "phone", "coupon", "payment_status", "payment_method", "status"]
+            @orders.each do |order|
+              sheet.add_row [
+                order.id,
+                order.user.name,
+                ActionController::Base.helpers.number_to_currency(order.amount),
+                order.friendly_stage,
+                order.efact_type,
+                order.friendly_shipping_address,
+                order.user.username.gsub('+51',''),
+                order.coupon.try(:coupon_code),
+                order.paid? ? 'Pagada' : 'NO PAGADA',
+                order.process_comments,
+                order.status
+              ]
+            end
+          end
+          send_data p.to_stream.read, :filename => 'orders.xlsx', :type => "application/vnd.openxmlformates-officedocument.spreadsheetml.sheet"
+        }
+
+      end
+    end
+
   end
 end

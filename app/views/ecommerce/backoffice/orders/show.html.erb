@@ -7,6 +7,11 @@
     <span class="glyphicon glyphicon-pencil"></span>
     Edit
   <% end %>
+
+  <%= link_to backoffice_order_path(@backoffice_order), class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } do %>
+    <span class="glyphicon glyphicon-trash"></span>
+    Delete
+  <% end %>
   <h1><%= "Order ##{@backoffice_order.id}" %></h1>
 </div>
 

@@ -3,11 +3,16 @@
     <span class="glyphicon glyphicon-plus"></span>
     New Order
   <% end %>
+  <%= link_to backoffice_export_orders_path(page: @page_param), class: 'btn', style: 'margin-left: 20px;' do %>
+    <span class="glyphicon glyphicon-th-list"></span>
+    Export to Excel
+  <% end %>
   <h1>Orders</h1>
 </div>
 
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">
+    <%= paginate @backoffice_orders %>
     <thead>
       <tr>
         <th>Id</th>
@@ -16,6 +21,7 @@
         <th>Stage</th>
         <th>Efact</th>
         <th>Shipping address</th>
+        <th>Phone</th>
         <th>Coupon</th>
         <th>Payment status</th>
         <th>Payment method</th>
@@ -24,7 +30,6 @@
         <th>Edit</th>
         <th>Invoice</th>
         <th>Ship</th>
-        <th>Destroy</th>
       </tr>
     </thead>
 
@@ -36,6 +41,7 @@
         <td><%= backoffice_order.friendly_stage %></td>
         <td><%= backoffice_order.efact_type %></td>
         <td><%= backoffice_order.friendly_shipping_address %></td>
+        <td><%= backoffice_order.user.username.gsub('+51','') %></td>
         <td><%= backoffice_order.coupon.try(:coupon_code) %></td>
         <td style= "<%= backoffice_order.unpaid? ? 'color: red; font-size: 18px;' : '' %>"><%= backoffice_order.payment_status %></td>
         <td><%= backoffice_order.process_comments %></td>
@@ -54,8 +60,8 @@
 
 
         <td><%= link_to "<i class='material-icons'>local_shipping</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>
-        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_order_path(backoffice_order), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>
     </tbody>
+    <%= paginate @backoffice_orders %>
   </table>
 </div>

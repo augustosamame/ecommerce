@@ -285,6 +285,12 @@ $( document ).ready(function() {
         text: "<%= session[:locale] == 'es-PE' ? @not_in_stock_alert_es : @not_in_stock_alert_en %>"
       });
   }
+
+  var address_option_length = $('#address_id > option').length;
+  if (address_option_length == 2) {
+    $("#address_id").get(0).selectedIndex = 1;
+    calculate_shipping($("#address_street").val(), $("#address_district").val(), 'save_address');
+  }
 });
 
 </script>
@@ -373,7 +379,7 @@ $( document ).ready(function() {
 
   function recalculate_checkout_totals() {
     Culqi.publicKey = "<%= Culqi.public_key %>";
-    console.log('Culqi.publicKey: ',Culqi.publicKey)
+    // console.log('Culqi.publicKey: ',Culqi.publicKey)
     Culqi.orderKey = "<%= Culqi.secret_key %>";
     var total_amount = (Number($("#coupon-amount").html()) + Number($("#shipping-amount").html()) + Number($("#subtotal").html())).toFixed(2);
 
@@ -382,12 +388,28 @@ $( document ).ready(function() {
     payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
     culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
 
-    console.log('recalculate_checkout_totals')
+    // console.log('recalculate_checkout_totals')
 
 
   }
 
   $('#pay-now-button').on('click', function(e) {
+    $.ajax({
+      url: "checkout/check_stock_cart_js_from_checkout",
+      dataType: "json",
+      success: function(data) {
+        console.log('response: ', data.in_stock)
+        if (data.in_stock) {
+          process_payment()
+        } else {
+          window.location.replace("<%= checkout_path %>");
+        }
+      }
+    });
+   });
+
+
+  function process_payment() {
     var errors_present = false
     // Abre el formulario con las opciones de Culqi.settings
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
@@ -487,7 +509,7 @@ $( document ).ready(function() {
         e.preventDefault();
       }
     }
-  });
+  };
 
   function culqi() {
 

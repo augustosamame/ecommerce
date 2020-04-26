@@ -24,10 +24,11 @@ module Ecommerce
     # GET /backoffice/orders
     def index
       if params[:stage]
-        @backoffice_orders = Order.where(stage: params[:stage]).order(id: :desc)
+        @backoffice_orders = Order.where(stage: params[:stage]).order(id: :desc).page(params[:page])
       else
-        @backoffice_orders = Order.all.order(id: :desc)
+        @backoffice_orders = Order.all.order(id: :desc).page(params[:page])
       end
+      @page_param = params[:page]
     end
 
     # GET /backoffice/orders/1

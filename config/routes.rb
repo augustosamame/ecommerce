@@ -35,6 +35,7 @@ Ecommerce::Engine.routes.draw do
     get 'get_no_purchase_within_days', :to => "campaigns#get_no_purchase_within_days"
     get "export_products" => "dashboard#export_products", as: :export_products
     get "export_users" => "dashboard#export_users", as: :export_users
+    get "export_orders" => "dashboard#export_orders", as: :export_orders
   end
 
   post 'locale', :to => 'application#locale'
@@ -44,6 +45,7 @@ Ecommerce::Engine.routes.draw do
   get 'favorites', :to => 'products#favorites'
   resources :categories, only: [:index]
   resources :orders, only: [:index, :show]
+  get '/checkout/check_stock_cart_js_from_checkout', :to => 'checkout#check_stock_cart_js_from_checkout'
   post '/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
   post '/store/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
   post '/checkout/pay_order_pagoefectivo_checkout', :to => 'checkout#pay_order_pagoefectivo_checkout'
