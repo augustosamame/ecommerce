@@ -8,8 +8,6 @@ function fly_to_cart() {
 };
 
 function show_stock_alert(lang) {
-  console.log ("show_stock_alert fired!");
-  console.log(lang)
   if (lang == 'es-PE') {
   Swal({
       type: 'info',
@@ -20,6 +18,22 @@ function show_stock_alert(lang) {
     Swal({
         type: 'info',
         title: 'We will alert you when product is back in stock',
+        text: ""
+      });
+  }
+};
+
+function show_stock_alert_signed_out(lang) {
+  if (lang == 'es-PE') {
+  Swal({
+      type: 'error',
+      title: 'Debe iniciar sesión o registrarse para crear alertas de stock.',
+      text: ""
+    });
+  } else {
+    Swal({
+        type: 'error',
+        title: 'You must sign in or register to generate a stock alert.',
         text: ""
       });
   }

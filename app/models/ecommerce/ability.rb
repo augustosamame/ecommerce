@@ -14,7 +14,7 @@ module Ecommerce
         can :read, Property
         can :read, Category
         can :read, Product
-        can [:favorites], Product
+        can [:favorites, :stock_alert], Product
         can :read, ProductSku
         can :read, ProductSkuProperty
         can :read, ProductProperty
@@ -29,6 +29,7 @@ module Ecommerce
         can :manage, Payment, {user_id: user.id}
         can :read, PaymentMethod
         can :manage, Card, {user_id: user.id}
+        can :manage, StockAlert, {user_id: user.id}
       else
         #can :read, :all
       end

@@ -75,9 +75,12 @@ module Ecommerce
 
           format.html {redirect_to product_path(@product) }
         end
-        #head :ok
-      #else
-        #redirect_to new_session_path and return
+      else
+        respond_to do |format|
+          format.js { flash.now[:notice] = "NOW_FLASH_#{t('.stock_alert_set')}"; render "ecommerce/#{Ecommerce.ecommerce_layout}/product/stock_alert_signed_out"  }
+
+          format.html {redirect_to product_path(@product) }
+        end
       end
     end
 
