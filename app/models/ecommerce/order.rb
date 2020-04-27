@@ -26,8 +26,8 @@ module Ecommerce
 
     def notify_new_order
       SendOrderEmailsWorker.perform_in(30.seconds, self.id)
-      TwilioIntegration.new.send_sms_to_number("A new Order ##{self.id} has been placed", '51989080023') if Rails.env == "production"
-      SlackIntegration.new.send_slack_to_channel("A new Order ##{self.id} has been placed", "#store-orders")
+      #TwilioIntegration.new.send_sms_to_number("A new Order ##{self.id} has been placed", '51989080023') if Rails.env == "production"
+      SlackIntegration.new.send_slack_to_channel("A new Order ##{self.id} has been placed: https://expatshop.pe/store/backoffice/orders/#{self.id}", "#store-orders")
     end
 
     def blank_user_carts

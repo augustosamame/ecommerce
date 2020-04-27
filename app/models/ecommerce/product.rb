@@ -21,7 +21,7 @@ module Ecommerce
     #after_commit :create_product_taxes, on: :create
 
     attr_accessor :tax_1_check, :tax_2_check, :tax_3_check, :tax_1_amount, :tax_2_amount, :tax_3_amount
-    attr_accessor :temp_product_price
+    attr_accessor :temp_product_price, :search
 
     extend FriendlyId
     friendly_id :permalink_candidates, use: :slugged, slug_column: :permalink

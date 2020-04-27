@@ -61,6 +61,10 @@ module Ecommerce
       end
     end
 
+    def search
+      redirect_to products_path(search: params[:search])
+    end
+
     def stock_alert
       if current_user
         @product = Ecommerce::Product.find(params[:stock_alert][:product_id])

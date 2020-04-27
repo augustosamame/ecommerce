@@ -66,6 +66,7 @@ Ecommerce::Engine.routes.draw do
   resources :carts, except: [:index, :new, :create]
   resources :cart_items
   post 'stock_alerts', :to => 'products#stock_alert', as: 'stock_alerts'
+  get 'search_product', :to => 'products#search', as: 'search_product'
   resources :wishlists, except: [:index, :new, :create]
   resources :wishlist_items
   patch '/addresses/update_map', to: 'addresses#update_map'
