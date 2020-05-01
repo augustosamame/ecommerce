@@ -546,8 +546,8 @@ $( document ).ready(function() {
 
     }else{ // ¡Hubo algún problema!
       // Here is Pagoefectivo
-      //console.log('token NOT created!');
-      // console.log(Culqi.orderKey);
+      console.log('token NOT created! Pagoefectivo?');
+      console.log(Culqi.orderKey);
         // Mostramos JSON de objeto error en consola
         if (Culqi.orderKey !== null && Culqi.orderKey !== '')
         {
@@ -557,7 +557,8 @@ $( document ).ready(function() {
             var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
             var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
             var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
-            // console.log('Order exists but no Token = Pagoefectivo');
+            console.log('Order exists but no Token = Pagoefectivo');
+            console.log(Culqi.order)
             $.post(
               "checkout/pay_order_pagoefectivo_checkout",
               {
@@ -578,8 +579,8 @@ $( document ).ready(function() {
               function(data) {
               })
           } else {
-            // console.log('order key is null');
-            //console.log('Checkout closed by user without choosing payment option');
+            console.log('order key is null');
+            console.log('Checkout closed by user without choosing payment option');
             //Swal({
             //    type: 'error',
             //    title: '<%= t('.token_not_returned') %>',
