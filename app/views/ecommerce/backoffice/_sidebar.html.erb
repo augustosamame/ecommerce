@@ -17,7 +17,7 @@
     <p class="menu-title sm">BACKOFFICE <span class="pull-right"><a href="javascript:;"><i class="material-icons">refresh</i></a></span></p>
     <ul>
       <li class="<%= class_string({ start: true, active: controller.controller_name == 'dashboard'}) %>" >
-        <a href="<%= backoffice_dashboard_path %>"> <i class="material-icons">adjust</i> <span class="title">Dashboard</span></a>
+        <a href="<%= backoffice_dashboard_path %>"> <i class="material-icons">adjust</i> <span class="title"><%= t('.dashboard_title') %></span></a>
       </li>
 
       <li class="<%= class_string({ active: (['products','categories','suppliers','brands','properties','pricelists'].include? controller.controller_name) }) %>">

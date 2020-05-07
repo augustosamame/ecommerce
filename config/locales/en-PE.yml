@@ -326,6 +326,7 @@ en-PE:
           free_shipping: 'Free Shipping on Orders of <strong>$199</strong> or above.'
     backoffice:
       sidebar:
+        dashboard_title: 'Dashboard'
         products: 'Products'
         categories: 'Categories'
         suppliers: 'Suppliers'

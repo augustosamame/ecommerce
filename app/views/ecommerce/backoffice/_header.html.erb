@@ -116,7 +116,19 @@
             <div class="availability-bubble online"></div>
           </div>
         </div>-->
+
         <ul class="nav quick-section ">
+          <li class="quicklinks dropdown" style='margin-right: 20px;' id='backoffice-flag-dropdown'>
+            <% if session[:locale] == "es-PE" %>
+              <a href=""><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a>
+            <% else %>
+              <a href=""><%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a>
+            <% end %>
+            <ul class="flag-sub-menu" id="backoffice-flag-sub-menu">
+              <li class='flag-sub-menu-item'><a id="en-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a></li>
+              <li class='flag-sub-menu-item'><a id="es-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a></li>
+            </ul>
+          </li>
           <li class="quicklinks">
             <a data-toggle="dropdown" class="dropdown-toggle  pull-right " href="#" id="user-menu">
               <i class="material-icons">tune</i>
@@ -164,6 +176,16 @@
 
 <script>
 $('#user-menu').click(function () {
-    $('.dropdown-user-menu').toggle();
+  $('.dropdown-user-menu').toggle();
+});
+$('#backoffice-flag-dropdown').click(function (e) {
+  e.stopPropagation()
+  e.preventDefault();
+  $('#backoffice-flag-sub-menu').addClass('show-flag-sub-menu');
+});
+$(document).on("click", function(e) {
+  if ($(e.target).is("#backoffice-flag-dropdown") === false) {
+    $("#backoffice-flag-sub-menu").removeClass("show-flag-sub-menu");
+  }
 });
 </script>

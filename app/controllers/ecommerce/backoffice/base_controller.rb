@@ -22,7 +22,7 @@ module Ecommerce
     end
 
     def set_default_locale
-      I18n.locale = Ecommerce.backoffice_default_locale
+      I18n.locale = session[:locale] || Ecommerce.backoffice_default_locale
     end
 
   end

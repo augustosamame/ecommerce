@@ -6,6 +6,10 @@ module Ecommerce
     isolate_namespace Ecommerce
     engine_name 'ecommerce'
 
+    config.before_initialize do
+      config.i18n.load_path += Dir["#{Ecommerce::Engine.root}/config/locales/**/*.yml"]
+    end
+
     #to set up main_app objects via decorators in engine
     config.to_prepare do
       Decorators.register! Engine.root, Rails.root

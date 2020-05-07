@@ -382,6 +382,7 @@ es-PE:
           type: "Tipo"
     backoffice:
       sidebar:
+        dashboard_title: 'Tablero'
         products: 'Productos'
         categories: 'Categorías'
         suppliers: 'Proveedores'
