@@ -102,14 +102,14 @@ module Ecommerce
       case "#{mycontroller}:#{myaction}"
       when "products:index"
         set_meta_tags title: "Products",
-                      description: "ExpatShop Product List",
+                      description: "Lista de Productos #{Ecommerce.site_name}",
                       og: {
                         title:    :full_title,
                         image:    'https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
                       }
       when "store:main"
         set_meta_tags title: "Home",
-                      description: "ExpatShop Perú - your one stop shop for products from all the world to Perú",
+                      description: Ecommerce.meta_tags_store_main_description,
                       og: {
                         title:    :full_title,
                         image:    'https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'

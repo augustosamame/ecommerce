@@ -3,7 +3,7 @@
       <div class="noo-heading-content">
         <h1 class="page-title eff">Checkout</h1>
         <div class="noo-page-breadcrumb eff">
-          <a href="./" class="home">ExpatShop Perú</a>/<span>Checkout</span>
+          <a href="./" class="home"><%= Ecommerce.site_name %></a>/<span>Checkout</span>
         </div>
       </div>
     </div>
@@ -448,7 +448,7 @@ $( document ).ready(function() {
       if ($('input[name=payment_method]:checked').val() == "card") {
 
         data_to_send = {
-              title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+              title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
               amount: Number(culqi_payment_amount),
               currency_code: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
               description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
@@ -477,7 +477,7 @@ $( document ).ready(function() {
             // console.log(data.id, '<= Culqi Order Id');
             culqi_order_id = data.id
             Culqi.settings({
-              title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+              title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
               amount: Number(culqi_payment_amount),
               currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
               description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',

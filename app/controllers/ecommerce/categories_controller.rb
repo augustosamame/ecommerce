@@ -78,7 +78,7 @@ module Ecommerce
 
       def set_index_meta_tags
         set_meta_tags title: "Categories",
-                      description: "ExpatShop Category List",
+                      description: "Categorías #{Ecommerce.site_name}",
                       og: {
                         title:    :full_title,
                         image:    Ecommerce.logo

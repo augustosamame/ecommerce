@@ -110,7 +110,7 @@ en-PE:
         address_was_successfully_created: 'Address was successfully created.'
     processor:
       culqi:
-        payment_popup_title: "ExpatShop Payment"
+        payment_popup_title: "%{site_name} Payment"
         order_label: "Order"
     organici:
       store:

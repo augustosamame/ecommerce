@@ -95,7 +95,7 @@ es-PE:
         error_cart_already_placed: 'Ha intentado colocar un pedido que ya había sido creado. Favor revisar sus pedidos de la lista'
     processor:
       culqi:
-        payment_popup_title: "Pago ExpatShop"
+        payment_popup_title: "Pago %{site_name}"
         order_label: "Orden"
     canvas_ecommerce:
       store:
