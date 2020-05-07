@@ -75,6 +75,7 @@ module Ecommerce
   mattr_accessor :enable_currency_selector
   mattr_accessor :enable_language_selector
   mattr_accessor :allow_coupons
+  mattr_accessor :meta_tags_store_main_description
 
   class << self
 
