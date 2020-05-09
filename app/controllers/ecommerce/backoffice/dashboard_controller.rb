@@ -61,10 +61,11 @@ module Ecommerce
           p = Axlsx::Package.new
           wb = p.workbook
           wb.add_worksheet(:name => "Exported Orders") do |sheet|
-            sheet.add_row ["id","user","amount","stage","efact", "shipping address", "phone", "coupon", "payment_status", "payment_method", "special_instructions", "status"]
+            sheet.add_row ["id","date_time", "user","amount","stage","efact", "shipping address", "phone", "coupon", "payment_status", "payment_method", "special_instructions", "status"]
             @orders.each do |order|
               sheet.add_row [
                 order.id,
+                order.created_at - 5.hours,
                 order.user.name,
                 ActionController::Base.helpers.number_to_currency(order.amount),
                 order.friendly_stage,
