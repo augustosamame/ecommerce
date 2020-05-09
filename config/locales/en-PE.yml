@@ -330,6 +330,11 @@ en-PE:
         products: 'Products'
         categories: 'Categories'
         suppliers: 'Suppliers'
+        all_orders: 'All Orders'
+        closed_orders: 'Closed Orders'
+        pricelists: 'Pricelists'
+        product_prices: 'Product Prices'
+        brands: 'Brands'
       views:
         show: 'Show'
         edit: 'Edit'

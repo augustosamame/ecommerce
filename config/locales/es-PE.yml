@@ -386,6 +386,11 @@ es-PE:
         products: 'Productos'
         categories: 'Categorías'
         suppliers: 'Proveedores'
+        all_orders: 'Todas las Órdenes'
+        closed_orders: 'Órdenes Cerradas'
+        pricelists: 'Listas de Precios'
+        product_prices: 'Gestión de Precios'
+        brands: 'Marcas'
       views:
         show: 'Ver'
         edit: 'Editar'
