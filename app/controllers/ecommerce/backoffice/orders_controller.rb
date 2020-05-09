@@ -42,6 +42,7 @@ module Ecommerce
         @einvoice_error_message = @backoffice_order.efact_response_text
         @einvoice_sent_text = @backoffice_order.efact_sent_text
       end
+      @backoffice_addresses = Address.where(id: @backoffice_order.shipping_address_id).or(Address.where(id: @backoffice_order.billing_address_id))
     end
 
     # GET /backoffice/orders/new

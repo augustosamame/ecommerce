@@ -61,7 +61,7 @@ module Ecommerce
           p = Axlsx::Package.new
           wb = p.workbook
           wb.add_worksheet(:name => "Exported Orders") do |sheet|
-            sheet.add_row ["id","user","amount","stage","efact", "shipping address", "phone", "coupon", "payment_status", "payment_method", "status"]
+            sheet.add_row ["id","user","amount","stage","efact", "shipping address", "phone", "coupon", "payment_status", "payment_method", "special_instructions", "status"]
             @orders.each do |order|
               sheet.add_row [
                 order.id,
@@ -74,6 +74,7 @@ module Ecommerce
                 order.coupon.try(:coupon_code),
                 order.paid? ? 'Pagada' : 'NO PAGADA',
                 order.process_comments,
+                order.delivery_comments,
                 order.status
               ]
             end

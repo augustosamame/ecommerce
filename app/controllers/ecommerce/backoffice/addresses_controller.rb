@@ -1,8 +1,9 @@
 require_dependency "ecommerce/application_controller"
 
 module Ecommerce
-  class Backoffice::AddressesController < ApplicationController
+  class Backoffice::AddressesController < Backoffice::BaseController
     before_action :set_backoffice_address, only: [:show, :edit, :update, :destroy]
+    authorize_resource :class => "Ecommerce::Address"
 
     # GET /backoffice/addresses
     def index
@@ -36,7 +37,7 @@ module Ecommerce
     # PATCH/PUT /backoffice/addresses/1
     def update
       if @backoffice_address.update(backoffice_address_params)
-        redirect_to backoffice_address_path(@backoffice_address), notice: 'Address was successfully updated.'
+        redirect_back fallback_location: root_path, notice: 'Address was successfully updated.'
       else
         render :edit
       end
@@ -44,8 +45,18 @@ module Ecommerce
 
     # DELETE /backoffice/addresses/1
     def destroy
-      @backoffice_address.destroy
-      redirect_to backoffice_addresses_url, notice: 'Address was successfully destroyed.'
+      shipping_address_used_in_order = Order.where(shipping_address_id: @backoffice_address.id)
+      billing_address_used_in_order = Order.where(billing_address_id: @backoffice_address.id)
+      if shipping_address_used_in_order || billing_address_used_in_order
+        flash[:error] = 'Address cannot de destroyed as an order exists that references it'
+        flash.keep(:notice)
+        redirect_to request.referrer
+      else
+        @backoffice_address.destroy
+        flash[:notice] = 'Address was successfully destroyed.'
+        flash.keep(:notice)
+        redirect_to request.referrer
+      end
     end
 
     private
@@ -56,7 +67,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_address_params
-        params.require(:address).permit(:user_id, :name, :street, :street2, :state, :city, :address_type, :shipping_or_billing, :status)
+        params.require(:address).permit(:user_id, :name, :street, :street2, :state, :city, :address_type, :shipping_or_billing, :status, :latitude, :longitude)
       end
   end
 end

@@ -170,7 +170,7 @@ es-PE:
         new_address_form:
           type: "Tipo"
           select_type_of_address: "Selecciona el Tipo de Dirección"
-          street: "Dirección"
+          street: "Dirección (max 100 caracteres)"
           district: "Distrito"
           select_district: "Seleccionar Distrito"
           city: "Ciudad"

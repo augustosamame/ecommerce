@@ -75,6 +75,15 @@ module Ecommerce
       Address.find_by(id: self.billing_address_id)
     end
 
+    def smart_date_invoice
+      if (Time.now - 5.hours).hour < 8
+        return Time.now
+      else
+        return (Time.now - 5.hours - 1.day).to_s[0..9]
+      end
+    end
+
+
     def generate_einvoice
       order_billing_address = Address.find_by(id: self.billing_address_id)
       invoice_lines_array = Array.new
@@ -126,7 +135,7 @@ module Ecommerce
                 vat: self.amount.to_i >= 210 ? self.required_doc : "",
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
-                date_invoice: (Time.now - 5.hours).to_s[0..9],
+                date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
                 date: (Time.now - 5.hours).to_s[0..9],
                 amount_total: total_order_amount,
@@ -156,7 +165,7 @@ module Ecommerce
                 vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
-                date_invoice: (Time.now - 5.hours).to_s[0..9],
+                date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
                 date: (Time.now - 5.hours).to_s[0..9],
                 amount_total: total_order_amount,
@@ -195,7 +204,7 @@ module Ecommerce
                 vat: self.amount.to_i >= 210 ? self.required_doc : "",
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
-                date_invoice: (Time.now - 5.hours).to_s[0..9],
+                date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
                 date: (Time.now - 5.hours).to_s[0..9],
                 amount_total: total_order_amount,
@@ -224,7 +233,7 @@ module Ecommerce
                 vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
-                date_invoice: (Time.now - 5.hours).to_s[0..9],
+                date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
                 date: (Time.now - 5.hours).to_s[0..9],
                 amount_total: total_order_amount,

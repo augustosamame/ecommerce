@@ -13,6 +13,7 @@ module Ecommerce
 
     # GET /backoffice/users/1
     def show
+      @backoffice_addresses = Address.where(user_id: @backoffice_user.id)
     end
 
     # GET /backoffice/users/new

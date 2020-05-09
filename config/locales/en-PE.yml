@@ -240,7 +240,7 @@ en-PE:
         new_address_form:
           type: "Type"
           select_type_of_address: "Select Type of Address"
-          street: "Street"
+          street: "Street (max 100 chars)"
           district: "District"
           select_district: "Select District"
           city: "City"
