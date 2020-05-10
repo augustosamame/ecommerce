@@ -53,7 +53,7 @@ module Ecommerce
 
     def favorites
       if Ecommerce::Order.where(user_id: current_user.id).count > 0
-        user_orders_items = Ecommerce::OrderItem.where(order_id: current_user.orders.pluck(:id)).group(:product_id).order('COUNT(*) DESC').select('product_id').pluck(:product_id)
+        user_orders_items = Ecommerce::OrderItem.where(order_id: current_user.user_orders.pluck(:id)).group(:product_id).order('COUNT(*) DESC').select('product_id').pluck(:product_id)
         @products = Product.where(id: user_orders_items).includes(:translations).order(:product_order).active.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       else

@@ -17,6 +17,10 @@ module Ecommerce
       end
     end
 
+    def friendly_formatted_date(date)
+      return (date - 5.hours).strftime("%d %b %H:%M")
+    end
+
     def body_css_class
       @body_css_classes ||= []
       view_css_class = [controller_name, action_name].join('-')

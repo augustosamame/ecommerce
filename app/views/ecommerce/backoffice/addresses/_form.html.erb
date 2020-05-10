@@ -3,14 +3,13 @@
 
   <div class="form-inputs">
     <%= f.association :user, :label_method => lambda { |user| "#{user.name}" } %>
-    <%= f.input :name %>
+    <%= f.input :name, collection: ["Home", "Doorman", "Office", "Warehouse", "Other"], label: t('.type'), prompt: t('.select_type_of_address') %>
     <%= f.input :street %>
-    <%= f.input :street2 %>
     <%= f.input :state %>
     <%= f.input :city %>
-    <%= f.input :address_type %>
-    <%= f.input :shipping_or_billing %>
-    <%= f.input :status %>
+    <%= f.input :shipping_or_billing, collection: ["shipping", "billing"] %>
+    <%= f.input :latitude %>
+    <%= f.input :longitude %>
   </div>
 
   <div class="form-actions">

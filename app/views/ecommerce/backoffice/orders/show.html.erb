@@ -16,6 +16,10 @@
 </div>
 
 <dl class="dl-horizontal">
+
+  <dt>Date / Time:</dt>
+  <dd><%= friendly_formatted_date(@backoffice_order.created_at) %></dd>
+
   <dt>User:</dt>
   <dd><%= @backoffice_order.user.name %></dd>
 
@@ -58,4 +62,8 @@
 </dl>
 
 <%= render 'order_details' %>
+
+<h3 style='margin-top: 50px;'>Associated Order Adresses</h3>
+<%= render "ecommerce/backoffice/addresses/index" %>
+
 <%= render 'einvoice' %>
