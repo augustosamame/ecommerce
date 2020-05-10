@@ -1,4 +1,7 @@
 es-PE:
+  common:
+    back: 'Atrás'
+    edit: 'Editar'
   number:
     currency:
       format:
@@ -420,6 +423,8 @@ es-PE:
         payment_methods: 'Medios de Pago'
         sliders: 'Deslizadores'
         settings: 'Ajustes'
+        orders: 'Órdenes'
+        users: 'Usuarios'
       views:
         show: 'Ver'
         edit: 'Editar'
@@ -456,3 +461,22 @@ es-PE:
           show: 'Ver'
           edit: 'Editar'
           delete: 'Borrar'
+        show:
+          show_product: 'Mostrar Producto'
+          name: 'Nombre'
+          category: 'Categoría'
+          associated_coupons: 'Cupones Asociados'
+          description: 'Descripción'
+          status: 'Estado'
+          spanish_description: 'Descripción en Español'
+          price: 'Precio'
+          discounted_price: 'Precio Descontado'
+          applicable_taxes: 'Impuestos'
+          manage_stock: 'Gestionar Stock'
+          current_stock: 'Stock Actual'
+          weight: 'Peso'
+          image: 'Imagen'
+          translations: 'Traducciones'
+          name_in_spanish: 'Nombre (en Español)'
+          short_description_in_spanish: 'Descripción Corta (en Español)'
+          long_description_in_spanish: Descripción Larga (en Español)'

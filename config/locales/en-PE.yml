@@ -1,4 +1,7 @@
 en-PE:
+  common:
+    back: 'Back'
+    edit: 'Edit'
   activerecord:
     errors:
       models:
@@ -364,6 +367,8 @@ en-PE:
         payment_methods: 'Payment Methods'
         sliders: 'Sliders'
         settings: 'Settings'
+        orders: 'Orders'
+        users: 'Users'
       views:
         show: 'Show'
         edit: 'Edit'
@@ -399,3 +404,22 @@ en-PE:
           show: 'Show'
           edit: 'Edit'
           delete: 'Delete'
+        show:
+          show_product: 'Show Product'
+          name: 'Name'
+          category: 'Category'
+          associated_coupons: 'Associated Coupons'
+          description: 'Description'
+          status: 'Status'
+          spanish_description: 'Spanish Description'
+          price: 'Price'
+          discounted_price: 'Discounted Price'
+          applicable_taxes: 'Applicable Taxes'
+          manage_stock: 'Manage Stock'
+          current_stock: 'Current Stock'
+          weight: 'Weight'
+          image: 'Image'
+          translations: 'Translations'
+          name_in_spanish: 'Nombre (en Español)'
+          short_description_in_spanish: 'Short Description (in Spanish)'
+          long_description_in_spanish: 'Long Description (in Spanish)'

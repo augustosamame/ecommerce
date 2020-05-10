@@ -1,13 +1,13 @@
 <div class="page-header">
   <%= link_to backoffice_products_path, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
-    Back
+    <%= t('common.back') %>
   <% end %>
   <%= link_to edit_backoffice_product_path(@backoffice_product), class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-pencil"></span>
-    Edit
+    <%= t('common.edit') %>
   <% end %>
-  <h1>Show Product</h1>
+  <h1><%= t('.show_product') %></h1>
 </div>
 
 <dl class="dl-horizontal">
@@ -15,58 +15,58 @@
   <dt>Id:</dt>
   <dd><%= @backoffice_product.id %></dd>
 
-  <dt>Name:</dt>
+  <dt><%= t('.name') %>:</dt>
   <dd><%= @backoffice_product.name %></dd>
 
-  <dt>Category:</dt>
+  <dt><%= t('.category') %>:</dt>
   <dd><%= @backoffice_product.category_list.to_s %></dd>
 
-  <dt>Associated Coupons:</dt>
+  <dt><%= t('.associated_coupons') %>:</dt>
   <dd><%= @backoffice_product.coupons.pluck(:coupon_code).to_s %></dd>
 
-  <dt>Description:</dt>
+  <dt><%= t('.description') %>:</dt>
   <dd><%= @backoffice_product.description %></dd>
 
-  <dt>Status:</dt>
+  <dt><%= t('.status') %>:</dt>
   <dd><%= @backoffice_product.status %></dd>
 
-  <dt>Spanish Description:</dt>
+  <dt><%= t('.spanish_description') %>:</dt>
   <dd><%= @backoffice_product.description2 %></dd>
 
-  <dt>Price:</dt>
+  <dt><%= t('.price') %>:</dt>
   <dd><%= @backoffice_product.price_cents %></dd>
 
-  <dt>Discounted Price:</dt>
+  <dt><%= t('.discounted_price') %>:</dt>
   <dd><%= @backoffice_product.discounted_price_cents %></dd>
 
-  <dt>Applicable Taxes:</dt>
+  <dt><%= t('.applicable_taxes') %>:</dt>
   <dd>
     <% @backoffice_product.product_taxes.each do |pt| %>
       <%= "#{pt.tax.tax_name}: #{pt.tax_amount} %" %></br>
     <% end %>
   </dd>
 
-  <dt>Manage Stock?:</dt>
+  <dt><%= t('.manage_stock') %>?:</dt>
   <dd><%= @backoffice_product.stockable %></dd>
 
-  <dt>Current Stock:</dt>
+  <dt><%= t('.current_stock') %>:</dt>
   <dd><%= @backoffice_product.total_quantity %></dd>
 
-  <dt>Weight:</dt>
+  <dt><%= t('.weight') %>:</dt>
   <dd><%= @backoffice_product.weight %></dd>
 
-  <dt style="margin-top: 20px;">Image:</dt>
+  <dt style="margin-top: 20px;"><%= t('.image') %>:</dt>
   <dd><%= image_tag @backoffice_product.image_url(:medium_400), style: "margin-top: 20px;" %></dd>
 
-  <h2>Translations</h2>
+  <h2><%= t('.translations') %></h2>
   <% Globalize.with_locale(:"es-PE") do %>
-    <dt>Name (in Spanish):</dt>
+    <dt><%= t('.name_in_spanish') %>:</dt>
     <dd><%= @backoffice_product.name %></dd>
 
-    <dt>Short Description (in Spanish):</dt>
+    <dt><%= t('.short_description_in_spanish') %>:</dt>
     <dd><%= @backoffice_product.short_description %></dd>
 
-    <dt>Long Description (in Spanish):</dt>
+    <dt><%= t('.long_description_in_spanish') %>:</dt>
     <dd><%= @backoffice_product.description %></dd>
   <% end %>
 
