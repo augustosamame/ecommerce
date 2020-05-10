@@ -47,8 +47,8 @@ module Ecommerce
     def destroy
       shipping_address_used_in_order = Order.where(shipping_address_id: @backoffice_address.id)
       billing_address_used_in_order = Order.where(billing_address_id: @backoffice_address.id)
-      if shipping_address_used_in_order || billing_address_used_in_order
-        flash[:error] = 'Address cannot de destroyed as an order exists that references it'
+      if !shipping_address_used_in_order.blank? || !billing_address_used_in_order.blank?
+        flash[:error] = 'Address cannot be destroyed as an order exists that references it'
         flash.keep(:notice)
         redirect_to request.referrer
       else

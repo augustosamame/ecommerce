@@ -446,13 +446,16 @@ $( document ).ready(function() {
     if (!errors_present) {
       if ($('input[name=payment_method]:checked').val() == "card") {
 
+        var myDate = new Date().getTime()/1000;
+        var futureDate = myDate + ( 72 * 60 * 60 );
+
         data_to_send = {
               title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
               amount: Number(culqi_payment_amount),
               currency_code: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
               description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
               order_number: <%= session[:cart_id] %> + '-cart-' + (Math.floor(Math.random() * 10000)).toString(),
-              expiration_date: 2323423432,
+              expiration_date: futureDate,
               confirm: false,
               client_details: {
                  first_name: '<%= @current_user_first_name %>',
