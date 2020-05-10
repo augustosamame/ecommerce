@@ -381,6 +381,25 @@ es-PE:
         new_address_form:
           type: "Tipo"
     backoffice:
+      dashboard:
+        main:
+          latest_orders: 'Últimos Pedidos'
+          date_time: 'Fecha/Hora'
+          client: 'Cliente'
+          district: 'Distrito'
+          amount: 'Monto'
+          latest_users: 'Últimos Usuarios'
+          name: 'Nombre'
+          mobile: 'Móvil'
+          district: 'Distrito'
+          orders: 'Pedidos'
+          order: 'Pedido'
+          address: 'Dirección'
+          all_orders: 'Todas las Órdenes'
+          all_users: 'Todos los Usuarios'
+          products: 'Productos'
+          users: 'Usuarios'
+          export_data: 'Exportar Datos'
       sidebar:
         dashboard_title: 'Tablero'
         products: 'Productos'
@@ -391,6 +410,16 @@ es-PE:
         pricelists: 'Listas de Precios'
         product_prices: 'Gestión de Precios'
         brands: 'Marcas'
+        all_users: 'Todos los Usuarios'
+        registered_users: 'Usuarios Registrados'
+        coupons: 'Cupones'
+        dynamic_coupons: 'Cupones Dinámicos'
+        campaigns: 'campañas'
+        stock_alerts: 'Alertas de Stock'
+        translations: 'Traducciones'
+        payment_methods: 'Medios de Pago'
+        sliders: 'Deslizadores'
+        settings: 'Ajustes'
       views:
         show: 'Ver'
         edit: 'Editar'
@@ -411,3 +440,19 @@ es-PE:
           tax_id: 'RUC/DNI'
           tax_id_type: 'RUC/DNI'
           default_hours_lead_time: 'Tiempo de despacho (horas)'
+      products:
+        index:
+          new_product: 'Nuevo Producto'
+          listing_products: 'Lista de Productos'
+          id: 'Id'
+          name: 'Nombre'
+          category: 'Categoría'
+          description: 'Descripción'
+          price: 'Precio'
+          discounted_price: 'Precio con Descuento'
+          total_quantity: 'Cantidad Total'
+          image: 'Imágen'
+          order: 'Orden'
+          show: 'Ver'
+          edit: 'Editar'
+          delete: 'Borrar'
