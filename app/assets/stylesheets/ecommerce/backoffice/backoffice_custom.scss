@@ -1,3 +1,25 @@
+.flag-sub-menu {
+  min-width: 60px !important;
+  width: 60px !important;
+  padding-left: 0px !important;
+  display: none;
+  position: absolute;
+  text-decoration: none;
+  list-style: none;
+  background-color: #f1f1f1;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.flag-sub-menu-item {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.show-flag-sub-menu {
+  display: block !important;
+}
+
 .checkbox input[type=checkbox] {
   display: block;
   margin-left: -23px;

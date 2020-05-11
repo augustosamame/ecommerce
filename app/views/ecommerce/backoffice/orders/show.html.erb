@@ -7,10 +7,19 @@
     <span class="glyphicon glyphicon-pencil"></span>
     Edit
   <% end %>
+
+  <%= link_to backoffice_order_path(@backoffice_order), class: 'btn btn-danger', style: 'margin-left: 40px;', method: :delete, data: { confirm: 'Are you sure?' } do %>
+    <span class="glyphicon glyphicon-trash"></span>
+    Delete
+  <% end %>
   <h1><%= "Order ##{@backoffice_order.id}" %></h1>
 </div>
 
 <dl class="dl-horizontal">
+
+  <dt>Date / Time:</dt>
+  <dd><%= friendly_formatted_date(@backoffice_order.created_at) %></dd>
+
   <dt>User:</dt>
   <dd><%= @backoffice_order.user.name %></dd>
 
@@ -53,4 +62,8 @@
 </dl>
 
 <%= render 'order_details' %>
+
+<h3 style='margin-top: 50px;'>Associated Order Adresses</h3>
+<%= render "ecommerce/backoffice/addresses/index" %>
+
 <%= render 'einvoice' %>

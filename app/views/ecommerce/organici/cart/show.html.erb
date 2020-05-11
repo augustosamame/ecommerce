@@ -76,17 +76,37 @@
                 <tr>
                   <td colspan="5" class="actions">
                     <div class="row">
+
+                      <% if browser.device.mobile? %>
+
+
+                      <% else %>
+
                       <div class="col-md-4" style="text-align: left; margin-bottom: 10px;">
-                        <a class="button organici-continue" href="<%= root_path %>"><%= t('.continue_shopping') %></a>
+                        <a class="button organici-continue" style='width: 160px;' href="<%= root_path %>"><%= t('.continue_shopping') %></a>
                       </div>
+
+                      <% end %>
+
                       <!--<div class="coupon">
                         <label for="coupon_code">Coupon:</label>
                         <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
                         <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
                       </div>-->
-                      <div class="col-md-8">
-                        <input type="submit" class="button" style="background: #f4eede; color: #212121;" id="update-cart-button" name="update_cart" value="<%= t('.update_cart') %>">
+
+                      <div class="col-md-8" style='margin-bottom: 10px; <%= browser.device.mobile? ? "text-align: left;" : "" %>'>
+                        <input type="submit" class="button organici-continue" style="background: #f4eede; color: #212121; margin-right: 10px;" id="update-cart-button" name="update_cart" value="<%= t('.update_cart') %>">
                         <%= link_to t('.proceed_to_checkout'), checkout_path, class: "checkout-button button alt wc-forward" %>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4" style="text-align: left; margin-bottom: 10px;">
+                        <a class="button organici-continue" href="<%= Ecommerce::Engine.routes.url_helpers.orders_path %>"><%= t('.my_orders') %></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4" style="text-align: left; margin-bottom: 10px;">
+                        <a class="button organici-continue" href="<%= main_app.edit_user_registration_path %>"><%= t('.my_account') %></a>
                       </div>
                     </div>
 

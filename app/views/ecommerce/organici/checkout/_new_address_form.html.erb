@@ -2,7 +2,7 @@
   <%= f.error_notification %>
   <div class="form-inputs">
     <%= f.input :name, collection: ["Home", "Doorman", "Office", "Warehouse", "Other"], label: t('.type'), prompt: t('.select_type_of_address') %>
-    <%= f.input :street, label: t('.street') %>
+    <%= f.input :street, label: t('.street'), input_html: { maxlength: 100 } %>
     <%= f.input :district, collection: @districts, prompt: t('.select_district'), label: t('.district') %>
     <%= f.input :city, as: :hidden, input_html: {value: "Lima"}, label: t('.city')  %>
     <%= f.input :state, as: :hidden, input_html: {value: "Lima"}, label: t('.state') %>
@@ -12,10 +12,12 @@
     <%= f.input :authorized_person, label: "Person Authorized to Receive Order" %> -->
   </div>
 
-  <div class="form-actions", style="margin-bottom: 30px;">
-    <%= f.button :submit, t('.save_address'), class: "button mt-5", id: "save-address-button", style: "" %>
+  <div class="form-actions">
+    <%= f.button :submit, t('.save_address'), class: "button mt-5", id: "save-address-button", style: "margin-bottom: 10px;" %>
     <span class="hide-ok-label" id="submit-address-ok"><%= t('.address_has_been_saved') %></span>
   </div>
+
+  <div class="mandatory-address" id="mandatory-address-id"><%= t('.mandatory_field') %></div>
 
   <div style="font-weight: bold;"><%= t('.location_on_map') %></div>
   <div id="map_partial">

@@ -1,33 +1,18 @@
-<div class="main">
-  <div class="commerce noo-shop-main">
-    <div class="container">
-      <div class="row" >
-        <div class="noo-main col-md-9" style="margin-top: 0px;">
-          <div class="noo-height-product pt-8 pb-10">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="noo-product-grid-wrap commerce product-style2">
-                    <div class="noo-product-grid products row product-grid noo-grid-4" >
-                      <% @child_categories.each do |item| %>
-                      <div class="col-md-4">
-                        <div class="bread dvt_categories_contenedor noo-product-column" >
-          								<a href=" <%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: item.id ) %> ">
-          									<%= image_tag item.image.medium_400.url, width: 400, height: 200, alt: "", class: "dvt_categories_img", style: "" %>
-          									<span class="dvt_categories_titulos" style="text-align:center;"><%= item.name %></span>
-          								</a>
-          							</div>
-                      </div>
-                      <% end %>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+<div class="main" style='width: 100%; overflow: hidden'>
+  <div class="commerce noo-shop-main" style='height: auto;'>
+    <div class="container" style='height: auto;'>
+        <div class=" row product-grid noo-grid-4" style='height: auto; width: 100%'>
+          <% @child_categories.each do |item| %>
+          <div class="col-md-4">
+            <div class="bread dvt_categories_contenedor noo-product-column" >
+							<a href=" <%= Ecommerce::Engine.routes.url_helpers.products_path(category_id: item.id ) %> ">
+								<%= image_tag item.image.medium_400.url, width: 400, height: 200, alt: "", class: "dvt_categories_img", style: "" %>
+								<span class="dvt_categories_titulos" style="text-align:center;"><%= item.name %></span>
+							</a>
+						</div>
           </div>
+          <% end %>
         </div>
-      </div>
     </div>
   </div>
-
 </div>

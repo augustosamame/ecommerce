@@ -1,6 +1,8 @@
 module Ecommerce
   class Order < ApplicationRecord
 
+    paginates_per 200
+
     belongs_to :user
     belongs_to :cart, optional: true
     has_many :order_items, inverse_of: :order, dependent: :destroy
@@ -24,7 +26,8 @@ module Ecommerce
 
     def notify_new_order
       SendOrderEmailsWorker.perform_in(30.seconds, self.id)
-      TwilioIntegration.new.send_sms_to_number("A new Order ##{self.id} has been placed", '51989080023') if Rails.env == "production"
+      #TwilioIntegration.new.send_sms_to_number("A new Order ##{self.id} has been placed", '51989080023') if Rails.env == "production"
+      SlackIntegration.new.send_slack_to_channel("A new Order ##{self.id} has been placed: https://expatshop.pe/store/backoffice/orders/#{self.id}", "#store-orders")
     end
 
     def blank_user_carts
@@ -45,7 +48,7 @@ module Ecommerce
         self.order_items.where(status: "active").each do |ol|
           ol.product.update(total_quantity: ol.product.total_quantity -= ol.quantity)
         end
-        #TwilioIntegration.new.send_sms_to_number("Your ExpatShop Order No. #{self.id} has been Paid! We will let you know when we ship.", self.user.username) if Rails.env == "production"
+        #TwilioIntegration.new.send_sms_to_user("Your ExpatShop Order No. #{self.id} has been Paid! We will let you know when we ship.", self.user.id) if Rails.env == "production"
         Campaign.send_recipients(self.id)
       end
     end
@@ -72,16 +75,27 @@ module Ecommerce
       Address.find_by(id: self.billing_address_id)
     end
 
+    def smart_date_invoice
+      if (Time.now - 5.hours).hour < 8
+        return Time.now
+      else
+        return (Time.now - 5.hours - 1.day).to_s[0..9]
+      end
+    end
+
+
     def generate_einvoice
       order_billing_address = Address.find_by(id: self.billing_address_id)
       invoice_lines_array = Array.new
       line = 0
+      weight = 0.0
       total_order_amount = (self.amount).to_f
       discount_total = (self.discount_amount).to_f.abs
       #since igv amount is taken by certifact as the sum of igv lines, the igv in tax lines need to be reduced based on the discount
       OrderItem.where(order_id: self.id).includes(:product).each do |item|
-        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: (item.price * item.quantity).to_f, price_subtotal: item.price.to_f }
+        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: (item.price * item.quantity).to_f, price_subtotal: item.price.to_f, weight: (item.quantity * item.product.weight).to_f }
         igv_found = item.product.product_taxes.find_by(tax_id: Ecommerce::Tax.first.try(:id))
+        weight += (item.quantity * item.product.weight).to_f
         if igv_found
           invoice_lines_array[line][:igv_tax] = true
           invoice_lines_array[line][:igv_amount] = igv_found.try(:tax_amount)
@@ -115,21 +129,22 @@ module Ecommerce
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: (self.required_doc.blank? || self.required_doc.try(:strip).try(:length) == 8) ? "1 - DNI" : "4 - CARNET DE EXTRANJERIA",
-                partner_id: "#{self.user.first_name} #{self.user.last_name}",
+                partner_id: "#{self.user.first_name} #{self.user.last_name} (#{self.user.username})",
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
                 vat: self.amount.to_i >= 210 ? self.required_doc : "",
-                street: order_billing_address.try(:street),
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
-                date_invoice: Time.now.to_s[0..9],
+                date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
-                date: Time.now.to_s[0..9],
+                date: (Time.now - 5.hours).to_s[0..9],
                 amount_total: total_order_amount,
                 discount_total: discount_total,
+                weight: weight,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
+                street: order_billing_address.try(:street),
                 district_id: order_billing_address.try(:district),
                 province_id: order_billing_address.try(:city),
                 state_id: order_billing_address.try(:state),
@@ -144,24 +159,29 @@ module Ecommerce
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: "6 - RUC",
-                partner_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social),
+                partner_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social) + " (#{self.user.username})",
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
                 vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
-                street: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:address),
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
-                date_invoice: Time.now.to_s[0..9],
+                date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
-                date: Time.now.to_s[0..9],
+                date: (Time.now - 5.hours).to_s[0..9],
                 amount_total: total_order_amount,
                 discount_total: discount_total,
+                weight: weight,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
-                district_id: "",
-                province_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
-                state_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
+                street: order_billing_address.try(:street),
+                district_id: order_billing_address.try(:district),
+                province_id: order_billing_address.try(:city),
+                state_id: order_billing_address.try(:state),
+                street_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:address),
+                district_id_razon_social: "",
+                province_id_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
+                state_id_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
                 invoice_line_ids: invoice_lines_array
               }
               correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_factura_number")
@@ -182,16 +202,16 @@ module Ecommerce
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
                 vat: self.amount.to_i >= 210 ? self.required_doc : "",
-                street: order_billing_address.try(:street),
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
-                date_invoice: Time.now.to_s[0..9],
+                date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
-                date: Time.now.to_s[0..9],
+                date: (Time.now - 5.hours).to_s[0..9],
                 amount_total: total_order_amount,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
+                street: order_billing_address.try(:street),
                 district_id: order_billing_address.try(:district),
                 province_id: order_billing_address.try(:city),
                 state_id: order_billing_address.try(:state),
@@ -211,19 +231,23 @@ module Ecommerce
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
                 vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
-                street: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:address),
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
-                date_invoice: Time.now.to_s[0..9],
+                date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
-                date: Time.now.to_s[0..9],
+                date: (Time.now - 5.hours).to_s[0..9],
                 amount_total: total_order_amount,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
-                district_id: "",
-                province_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
-                state_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
+                street: order_billing_address.try(:street),
+                district_id: order_billing_address.try(:district),
+                province_id: order_billing_address.try(:city),
+                state_id: order_billing_address.try(:state),
+                street_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:address),
+                district_id_razon_social: "",
+                province_id_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
+                state_id_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
                 invoice_line_ids: invoice_lines_array
               }
               correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_nota_de_credito_factura_number")

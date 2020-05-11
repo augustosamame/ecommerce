@@ -48,7 +48,7 @@
 /* --------------------------------------------------------------------- */
 /* 1. GLOBAL STYLING
 /* --------------------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css?family=Lobster');
+
 html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
@@ -408,7 +408,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     font-weight: 400;
     line-height: 1.2;
     color: #212121;
@@ -530,8 +530,9 @@ p {
 .lead {
     margin-bottom: 20px;
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.4;
+    font-family: 'Lato', sans-serif;
 }
 
 @media (min-width: 768px) {
@@ -3570,7 +3571,7 @@ blockquote.right {
 }
 
 .widget ul li a {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 34px;
     color: #696969;
     display: inline-block;
@@ -3580,7 +3581,7 @@ blockquote.right {
 }
 
 .widget ul li a:hover {
-    color: #2b5c01;
+    color: #00c5b6;
 }
 
 .widget ul li ul {
@@ -5450,7 +5451,7 @@ body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
 
 .search-header5 form {
     position: fixed;
-    top: 50%;
+    top: 30%;
     left: 50%;
     text-align: center;
     -webkit-transform: translate(-50%, -50%);
@@ -5550,7 +5551,7 @@ body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
 }
 
 .noo-menu-item-cart .cart-item span {
-    color: #2b5c01;
+    color: #00c5b6;
 }
 
 .noo-menu-item-cart .noo-minicart {
@@ -6171,7 +6172,7 @@ body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
 .noo-instagram .noo-instagram-info .noo-instagram-table .instagram-sh-title .on-instagram span {
     display: inline-block;
     text-align: left;
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     font-size: 18px;
     color: #ffffff;
 }
@@ -7006,7 +7007,7 @@ div.products-sh-title h4 {
 .custom_countdown_wrap .price em {
     font-size: 18px;
     color: #696969;
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     font-style: normal;
     font-weight: 400;
     line-height: 32px;
@@ -7290,7 +7291,7 @@ div.products-sh-title h4 {
 }
 
 .noo-countdown-product.style_white h3 {
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     padding: 25px 0 25px 0;
     font-size: 30px;
     text-transform: none;
@@ -7325,7 +7326,7 @@ div.products-sh-title h4 {
 }
 
 .defaultCountdown {
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     font-size: 48px;
     color: #f5a64a;
     margin-top: 12px;
@@ -7804,7 +7805,7 @@ div.products-sh-title h4 {
 
 .noo-short-intro .price span {
     display: block;
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     color: #212121;
     font-size: 20px;
     font-weight: 400;
@@ -8670,7 +8671,7 @@ div.blog-sh-title2 p {
 .blog-item .blog-quote cite {
     position: relative;
     font-size: 20px;
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     display: block;
     color: #2b5c01;
     font-style: normal;
@@ -11259,7 +11260,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
     background: #2b5c01;
     border: 0;
     font-size: 20px;
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     color: #ffffff;
     padding: 18px 0;
 }
@@ -12410,7 +12411,7 @@ fieldset[disabled] .mailchimp-widget .mc-subscribe-form button.active {
 
 .widget_noo_happyhours .widget-title {
     display: inline-block;
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     color: #2b5c01;
     text-transform: none;
     position: relative;
@@ -13063,7 +13064,7 @@ a.go-to-top:hover a.go-to-top:focus.on:hover {
         padding-top: 134% !important;
     }
     .item-footer-four {
-        margin-bottom: 30px;
+        margin-bottom: 10px;
     }
     .item-footer-four:nth-child(3) {
         clear: both;
@@ -16834,7 +16835,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
     background: #2b5c01;
     border: 0;
     font-size: 20px;
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     color: #ffffff;
     padding: 18px 0;
     font-weight: 400;
@@ -17012,7 +17013,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 
     margin-top: 0;
     display: block;
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lato', cursive;
     font-weight: 400;
     color: #212121;
 }
@@ -17425,7 +17426,7 @@ div.product-style2 .product-grid .noo-product-inner:hover .noo-product-title .no
 
 .dvt_houses_contenedor span{
     color:#ffffff;
-    font-size:15px;
+    font-size:1em;
      display: block;
   margin-left: auto;
   margin-right: auto;
@@ -17544,7 +17545,7 @@ display: block;
 
 .dvt_back{
     background-color:#3B3A3A;
-    margin-top:35px;
+    margin-top: 0px;
 }
 .dvt_allpt{
     color: white;
@@ -17553,18 +17554,18 @@ display: block;
 }
 .bt_allp li{
     display: inline;
-    font-family: 'Lobster', cursive;
+    font-family: 'Lato', sans-serif;
 }
 .bt_allp li a{
-   font-family: 'Lobster', cursive;
-font-size: 20px;
-text-decoration: none;
-padding: 28px 15px;
-color: #fff;
-line-height: 23px;
+   font-family: 'Lato', sans-serif;
+    font-size: 1.4em;
+    text-decoration: none;
+
+    color: #fff;
+    line-height: 23px;
 }
 .bt_allp li a:hover{
-    color: #2586d7;
+    color: #00c5b6;
 }
 @media (max-width: 767px) {
 
@@ -17776,7 +17777,7 @@ z-index: 1;
   margin-bottom: 2px;
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
 
   .navbar-right .dvt_dropdown-menu {
     right: 0;
@@ -17788,6 +17789,9 @@ z-index: 1;
     right: auto;
     left: 0;
   }
+
+
+
 }
 .dvt_spc_drop{
     line-height: -30px;
@@ -17812,4 +17816,81 @@ z-index: 1;
 left: 68%;
     z-index:9998;
 
+}
+.titu-foot{
+    color:#212121;
+    font-weight:600;
+}
+
+.head-nw{
+    background: white; border-bottom:1px solid #f5f5f5; height:45px;
+}
+
+/* botoneS */
+.botones_lista {
+    padding-left: 0;
+    margin-top: 0px;
+    list-style: none;
+
+}
+.botones_lista li {
+    max-height: 100%;
+    margin-bottom: 15px;
+
+}
+.botones_lista li a{
+    color: #ffffff;
+    text-decoration:none;
+}
+.botones_lista li a:hover{
+    color:#00c5b6;
+
+}
+.botones_contenedor {
+    text-align: center;
+    background: #101010;
+    padding: 15px 0px;
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border: 0px solid #000000;
+
+    -webkit-box-shadow: 0px 10px 5px -6px rgba(0,0,0,0.60);
+    -moz-box-shadow: 0px 10px 5px -6px rgba(0,0,0,0.60);
+    box-shadow: 0px 10px 5px -6px rgba(0,0,0,0.60);
+}
+
+.botones_contenedor_p {
+    text-align: center;
+    background: #151515;
+    padding: 15px 0px;
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border: 0px solid #000000;
+
+    -webkit-box-shadow: 0px 10px 5px -6px rgba(0,0,0,0.60);
+    -moz-box-shadow: 0px 10px 5px -6px rgba(0,0,0,0.60);
+    box-shadow: 0px 10px 5px -6px rgba(0,0,0,0.60);
+}
+
+.botones_contenedor:hover{
+    -webkit-box-shadow: 0px 10px 5px -6px rgba(0,197,182,0.47);
+    -moz-box-shadow: 0px 10px 5px -6px rgba(0,197,182,0.47);
+    box-shadow: 0px 10px 5px -6px rgba(0,197,182,0.47);
+}
+.linea{
+    border-bottom: 1px solid #e2e2e2;
+    color: #ffffff;
+    height: 20px;
+}
+/* final botones */
+
+.menu1{
+    padding:10px 0px 0px 0px;
+}
+@media screen and (min-width: 320px){
+    .noscr{
+
+    }
 }

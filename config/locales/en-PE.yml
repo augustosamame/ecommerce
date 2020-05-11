@@ -1,4 +1,7 @@
 en-PE:
+  common:
+    back: 'Back'
+    edit: 'Edit'
   activerecord:
     errors:
       models:
@@ -76,8 +79,8 @@ en-PE:
       payment_stage_paid: "Paid"
       payment_stage_refunded: "Refunded"
       payment_stage_void: "Void"
-      today_afternoon: "today afternoon"
-      tomorrow_afternoon: "tomorrow afternoon"
+      today_afternoon: "today afternoon (Tuesday to Friday)"
+      tomorrow_afternoon: "next Business Day (Tuesday to Friday)"
   ecommerce:
     cart_items:
       create:
@@ -110,12 +113,13 @@ en-PE:
         address_was_successfully_created: 'Address was successfully created.'
     processor:
       culqi:
-        payment_popup_title: "ExpatShop Payment"
+        payment_popup_title: "%{site_name} Payment"
         order_label: "Order"
     organici:
       store:
         header:
           all_products: "All Products"
+          favorite_products: "My Favorite Products"
           home_menu: "Home"
           blog_menu: "Blog"
           about_us_menu: "About Us"
@@ -132,6 +136,7 @@ en-PE:
           my_orders: "My Orders"
           my_account: "My Account"
           sign_out: "Sign Out"
+          sign_in: "Sign In"
           search_instructions: "Type and Press Enter to Search"
           search_placeholder: "Search..."
         footer:
@@ -155,6 +160,7 @@ en-PE:
           checkout: "Checkout"
         main:
           all_products: "All Products"
+          favorite_products: "My Favorite Products"
           new_products: "Featured Products"
           new_products_subtitle: "From all over the world the best products money can buy"
           free_shipping: "Free Shipping on Orders over $ 30"
@@ -163,7 +169,7 @@ en-PE:
           subscribe_to_us_text: "Enter Your email address for our mailing list and we'll let you know new product arrivals and promotions."
           email: "Email address"
           submit: "Submit"
-          by_country: "By Country"
+          by_country: "Products by Country"
           by_product: "By Product"
         about_us:
           about_us: "About Us"
@@ -182,10 +188,11 @@ en-PE:
           shipping_rates: "Shipping Rates"
           shipping_rates_p_html: "$3 Flat Shipping </br>Free shipping on orders over $30"
           shipping_times: "Shipping Times"
-          shipping_times_p_html: "All orders placed before 11:30am will be delivered same day </br>All Orders placed after 11:30am will be delivered next day"
+          shipping_times_p_html: "All Orders will be delivered next business day (Tuesday to Friday)"
       product:
         show:
           add_to_cart: "Add To Cart"
+          alert_me: "Alert Me when back in Stock"
           categories: "Categories: "
           out_of_stock: "Out of Stock"
           no_more_stock_available: "No More Stock Available"
@@ -194,6 +201,9 @@ en-PE:
           search_placeholder: "Search Products"
         product:
           out_of_stock: "Out of Stock"
+          add_to_cart: "Add To Cart"
+          alert_me: "Alert Me when back in Stock"
+          no_more_stock_available: "No More Stock Available"
       checkout:
         show:
           shipping_address: "Shipping Address"
@@ -233,13 +243,14 @@ en-PE:
         new_address_form:
           type: "Type"
           select_type_of_address: "Select Type of Address"
-          street: "Street"
+          street: "Street (max 100 chars)"
           district: "District"
           select_district: "Select District"
           city: "City"
           state: "State"
           save_address: "Save Address"
           address_has_been_saved: "Address Has Been Saved!"
+          mandatory_field: "(*) Saving or Picking an address is mandatory."
           location_on_map: "Location on Map"
       order:
         show:
@@ -317,10 +328,47 @@ en-PE:
           best_selling_products: 'Best Selling Products'
           free_shipping: 'Free Shipping on Orders of <strong>$199</strong> or above.'
     backoffice:
+      dashboard:
+        main:
+          latest_orders: 'Latest Orders'
+          date_time: 'Date/Time'
+          client: 'Client'
+          district: 'District'
+          amount: 'Amount'
+          latest_users: 'Latest Users'
+          name: 'Name'
+          mobile: 'Mobile'
+          district: 'District'
+          orders: 'Orders'
+          order: 'Order'
+          address: 'Address'
+          all_orders: 'All Orders'
+          all_users: 'All Users'
+          products: 'Products'
+          users: 'Users'
+          export_data: 'Export Data'
       sidebar:
+        dashboard_title: 'Dashboard'
         products: 'Products'
         categories: 'Categories'
         suppliers: 'Suppliers'
+        all_orders: 'All Orders'
+        closed_orders: 'Closed Orders'
+        pricelists: 'Pricelists'
+        product_prices: 'Product Prices'
+        brands: 'Brands'
+        all_users: 'All Users'
+        registered_users: 'Registered Users'
+        coupons: 'Coupons'
+        dynamic_coupons: 'Dynamic Coupons'
+        campaigns: 'Campaigns'
+        stock_alerts: 'Stock Alerts'
+        translations: 'Translations'
+        payment_methods: 'Payment Methods'
+        sliders: 'Sliders'
+        settings: 'Settings'
+        orders: 'Orders'
+        users: 'Users'
       views:
         show: 'Show'
         edit: 'Edit'
@@ -341,3 +389,37 @@ en-PE:
           tax_id: 'Tax Id'
           tax_id_type: 'Tax Id Type'
           default_hours_lead_time: 'Default Lead Time (hours)'
+      products:
+        index:
+          new_product: 'New Product'
+          listing_products: 'Listing Products'
+          id: 'Id'
+          name: 'Name'
+          category: 'Category'
+          price: 'Price'
+          discounted_price: 'Discounted Price'
+          total_quantity: 'Total Quantity'
+          image: 'Image'
+          order: 'Order'
+          show: 'Show'
+          edit: 'Edit'
+          delete: 'Delete'
+        show:
+          show_product: 'Show Product'
+          name: 'Name'
+          category: 'Category'
+          associated_coupons: 'Associated Coupons'
+          description: 'Description'
+          status: 'Status'
+          spanish_description: 'Spanish Description'
+          price: 'Price'
+          discounted_price: 'Discounted Price'
+          applicable_taxes: 'Applicable Taxes'
+          manage_stock: 'Manage Stock'
+          current_stock: 'Current Stock'
+          weight: 'Weight'
+          image: 'Image'
+          translations: 'Translations'
+          name_in_spanish: 'Nombre (en Español)'
+          short_description_in_spanish: 'Short Description (in Spanish)'
+          long_description_in_spanish: 'Long Description (in Spanish)'

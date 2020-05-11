@@ -3,7 +3,7 @@
       <div class="noo-heading-content">
         <h1 class="page-title eff">Checkout</h1>
         <div class="noo-page-breadcrumb eff">
-          <a href="./" class="home">ExpatShop Perú</a>/<span>Checkout</span>
+          <a href="./" class="home"><%= Ecommerce.site_name %></a>/<span>Checkout</span>
         </div>
       </div>
     </div>
@@ -271,10 +271,28 @@
 
   </div>
 
-
 <!-- Incluyendo .js de Culqi Checkout-->
 <!--<script src="https://checkout.culqi.com/v2"></script> -->
 <script src="https://checkout.culqi.com/js/v3"></script>
+
+<script>
+$( document ).ready(function() {
+  if (<%= !@not_in_stock_array.blank? %>) {
+    Swal({
+        type: 'error',
+        title: '<%= session[:locale] == 'es-PE' ? 'Algunos de los productos de su carrito no están disponibles' : 'Some of the products in your cart are not available' %>',
+        text: "<%= session[:locale] == 'es-PE' ? @not_in_stock_alert_es : @not_in_stock_alert_en %>"
+      });
+  }
+
+  var address_option_length = $('#address_id > option').length;
+  if (address_option_length == 2) {
+    $("#address_id").get(0).selectedIndex = 1;
+    calculate_shipping($("#address_street").val(), $("#address_district").val(), 'save_address');
+  }
+});
+
+</script>
 
 <!-- Configurando el checkout-->
 <script>
@@ -360,6 +378,7 @@
 
   function recalculate_checkout_totals() {
     Culqi.publicKey = "<%= Culqi.public_key %>";
+    // console.log('Culqi.publicKey: ',Culqi.publicKey)
     Culqi.orderKey = "<%= Culqi.secret_key %>";
     var total_amount = (Number($("#coupon-amount").html()) + Number($("#shipping-amount").html()) + Number($("#subtotal").html())).toFixed(2);
 
@@ -368,12 +387,27 @@
     payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
     culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
 
-    console.log('recalculate_checkout_totals')
+    // console.log('recalculate_checkout_totals')
 
 
   }
 
   $('#pay-now-button').on('click', function(e) {
+    $.ajax({
+      url: "checkout/check_stock_cart_js_from_checkout",
+      dataType: "json",
+      success: function(data) {
+        if (data.in_stock) {
+          process_payment(e)
+        } else {
+          window.location.replace("<%= checkout_path %>");
+        }
+      }
+    });
+   });
+
+
+  function process_payment(e) {
     var errors_present = false
     // Abre el formulario con las opciones de Culqi.settings
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
@@ -412,13 +446,16 @@
     if (!errors_present) {
       if ($('input[name=payment_method]:checked').val() == "card") {
 
+        var myDate = new Date().getTime()/1000;
+        var futureDate = myDate + ( 72 * 60 * 60 );
+
         data_to_send = {
-              title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+              title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
               amount: Number(culqi_payment_amount),
               currency_code: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
               description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
               order_number: <%= session[:cart_id] %> + '-cart-' + (Math.floor(Math.random() * 10000)).toString(),
-              expiration_date: 2323423432,
+              expiration_date: futureDate,
               confirm: false,
               client_details: {
                  first_name: '<%= @current_user_first_name %>',
@@ -427,6 +464,7 @@
                  phone_number: '<%= @current_user_phone %>'
                },
               }
+
         $.ajax({
           url: "https://api.culqi.com/v2/orders",
           dataType: "json",
@@ -438,10 +476,10 @@
           },
           data: JSON.stringify(data_to_send),
           success: function(data){
-            console.log(data.id, '<= Culqi Order Id');
+            // console.log(data.id, '<= Culqi Order Id');
             culqi_order_id = data.id
             Culqi.settings({
-              title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+              title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
               amount: Number(culqi_payment_amount),
               currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
               description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
@@ -453,22 +491,34 @@
           }
         });
 
+      /*
+      Culqi.settings({
+        title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+        amount: Number(culqi_payment_amount),
+        currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+        description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>'
+        // order: data.id
+      });
+      console.log('Culqi.publicKey: ',Culqi.publicKey)
+      Culqi.open();
+      e.preventDefault();
+*/
+
       }
       else if ($('input[name=payment_method]:checked').val() == "manual") {
         manual_payment();
         e.preventDefault();
       }
     }
-  });
+  };
 
   function culqi() {
 
-    console.log('function Culqi just ran')
+    // console.log('function Culqi just ran')
 
     if(Culqi.token) { // ¡Token creado exitosamente!
         // Get the token ID:
-        console.log('token created!');
-        console.log(Culqi.orderKey);
+        // console.log('token created!');
         var token = Culqi.token;
         var picked_shipping_address_id = $('#address_id').val();
         var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
@@ -498,7 +548,7 @@
 
     }else{ // ¡Hubo algún problema!
       // Here is Pagoefectivo
-      //console.log('token NOT created!');
+      console.log('token NOT created! Pagoefectivo?');
       console.log(Culqi.orderKey);
         // Mostramos JSON de objeto error en consola
         if (Culqi.orderKey !== null && Culqi.orderKey !== '')
@@ -510,6 +560,7 @@
             var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
             var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
             console.log('Order exists but no Token = Pagoefectivo');
+            console.log(Culqi.order)
             $.post(
               "checkout/pay_order_pagoefectivo_checkout",
               {
@@ -530,8 +581,8 @@
               function(data) {
               })
           } else {
-            // console.log('order key is null');
-            //console.log('Checkout closed by user without choosing payment option');
+            console.log('order key is null');
+            console.log('Checkout closed by user without choosing payment option');
             //Swal({
             //    type: 'error',
             //    title: '<%= t('.token_not_returned') %>',

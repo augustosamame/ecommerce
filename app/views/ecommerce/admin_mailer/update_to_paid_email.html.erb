@@ -3,6 +3,7 @@
 <p>
   The following order has been updated from unpaid to paid:<br>
 </p>
+<p><strong>SPECIAL DELIVERY INSTRUCTIONS: <%= "#{@order.delivery_comments}" %></strong></p>
 <p>Date: <%= @order.created_at %></p>
 <p>User Id: <%= @user.id %></p>
 <p>User: <%= @user.name %></p>

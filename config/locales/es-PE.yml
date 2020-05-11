@@ -1,4 +1,7 @@
 es-PE:
+  common:
+    back: 'Atrás'
+    edit: 'Editar'
   number:
     currency:
       format:
@@ -61,8 +64,8 @@ es-PE:
       payment_stage_unpaid: "AÚN NO PAGADO"
       payment_stage_refunded: "Pago Devuelto"
       payment_stage_void: "Pago Anulado"
-      today_afternoon: "hoy en la tarde"
-      tomorrow_afternoon: "mañana en la tarde"
+      today_afternoon: "hoy en la tarde (martes a viernes)"
+      tomorrow_afternoon: "el siguiente día útil (martes a viernes)"
   ecommerce:
     cart_items:
       create:
@@ -95,7 +98,7 @@ es-PE:
         error_cart_already_placed: 'Ha intentado colocar un pedido que ya había sido creado. Favor revisar sus pedidos de la lista'
     processor:
       culqi:
-        payment_popup_title: "Pago ExpatShop"
+        payment_popup_title: "Pago %{site_name}"
         order_label: "Orden"
     canvas_ecommerce:
       store:
@@ -120,14 +123,18 @@ es-PE:
       product:
         show:
           add_to_cart: "Agr Carrito"
+          alert_me: "Alertarme cuando haya Stock"
           categories: "Categorías: "
           out_of_stock: "Fuera de Stock"
-          no_more_stock_available: "No hay más unidades dsiponibles"
+          no_more_stock_available: "No hay más unidades disponibles"
           share: "Compartir"
           search: "Buscar"
           search_placeholder: "Buscar Productos"
         product:
           out_of_stock: "Fuera de Stock"
+          alert_me: "Alertarme cuando haya Stock"
+          add_to_cart: "Agregar al Carrito"
+          no_more_stock_available: "No hay más unidades disponibles"
       checkout:
         show:
           shipping_address: "Dirección de Envío"
@@ -144,7 +151,7 @@ es-PE:
           docs_over_700: "DNI / CE / Pasaporte"
           enter_coupon: "Tiene un código de cupón? Ingréselo aquí:"
           delivery_instructions: "Instrucciones especiales para la entrega"
-          apply_coupon: "Applicar"
+          apply_coupon: "Aplicar"
           coupon_line: "Cupón Aplicado"
           coupon_error: "Cupón Inválido"
           address: "Dirección"
@@ -166,13 +173,14 @@ es-PE:
         new_address_form:
           type: "Tipo"
           select_type_of_address: "Selecciona el Tipo de Dirección"
-          street: "Dirección"
+          street: "Dirección (max 100 caracteres)"
           district: "Distrito"
           select_district: "Seleccionar Distrito"
           city: "Ciudad"
           state: "Estado"
           save_address: "Grabar Dirección"
           address_has_been_saved: "La Dirección Ha Sido Grabada!"
+          mandatory_field: "(*) Grabar o Seleccionar una Dirección es Obligatorio."
           location_on_map: "Ubicación en Mapa"
       order:
         show:
@@ -233,6 +241,7 @@ es-PE:
       store:
         header:
           all_products: "Todos los Productos"
+          favorite_products: 'Mis Productos Favoritos'
           home_menu: "Inicio"
           blog_menu: "Blog"
           about_us_menu: "Nosotros"
@@ -241,6 +250,7 @@ es-PE:
           my_orders: "Mis Pedidos"
           my_account: "Mi Cuenta"
           sign_out: "Cerrar Sesión"
+          sign_in: "Iniciar Sesión"
           search_string: "Ingrese el término de búsqueda y presione Enter.."
           my_account: "Mi Cuenta"
           log_out: "Cerrar Sesión"
@@ -275,6 +285,7 @@ es-PE:
           checkout: "Checkout"
         main:
           all_products: "Todos los Productos"
+          favorite_products: 'Mis Productos Favoritos'
           new_products: "Productos Destacados"
           new_products_subtitle: "Los mejores productos del mundo a Perú"
           free_shipping: "Envío gratis en pedidos superiores a $30"
@@ -283,7 +294,7 @@ es-PE:
           subscribe_to_us_text: "Ingresa tu correo a nuestra lista de y te avisaremos sobre nuevos productos y promociones."
           email: "Correo Electrónico"
           submit: "Enviar"
-          by_country: "Por País"
+          by_country: "Productos Por País"
           by_product: "Por Producto"
         about_us:
           about_us: "Acerca de Nosotros"
@@ -302,7 +313,7 @@ es-PE:
           shipping_rates: "Tarifas de Envíos"
           shipping_rates_p_html: "Costo de envío: $3 </br>Envío gratis por pedidos sobre $30"
           shipping_times: "Tiempos de Envíos"
-          shipping_times_p_html: "Los pedidos colocados antes de las 11:30am serán entregados el mismo día.</br>Los pedidos colocados después de las 11:30am serán entregados al día siguiente"
+          shipping_times_p_html: "Los pedidos colocados antes de las 11:30am serán entregados el mismo día (martes a viernes).</br>Los pedidos colocados después de las 11:30am serán entregados al día siguiente (martes a viernes)"
     canvas_shop:
       store:
         top_bar:
@@ -373,10 +384,47 @@ es-PE:
         new_address_form:
           type: "Tipo"
     backoffice:
+      dashboard:
+        main:
+          latest_orders: 'Últimos Pedidos'
+          date_time: 'Fecha/Hora'
+          client: 'Cliente'
+          district: 'Distrito'
+          amount: 'Monto'
+          latest_users: 'Últimos Usuarios'
+          name: 'Nombre'
+          mobile: 'Móvil'
+          district: 'Distrito'
+          orders: 'Pedidos'
+          order: 'Pedido'
+          address: 'Dirección'
+          all_orders: 'Todas las Órdenes'
+          all_users: 'Todos los Usuarios'
+          products: 'Productos'
+          users: 'Usuarios'
+          export_data: 'Exportar Datos'
       sidebar:
+        dashboard_title: 'Tablero'
         products: 'Productos'
         categories: 'Categorías'
         suppliers: 'Proveedores'
+        all_orders: 'Todas las Órdenes'
+        closed_orders: 'Órdenes Cerradas'
+        pricelists: 'Listas de Precios'
+        product_prices: 'Gestión de Precios'
+        brands: 'Marcas'
+        all_users: 'Todos los Usuarios'
+        registered_users: 'Usuarios Registrados'
+        coupons: 'Cupones'
+        dynamic_coupons: 'Cupones Dinámicos'
+        campaigns: 'campañas'
+        stock_alerts: 'Alertas de Stock'
+        translations: 'Traducciones'
+        payment_methods: 'Medios de Pago'
+        sliders: 'Deslizadores'
+        settings: 'Ajustes'
+        orders: 'Órdenes'
+        users: 'Usuarios'
       views:
         show: 'Ver'
         edit: 'Editar'
@@ -397,3 +445,38 @@ es-PE:
           tax_id: 'RUC/DNI'
           tax_id_type: 'RUC/DNI'
           default_hours_lead_time: 'Tiempo de despacho (horas)'
+      products:
+        index:
+          new_product: 'Nuevo Producto'
+          listing_products: 'Lista de Productos'
+          id: 'Id'
+          name: 'Nombre'
+          category: 'Categoría'
+          description: 'Descripción'
+          price: 'Precio'
+          discounted_price: 'Precio con Descuento'
+          total_quantity: 'Cantidad Total'
+          image: 'Imágen'
+          order: 'Orden'
+          show: 'Ver'
+          edit: 'Editar'
+          delete: 'Borrar'
+        show:
+          show_product: 'Mostrar Producto'
+          name: 'Nombre'
+          category: 'Categoría'
+          associated_coupons: 'Cupones Asociados'
+          description: 'Descripción'
+          status: 'Estado'
+          spanish_description: 'Descripción en Español'
+          price: 'Precio'
+          discounted_price: 'Precio Descontado'
+          applicable_taxes: 'Impuestos'
+          manage_stock: 'Gestionar Stock'
+          current_stock: 'Stock Actual'
+          weight: 'Peso'
+          image: 'Imagen'
+          translations: 'Traducciones'
+          name_in_spanish: 'Nombre (en Español)'
+          short_description_in_spanish: 'Descripción Corta (en Español)'
+          long_description_in_spanish: Descripción Larga (en Español)'

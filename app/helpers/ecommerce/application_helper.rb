@@ -17,6 +17,10 @@ module Ecommerce
       end
     end
 
+    def friendly_formatted_date(date)
+      return (date - 5.hours).strftime("%d %b %H:%M")
+    end
+
     def body_css_class
       @body_css_classes ||= []
       view_css_class = [controller_name, action_name].join('-')
@@ -131,7 +135,8 @@ module Ecommerce
 
     def friendly_delivery_window(order_time)
       if order_time < Time.new((Time.now - 5.hours).year, (Time.now - 5.hours).month, (Time.now - 5.hours).day, 11, 30)
-        return t('model.order.today_afternoon')
+        #return t('model.order.today_afternoon')
+        return t('model.order.tomorrow_afternoon')
       else
         return t('model.order.tomorrow_afternoon')
       end

@@ -7,7 +7,7 @@ module Ecommerce
 
     # GET /backoffice/sliders
     def index
-      @backoffice_sliders = Slider.all.order(:slider_order)
+      @backoffice_sliders = Slider.all.order(:slider_view, :slider_order)
     end
 
     # GET /backoffice/sliders/1

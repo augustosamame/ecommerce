@@ -2,6 +2,8 @@ module Ecommerce
   class Product < ApplicationRecord
     include Ecommerce::SessionInfo
 
+    #define_attribute_methods :total_quantity
+
     translates :name, :short_description, :description
     globalize_accessors :locales => [:"en-PE", :"es-PE"], :attributes => [:name, :short_description, :description]
 
@@ -21,13 +23,13 @@ module Ecommerce
     #after_commit :create_product_taxes, on: :create
 
     attr_accessor :tax_1_check, :tax_2_check, :tax_3_check, :tax_1_amount, :tax_2_amount, :tax_3_amount
-    attr_accessor :temp_product_price
+    attr_accessor :temp_product_price, :search
 
     extend FriendlyId
     friendly_id :permalink_candidates, use: :slugged, slug_column: :permalink
 
     include PgSearch
-    pg_search_scope :search_by_name, :against => :name, :using => {:tsearch => {:prefix => true}}
+    pg_search_scope :search_by_name, associated_against: { translations: :name }, using: {tsearch: {prefix: true, any_word: true}}
 
     scope :in_stock, -> { where("stockable = ? or total_quantity != ?", false, 0) }
     scope :active, -> { where(status: "active") }
@@ -51,7 +53,24 @@ module Ecommerce
 
     #validates :category_id, presence: true
     validates_presence_of :category_list
-    validates :name, presence: true,   length: { maximum: 165 }
+    validates :name, presence: true, length: { maximum: 165 }
+
+    after_save :notify_stock_alert_users
+
+    def notify_stock_alert_users
+      if self.saved_change_to_total_quantity?
+        if self.saved_changes[:total_quantity][0] <= 0 && self.saved_changes[:total_quantity][1] > 0
+          send_notifications_stock_alert_users
+        end
+      end
+    end
+
+    def send_notifications_stock_alert_users
+      Ecommerce::StockAlert.where(product_id: self.id, status: 'active').each do |stock_alert|
+        TwilioIntegration.new.send_sms_to_user("The product #{self.name} is back in stock at Expatshop.pe. https://expatshop.pe/store/products/#{self.id}", stock_alert.user_id)
+        stock_alert.destroy
+      end
+    end
 
     def permalink_candidates
       [

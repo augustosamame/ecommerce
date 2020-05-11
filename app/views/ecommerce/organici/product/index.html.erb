@@ -9,7 +9,7 @@
                 <div class="col-sm-12">
                   <div class="noo-product-grid-wrap commerce product-style2">
                     <div class="pagination list-center" style="display:none;">
-                      <%= paginate @products %>
+                       <%= paginate @products %>
                       <!--<span class="page-numbers current">1</span>
                       <a class="page-numbers" href="#">2</a>
                       <a class="page-numbers" href="#">3</a>
@@ -17,7 +17,7 @@
                     </div>
                     <div class="noo-product-grid products row product-grid noo-grid-4 product-index-container" style= "display: contents;">
 
-                      <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item %>
+                       <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item %>
 
                     </div>
                   </div>
@@ -58,10 +58,43 @@ $(document).ready(function(){
     $container.imagesLoaded(function() {
       //console.log('images loaded');
       $container.isotope('layout');
+      // bindPlusMinusButtons();
     })
     //noo_masonry();
     //noo_masonry2();
   });
 });
 
+</script>
+
+<script>
+  $(document).ready(function(){
+    bindPlusMinusButtons();
+  });
+
+  function bindPlusMinusButtons() {
+    $('body').on('click', ".devtech_plus_class", function(e) {
+      var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
+      var inStockValueElement = $(e.currentTarget).parent().children(".devtech_plus_class").children(".devtech_plus_a_class").attr('id');
+      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
+      var inStockValue = parseInt(inStockValueElement.substr(inStockValueElement.indexOf('_qty') + 4));
+      if (parseInt(quantityElement.val()) < inStockValue ) {
+        quantityElement.val(parseInt(quantityElement.val()) + 1);
+        outOfStockTextElement.hide();
+      } else {
+        outOfStockTextElement.show();
+      }
+      e.preventDefault();
+    });
+
+    $(".devtech_minus_class").click(function(e) {
+      var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
+      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
+      outOfStockTextElement.hide();
+      if (parseInt(quantityElement.val()) > 1) {
+        quantityElement.val(parseInt(quantityElement.val()) - 1);
+      }
+      e.preventDefault();
+    });
+  }
 </script>

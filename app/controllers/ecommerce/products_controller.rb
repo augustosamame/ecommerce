@@ -13,6 +13,11 @@ module Ecommerce
 
       set_index_meta_tags
 
+      if params[:search]
+        @products = Product.search_by_name(params[:search]).active.page(params[:page])
+        render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
+      end
+
       if params[:category_id]
         @category = Category.find(params[:category_id])
         #@child_categories = Category.where(parent_id: @category.id)
@@ -23,22 +28,19 @@ module Ecommerce
           redirect_to categories_path(parent_category: @category.id)
         else
           Globalize.with_locale(Ecommerce.backoffice_default_locale) do
+            @all_products = Product.includes(:translations).tagged_with(@category.name).order(:product_order).active
             @products = Product.includes(:translations).tagged_with(@category.name).order(:product_order).active.page(params[:page])
           end
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else
+        @all_products = Product.all.includes(:translations).order(:product_order).active
         @products = Product.all.includes(:translations).order(:product_order).active.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
     end
 
     def show
-
-      if params[:search]
-        @products = Product.search_by_name(params[:search]).active.page(params[:page])
-        render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
-      end
       #set_controller_meta_tags(action_name)
 
       @cart_item = CartItem.new
@@ -47,6 +49,43 @@ module Ecommerce
       set_show_meta_tags
 
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
+    end
+
+    def favorites
+      if Ecommerce::Order.where(user_id: current_user.id).count > 0
+        user_orders_items = Ecommerce::OrderItem.where(order_id: current_user.user_orders.pluck(:id)).group(:product_id).order('COUNT(*) DESC').select('product_id').pluck(:product_id)
+        @products = Product.where(id: user_orders_items).includes(:translations).order(:product_order).active.page(params[:page])
+        render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
+      else
+        redirect_back fallback_location: root_path
+      end
+    end
+
+    def search
+      redirect_to products_path(search: params[:search])
+    end
+
+    def stock_alert
+      if current_user
+        @product = Ecommerce::Product.find(params[:stock_alert][:product_id])
+        stock_alert_exists = Ecommerce::StockAlert.find_by(user_id: current_user.id, product_id: @product.id)
+        if stock_alert_exists
+          stock_alert_exists.update(status: 0)
+        else
+          Ecommerce::StockAlert.create(user_id: current_user.id, product_id: @product.id, status: 0)
+        end
+        respond_to do |format|
+          format.js { flash.now[:notice] = "NOW_FLASH_#{t('.stock_alert_set')}"; render "ecommerce/#{Ecommerce.ecommerce_layout}/product/stock_alert"  }
+
+          format.html {redirect_to product_path(@product) }
+        end
+      else
+        respond_to do |format|
+          format.js { flash.now[:notice] = "NOW_FLASH_#{t('.stock_alert_set')}"; render "ecommerce/#{Ecommerce.ecommerce_layout}/product/stock_alert_signed_out"  }
+
+          format.html {redirect_to product_path(@product) }
+        end
+      end
     end
 
     private

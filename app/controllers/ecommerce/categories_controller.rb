@@ -15,7 +15,7 @@ module Ecommerce
       if params[:parent_category]
         @category = Category.find(params[:parent_category])
         Globalize.with_locale(Ecommerce.backoffice_default_locale) do
-          @child_categories = Category.tagged_with(@category.name).order(:category_order)
+          @child_categories = Category.active.tagged_with(@category.name).order(:category_order)
         end
         if @child_categories.count > 0
           render "ecommerce/#{Ecommerce.ecommerce_layout}/category/index"
@@ -78,7 +78,7 @@ module Ecommerce
 
       def set_index_meta_tags
         set_meta_tags title: "Categories",
-                      description: "ExpatShop Category List",
+                      description: "Categorías #{Ecommerce.site_name}",
                       og: {
                         title:    :full_title,
                         image:    Ecommerce.logo

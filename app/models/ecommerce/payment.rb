@@ -41,7 +41,7 @@ module Ecommerce
       first_address = Address.where(user_id: current_user.id).first
       culqi_address = first_address.blank? ? "" : "#{first_address.street},#{first_address.street2.blank? ? "" : (first_address.street2 + ",")} #{first_address.district}"
       no_antifraud_data = culqi_address.blank? || current_user.first_name.blank? || current_user.last_name.blank?
-      plain_mobile = current_user.username ? current_user.username.gsub(/[^\d]/, '') : ( current_user.phone ? current_user.phone.gsub(/[^\d]/, '') : "" )
+      plain_mobile = current_user.username ? current_user.username.split(':')[0].gsub(/[^\d]/, '') : ( current_user.phone ? current_user.phone.split(':')[0].gsub(/[^\d]/, '') : "" )
       plain_mobile = plain_mobile[2..-1] if plain_mobile[0..1] == '51'
       antifraud_hash = no_antifraud_data ? nil : {
           :first_name => current_user.first_name,

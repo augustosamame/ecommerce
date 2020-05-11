@@ -33,14 +33,20 @@ Ecommerce::Engine.routes.draw do
     post 'send_recipients/:id', :to => "campaigns#post_send_recipients", as: 'post_send_recipients'
     get 'get_purchasers', :to => "campaigns#get_product_purchasers"
     get 'get_no_purchase_within_days', :to => "campaigns#get_no_purchase_within_days"
+    get "export_products" => "dashboard#export_products", as: :export_products
+    get "export_users" => "dashboard#export_users", as: :export_users
+    get "export_orders" => "dashboard#export_orders", as: :export_orders
+    resources :stock_alerts
   end
 
   post 'locale', :to => 'application#locale'
   #get '/category/:id', :to => 'store#shop_by_category', :as => 'category'
   #get '/product/:id', :to => 'store#product_detail', :as => 'product'
   resources :products, only: [:index, :show]
+  get 'favorites', :to => 'products#favorites'
   resources :categories, only: [:index]
   resources :orders, only: [:index, :show]
+  get '/checkout/check_stock_cart_js_from_checkout', :to => 'checkout#check_stock_cart_js_from_checkout'
   post '/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
   post '/store/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
   post '/checkout/pay_order_pagoefectivo_checkout', :to => 'checkout#pay_order_pagoefectivo_checkout'
@@ -59,6 +65,8 @@ Ecommerce::Engine.routes.draw do
 
   resources :carts, except: [:index, :new, :create]
   resources :cart_items
+  post 'stock_alerts', :to => 'products#stock_alert', as: 'stock_alerts'
+  get 'search_product', :to => 'products#search', as: 'search_product'
   resources :wishlists, except: [:index, :new, :create]
   resources :wishlist_items
   patch '/addresses/update_map', to: 'addresses#update_map'

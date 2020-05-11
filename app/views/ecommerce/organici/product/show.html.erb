@@ -29,7 +29,7 @@
                   <p class="price"><span class="amount"><%= session_price(@product, "current_price") %></span></p>
                 <% else %>
                   <p class="price">
-                    <span class="amount original-price-show"><%= session_price(@product, "current_price") %></span>
+                    <span class="amount original-price-show"><%= session_price(@product, "price") %></span>
                     <span class="amount"><%= session_price(@product, "discounted_price") %></span>
                   </p>
                 <% end %>

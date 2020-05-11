@@ -55,6 +55,14 @@ module Ecommerce
       end
     end
 
+    def index
+      head :ok
+    end
+
+    def show
+      head :ok
+    end
+
     private
 
       def set_cart_item

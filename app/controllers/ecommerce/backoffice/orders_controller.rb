@@ -24,10 +24,11 @@ module Ecommerce
     # GET /backoffice/orders
     def index
       if params[:stage]
-        @backoffice_orders = Order.where(stage: params[:stage]).order(id: :desc)
+        @backoffice_orders = Order.where(stage: params[:stage]).order(id: :desc).page(params[:page])
       else
-        @backoffice_orders = Order.all.order(id: :desc)
+        @backoffice_orders = Order.all.order(id: :desc).page(params[:page])
       end
+      @page_param = params[:page]
     end
 
     # GET /backoffice/orders/1
@@ -41,6 +42,7 @@ module Ecommerce
         @einvoice_error_message = @backoffice_order.efact_response_text
         @einvoice_sent_text = @backoffice_order.efact_sent_text
       end
+      @backoffice_addresses = Address.where(id: @backoffice_order.shipping_address_id).or(Address.where(id: @backoffice_order.billing_address_id))
     end
 
     # GET /backoffice/orders/new
