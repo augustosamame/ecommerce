@@ -2,6 +2,8 @@ en-PE:
   common:
     back: 'Back'
     edit: 'Edit'
+    show: 'Show'
+    save: 'Save'
   activerecord:
     errors:
       models:
@@ -421,5 +423,27 @@ en-PE:
           image: 'Image'
           translations: 'Translations'
           name_in_spanish: 'Nombre (en Español)'
+          short_description_in_spanish: 'Short Description (in Spanish)'
+          long_description_in_spanish: 'Long Description (in Spanish)'
+        edit:
+          editing_product: 'Editing Product'
+        form:
+          categories: 'Categories (you can choose more than one)'
+          brand: 'Brand'
+          supplier: 'Supplier'
+          status: 'Status'
+          name: 'Name'
+          price: 'Price'
+          any_coupons: 'Any Coupon that applies to this specific product'
+          short_description: 'Short Description'
+          long_description: 'Descripción Larga'
+          discounted_price: 'Discounted Price'
+          item_weight: 'Weight per Item'
+          stockable: 'Stockable'
+          quantity: 'Quantity'
+          home_featured: 'Home Featured'
+          main_product_image: 'Main Product Image'
+          Translations: 'Translations'
+          name_in_spanish: 'Name (in Spanish)'
           short_description_in_spanish: 'Short Description (in Spanish)'
           long_description_in_spanish: 'Long Description (in Spanish)'

@@ -2,6 +2,8 @@ es-PE:
   common:
     back: 'Atrás'
     edit: 'Editar'
+    show: 'Ver'
+    save: 'Grabar'
   number:
     currency:
       format:
@@ -480,3 +482,27 @@ es-PE:
           name_in_spanish: 'Nombre (en Español)'
           short_description_in_spanish: 'Descripción Corta (en Español)'
           long_description_in_spanish: Descripción Larga (en Español)'
+        edit:
+          editing_product: 'Editar Producto'
+        form:
+          categories: 'Categorías (Puede Escoger más de uno)'
+          brand: 'Marca'
+          supplier: 'Proveedor'
+          status: 'Estado'
+          name: 'Nombre'
+          price: 'Precio'
+          any_coupons: 'Todo cupón que aplique a éste Producto specífico'
+          short_description: 'Descripción Corta'
+          long_description: 'Descripción Larga'
+          discounted_price: 'Precio Descontado'
+          item_weight: 'Peso por Item'
+          stockable: 'Gestionar Stock'
+          quantity: 'Cantidad'
+          home_featured: 'Destacado en Página de Inicio'
+          main_product_image: 'Imagen Principal del Producto'
+          translations: 'Traducciones'
+          name_in_spanish: 'Nombre (en Español)'
+          short_description_in_spanish: 'Descripción corta (en Español)'
+          long_description_in_spanish: 'Descripción Larga (en Español)'
+          tax_taxable: 'Sujeto a %{tax}?'
+          tax_amount: 'Monto %{tax}'
