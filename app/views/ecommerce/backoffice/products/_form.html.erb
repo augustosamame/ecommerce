@@ -2,41 +2,41 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :category, as: :tags, :value_method => lambda { |category| "#{category.name}" }, :label_method => lambda { |category| "#{category.name}" }, label: "Categories (you can choose more than one)" %>
-    <%= f.association :brand, :label_method => lambda { |brand| "#{brand.name}" }  %>
-    <%= f.association :supplier, :label_method => lambda { |supplier| "#{supplier.name}" }  %>
-    <%= f.input :status, collection: Ecommerce::Product.statuses.keys %>
-    <%= f.input :name %>
-    <%= f.association :coupons, :value_method => lambda { |coupon| "#{coupon.id}" }, :label_method => lambda { |coupon| "#{coupon.coupon_code}" }, label: "Any Coupon that applies to this specific product" %>
-    <%= f.input :short_description, label: "Short Description" %>
-    <%= f.input :description, label: "Long Description" %>
-    <%= f.input :price_cents, :input_html => { :id => 'price-cents' } %>
-    <%= f.input :discounted_price_cents, :input_html => { :id => 'discounted-price-cents' } %>
-    <%= f.input :weight, label: "Weight per item" %>
+    <%= f.association :category, as: :tags, :value_method => lambda { |category| "#{category.name}" }, :label_method => lambda { |category| "#{category.name}" }, label: t('.categories') %>
+    <%= f.association :brand, :label_method => lambda { |brand| "#{brand.name}" }, label: t('.brand') %>
+    <%= f.association :supplier, :label_method => lambda { |supplier| "#{supplier.name}" }, label: t('.supplier')  %>
+    <%= f.input :status, collection: Ecommerce::Product.statuses.keys, label: t('.status') %>
+    <%= f.input :name, label: t('.name') %>
+    <%= f.association :coupons, :value_method => lambda { |coupon| "#{coupon.id}" }, :label_method => lambda { |coupon| "#{coupon.coupon_code}" }, label: t('.any_coupons') %>
+    <%= f.input :short_description, label: t('.short_description') %>
+    <%= f.input :description, label: t('.long_description') %>
+    <%= f.input :price_cents, :input_html => { :id => 'price-cents' }, label: t('.price') %>
+    <%= f.input :discounted_price_cents, :input_html => { :id => 'discounted-price-cents' }, label: t('.discounted_price') %>
+    <%= f.input :weight, label: t('.item_weight') %>
     <h4>Taxes</h4>
     <div class="well">
 
       <div class="row">
         <div class="col-lg-3">
-          <%= f.input :tax_1_check, as: :boolean, label: "#{@tax1} taxable?" if @tax1 %>
-          <%= f.input :tax_1_amount, label: "#{@tax1} amount" if @tax1 %>
+          <%= f.input :tax_1_check, as: :boolean, label: t('.tax_taxable', tax: @tax1) if @tax1 %>
+          <%= f.input :tax_1_amount, label: t('.tax_amount', tax: @tax1) if @tax1 %>
         </div>
         <div class="col-lg-3">
-          <%= f.input :tax_2_check, as: :boolean, label: "#{@tax2} taxable?" if @tax2 %>
-          <%= f.input :tax_2_amount, label: "#{@tax2} amount" if @tax2 %>
+          <%= f.input :tax_2_check, as: :boolean, label: t('.tax_taxable', tax: @tax2) if @tax2 %>
+          <%= f.input :tax_2_amount, label: t('.tax_amount', tax: @tax2) if @tax2 %>
         </div>
         <div class="col-lg-3">
-          <%= f.input :tax_3_check, as: :boolean, label: "#{@tax3} taxable?" if @tax3 %>
-          <%= f.input :tax_3_amount, label: "#{@tax3} amount" if @tax3 %>
+          <%= f.input :tax_3_check, as: :boolean, label: t('.tax_taxable', tax: @tax3) if @tax3 %>
+          <%= f.input :tax_3_amount, label: t('.tax_amount', tax: @tax3) if @tax3 %>
         </div>
       </div>
     </div>
 
-    <%= f.input :stockable %>
-    <%= f.input :total_quantity, label: "Quantity" %>
-    <%= f.input :home_featured %>
+    <%= f.input :stockable, label: t('.stockable') %>
+    <%= f.input :total_quantity, label: t('.quantity') %>
+    <%= f.input :home_featured, label: t('.home_featured') %>
 
-    <%= f.label "Main Product Image" %>
+    <%= f.label t('.main_product_image') %>
     <div class="form-group">
       <% if f.object.image? %>
         <%= image_tag f.object.image.url, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
@@ -49,24 +49,17 @@
       <%= f.hidden_field :image_cache %>
     </div>
 
-    <h2>Translations</h2>
+    <h2><%= t('.translations') %></h2>
     <% Globalize.with_locale(:"es-PE") do %>
-      <%= f.input :name_es_pe, label: "Name (in Spanish)"%>
-      <%= f.input :short_description_es_pe, label: "Short Description (in Spanish)" %>
-      <%= f.input :description_es_pe, label: "Long Description (in Spanish)" %>
-    <% end %>
-
-    <%= link_to_add_association 'Add SKU Variant', f, :product_skus %>
-
-    <%= f.simple_fields_for :product_skus do |h| %>
-      <%= render 'product_sku_fields', :f => h %>
-      <%= link_to_add_association 'Add SKU Variant', f, :product_skus %>
+      <%= f.input :name_es_pe, label: t('.name_in_spanish') %>
+      <%= f.input :short_description_es_pe, label: t('.short_description_in_spanish') %>
+      <%= f.input :description_es_pe, label: t('.long_description_in_spanish') %>
     <% end %>
 
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, class: "btn btn-primary" %>
+    <%= f.button :submit, t('common.save'), class: "btn btn-primary" %>
   </div>
 <% end %>
 

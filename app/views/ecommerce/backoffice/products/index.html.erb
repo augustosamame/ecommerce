@@ -1,27 +1,27 @@
 <div class="page-header">
   <%= link_to new_backoffice_product_path, class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-plus"></span>
-    New Product
+    <%= t('.new_product') %>
   <% end %>
-  <h1>Listing Products</h1>
+  <h1><%= t('.listing_products') %></h1>
 </div>
 
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Discounted Price</th>
-        <th>Tot Quantity</th>
-        <th>Image</th>
-        <th>Order</th>
-        <th>Show</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th><%= t('.id') %></th>
+        <th><%= t('.name') %></th>
+        <th><%= t('.category') %></th>
+        <th><%= t('.description') %></th>
+        <th><%= t('.price') %></th>
+        <th><%= t('.discounted_price') %></th>
+        <th><%= t('.total_quantity') %></th>
+        <th><%= t('.image') %></th>
+        <th><%= t('.order') %></th>
+        <th><%= t('.show') %></th>
+        <th><%= t('.edit') %></th>
+        <th><%= t('.delete') %></th>
       </tr>
     </thead>
 

@@ -2,22 +2,22 @@
 	<div class="row">
 		<div class="col-md-5 well">
 			<h3>
-				Latest Orders
+				<%= t('.latest_orders') %>
 			</h3>
 			<table class="table table-condensed">
 				<thead>
 					<tr>
 						<th>
-							Fecha/Hora
+							<%= t('.date_time') %>
 						</th>
             <th>
-							Cliente
+							<%= t('.client') %>
 						</th>
 						<th>
-							Distrito
+							<%= t('.district') %>
 						</th>
 						<th>
-							Monto
+							<%= t('.amount') %>
 						</th>
 					</tr>
 				</thead>
@@ -43,28 +43,28 @@
 		</div>
 		<div class="col-md-5 well">
 			<h3>
-				Latest Users
+				<%= t('.latest_users') %>
 			</h3>
 			<table class="table table-condensed">
 				<thead>
 					<tr>
 						<th>
-							Nombre
+							<%= t('.name') %>
 						</th>
 						<th>
-							Móvil
+							<%= t('.mobile') %>
 						</th>
 						<th>
-							Distrito
+							<%= t('.district') %>
 						</th>
 						<th>
-							Pedidos
+							<%= t('.orders') %>
 						</th>
             <th>
-							Pedido
+							<%= t('.order') %>
 						</th>
             <th>
-							Direcc
+							<%= t('.address') %>
 						</th>
 					</tr>
 				</thead>
@@ -96,24 +96,24 @@
 		</div>
 		<div class="col-md-2 well">
 			<button type="button" class="btn btn-primary btn-lg" style="width: 180px; margin-bottom: 10px;" onclick="location.href='<%= backoffice_orders_path %>';">
-				All Orders
+				<%= t('.all_orders') %>
 			</button>
 			<button type="button" class="btn btn-primary btn-lg" style="width: 180px;" onclick="location.href='<%= backoffice_users_path %>';">
-				All Users
+				<%= t('.all_users') %>
 			</button>
 		</div>
 	</div>
 	<div class="row">
 
 	</div>
-	<h3>Export Data</h3>
+	<h3><%= t('.export_data') %></h3>
 	<div class="row">
 		<div class="col-md-2 well">
 			<button type="button" class="btn btn-primary btn-lg" style="width: 180px; margin-bottom: 10px;" onclick="location.href='<%= backoffice_export_products_path %>';">
-				Products
+				<%= t('.products') %>
 			</button>
 			<button type="button" class="btn btn-primary btn-lg" style="width: 180px;" onclick="location.href='<%= backoffice_export_users_path %>';">
-				Users
+				<%= t('.users') %>
 			</button>
 		</div>
 	</div>
