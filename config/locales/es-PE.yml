@@ -4,6 +4,7 @@ es-PE:
     edit: 'Editar'
     show: 'Ver'
     save: 'Grabar'
+    destroy: 'Borrar'
   number:
     currency:
       format:
@@ -506,3 +507,15 @@ es-PE:
           long_description_in_spanish: 'Descripción Larga (en Español)'
           tax_taxable: 'Sujeto a %{tax}?'
           tax_amount: 'Monto %{tax}'
+      pricelists:
+        index:
+          new_pricelist: 'Nueva Lista de Precios'
+          pricelists: 'Listas de Precios'
+          name: 'Nombre'
+          status: 'Estado'
+        new:
+          new_pricelist: 'Nueva Lista de Precios'
+        form:
+          name: 'Nombre'
+          status: 'Estado'
+          create_pricelist: 'Crear Lista de Precios'

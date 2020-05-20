@@ -4,6 +4,7 @@ en-PE:
     edit: 'Edit'
     show: 'Show'
     save: 'Save'
+    destroy: 'Delete'
   activerecord:
     errors:
       models:
@@ -447,3 +448,15 @@ en-PE:
           name_in_spanish: 'Name (in Spanish)'
           short_description_in_spanish: 'Short Description (in Spanish)'
           long_description_in_spanish: 'Long Description (in Spanish)'
+      pricelists:
+        index:
+          new_pricelist: 'New Pricelist'
+          pricelists: 'Pricelists'
+          name: 'Name'
+          status: 'Status'
+        new:
+          new_pricelist: 'New Pricelist'
+        form:
+          name: 'Name'
+          status: 'Status'
+          create_pricelist: 'Create Pricelist'
