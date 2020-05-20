@@ -77,9 +77,9 @@ module Ecommerce
 
     def smart_date_invoice
       if (Time.now - 5.hours).hour < 8
-        return Time.now
-      else
         return (Time.now - 5.hours - 1.day).to_s[0..9]
+      else
+        return (Time.now - 5.hours).to_s[0..9]
       end
     end
 
@@ -137,7 +137,7 @@ module Ecommerce
                 company_id_street: Ecommerce.company_street,
                 date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
-                date: (Time.now - 5.hours).to_s[0..9],
+                date: smart_date_invoice,
                 amount_total: total_order_amount,
                 discount_total: discount_total,
                 weight: weight,
@@ -167,7 +167,7 @@ module Ecommerce
                 company_id_street: Ecommerce.company_street,
                 date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
-                date: (Time.now - 5.hours).to_s[0..9],
+                date: smart_date_invoice,
                 amount_total: total_order_amount,
                 discount_total: discount_total,
                 weight: weight,
@@ -206,7 +206,7 @@ module Ecommerce
                 company_id_street: Ecommerce.company_street,
                 date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
-                date: (Time.now - 5.hours).to_s[0..9],
+                date: smart_date_invoice,
                 amount_total: total_order_amount,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
@@ -235,7 +235,7 @@ module Ecommerce
                 company_id_street: Ecommerce.company_street,
                 date_invoice: smart_date_invoice,
                 payment_term_id: "Contado",
-                date: (Time.now - 5.hours).to_s[0..9],
+                date: smart_date_invoice,
                 amount_total: total_order_amount,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",

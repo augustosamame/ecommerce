@@ -24,27 +24,25 @@ module Ecommerce
     end
 
     def culqi_webhook
-      Rollbar.info("Webhook Received",
-        :request_data => params
-      )
-      puts 'CULQI_WEBHOOK EVENT RECEIVED (PUTS)'
-      puts params
-      Rails.logger.debug params
-      Rails.logger.debug 'CULQI_WEBHOOK EVENT RECEIVED (LOGGER)'
       if params[:object] == "event" && params[:type] == "order.status.changed"
+        Rollbar.info("Webhook Received",
+          :request_data => params
+        )
         culqi_data = JSON.parse(params[:data])
-        found_culqi_payment = Payment.find_by(processor_transaction_id: culqi_data["id"])
-        if found_culqi_payment
-          Payment.create(
-            user_id: found_culqi_payment.user_id,
-            order_id: found_culqi_payment.order_id,
-            payment_method_id: found_culqi_payment.payment_method_id,
-            processor_transaction_id: found_culqi_payment.processor_transaction_id,
-            amount_cents: culqi_data["amount"].to_i,
-            comment: params[:id],
-            date: Time.now,
-            status: 'active'
-          )
+        if culqi_data["state"] == 'paid'
+          found_culqi_payment = Payment.find_by(processor_transaction_id: culqi_data["id"])
+          if found_culqi_payment
+            Payment.create(
+              user_id: found_culqi_payment.user_id,
+              order_id: found_culqi_payment.order_id,
+              payment_method_id: found_culqi_payment.payment_method_id,
+              processor_transaction_id: found_culqi_payment.processor_transaction_id,
+              amount_cents: culqi_data["amount"].to_i,
+              comment: params[:id],
+              date: Time.now,
+              status: 'active'
+            )
+          end
         end
       end
       head :ok
