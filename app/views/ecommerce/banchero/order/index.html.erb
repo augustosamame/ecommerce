@@ -1,0 +1,46 @@
+<section class="noo-page-heading eff">
+  <div class="container">
+    <div class="noo-heading-content">
+      <h1 class="page-title eff"><%= t('.title') %></h1>
+      <div class="noo-page-breadcrumb eff">
+        <a href="./" class="home">ExpatShop</a>/<span><%= t('.title') %></span>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="main">
+  <div class="commerce commerce-account noo-shop-main">
+<div class="container">
+  <div class="row" style="margin-top: 50px;">
+  <h2><a href="<%= orders_path %>"><%= t('.title') %></a></h2>
+<div class="table-responsive">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th><%= t('.date') %></th>
+        <th><%= t('.status') %></th>
+        <th><%= t('.payment_status') %></th>
+        <th><%= t('.total') %></th>
+        <th><%= t('.show') %></th>
+        <th><%= t('.cancel') %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @orders) do |order| %>
+        <td><%= order.id %></td>
+        <td><%= order.created_at.localtime.strftime("%d-%b-%y") %></td>
+        <td><%= order.stage %></td>
+        <td><%= order.payment_status %></td>
+        <td><%= number_to_currency(order.amount) %></td>
+        <td><%= link_to "<i class='fa fa-eye'></i>".html_safe, order_path(order) %></td>
+        <td><%= link_to "<i class='fa fa-ban'></i>".html_safe, order_path(order) %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+</div>
+</div>
