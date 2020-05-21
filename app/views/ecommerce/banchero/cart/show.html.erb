@@ -1,0 +1,183 @@
+  <section class="noo-page-heading eff" style="height: 120px;">
+    <div class="container">
+      <div class="noo-heading-content">
+        <h1 class="page-title eff"><%= t('.cart_title') %></h1>
+        <!-- <div class="noo-page-breadcrumb eff">
+          <a href="./" class="home">ExpatShop</a>/<span>Cart</span>
+        </div> -->
+      </div>
+    </div>
+  </section>
+  <div class="main">
+    <div class="commerce commerce-page commerce-cart noo-shop-main">
+      <div class="container">
+        <div class="row">
+          <div class="noo-main col-md-12 cart-mobile">
+            <table class="shop_table cart">
+              <thead>
+                <tr>
+                  <th class="product-thumbnail"><%= t('.product_column_title') %></th>
+                  <th class="product-price"><%= t('.price_column_title') %></th>
+                  <th class="product-price mobile-product-quantity-header"><%= t('.qty_column_title') %></th>
+                  <th class="product-subtotal"><%= t('.total_column_title') %></th>
+                  <th class="product-remove">&nbsp;</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% if @cart.cart_items.count == 0 %>
+                  <tr class="cart_item">
+                    <td class="product-thumbnail">
+                      <h4><%= t('.no_items_in_cart') %></h4>
+                    </td>
+                    <td class="product-price">
+
+                    </td>
+                    <td class="product-price mobile-product-quantity">
+
+                    </td>
+                    <td class="product-subtotal">
+
+                    </td>
+                    <td class="product-remove">
+
+                    </td>
+                  </tr>
+                <% else %>
+
+
+                <% @cart.cart_items.each do |item| %>
+                  <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
+                  <tr class="cart_item">
+                    <td class="product-thumbnail">
+                      <a href="<%= product_path(item.product) %>">
+                        <%= image_tag item.product.image.thumb_100.url, width: 100, height: 100, alt: "" %>
+                      </a>
+                      <%= link_to item.product.name, product_path(item.product) %>
+                    </td>
+                    <td class="product-price">
+                      <span class="amount"><%= session_price(item.product, "current_price") %></span>
+                    </td>
+                    <td class="product-quantity mobile-product-quantity">
+                      <div class="quantity mobile-quantity">
+                          <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text cart_wish_number', onchange: 'this.form.submit();' } %>
+                      </div>
+                    </td>
+                    <td class="product-subtotal">
+                      <span class="amount"><%= session_price(item.line_total) %></span>
+                    </td>
+                    <td class="product-remove">
+                      <%= link_to "&times;".html_safe, cart_item_path(item.id), method: :delete, class: "remove" %>
+                    </td>
+                  </tr>
+                  <% end %>
+                  <% end %>
+                <% end %>
+                <tr>
+                  <td colspan="5" class="actions">
+                    <div class="row">
+
+                      <% if browser.device.mobile? %>
+
+
+                      <% else %>
+
+                      <div class="col-md-4" style="text-align: left; margin-bottom: 10px;">
+                        <a class="button organici-continue" style='width: 160px;' href="<%= root_path %>"><%= t('.continue_shopping') %></a>
+                      </div>
+
+                      <% end %>
+
+                      <!--<div class="coupon">
+                        <label for="coupon_code">Coupon:</label>
+                        <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
+                        <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
+                      </div>-->
+
+                      <div class="col-md-8" style='margin-bottom: 10px; <%= browser.device.mobile? ? "text-align: left;" : "" %>'>
+                        <input type="submit" class="button organici-continue" style="background: #f4eede; color: #212121; margin-right: 10px;" id="update-cart-button" name="update_cart" value="<%= t('.update_cart') %>">
+                        <%= link_to t('.proceed_to_checkout'), checkout_path, class: "checkout-button button alt wc-forward" %>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4" style="text-align: left; margin-bottom: 10px;">
+                        <a class="button organici-continue" href="<%= Ecommerce::Engine.routes.url_helpers.orders_path %>"><%= t('.my_orders') %></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4" style="text-align: left; margin-bottom: 10px;">
+                        <a class="button organici-continue" href="<%= main_app.edit_user_registration_path %>"><%= t('.my_account') %></a>
+                      </div>
+                    </div>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="cart-collaterals">
+              <!--
+              <div class="noocart-coupon">
+                <label for="coupon_code">Coupon</label>
+                <p>Enter your code if you have one</p>
+                <input type="text" name="noo_coupon_code" class="input-text" id="noo_coupon_code" value="" placeholder="Coupon code"/>
+                <button class="noo-apply-coupon button">Apply Coupon</button>
+              </div>
+              <div class="noocart-shipping">
+                <label>Estimate shipping &amp; tax</label>
+                <p>Enter your destination to get a shipping rate</p>
+                <strong>COUNTRY <abbr class="required" title="required">*</abbr></strong>
+                <select class="select">
+                  <option value="">Select a country</option>
+                  <option value="">America</option>
+                  <option value="">England</option>
+                  <option value="">France</option>
+                  <option value="">Vietnam</option>
+                </select>
+                <br /><br />
+                <strong>PROVINCE</strong>
+                <select class="select">
+                  <option value="">Please select</option>
+                </select>
+                <br /><br />
+                <strong>ZIP/POSTAL CODE</strong>
+                <input type="text" name="postal_code" class="input-text" id="postal_code" value="" placeholder="Postal code"/>
+              </div>
+            -->
+              <div class="cart_totals" style="padding-top: 0px;">
+                <h2><%= t('.cart_totals') %></h2>
+                <table>
+                  <tr class="cart-subtotal">
+                    <th><%= t('.total_items') %></th>
+                    <td><span class="amount" id="qty-subtotal-amount"><%= @cart_qty_subtotal %></span></td>
+                  </tr>
+                  <tr class="cart-subtotal">
+                    <th><%= t('.subtotal') %></th>
+                    <td><span class="amount" id="subtotal-amount"><%= session_price(@cart_subtotal) %></span></td>
+                  </tr>
+                  <tr class="shipping">
+                    <th><%= t('.shipping') %></th>
+                    <td>
+                      <p><%= t('.shipping_costs_text') %></p>
+                    </td>
+                  </tr>
+                  <tr class="order-total">
+                    <th>Total</th>
+                    <td><strong><span class="amount" id="total-amount"><%= session_price(@cart_subtotal) %></span></strong> </td>
+                  </tr>
+                  <% if session[:currency] != "PEN" %>
+                  <tr >
+                    <th></th>
+                    <td><strong><span class="amount" id="total-amount-soles" style="">S/. <%= @cart_subtotal * @exchange_rate %></span></strong> </td>
+                  </tr>
+                  <% end %>
+                </table>
+                <div class="wc-proceed-to-checkout">
+                  <%= link_to t('.proceed_to_checkout'), checkout_path, class: "checkout-button button alt wc-forward" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
