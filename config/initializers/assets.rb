@@ -1,6 +1,6 @@
 Rails.application.config.assets.precompile += %w( cocoon.js )
 Rails.application.config.assets.precompile += %w( ecommerce/backoffice.css ecommerce/backoffice.js)
 Rails.application.config.assets.precompile += %w( ecommerce/img/* ecommerce/canvas_ecommerce.css ecommerce/canvas_ecommerce.js )
-Rails.application.config.assets.precompile += %w( ecommerce/organici.css ecommerce/organici.js ecommerce/canvas_shop.css )
-Rails.application.config.assets.precompile += %w( ecommerce/canvas_shop.css ecommerce/canvas_shop.js )
+Rails.application.config.assets.precompile += %w( ecommerce/organici.css ecommerce/organici.js ecommerce/canvas_shop.css ecommerce/banchero.css )
+Rails.application.config.assets.precompile += %w( ecommerce/canvas_shop.css ecommerce/canvas_shop.js ecommerce/banchero.js)
 Rails.application.config.assets.precompile += %w( ecommerce/natural_power.css ecommerce/natural_power.js)
