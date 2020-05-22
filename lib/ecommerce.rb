@@ -54,6 +54,9 @@ module Ecommerce
   mattr_accessor :backoffice_promotions_per_page # :integer, default: Kaminari.config.default_per_page
   mattr_accessor :backoffice_users_per_page # :integer, default: Kaminari.config.default_per_page
   mattr_accessor :backoffice_default_locale
+  mattr_accessor :hide_pricelists
+  mattr_accessor :manual_order_approval
+  mattr_accessor :store_default_locale
   mattr_accessor :allow_checkout_on_gateway_error # :boolean, default: false
   mattr_accessor :allow_guest_checkout # :boolean, default: true
   mattr_accessor :auto_credit_card_capture# :boolean, default: false # automatically capture the credit card (as opposed to just authorize and capture later)
@@ -76,6 +79,7 @@ module Ecommerce
   mattr_accessor :enable_language_selector
   mattr_accessor :allow_coupons
   mattr_accessor :meta_tags_store_main_description
+  mattr_accessor :secondary_menu_visible
 
   class << self
 

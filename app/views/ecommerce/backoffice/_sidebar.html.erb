@@ -26,9 +26,11 @@
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'products' && controller.action_name == 'index')}) %>">
             <%= link_to t('.products'), backoffice_products_path %>
           </li>
-          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'pricelists' && controller.action_name == 'index')}) %>">
-            <%= link_to t('.pricelists'), backoffice_pricelists_path %>
-          </li>
+          <% unless Ecommerce.hide_pricelists %>
+            <li class="<%= class_string({ start: true, active: (controller.controller_name == 'pricelists' && controller.action_name == 'index')}) %>">
+              <%= link_to t('.pricelists'), backoffice_pricelists_path %>
+            </li>
+          <% end %>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'product_prices' && controller.action_name == 'index')}) %>">
             <%= link_to t('.product_prices'), backoffice_product_prices_path %>
           </li>
@@ -53,6 +55,12 @@
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.count %></span>
             <%= link_to t('.all_orders'), backoffice_orders_path %>
           </li>
+
+          <% if Ecommerce.manual_order_approval %>
+            <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.where(stage: 'stage_pending').count %></span>
+              <%= link_to t('.pending_orders'), backoffice_orders_path(stage: "stage_pending") %>
+            </li>
+          <% end %>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.where(stage: 'stage_closed').count %></span>
             <%= link_to t('.closed_orders'), backoffice_orders_path(stage: "stage_closed") %>
           </li>

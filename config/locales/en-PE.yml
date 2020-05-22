@@ -550,6 +550,7 @@ en-PE:
         suppliers: 'Suppliers'
         all_orders: 'All Orders'
         closed_orders: 'Closed Orders'
+        pending_orders: 'Pending Approval Orders'
         pricelists: 'Pricelists'
         product_prices: 'Product Prices'
         brands: 'Brands'

@@ -37,6 +37,8 @@ module Ecommerce
         session[:locale] = 'en-PE'
       when "Español"
         session[:locale] = 'es-PE'
+      else
+        session[:locale] = Ecommerce.store_default_locale || 'es-PE'
       end
       redirect_to :root
     end
