@@ -608,6 +608,7 @@ es-PE:
         suppliers: 'Proveedores'
         all_orders: 'Todas las Órdenes'
         closed_orders: 'Órdenes Cerradas'
+        pending_orders: 'Órdenes por Aprobar'
         pricelists: 'Listas de Precios'
         product_prices: 'Gestión de Precios'
         brands: 'Marcas'

@@ -1,9 +1,9 @@
 <div class="main">
 	<div class="container-fluid">
 
-			<div class="row" >
-		<% if browser.device.mobile? %>
-			<!--slide -->
+		<div class="row" >
+			<% if browser.device.mobile? %>
+				<!--slide -->
 				<div class="col-md-10 col-sm-12">
 				<div id="myCarousel" class="carousel slide" data-ride="carousel">
 						<!-- Indicators -->
@@ -74,30 +74,30 @@
 		<% end %>
 		<!--menu izquierda -->
 
-				<div class="col-lg-2 col-md-2 dvt_houses" >
-			<ul class="dvt_houses_lista " >
-				<li>
+		<% if Ecommerce.secondary_menu_visible %>
+			<div class="col-lg-2 col-md-2 dvt_houses" >
+				<ul class="dvt_houses_lista " >
+					<li></li>
+					<li>
+					<% @secondary_menu_categories.each do |category| %>
+						<div class="dvt_houses_contenedor hidden-xs hidden-sm" >
+							<a href=" <%= products_path(category_id: category.id) %> ">
+								<%= image_tag category.image.url, width: 187, height: 49, alt: "", class: "dvt_houses_img" %>
+								<span class="dvt_houses_titulos" style="text-align:center;"><%= category.image_popular_homepage_overlay_text %></span>
+							</a>
+						</div>
+					<% end %>
+					</li>
+				</ul>
+			</div>
+			<!--fin menu izquierda -->
+		<% end %>
 
-				</li>
-				<li>
-				<% @secondary_menu_categories.each do |category| %>
-					<div class="dvt_houses_contenedor hidden-xs hidden-sm" >
-						<a href=" <%= products_path(category_id: category.id) %> ">
-							<%= image_tag category.image.url, width: 187, height: 49, alt: "", class: "dvt_houses_img" %>
-							<span class="dvt_houses_titulos" style="text-align:center;"><%= category.image_popular_homepage_overlay_text %></span>
-						</a>
-					</div>
-				<% end %>
 
-			</li>
-			</ul>
-
-		</div>
-		<!--fin menu izquierda -->
 		<% unless browser.device.mobile? %>
 			<!--slide -->
-					<div class="col-md-10 col-sm-12"  >
-			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			<div class="col-md-10 col-sm-12"  >
+				<div id="myCarousel" class="carousel slide" data-ride="carousel">
 					<!-- Indicators -->
 					<ol class="carousel-indicators">
 						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
