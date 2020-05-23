@@ -1,9 +1,9 @@
 <div class="page-header">
   <%= link_to backoffice_product_prices_path, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
-    Back
+    <%= t('common.back') %>
   <% end %>
-  <h1>New Product Price</h1>
+  <h1><%= t('.new_product_price') %></h1>
 </div>
 
 <%= render 'form' %>

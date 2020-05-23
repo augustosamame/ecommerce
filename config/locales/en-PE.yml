@@ -654,3 +654,30 @@ en-PE:
           name: 'Name'
           status: 'Status'
           create_pricelist: 'Create Pricelist'
+      product_prices:
+        index:
+          new_product_price: 'New Product Price'
+          listing_product_prices: 'Listing Product Prices'
+          product: 'Product'
+          price_list: 'Price List'
+          price: 'Price'
+          discounted_price: 'Discounted Price'
+        new:
+          new_product_price: 'New Product Price'
+        form:
+          product_id: 'Product Id'
+          pricelist_id: 'Pricelist Id'
+          price: 'Price'
+          discounted_price: 'Discounted Price'
+          new_product_price: 'New Product Price'
+      categories:
+        index:
+          new_category: 'New Category'
+          listing_categories: 'Listing Categories'
+          name: 'Name'
+          parent: 'Parent'
+          image: 'Image'
+          main_menu: 'Main Menu?'
+          home_page: 'Home Page?'
+          type: 'Tipe'
+          order: 'Order'
