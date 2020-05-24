@@ -715,3 +715,30 @@ es-PE:
           name: 'Nombre'
           status: 'Estado'
           create_pricelist: 'Crear Lista de Precios'
+      product_prices:
+        index:
+          new_product_price: 'Nuevo Precios por Producto'
+          listing_product_prices: 'Listado de Precios por Producto'
+          product: 'Producto'
+          price_list: 'Lista de Precios'
+          price: 'Precio'
+          discounted_price: 'Precio Descontado'
+        new:
+          new_product_price: 'Nuevo Precios por Producto'
+        form:
+          product_id: 'Id del Producto'
+          pricelist_id: 'Id de Lista de Precios'
+          price: 'Precio'
+          discounted_price: 'Precio Descontado'
+          new_product_price: 'Crear Precio por Producto'
+      categories:
+        index:
+          new_category: 'Nueva Categoría'
+          listing_categories: 'Listado de Categorías'
+          name: 'Nombre'
+          parent: 'Padre'
+          image: 'Imágen'
+          main_menu: 'Menú Principal?'
+          home_page: 'Página Principal?'
+          type: 'Tipo'
+          order: 'órden'
