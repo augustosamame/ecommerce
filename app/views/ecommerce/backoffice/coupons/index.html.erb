@@ -1,31 +1,31 @@
 <div class="page-header">
   <%= link_to new_backoffice_coupon_path, class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-plus"></span>
-    New Coupon
+    <%= t('.new_coupon') %>
   <% end %>
-  <h1>Listing Coupons</h1>
+  <h1><%= t('.listing_coupons') %></h1>
 </div>
 
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
-        <th>Coupon Code</th>
-        <th>Dynamic User</th>
-        <th>Coupon Type</th>
-        <th>Discount Percentage</th>
-        <th>Fixed Discount</th>
-        <th>Discount Threshold</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Max Uses per Customer</th>
-        <th>Max Uses Total</th>
-        <th>Current Uses</th>
-        <th>Free Shipping?</th>
-        <th>Status</th>
-        <th>Show</th>
-        <th>Edit</th>
-        <th>Destroy</th>
+        <th><%= t('.coupon_code') %></th>
+        <th><%= t('.dynamic_user') %></th>
+        <th><%= t('.coupon_type') %></th>
+        <th><%= t('.discount_percentage') %></th>
+        <th><%= t('.fixed_discount') %></th>
+        <th><%= t('.discount_threshold') %></th>
+        <th><%= t('.start_date') %></th>
+        <th><%= t('.end_date') %></th>
+        <th><%= t('.max_uses_per_client') %></th>
+        <th><%= t('.max_uses_total') %></th>
+        <th><%= t('.current_uses') %></th>
+        <th><%= t('.free_shipping') %></th>
+        <th><%= t('.status') %></th>
+        <th><%= t('common.show') %></th>
+        <th><%= t('common.edit') %></th>
+        <th><%= t('common.destroy') %></th>
       </tr>
     </thead>
 

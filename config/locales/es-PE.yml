@@ -739,6 +739,80 @@ es-PE:
           parent: 'Padre'
           image: 'Imágen'
           main_menu: 'Menú Principal?'
-          home_page: 'Página Principal?'
+          home_page: 'Página de Inicio?'
           type: 'Tipo'
           order: 'órden'
+          status: 'Estado'
+          home_page_image: 'Imágen Página Principal'
+        new:
+          new_category: 'Nueva Categoría'
+        form:
+          name: 'Nombre'
+          parent_categories: 'Categoría Padre (Puede escoger más de una)'
+          category_image: 'Imágen de Categoría'
+          status: 'Estado'
+          include_as_a_menu_item: 'Incluir Como Item de Menú (Primario o Secundario)'
+          category_type: 'Tipo de Categoría (Primario: Menú Principal, Secundario: Menú Secundario)'
+          include_in_popular_homepage_categories: 'Incluir en Categorías Populares en Página de Inicio'
+          text_for_image_overlay: 'Texto para Imagen Flotante en Categorías Populares en Página de Inicio'
+          category_order: 'Orden de Categoría (0 Aparece Primero)'
+          homepage_category_image: 'Página de Inicio Categoría Imágen'
+          translations: 'Traducciones'
+          name_in_spanish: 'Nombre (en Español)'
+          name_in_spanish_text_overlay: "Texto para Imagen Flotante en Categorías Populares en Página de Inicio (en Español)"
+          create_category: 'Crear Categoría'
+      brands:
+        index:
+          new_brand: 'Nueva Marca'
+          listing_brands: 'Lista de Marcas'
+          name: 'Nombre'
+          logo: 'Logo'
+          featured: 'Destacado'
+        new:
+          new_brand: 'Nueva Marca'
+        form:
+          name: 'Nombre'
+          brand_logo: 'Logo de la Marca'
+          brand_logo_will_appear_in_home: 'Mostrar logo de la Marca en Página de Inicio'
+          create_brand: 'Crear Marca'
+      users:
+        index:
+          new_user: 'Nuevo Usuario'
+          listing_users: 'Lista de Usuarios'
+          name: 'Nombre'
+          email: 'Email'
+          role: 'Rol'
+          pricelist: 'LIsta de Precios'
+          delete: 'Eliminar'
+      coupons:
+        index:
+          new_coupon: 'Nuevo Cupón'
+          listing_coupons: 'Lista de Cupones'
+          coupon_code: 'Código de Cupón'
+          dynamic_user: 'Usuario Dinámico'
+          coupon_type: 'Tipo de Cupón'
+          discount_percentage: 'Porcentaje de descuento'
+          fixed_discount: 'Descuento Fijo'
+          discount_threshold: 'Umbral de Descuento'
+          start_date: 'Fecha de Inicio'
+          end_date: 'Fecha de Fin'
+          max_uses_per_client: 'Máximo de usos por Cliente'
+          max_uses_total: 'Máximo de Usos Totales'
+          current_uses: 'Usos Actuales'
+          free_shipping: 'Envio Gratis?'
+          status: 'Estado'
+      campaigns:
+        index:
+          new_campaign: 'Nueva Campaña'
+          listing_campaigns: 'Lista de Campañas'
+          campaign_name: 'Nombre de la Campaña'
+          coupon: 'Cupón'
+          campaign_type: 'Tipo de Campaña'
+          status: 'Estado'
+          send: 'Enviar'
+      stock_alerts:
+        index:
+          listing_stock_alerts: 'Listado de Alerta de Stock'
+          product: 'Producto'
+          user: 'Usuario'
+          status: 'Estado'

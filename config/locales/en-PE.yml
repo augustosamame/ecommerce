@@ -681,3 +681,77 @@ en-PE:
           home_page: 'Home Page?'
           type: 'Tipe'
           order: 'Order'
+          status: 'Status'
+          home_page_image: 'Home Page Image'
+        new:
+          new_category: 'New Category'
+        form:
+          name: 'Name'
+          parent_categories: 'Parent Categories (you can choose more than one)'
+          category_image: 'Category Image'
+          status: 'Status'
+          include_as_a_menu_item: 'nclude as a Menu Item (Primary or Secondary)'
+          category_type: 'Category Type (primary: main menu, secondary: secondary menu)'
+          include_in_popular_homepage_categories: 'Include in Popular Homepage Categories'
+          text_for_image_overlay: 'Text for Image Overlay in Popular Homepage Categories'
+          category_order: 'Category Order (0 Appears first)'
+          homepage_category_image: 'Homepage Category Image'
+          translations: 'Translations'
+          name_in_spanish: 'Name (In Spanish)'
+          name_in_spanish_text_overlay: "Text for Image Overlay in Popular HomePage Categories (in Spanish)"
+          create_category: 'Create Category'
+      brands:
+        index:
+          new_brand: 'New Brand'
+          listing_brands: 'Listing Brands'
+          name: 'Name'
+          logo: 'Logo'
+          Featured: 'Featured'
+        new:
+          new_brand: 'New Brand'
+        form:
+          name: 'Name'
+          brand_logo: 'Brand Logo'
+          brand_logo_will_appear_in_home: 'Brand Logo will Appear in Home'
+          create_brand: 'Create Brand'
+      users:
+        index:
+          new_user: 'New User'
+          listing_users: 'Listing Users'
+          name: 'Name'
+          email: 'Email'
+          role: 'Role'
+          pricelist: 'Pricelist'
+          delete: 'Delete'
+      coupons:
+        index:
+          new_coupon: 'New Coupon'
+          listing_coupons: 'Listing Coupons'
+          coupon_code: 'Coupon Code'
+          dynamic_user: 'Dynamic User'
+          coupon_type: 'Coupon Type'
+          discount_percentage: 'Discount Percentage'
+          fixed_discount: 'Fixed Discount'
+          discount_threshold: 'Discount Threshold'
+          start_date: 'Start Date'
+          end_date: 'End Date'
+          max_uses_per_client: 'Max Uses Per Client'
+          max_uses_total: 'Max Uses Total'
+          current_uses: 'Current Uses'
+          free_shipping: 'Free Shipping?'
+          status: 'Status'
+      campaigns:
+        index:
+          new_campaign: 'New Campaign'
+          listing_campaigns: 'Listing Campaigns'
+          campaign_name: 'Campaign Name'
+          coupon: 'Coupon'
+          campaign_type: 'Campaign Type'
+          status: 'Status'
+          send: 'Send'
+      stock_alerts:
+        index:
+          listing_stock_alerts: 'Listing Stock Alerts'
+          product: 'Product'
+          user: 'User'
+          status: 'Status'

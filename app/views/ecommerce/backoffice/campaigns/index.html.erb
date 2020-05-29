@@ -1,23 +1,23 @@
 <div class="page-header">
   <%= link_to new_backoffice_campaign_path, class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-plus"></span>
-    New Campaign
+    <%= t('.new_campaign') %>
   <% end %>
-  <h1>Listing Campaigns</h1>
+  <h1><%= t('.listing_campaigns') %></h1>
 </div>
 
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
-        <th>Campaign Name</th>
-        <th>Coupon</th>
-        <th>Campaign Type</th>
-        <th>Status</th>
-        <th>Send</th>
-        <th>Show</th>
-        <th>Edit</th>
-        <th>Destroy</th>
+        <th><%= t('.campaign_name') %></th>
+        <th><%= t('.coupon') %></th>
+        <th><%= t('.campaign_type') %></th>
+        <th><%= t('.status') %></th>
+        <th><%= t('.send') %></th>
+        <th><%= t('common.show') %></th>
+        <th><%= t('common.edit') %></th>
+        <th><%= t('common.destroy') %></th>
       </tr>
     </thead>
 

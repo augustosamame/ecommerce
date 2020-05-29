@@ -1,9 +1,9 @@
 <div class="page-header">
   <%= link_to backoffice_brands_path, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
-    Back
+    <%= t('common.back') %>
   <% end %>
-  <h1>New Brand</h1>
+  <h1><%= t('.new_brand') %></h1>
 </div>
 
 <%= render 'form' %>
