@@ -2,7 +2,7 @@
   <%= f.error_notification %>
   <div class="form-inputs">
     <%= f.input :name, collection: ["Home", "Doorman", "Office", "Warehouse", "Other"], label: t('.type'), prompt: t('.select_type_of_address') %>
-    <%= f.input :street, label: t('.street'), input_html: { maxlength: 100 } %>
+    <%= f.input :street, label: t('.street'), input_html: { maxlength: 85 } %>
     <%= f.input :district, collection: @districts, prompt: t('.select_district'), label: t('.district') %>
     <%= f.input :city, as: :hidden, input_html: {value: "Lima"}, label: t('.city')  %>
     <%= f.input :state, as: :hidden, input_html: {value: "Lima"}, label: t('.state') %>
