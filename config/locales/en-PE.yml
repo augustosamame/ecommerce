@@ -723,6 +723,19 @@ en-PE:
           role: 'Role'
           pricelist: 'Pricelist'
           delete: 'Delete'
+        edit:
+          editing_user: 'Editing User'
+        form:
+          first_name: 'First Name'
+          last_name: 'Last Name'
+          email: 'Email'
+          avatar: 'Avatar'
+          role: 'Role'
+          price_list: 'Price List'
+          phone: 'Phone'
+          user_name: 'User Name'
+          document: 'Document'
+          update_user: 'Update User'
       coupons:
         index:
           new_coupon: 'New Coupon'

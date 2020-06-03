@@ -1,13 +1,13 @@
 <div class="page-header">
   <%= link_to backoffice_users_path, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
-    Back
+    <%= t('common.back') %>
   <% end %>
   <%= link_to backoffice_user_path(@backoffice_user), class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-info-sign"></span>
-    Show
+    <%= t('common.show') %>
   <% end %>
-  <h1>Editing User</h1>
+  <h1><%= t('.editing_user') %></h1>
 </div>
 
 <%= render 'form' %>

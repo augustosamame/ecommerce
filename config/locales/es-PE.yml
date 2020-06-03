@@ -784,6 +784,19 @@ es-PE:
           role: 'Rol'
           pricelist: 'LIsta de Precios'
           delete: 'Eliminar'
+        edit:
+          editing_user: 'Editando Usuario'
+        form:
+          first_name: 'Nombre'
+          last_name: 'Apellido'
+          email: 'Email'
+          avatar: 'Imágen'
+          role: 'Rol'
+          price_list: 'Lista de Precios'
+          phone: 'Teléfono'
+          user_name: 'Nombre de Usuario'
+          document: 'Documento'
+          update_user: 'Actualizar Usuario'
       coupons:
         index:
           new_coupon: 'Nuevo Cupón'
