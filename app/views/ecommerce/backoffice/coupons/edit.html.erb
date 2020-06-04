@@ -1,13 +1,13 @@
 <div class="page-header">
   <%= link_to backoffice_coupons_path, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
-    Back
+    <%= t('common.back') %>
   <% end %>
   <%= link_to backoffice_coupon_path(@coupon), class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-info-sign"></span>
-    Show
+    <%= t('common.show') %>
   <% end %>
-  <h1>Editing Coupon</h1>
+  <h1><%= t('.editing_coupon') %></h1>
 </div>
 
 <%= render 'form' %>

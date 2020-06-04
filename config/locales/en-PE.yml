@@ -753,6 +753,24 @@ en-PE:
           current_uses: 'Current Uses'
           free_shipping: 'Free Shipping?'
           status: 'Status'
+        new:
+          new_coupon: 'New Coupon'
+        edit:
+          editing_coupon: 'Editing Coupon'
+        form:
+          coupon_code: 'Coupon Code'
+          coupon_type: 'Coupon Type'
+          discount_percentage_decimal: 'Discount Percentage Decimal'
+          discount_fixed: 'Discount Fixed'
+          discount_threshold: 'Discount Threshold'
+          start_date: 'Start Date'
+          end_date: 'End Date'
+          max_uses_per_user: 'Max Uses per User'
+          max_uses: 'Max Uses'
+          current_uses: 'Current Uses'
+          free_shipping: 'Free Shipping'
+          status: 'Status'
+          submit: 'Submit'
       campaigns:
         index:
           new_campaign: 'New Campaign'
@@ -762,6 +780,21 @@ en-PE:
           campaign_type: 'Campaign Type'
           status: 'Status'
           send: 'Send'
+        new:
+          new_campaign: 'New Campaign'
+        edit:
+          editing_campaign: 'Editing Campaign'
+        form:
+          coupon_id: 'Coupon Id'
+          campaign_type: 'Campaign Type'
+          status: 'Status'
+          email_subject: 'Email Subject'
+          email_subject_es: 'Email Subject Spanish'
+          email_coupon_description: "Email Coupon Description (will come after 'This coupon can be used to')"
+          email_coupon_description_es: "Email Coupon Description Spanish (will come after 'Este cupón puede ser usado para ')"
+          main_product_image: 'Main Product Image'
+          submit: 'Submit'
+
       stock_alerts:
         index:
           listing_stock_alerts: 'Listing Stock Alerts'

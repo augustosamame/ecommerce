@@ -814,6 +814,24 @@ es-PE:
           current_uses: 'Usos Actuales'
           free_shipping: 'Envio Gratis?'
           status: 'Estado'
+        new:
+          new_coupon: 'Nuevo Cupón'
+        edit:
+          editing_coupon: 'Editar Cupón'
+        form:
+          coupon_code: 'Código del Cupón'
+          coupon_type: 'Tipo de Cupón'
+          discount_percentage_decimal: 'Porcentaje Descuento Decimal'
+          discount_fixed: 'Descuento Fijo'
+          discount_threshold: 'Umbral de Descuento'
+          start_date: 'Fecha de Inicio'
+          end_date: 'Fecha Fin'
+          max_uses_per_user: 'Máximo de Usos por Usuario'
+          max_uses: 'Máximo de Usos'
+          current_uses: 'Usos Actuales'
+          free_shipping: 'Envío Gratis'
+          status: 'Estado'
+          submit: 'Grabar'
       campaigns:
         index:
           new_campaign: 'Nueva Campaña'
@@ -823,6 +841,26 @@ es-PE:
           campaign_type: 'Tipo de Campaña'
           status: 'Estado'
           send: 'Enviar'
+        new:
+          new_campaign: 'Nueva Campaña'
+        edit:
+          editing_campaign: 'Editar Campaña'
+        form:
+          name: 'Nombre'
+          coupon_id: 'Id Cupón'
+          campaign_type: 'Tipo de Campaña'
+          status: 'Estado'
+          email_subject: 'Asunto Correo'
+          email_subject_es: 'Asunto Correo Español'
+          email_coupon_description: "Descripción del Email del Cupón (Aparecerá después de 'This coupon can be used to')"
+          email_coupon_description_es: "Descripción del Email del Cupón Español (Aparecerá después de 'Éste cupón puede ser usado para')"
+          main_product_image: 'Imágen Producto Principal'
+          submit: 'Grabar'
+
+
+
+
+
       stock_alerts:
         index:
           listing_stock_alerts: 'Listado de Alerta de Stock'

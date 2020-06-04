@@ -2,22 +2,22 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :coupon_code %>
-    <%= f.input :coupon_type, collection: Ecommerce::Coupon.coupon_types.keys %>
-    <%= f.input :discount_percentage_decimal %>
-    <%= f.input :discount_fixed %>
-    <%= f.input :discount_threshold %>
-    <%= f.input :start_date, as: :date_time_picker %>
-    <%= f.input :end_date, as: :date_time_picker %>
-    <%= f.input :max_uses_per_user %>
-    <%= f.input :max_uses %>
-    <%= f.input :current_uses %>
-    <%= f.input :free_shipping %>
-    <%= f.input :status, collection: Ecommerce::Coupon.statuses.keys %>
+    <%= f.input :coupon_code, label: t('.coupon_code') %>
+    <%= f.input :coupon_type, label: t('.coupon_type'), collection: Ecommerce::Coupon.coupon_types.keys %>
+    <%= f.input :discount_percentage_decimal, label: t('.discount_percentage_decimal') %>
+    <%= f.input :discount_fixed, label: t('.discount_fixed') %>
+    <%= f.input :discount_threshold, label: t('.discount_threshold') %>
+    <%= f.input :start_date, label: t('.start_date'), as: :date_time_picker %>
+    <%= f.input :end_date, label: t('.end_date'), as: :date_time_picker %>
+    <%= f.input :max_uses_per_user, label: t('.max_uses_per_user') %>
+    <%= f.input :max_uses, label: t('.max_uses') %>
+    <%= f.input :current_uses, label: t('.current_uses') %>
+    <%= f.input :free_shipping, label: t('.free_shipping') %>
+    <%= f.input :status, label: t('.status'), collection: Ecommerce::Coupon.statuses.keys %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, class: "btn btn-primary" %>
+    <%= f.button :submit, t('.submit'), class: "btn btn-primary" %>
   </div>
 <% end %>
 

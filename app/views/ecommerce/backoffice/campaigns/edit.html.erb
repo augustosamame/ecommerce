@@ -1,13 +1,13 @@
 <div class="page-header">
   <%= link_to backoffice_campaigns_path, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
-    Back
+    <%= t('common.back') %>
   <% end %>
   <%= link_to backoffice_campaign_path(@campaign), class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-info-sign"></span>
-    Show
+    <%= t('common.show') %>
   <% end %>
-  <h1>Editing Campaign</h1>
+  <h1><%= t('.editing_campaign') %></h1>
 </div>
 
 <%= render 'form' %>
