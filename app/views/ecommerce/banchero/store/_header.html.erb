@@ -75,9 +75,9 @@
 						</div>
 						<a href="<%= root_path %>" class="navbar-brand">
 						<% if browser.device.mobile? %>
-								<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal noo-logo-mobile", style: "margin-top: -18px;" %>
+								<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal noo-logo-mobile", style: "margin-top: -10px;" %>
 						<% else %>
-								<%= image_tag Ecommerce.header_landing_logo, style: "margin-top: -22px;", alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 140 %>
+								<%= image_tag Ecommerce.header_landing_logo, style: "margin-top: 0px;", alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 220 %>
 						<% end %>
 						</a>
 					</div>
@@ -104,11 +104,11 @@
 							</li>
 
 							<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
-								<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
+								<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: #B3B7B9" %></li>
 							<% end %>
 
 							<% if current_user && ["admin", "blogger"].include?(current_user.role) && controller_name == "blog" %>
-								<li><%= link_to t('.manage_blog_posts'), Blog::Engine.routes.url_helpers.posts_path, style: "color: red;" %></li>
+								<li><%= link_to t('.manage_blog_posts'), Blog::Engine.routes.url_helpers.posts_path, style: "color: #B3B7B9" %></li>
 							<% end %>
 						</ul>
 						</nav>
@@ -123,12 +123,8 @@
 
 								<ul class="nav-collapse navbar-nav">
 									<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
-										<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
+										<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style= "color: #B3B7B9;" %></li>
 									<% end %>
-
-
-
-										<li><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>"><%= t('.all_products') %></a></li>
 
 										<% @primary_menu_categories.each do |category| %>
 
@@ -186,7 +182,7 @@
 
 								<ul class="nav-collapse navbar-nav">
 									<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
-										<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
+										<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: #B3B7B9;" %></li>
 									<% end %>
 									<% if current_user %>
 										<li class="menu-item-has-children">
@@ -267,26 +263,8 @@
 						</nav>
 				</div>
 
-				<!-- menu product -->
-				<% unless @hide_header_ecommerce_items %>
-				<div class="container-fluid ">
-						<div class="row  menu1">
-							<div class="col-lg-12 col-md-12 dvt_back text-center dvt_allp hidden-xs hidden-sm center-block menu1">
-								<ul class="bt_allp ">
+<!--	-->		<!-- menu product -->
 
-									<li style="color:#; padding-left:10px; padding-right:6px; border-right:1px solid #cccccc;"><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>"><%= t('.all_products') %></a></li>
-
-									<% if current_user %>
-										<li style="padding-left:10px; padding-right:6px; "><a href="<%= Ecommerce::Engine.routes.url_helpers.favorites_path %>" style='color:red;'><%= t('.favorite_products') %></a></li>
-									<% end %>
-
-									<% @primary_menu_categories.each do |category| %>
-									<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active header-menu-no-wrap" %></li>
-									<% end %>
-					      </ul>
-							</div>
-						</div>
-				<% end %>
 
 				<!-- final menu product -->
 
@@ -295,6 +273,23 @@
 		</div>
 	</div>
 	</div>
+	<% unless @hide_header_ecommerce_items %>
+	<div class="container-fluid ">
+			<div class="row  menu1">
+				<div class="col-lg-12 col-md-12 dvt_back text-center dvt_allp hidden-xs hidden-sm center-block menu1">
+					<ul class="bt_allp ">
+
+						<% if current_user %>
+							<li style="padding-left:10px; padding-right:6px; "><a href="<%= Ecommerce::Engine.routes.url_helpers.favorites_path %>" style='color:#B3B7B9;'><%= t('.favorite_products') %></a></li>
+						<% end %>
+
+						<% @primary_menu_categories.each do |category| %>
+						<li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active header-menu-no-wrap" %></li>
+						<% end %>
+					</ul>
+				</div>
+			</div>
+	<% end %>
 	<!--
 	<% if browser.device.mobile? %>
 	<div class="floating-buttons-div" id="floating-buttons-div">
