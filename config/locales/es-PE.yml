@@ -856,14 +856,29 @@ es-PE:
           email_coupon_description_es: "Descripción del Email del Cupón Español (Aparecerá después de 'Éste cupón puede ser usado para')"
           main_product_image: 'Imágen Producto Principal'
           submit: 'Grabar'
-
-
-
-
-
+      translations:
+        index:
+          listing_translations: 'Lista de Traducciones'
+          table: 'Tabla'
+          field: 'Campo'
       stock_alerts:
         index:
           listing_stock_alerts: 'Listado de Alerta de Stock'
           product: 'Producto'
           user: 'Usuario'
           status: 'Estado'
+      payment_methods:
+        index:
+          new_payment_method: 'Nuevo Método de Pago'
+          listing_payment_method: 'Lista Método de Pago'
+          name: 'Nombre'
+          status: 'Estado'
+          processor: 'Procesador'
+          account_id: 'Id de Cuenta'
+          mark_as_paid: 'Marcar como Pagado'
+          pre_message: 'Pre Mensaje'
+          post_message: 'Post Mensaje'
+        edit:
+          editing_payment_method: 'Editar Método de Pago'
+        form:
+          name: 'Nombre (Tarjeta, Manual o Pago Bancario)'

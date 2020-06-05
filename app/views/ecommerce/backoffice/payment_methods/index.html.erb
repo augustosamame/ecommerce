@@ -1,25 +1,25 @@
 <div class="page-header">
   <%= link_to new_backoffice_payment_method_path, class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-plus"></span>
-    New Payment Method
+    <%= t('.new_payment_method') %>
   <% end %>
-  <h1>Listing Payment Method</h1>
+  <h1><%= t('.listing_payment_method') %></h1>
 </div>
 
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Processor</th>
-        <th>Account Id</th>
-        <th>Marks As Paid</th>
-        <th>Pre Message</th>
-        <th>Post Message</th>
-        <th>Show</th>
-        <th>Edit</th>
-        <th>Destroy</th>
+        <th><%= t('.name') %></th>
+        <th><%= t('.status') %></th>
+        <th><%= t('.processor') %></th>
+        <th><%= t('.account_id') %></th>
+        <th><%= t('.mark_as_paid') %></th>
+        <th><%= t('.pre_message') %></th>
+        <th><%= t('.post_message') %></th>
+        <th><%= t('common.show') %></th>
+        <th><%= t('common.edit') %></th>
+        <th><%= t('common.destroy') %></th>
       </tr>
     </thead>
 

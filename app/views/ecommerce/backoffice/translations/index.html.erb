@@ -1,16 +1,16 @@
 <div class="page-header">
   <%= link_to :back, class: 'btn btn-primary' do %>
-    Back
+    <%= t('common.back') %>
   <% end %>
-  <h1>Listing Translations</h1>
+  <h1><%= t('.listing_translations') %></h1>
 </div>
 
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
-        <th>Table</th>
-        <th>Field</th>
+        <th><%= t('.table') %></th>
+        <th><%= t('.field') %></th>
         <% Ecommerce::Category.globalize_locales.each do |item| %>
         <th><%= "#{item}" %></th>
         <% end %>

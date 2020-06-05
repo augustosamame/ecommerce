@@ -794,10 +794,29 @@ en-PE:
           email_coupon_description_es: "Email Coupon Description Spanish (will come after 'Este cupón puede ser usado para ')"
           main_product_image: 'Main Product Image'
           submit: 'Submit'
-
+      translations:
+        index:
+          listing_translations: 'Listing Translations'
+          table: 'Table'
+          field: 'Field'
       stock_alerts:
         index:
           listing_stock_alerts: 'Listing Stock Alerts'
           product: 'Product'
           user: 'User'
           status: 'Status'
+      payment_methods:
+        index:
+          new_payment_method: 'New Payment Method'
+          listing_payment_method: 'Listing Payment Method'
+          name: 'Name'
+          status: 'Status'
+          processor: 'Processor'
+          account_id: 'Account Id'
+          mark_as_paid: 'Mark as Paid'
+          pre_message: 'Pre Message'
+          post_message: 'Post Message'
+        edit:
+          editing_payment_method: 'Editing Payment Method'
+        form:
+          name: "Name (Card, Manual or Bank Payment)"
