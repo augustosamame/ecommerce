@@ -1,3 +1,3 @@
 module Ecommerce
-  VERSION = '0.6.8.9'
+  VERSION = '0.6.9.6'
 end

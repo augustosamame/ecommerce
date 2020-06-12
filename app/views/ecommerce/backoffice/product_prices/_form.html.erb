@@ -2,13 +2,13 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :product_id, collection: Ecommerce::Product.all.order(:name) %>
-    <%= f.input :pricelist_id, collection: Ecommerce::Pricelist.all %>
-    <%= f.input :price %>
-    <%= f.input :discounted_price %>
+    <%= f.input :product_id, label: t('.product_id'), collection: Ecommerce::Product.all.order(:name) %>
+    <%= f.input :pricelist_id, label: t('.pricelist_id'), collection: Ecommerce::Pricelist.all %>
+    <%= f.input :price, label: t('.price') %>
+    <%= f.input :discounted_price, label: t('.discounted_price') %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, class: "btn btn-primary" %>
+    <%= f.button :submit, t('.new_product_price'), class: "btn btn-primary" %>
   </div>
 <% end %>

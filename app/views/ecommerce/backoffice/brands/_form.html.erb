@@ -2,8 +2,8 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.label "Brand Logo" %>
+    <%= f.input :name, label: t('.name') %>
+    <%= f.label t('.brand_logo') %>
     <div class="form-group">
       <% if f.object.logo? %>
         <%= image_tag f.object.logo, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
@@ -15,11 +15,11 @@
       </span>
       <%= f.hidden_field :logo_cache %>
     </div>
-    <%= f.input :featured, label: "Brand Logo will appear in Home" %>
+    <%= f.input :featured, label: t('.brand_logo_will_appear_in_home') %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, class: "btn btn-primary" %>
+    <%= f.button :submit, t('.create_brand'), class: "btn btn-primary" %>
   </div>
 <% end %>
 

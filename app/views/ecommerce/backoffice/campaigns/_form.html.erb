@@ -2,15 +2,15 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :coupon_id, collection: Ecommerce::Coupon.active, label_method: lambda { |obj| obj.coupon_code} %>
-    <%= f.input :campaign_type, collection: Ecommerce::Campaign.campaign_types.keys %>
-    <%= f.input :status, collection: Ecommerce::Campaign.statuses.keys %>
-    <%= f.input :email_subject, label: "Email Subject" %>
-    <%= f.input :email_subject_es, label: "Email Subject Spanish" %>
-    <%= f.input :email_coupon_description, label: "Email Coupon Description (will come after 'This coupon can be used to ')" %>
-    <%= f.input :email_coupon_description_es, label: "Email Coupon Description Spanish (will come after 'Este cupón puede ser usado para ')" %>
-    <%= f.label "Main Product Image" %>
+    <%= f.input :name, label: t('.name') %>
+    <%= f.input :coupon_id, label: t('.coupon_id'), collection: Ecommerce::Coupon.active, label_method: lambda { |obj| obj.coupon_code} %>
+    <%= f.input :campaign_type, label: t('.campaign_type'), collection: Ecommerce::Campaign.campaign_types.keys %>
+    <%= f.input :status, label: t('.status'), collection: Ecommerce::Campaign.statuses.keys %>
+    <%= f.input :email_subject, label: t('.email_subject') %>
+    <%= f.input :email_subject_es, label: t('.email_subject_es') %>
+    <%= f.input :email_coupon_description, label: t('.email_coupon_description') %>
+    <%= f.input :email_coupon_description_es, label: t('.email_coupon_description_es') %>
+    <%= f.label t('.main_product_image') %>
     <div class="form-group">
       <% if f.object.image? %>
         <%= image_tag f.object.image.url, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
@@ -25,7 +25,7 @@
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, class: "btn btn-primary" %>
+    <%= f.button :submit, t('.submit'), class: "btn btn-primary" %>
   </div>
 <% end %>
 

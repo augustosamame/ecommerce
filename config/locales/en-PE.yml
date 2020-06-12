@@ -246,7 +246,7 @@ en-PE:
         new_address_form:
           type: "Type"
           select_type_of_address: "Select Type of Address"
-          street: "Street (max 100 chars)"
+          street: "Street (max 85 chars)"
           district: "District"
           select_district: "Select District"
           city: "City"
@@ -458,7 +458,7 @@ en-PE:
         new_address_form:
           type: "Type"
           select_type_of_address: "Select Type of Address"
-          street: "Street (max 100 chars)"
+          street: "Street (max 85 chars)"
           district: "District"
           select_district: "Select District"
           city: "City"
@@ -654,3 +654,169 @@ en-PE:
           name: 'Name'
           status: 'Status'
           create_pricelist: 'Create Pricelist'
+      product_prices:
+        index:
+          new_product_price: 'New Product Price'
+          listing_product_prices: 'Listing Product Prices'
+          product: 'Product'
+          price_list: 'Price List'
+          price: 'Price'
+          discounted_price: 'Discounted Price'
+        new:
+          new_product_price: 'New Product Price'
+        form:
+          product_id: 'Product Id'
+          pricelist_id: 'Pricelist Id'
+          price: 'Price'
+          discounted_price: 'Discounted Price'
+          new_product_price: 'New Product Price'
+      categories:
+        index:
+          new_category: 'New Category'
+          listing_categories: 'Listing Categories'
+          name: 'Name'
+          parent: 'Parent'
+          image: 'Image'
+          main_menu: 'Main Menu?'
+          home_page: 'Home Page?'
+          type: 'Tipe'
+          order: 'Order'
+          status: 'Status'
+          home_page_image: 'Home Page Image'
+        new:
+          new_category: 'New Category'
+        form:
+          name: 'Name'
+          parent_categories: 'Parent Categories (you can choose more than one)'
+          category_image: 'Category Image'
+          status: 'Status'
+          include_as_a_menu_item: 'nclude as a Menu Item (Primary or Secondary)'
+          category_type: 'Category Type (primary: main menu, secondary: secondary menu)'
+          include_in_popular_homepage_categories: 'Include in Popular Homepage Categories'
+          text_for_image_overlay: 'Text for Image Overlay in Popular Homepage Categories'
+          category_order: 'Category Order (0 Appears first)'
+          homepage_category_image: 'Homepage Category Image'
+          translations: 'Translations'
+          name_in_spanish: 'Name (In Spanish)'
+          name_in_spanish_text_overlay: "Text for Image Overlay in Popular HomePage Categories (in Spanish)"
+          create_category: 'Create Category'
+      brands:
+        index:
+          new_brand: 'New Brand'
+          listing_brands: 'Listing Brands'
+          name: 'Name'
+          logo: 'Logo'
+          Featured: 'Featured'
+        new:
+          new_brand: 'New Brand'
+        form:
+          name: 'Name'
+          brand_logo: 'Brand Logo'
+          brand_logo_will_appear_in_home: 'Brand Logo will Appear in Home'
+          create_brand: 'Create Brand'
+      users:
+        index:
+          new_user: 'New User'
+          listing_users: 'Listing Users'
+          name: 'Name'
+          email: 'Email'
+          role: 'Role'
+          pricelist: 'Pricelist'
+          delete: 'Delete'
+        edit:
+          editing_user: 'Editing User'
+        form:
+          first_name: 'First Name'
+          last_name: 'Last Name'
+          email: 'Email'
+          avatar: 'Avatar'
+          role: 'Role'
+          price_list: 'Price List'
+          phone: 'Phone'
+          user_name: 'User Name'
+          document: 'Document'
+          update_user: 'Update User'
+      coupons:
+        index:
+          new_coupon: 'New Coupon'
+          listing_coupons: 'Listing Coupons'
+          coupon_code: 'Coupon Code'
+          dynamic_user: 'Dynamic User'
+          coupon_type: 'Coupon Type'
+          discount_percentage: 'Discount Percentage'
+          fixed_discount: 'Fixed Discount'
+          discount_threshold: 'Discount Threshold'
+          start_date: 'Start Date'
+          end_date: 'End Date'
+          max_uses_per_client: 'Max Uses Per Client'
+          max_uses_total: 'Max Uses Total'
+          current_uses: 'Current Uses'
+          free_shipping: 'Free Shipping?'
+          status: 'Status'
+        new:
+          new_coupon: 'New Coupon'
+        edit:
+          editing_coupon: 'Editing Coupon'
+        form:
+          coupon_code: 'Coupon Code'
+          coupon_type: 'Coupon Type'
+          discount_percentage_decimal: 'Discount Percentage Decimal'
+          discount_fixed: 'Discount Fixed'
+          discount_threshold: 'Discount Threshold'
+          start_date: 'Start Date'
+          end_date: 'End Date'
+          max_uses_per_user: 'Max Uses per User'
+          max_uses: 'Max Uses'
+          current_uses: 'Current Uses'
+          free_shipping: 'Free Shipping'
+          status: 'Status'
+          submit: 'Submit'
+      campaigns:
+        index:
+          new_campaign: 'New Campaign'
+          listing_campaigns: 'Listing Campaigns'
+          campaign_name: 'Campaign Name'
+          coupon: 'Coupon'
+          campaign_type: 'Campaign Type'
+          status: 'Status'
+          send: 'Send'
+        new:
+          new_campaign: 'New Campaign'
+        edit:
+          editing_campaign: 'Editing Campaign'
+        form:
+          coupon_id: 'Coupon Id'
+          campaign_type: 'Campaign Type'
+          status: 'Status'
+          email_subject: 'Email Subject'
+          email_subject_es: 'Email Subject Spanish'
+          email_coupon_description: "Email Coupon Description (will come after 'This coupon can be used to')"
+          email_coupon_description_es: "Email Coupon Description Spanish (will come after 'Este cupón puede ser usado para ')"
+          main_product_image: 'Main Product Image'
+          submit: 'Submit'
+      translations:
+        index:
+          listing_translations: 'Listing Translations'
+          table: 'Table'
+          field: 'Field'
+      stock_alerts:
+        index:
+          listing_stock_alerts: 'Listing Stock Alerts'
+          product: 'Product'
+          user: 'User'
+          status: 'Status'
+      payment_methods:
+        index:
+          new_payment_method: 'New Payment Method'
+          listing_payment_method: 'Listing Payment Method'
+          name: 'Name'
+          status: 'Status'
+          processor: 'Processor'
+          account_id: 'Account Id'
+          mark_as_paid: 'Mark as Paid'
+          pre_message: 'Pre Message'
+          post_message: 'Post Message'
+        edit:
+          editing_payment_method: 'Editing Payment Method'
+        form:
+          name: "Name (Card, Manual or Bank Payment)"

@@ -176,7 +176,7 @@ es-PE:
         new_address_form:
           type: "Tipo"
           select_type_of_address: "Selecciona el Tipo de Dirección"
-          street: "Dirección (max 100 caracteres)"
+          street: "Dirección (max 85 caracteres)"
           district: "Distrito"
           select_district: "Seleccionar Distrito"
           city: "Ciudad"
@@ -440,7 +440,7 @@ es-PE:
         new_address_form:
           type: "Tipo"
           select_type_of_address: "Selecciona el Tipo de Dirección"
-          street: "Dirección (max 100 caracteres)"
+          street: "Dirección (max 85 caracteres)"
           district: "Distrito"
           select_district: "Seleccionar Distrito"
           city: "Ciudad"
@@ -715,3 +715,170 @@ es-PE:
           name: 'Nombre'
           status: 'Estado'
           create_pricelist: 'Crear Lista de Precios'
+      product_prices:
+        index:
+          new_product_price: 'Nuevo Precios por Producto'
+          listing_product_prices: 'Listado de Precios por Producto'
+          product: 'Producto'
+          price_list: 'Lista de Precios'
+          price: 'Precio'
+          discounted_price: 'Precio Descontado'
+        new:
+          new_product_price: 'Nuevo Precios por Producto'
+        form:
+          product_id: 'Id del Producto'
+          pricelist_id: 'Id de Lista de Precios'
+          price: 'Precio'
+          discounted_price: 'Precio Descontado'
+          new_product_price: 'Crear Precio por Producto'
+      categories:
+        index:
+          new_category: 'Nueva Categoría'
+          listing_categories: 'Listado de Categorías'
+          name: 'Nombre'
+          parent: 'Padre'
+          image: 'Imágen'
+          main_menu: 'Menú Principal?'
+          home_page: 'Página de Inicio?'
+          type: 'Tipo'
+          order: 'órden'
+          status: 'Estado'
+          home_page_image: 'Imágen Página Principal'
+        new:
+          new_category: 'Nueva Categoría'
+        form:
+          name: 'Nombre'
+          parent_categories: 'Categoría Padre (Puede escoger más de una)'
+          category_image: 'Imágen de Categoría'
+          status: 'Estado'
+          include_as_a_menu_item: 'Incluir Como Item de Menú (Primario o Secundario)'
+          category_type: 'Tipo de Categoría (Primario: Menú Principal, Secundario: Menú Secundario)'
+          include_in_popular_homepage_categories: 'Incluir en Categorías Populares en Página de Inicio'
+          text_for_image_overlay: 'Texto para Imagen Flotante en Categorías Populares en Página de Inicio'
+          category_order: 'Orden de Categoría (0 Aparece Primero)'
+          homepage_category_image: 'Página de Inicio Categoría Imágen'
+          translations: 'Traducciones'
+          name_in_spanish: 'Nombre (en Español)'
+          name_in_spanish_text_overlay: "Texto para Imagen Flotante en Categorías Populares en Página de Inicio (en Español)"
+          create_category: 'Crear Categoría'
+      brands:
+        index:
+          new_brand: 'Nueva Marca'
+          listing_brands: 'Lista de Marcas'
+          name: 'Nombre'
+          logo: 'Logo'
+          featured: 'Destacado'
+        new:
+          new_brand: 'Nueva Marca'
+        form:
+          name: 'Nombre'
+          brand_logo: 'Logo de la Marca'
+          brand_logo_will_appear_in_home: 'Mostrar logo de la Marca en Página de Inicio'
+          create_brand: 'Crear Marca'
+      users:
+        index:
+          new_user: 'Nuevo Usuario'
+          listing_users: 'Lista de Usuarios'
+          name: 'Nombre'
+          email: 'Email'
+          role: 'Rol'
+          pricelist: 'LIsta de Precios'
+          delete: 'Eliminar'
+        edit:
+          editing_user: 'Editando Usuario'
+        form:
+          first_name: 'Nombre'
+          last_name: 'Apellido'
+          email: 'Email'
+          avatar: 'Imágen'
+          role: 'Rol'
+          price_list: 'Lista de Precios'
+          phone: 'Teléfono'
+          user_name: 'Nombre de Usuario'
+          document: 'Documento'
+          update_user: 'Actualizar Usuario'
+      coupons:
+        index:
+          new_coupon: 'Nuevo Cupón'
+          listing_coupons: 'Lista de Cupones'
+          coupon_code: 'Código de Cupón'
+          dynamic_user: 'Usuario Dinámico'
+          coupon_type: 'Tipo de Cupón'
+          discount_percentage: 'Porcentaje de descuento'
+          fixed_discount: 'Descuento Fijo'
+          discount_threshold: 'Umbral de Descuento'
+          start_date: 'Fecha de Inicio'
+          end_date: 'Fecha de Fin'
+          max_uses_per_client: 'Máximo de usos por Cliente'
+          max_uses_total: 'Máximo de Usos Totales'
+          current_uses: 'Usos Actuales'
+          free_shipping: 'Envio Gratis?'
+          status: 'Estado'
+        new:
+          new_coupon: 'Nuevo Cupón'
+        edit:
+          editing_coupon: 'Editar Cupón'
+        form:
+          coupon_code: 'Código del Cupón'
+          coupon_type: 'Tipo de Cupón'
+          discount_percentage_decimal: 'Porcentaje Descuento Decimal'
+          discount_fixed: 'Descuento Fijo'
+          discount_threshold: 'Umbral de Descuento'
+          start_date: 'Fecha de Inicio'
+          end_date: 'Fecha Fin'
+          max_uses_per_user: 'Máximo de Usos por Usuario'
+          max_uses: 'Máximo de Usos'
+          current_uses: 'Usos Actuales'
+          free_shipping: 'Envío Gratis'
+          status: 'Estado'
+          submit: 'Grabar'
+      campaigns:
+        index:
+          new_campaign: 'Nueva Campaña'
+          listing_campaigns: 'Lista de Campañas'
+          campaign_name: 'Nombre de la Campaña'
+          coupon: 'Cupón'
+          campaign_type: 'Tipo de Campaña'
+          status: 'Estado'
+          send: 'Enviar'
+        new:
+          new_campaign: 'Nueva Campaña'
+        edit:
+          editing_campaign: 'Editar Campaña'
+        form:
+          name: 'Nombre'
+          coupon_id: 'Id Cupón'
+          campaign_type: 'Tipo de Campaña'
+          status: 'Estado'
+          email_subject: 'Asunto Correo'
+          email_subject_es: 'Asunto Correo Español'
+          email_coupon_description: "Descripción del Email del Cupón (Aparecerá después de 'This coupon can be used to')"
+          email_coupon_description_es: "Descripción del Email del Cupón Español (Aparecerá después de 'Éste cupón puede ser usado para')"
+          main_product_image: 'Imágen Producto Principal'
+          submit: 'Grabar'
+      translations:
+        index:
+          listing_translations: 'Lista de Traducciones'
+          table: 'Tabla'
+          field: 'Campo'
+      stock_alerts:
+        index:
+          listing_stock_alerts: 'Listado de Alerta de Stock'
+          product: 'Producto'
+          user: 'Usuario'
+          status: 'Estado'
+      payment_methods:
+        index:
+          new_payment_method: 'Nuevo Método de Pago'
+          listing_payment_method: 'Lista Método de Pago'
+          name: 'Nombre'
+          status: 'Estado'
+          processor: 'Procesador'
+          account_id: 'Id de Cuenta'
+          mark_as_paid: 'Marcar como Pagado'
+          pre_message: 'Pre Mensaje'
+          post_message: 'Post Mensaje'
+        edit:
+          editing_payment_method: 'Editar Método de Pago'
+        form:
+          name: 'Nombre (Tarjeta, Manual o Pago Bancario)'

@@ -1,42 +1,42 @@
 <div class="page-header">
   <%= link_to new_backoffice_category_path, class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-plus"></span>
-    New Category
+    <%= t('.new_category') %>
   <% end %>
-  <h1>Listing Categories</h1>
+  <h1><%= t('.listing_categories') %></h1>
 </div>
 
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
-            <th>Name</th>
-            <th>Parent</th>
-            <th>Image</th>
-            <th>Main Menu?</th>
-            <th>Home Page?</th>
-            <th>Type</th>
-            <th>Order</th>
-            <th>Home Page Image</th>
-            <th>Status</th>
-            <th>Show</th>
-        <th>Edit</th>
-        <th>Destroy</th>
+        <th><%= t('.name') %></th>
+        <th><%= t('.parent') %></th>
+        <th><%= t('.image') %></th>
+        <th><%= t('.main_menu') %></th>
+        <th><%= t('.home_page') %></th>
+        <th><%= t('.type') %></th>
+        <th><%= t('.order') %></th>
+        <th><%= t('.home_page_image') %></th>
+        <th><%= t('.status') %></th>
+        <th><%= t('common.show') %></th>
+        <th><%= t('common.edit') %></th>
+        <th><%= t('common.destroy') %></th>
       </tr>
     </thead>
 
     <tbody>
       <%= content_tag_for(:tr, @backoffice_categories) do |backoffice_category| %>
-            <td><%= backoffice_category.name %></td>
-            <td><%= backoffice_category.parent_category_list.blank? ? "Root" : backoffice_category.parent_category_list.to_s %></td>
-            <td><%= image_tag backoffice_category.image_url(:medium_400), width: 100 %></td>
-            <td><%= backoffice_category.main_menu %></td>
-            <td><%= backoffice_category.popular_homepage %></td>
-            <td><%= backoffice_category.category_type %></td>
-            <td><%= best_in_place backoffice_category, :category_order, :as => :input, :url => "categories_in_place/#{backoffice_category.id}", :method => :put %></td>
-            <td><%= image_tag backoffice_category.image_popular_homepage_url(:homepage), width: 100 %></td>
-            <td><%= backoffice_category.status %></td>
-            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_category_path(backoffice_category) %></td>
+        <td><%= backoffice_category.name %></td>
+        <td><%= backoffice_category.parent_category_list.blank? ? "Root" : backoffice_category.parent_category_list.to_s %></td>
+        <td><%= image_tag backoffice_category.image_url(:medium_400), width: 100 %></td>
+        <td><%= backoffice_category.main_menu %></td>
+        <td><%= backoffice_category.popular_homepage %></td>
+        <td><%= backoffice_category.category_type %></td>
+        <td><%= best_in_place backoffice_category, :category_order, :as => :input, :url => "categories_in_place/#{backoffice_category.id}", :method => :put %></td>
+        <td><%= image_tag backoffice_category.image_popular_homepage_url(:homepage), width: 100 %></td>
+        <td><%= backoffice_category.status %></td>
+        <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_category_path(backoffice_category) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_category_path(backoffice_category) %></td>
         <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_category_path(backoffice_category), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>

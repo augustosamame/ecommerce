@@ -2,9 +2,9 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.association :category, as: :tags, :value_method => lambda { |category| "#{category.name}" }, :label_method => lambda { |category| "#{category.name}" }, label: "Parent Categories (you can choose more than one)" %>
-    <%= f.label "Category Image" %>
+    <%= f.input :name, label: t('.name') %>
+    <%= f.association :category, as: :tags, :value_method => lambda { |category| "#{category.name}" }, :label_method => lambda { |category| "#{category.name}" }, label: t('.parent_categories') %>
+    <%= f.label t('.category_image') %>
     <div class="form-group">
       <% if f.object.image? %>
         <%= image_tag f.object.image.to_s, id: "image_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
@@ -17,14 +17,14 @@
       <%= f.hidden_field :image_cache %>
     </div>
 
-    <%= f.input :status, collection: Ecommerce::Category.statuses.keys %>
-    <%= f.input :main_menu, label: "Include as a Menu Item (primary or secondary)" %>
-    <%= f.input :category_type, collection: Ecommerce::Category.category_types.keys, label: "Category Type (primary: main menu, secondary: secondary menu)" %>
-    <%= f.input :popular_homepage, label: "Include in Popular HomePage Categories" %>
-    <%= f.input :image_popular_homepage_overlay_text, label: "Text for Image Overlay in Popular HomePage Categories" %>
-    <%= f.input :category_order, label: "Category Order (0 appears first)" %>
+    <%= f.input :status, label: t('.status'), collection: Ecommerce::Category.statuses.keys %>
+    <%= f.input :main_menu, label: t('.include_as_a_menu_item') %>
+    <%= f.input :category_type, collection: Ecommerce::Category.category_types.keys, label: t('.category_type') %>
+    <%= f.input :popular_homepage, label: t('.include_in_popular_homepage_categories') %>
+    <%= f.input :image_popular_homepage_overlay_text, label: t('.text_for_image_overlay') %>
+    <%= f.input :category_order, label: t('.category_order') %>
 
-    <%= f.label "HomePage Category Image" %>
+    <%= f.label t('.homepage_category_image') %>
     <div class="form-group">
       <% if f.object.image_popular_homepage? %>
         <%= image_tag f.object.image_popular_homepage.to_s, id: "image_popular_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
@@ -37,17 +37,17 @@
       <%= f.hidden_field :image_popular_homepage_cache %>
     </div>
 
-    <h2>Translations</h2>
+    <h2><%= t('.translations') %></h2>
     <% Globalize.with_locale(:"es-PE") do %>
-      <%= f.input :name_es_pe, label: "Name (in Spanish)"%>
-      <%= f.input :image_popular_homepage_overlay_text_es_pe, label: "Text for Image Overlay in Popular HomePage Categories (in Spanish)" %>
+      <%= f.input :name_es_pe, label: t('.name_in_spanish') %>
+      <%= f.input :image_popular_homepage_overlay_text_es_pe, label: t('.name_in_spanish_text_overlay') %>
     <% end %>
 
 
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, class: "btn btn-primary" %>
+    <%= f.button :submit, t('.create_category'), class: "btn btn-primary" %>
   </div>
 <% end %>
 
