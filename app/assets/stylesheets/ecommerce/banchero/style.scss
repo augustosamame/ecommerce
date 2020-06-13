@@ -312,13 +312,13 @@ textarea {
 }
 
 a {
-    color: #DCDDDD;
+    color: #ffffff;
     text-decoration: none;
 }
 
 a:hover,
 a:focus {
-    color: #333333;
+    color: #DCDDDD;
     text-decoration: none;
 }
 
@@ -5615,23 +5615,25 @@ body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
     -ms-transform: rotate(45deg);
     -o-transform: rotate(45deg);
     transform: rotate(45deg);
-    border-top: 1px solid #262626;
-    border-left: 1px solid #262626;
-    background: #ffffff;
+    border-top: 1px solid #575757;
+    border-left: 1px solid #575757;
+    background: #262626;
 }
 
 .noo-menu-item-cart .noo-minicart .minicart-header {
     font-size: 12px;
     text-transform: uppercase;
-    color: #696969;
+    color: #DCDDDD;
     padding: 10px 15px;
     border-bottom: 1px solid #262626;
+    border-top: 1px solid #575757;
     font-weight: normal;
 }
 
 .noo-menu-item-cart .noo-minicart .minicart-body {
     padding: 5px 10px;
     border-bottom: 1px solid #262626;
+
 }
 
 .noo-menu-item-cart .noo-minicart .minicart-body .cart-product {
@@ -5734,12 +5736,13 @@ body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
 
 .noo-menu-item-cart .noo-minicart .minicart-footer {
     padding: 10px;
+
 }
 
 .noo-menu-item-cart .noo-minicart .minicart-footer .minicart-total {
     font-size: 14px;
     text-transform: uppercase;
-    color: #696969;
+    color: #DCDDDD;
     font-weight: normal;
     padding: 10px 2px;
     text-align: left;
@@ -5773,7 +5776,7 @@ body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
 }
 
 .noo-menu-item-cart .noo-minicart .minicart-footer .minicart-actions .button:first-child {
-    margin-right: 8px;
+    margin-right: 25px;
 }
 
 .noo-menu-item-cart .noo-minicart .minicart-footer .minicart-actions .button.button-null {
@@ -5938,7 +5941,7 @@ body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
 }
 
 .noo-page-heading.eff:before {
-    background: rgba(33, 33, 33, 0.5);
+    background: rgba(33, 33, 33, 0.0);
 }
 
 .noo-page-heading .container {
@@ -10691,7 +10694,7 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title {
 
 div.product-style2 .product-grid .noo-product-inner .noo-product-title .price {
     margin-top: 15px;
-    color: #333333;
+    color: #DCDDDD;
     font-size: 18px;
 }
 
@@ -15675,7 +15678,7 @@ input[type='checkbox'] {
     padding: 15px 0 0;
     position: relative;
     overflow: hidden;
-    background-color: #ffffff;
+    background-color: #262626;
 }
 
 .commerce .product-grid .noo-product-title .noo-product-excerpt {
@@ -15685,7 +15688,7 @@ input[type='checkbox'] {
 .commerce .product-grid .noo-product-title h3 {
     font-family: 'Lato', sans-serif;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 400;
     text-transform: uppercase;
     margin: 0;
     padding: 0;
