@@ -385,7 +385,7 @@
 }
 
 .mandatory-address {
-	color: red;
+	color: #575757;
 	font-size: 16px;
 	position: relative;
 	// top: 25px;
@@ -465,10 +465,15 @@
 }
 
 .organici-continue {
-  background: #f4eede !important;
-  color: #212121 !important;
+  background: #262626 !important;
+	border:1px solid #dcdddd !important;
+  color: #dcdddd !important;
   text-align: center !important;
 	width: 160px !important;
+	border-radius:3px !important;
+}
+.organici-continue:hover{
+	background: #575757 !important;
 }
 
 .no_stock {
@@ -514,8 +519,8 @@ div.product-style2 .product-grid .noo-product-inner .noo-product-title .noo-prod
 }
 
 .commerce .product-grid .noo-product-inner {
-  border-width: 1px;
-  border-color: black;
+  /*border-width: 1px;
+  border-color: black;*/
 }
 
 @media (max-width: 767px) {
