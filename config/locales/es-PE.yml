@@ -316,7 +316,7 @@ es-PE:
           shipping_rates: "Tarifas de Envíos"
           shipping_rates_p_html: "Costo de envío: $3 </br>Envío gratis por pedidos sobre $30"
           shipping_times: "Tiempos de Envíos"
-          shipping_times_p_html: "Los pedidos colocados antes de las 11:30am serán entregados el mismo día (martes a viernes).</br>Los pedidos colocados después de las 11:30am serán entregados al día siguiente (martes a viernes)"
+          shipping_times_p_html: "Los pedidos serán entregados al siguiente día útil (martes a viernes)"
     canvas_shop:
       store:
         top_bar:
@@ -580,7 +580,7 @@ es-PE:
           shipping_rates: "Tarifas de Envíos"
           shipping_rates_p_html: "Costo de envío: $3 </br>Envío gratis por pedidos sobre $30"
           shipping_times: "Tiempos de Envíos"
-          shipping_times_p_html: "Los pedidos colocados antes de las 11:30am serán entregados el mismo día (martes a viernes).</br>Los pedidos colocados después de las 11:30am serán entregados al día siguiente (martes a viernes)"
+          shipping_times_p_html: "Los pedidos serán entregados al siguiente día útil (martes a viernes)"
     backoffice:
       dashboard:
         main:
