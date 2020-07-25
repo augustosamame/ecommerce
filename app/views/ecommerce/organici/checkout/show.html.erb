@@ -286,10 +286,11 @@ $( document ).ready(function() {
   }
 
   var address_option_length = $('#address_id > option').length;
-  if (address_option_length == 2) {
-    $("#address_id").get(0).selectedIndex = 1;
-    calculate_shipping($("#address_street").val(), $("#address_district").val(), 'save_address');
-  }
+  // console.log('length of address options: ', address_option_length)
+  // if (address_option_length == 2) {
+  $("#address_id").get(0).selectedIndex = address_option_length - 1;
+  calculate_shipping($("#address_street").val(), $("#address_district").val(), 'save_address');
+  //}
 });
 
 </script>
