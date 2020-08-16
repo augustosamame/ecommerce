@@ -81,7 +81,7 @@ module Ecommerce
 
     def in_stock?
 
-      return self.total_quantity > 0
+      return !self.total_quantity || self.total_quantity > 0
     end
 
     def discounted?

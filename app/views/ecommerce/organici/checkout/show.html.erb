@@ -262,6 +262,21 @@
                 </div>
 
                 <button class="button mt-5" id ="pay-now-button"><%= t('.place_order') %></button>
+
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+
+                    <li class="wc_payment_method" id="accept-marketing-wrapper" style: "margin-bottom: 0px; display: flex !important;">
+                      <%= check_box_tag("accept_marketing", "1", true, class: "pay_in_soles_checkbox") %>
+                      <label for="accept_marketing" style="font-size: 12px;">
+                        <%= t('.accept_marketing') %>
+                      </label>
+
+
+                    </li>
+                  </ul>
+                </div>
+
               </div>
             </div>
           </div>
@@ -444,6 +459,16 @@ $( document ).ready(function() {
           text: "<%= t('.you_must_enter_factura_info') %>"
         });
       }
+
+    if (!($('#accept_marketing').is(':checked'))) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_check_marketing') %>"
+        });
+      }
+
     if (!errors_present) {
       if ($('input[name=payment_method]:checked').val() == "card") {
 
