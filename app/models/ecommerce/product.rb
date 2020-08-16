@@ -59,8 +59,10 @@ module Ecommerce
 
     def notify_stock_alert_users
       if self.saved_change_to_total_quantity?
-        if self.saved_changes[:total_quantity][0] <= 0 && self.saved_changes[:total_quantity][1] > 0
-          send_notifications_stock_alert_users
+        if self.saved_changes[:total_quantity][0]
+          if self.saved_changes[:total_quantity][0] <= 0 && self.saved_changes[:total_quantity][1] > 0
+            send_notifications_stock_alert_users
+          end
         end
       end
     end
