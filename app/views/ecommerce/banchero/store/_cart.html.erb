@@ -5,13 +5,13 @@
   <% end %>
   <span class="cart-item has-items" id="shopping-cart">
     <i class="fa fa-shopping-cart"></i>
-    <span>(<%= @cart.get_totals[:tot_qty] %>)
+    <span>(<%= @cart.get_totals(@current_user)[:tot_qty] %>)
     <% unless browser.device.mobile? %>
       </span> <%= t('.items') %> </span>
     <% end %>
 </a>
 <div class="noo-minicart">
-  <div class="minicart-header"><%= @cart.get_totals[:tot_qty] %> <%= t('.items_in_shopping_cart') %></div>
+  <div class="minicart-header"><%= @cart.get_totals(@current_user)[:tot_qty] %> <%= t('.items_in_shopping_cart') %></div>
   <div class="minicart-body">
 
     <% @cart.cart_items.each do |item| %>
@@ -37,11 +37,11 @@
   </div>
   <div class="minicart-footer">
     <div class="minicart-total">
-      Subtotal <span class="amount"><%= session_price(@cart.get_totals[:tot_acum]) %></span>
+      Subtotal <span class="amount"><%= session_price(@cart.get_totals(@current_user)[:tot_acum]) %></span>
     </div>
     <% if session[:currency] != "PEN" %>
       <div class="minicart-total">
-        <span class="amount" style="margin-top: -15px;">S/. <%= @cart.get_totals[:tot_acum] * @exchange_rate %></span>
+        <span class="amount" style="margin-top: -15px;">S/. <%= @cart.get_totals(@current_user)[:tot_acum] * @exchange_rate %></span>
       </div>
     <% end %>
     <div class="minicart-actions clearfix">

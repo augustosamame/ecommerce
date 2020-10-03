@@ -12,8 +12,9 @@
       <span class="short-descrip" style="font-size:13px;"><%= item.short_description.gsub("**","<br>").html_safe if item.short_description %></span><br>
       </a>
       <div class='center-form'>
-        <% if item.price == item.discounted_price %>
+        <% if item && (item.price == item.discounted_price) %>
           <span class="price"><span class="amount"><%= session_price(item, "current_price") %></span></span>
+          
         <% else %>
 
           <span class="price">

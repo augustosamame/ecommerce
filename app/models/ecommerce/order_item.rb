@@ -7,7 +7,7 @@ module Ecommerce
 
     enum status: {active: 0, inactive: 1, void: 2 }
 
-    def line_total
+    def line_total(current_user)
       self.quantity * (self.price)
     end
   end

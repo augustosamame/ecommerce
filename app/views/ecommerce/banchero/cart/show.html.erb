@@ -64,7 +64,7 @@
                       </div>
                     </td>
                     <td class="product-subtotal">
-                      <span class="amount"><%= session_price(item.line_total) %></span>
+                      <span class="amount"><%= session_price(item.line_total(@current_user)) %></span>
                     </td>
                     <td class="product-remove">
                       <%= link_to "&times;".html_safe, cart_item_path(item.id), method: :delete, class: "remove" %>

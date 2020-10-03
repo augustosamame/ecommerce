@@ -89,7 +89,7 @@
                     </div>
                   </td>
                   <td class="product-subtotal">
-                    <span class="amount"><%= humanized_money_with_symbol item.line_total %></span>
+                    <span class="amount"><%= humanized_money_with_symbol item.line_total(@current_user) %></span>
                   </td>
                 </tr>
                 <% end %>

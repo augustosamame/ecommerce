@@ -91,7 +91,7 @@
                   </div>
                 </td>
                 <td class="product-subtotal">
-                  <span class="amount"><%= number_to_currency(item.line_total) %></span>
+                  <span class="amount"><%= number_to_currency(item.line_total(@current_user)) %></span>
                 </td>
               </tr>
               <% end %>

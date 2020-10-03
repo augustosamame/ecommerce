@@ -90,10 +90,6 @@ module Ecommerce
       self.discounted_price_cents < self.price_cents
     end
 
-    def usd_current_price
-      current_price
-    end
-
     def pricelist_price_cents(pricelist)
       return ProductPrice.find_by(product_id: self.id, pricelist_id: pricelist.id).try(:price_cents)
     end
@@ -110,8 +106,8 @@ module Ecommerce
       return ProductPrice.find_by(product_id: self.id, pricelist_id: pricelist.id).try(:discounted_price)
     end
 
-    def current_price
-      if Current.user.try(:pricelist_id).blank? || Ecommerce::ProductPrice.find_by(product_id: self.id, pricelist_id: Current.user.pricelist_id).blank?
+    def current_price(current_user)
+      if current_user.try(:pricelist_id).blank? || Ecommerce::ProductPrice.find_by(product_id: self.id, pricelist_id: current_user.pricelist_id).blank?
         case Ecommerce::SessionInfo.current_session_currency
         when "usd"
           return [self.price, self.discounted_price].min  #all prices in dollars
@@ -121,8 +117,8 @@ module Ecommerce
           return [self.price, self.discounted_price].min
         end
       else
-        new_price = Ecommerce::ProductPrice.find_by(product_id: self.id, pricelist_id: Current.user.pricelist_id).price
-        new_discounted_price = Ecommerce::ProductPrice.find_by(product_id: self.id, pricelist_id: Current.user.pricelist_id).discounted_price
+        new_price = Ecommerce::ProductPrice.find_by(product_id: self.id, pricelist_id: current_user.pricelist_id).price
+        new_discounted_price = Ecommerce::ProductPrice.find_by(product_id: self.id, pricelist_id: current_user.pricelist_id).discounted_price
         case Ecommerce::SessionInfo.current_session_currency
         when "usd"
           return [new_price, new_discounted_price].min  #all prices in dollars

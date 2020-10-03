@@ -60,7 +60,7 @@
                           <strong class="product-quantity">× <%= item.quantity %></strong>
                         </td>
                         <td class="product-total">
-                          <span class="amount"><%= number_to_currency(item.line_total) %></span>
+                          <span class="amount"><%= number_to_currency(item.line_total(@current_user)) %></span>
                         </td>
                       </tr>
                     <% end %>

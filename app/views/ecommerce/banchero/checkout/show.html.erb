@@ -52,7 +52,7 @@
                           <strong class="product-quantity">× <%= item.quantity %></strong>
                         </td>
                         <td class="product-total">
-                          <span class="amount"><%= session_price(item.line_total) %></span>
+                          <span class="amount"><%= session_price(item.line_total(@current_user)) %></span>
                         </td>
                       </tr>
                     <% end %>

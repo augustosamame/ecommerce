@@ -4,8 +4,8 @@ module Ecommerce
     belongs_to :cart
     belongs_to :product
 
-    def line_total
-      (self.quantity || 0) * (self.try(:product).try(:current_price) || 0)
+    def line_total(current_user)
+      (self.quantity || 0) * (self.try(:product).current_price(current_user) || 0)
     end
 
   end

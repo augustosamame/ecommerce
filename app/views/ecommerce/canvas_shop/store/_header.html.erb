@@ -161,7 +161,7 @@
 									</div>
 									<div class="top-cart-item-desc">
 										<%= link_to item.product.name, product_path(item.product) %>
-										<span class="top-cart-item-price"><%= number_to_currency(item.product.current_price) %></span>
+										<span class="top-cart-item-price"><%= number_to_currency(item.product.current_price(@current_user)) %></span>
 										<span class="top-cart-item-quantity"><%= "x #{item.quantity}" %></span>
 									</div>
 								</div>

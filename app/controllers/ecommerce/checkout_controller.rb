@@ -73,7 +73,10 @@ module Ecommerce
       @picked_address = Address.new(user_id: current_user.id)
       @checkout_addresses = Address.where(user_id: current_user.id)
       @districts = ['San Isidro', 'Miraflores', 'Barranco', 'Santiago de Surco', 'La Molina','Chorrillos','San Borja','San Luis','Surquillo','San Miguel','Pueblo Libre','La Victoria','Magdalena','Jesus María','Lince'].sort
-      @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
+      @cart_subtotal = 0
+      @cart.cart_items.includes(:product).each do |cart_item|
+        @cart_subtotal += cart_item.line_total(current_user)
+      end
       #active payment methods in view
       @payment_bank_deposit = PaymentMethod.is_active.find_by(name: "Bank Deposit")
       @payment_manual = PaymentMethod.is_active.find_by(name: "Manual")
@@ -150,7 +153,7 @@ module Ecommerce
                 OrderItem.create!(
                   order_id: @order.id,
                   product_id: item.product_id,
-                  price: item.product.current_price,
+                  price: item.product.current_price(current_user),
                   quantity: item.quantity,
                   status: "active"
                 )

@@ -83,7 +83,7 @@
                 </td>
 
                 <td class="cart-product-price">
-                  <span class="amount"><%= number_to_currency(item.product.current_price) %></span>
+                  <span class="amount"><%= number_to_currency(item.product.current_price(@current_user)) %></span>
                 </td>
 
                 <td class="cart-product-quantity">
@@ -95,7 +95,7 @@
                 </td>
 
                 <td class="cart-product-subtotal">
-                  <span class="amount"><%= number_to_currency(item.line_total) %></span>
+                  <span class="amount"><%= number_to_currency(item.line_total(@current_user)) %></span>
                 </td>
               </tr>
               <% end %>

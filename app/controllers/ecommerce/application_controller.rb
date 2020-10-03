@@ -64,7 +64,10 @@ module Ecommerce
           session[:cart_id] = @cart.id
         end
       end
-      @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)
+      @cart_subtotal = 0
+      @cart.cart_items.includes(:product).each do |cart_item|
+        @cart_subtotal += cart_item.line_total(current_user)
+      end
       @cart_item_qty_total = @cart.cart_items.sum(&:quantity)
       #flash[:error] = 'this is a flash error'
     end

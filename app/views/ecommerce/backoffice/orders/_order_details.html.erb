@@ -19,10 +19,10 @@
             <%= item.product.name %>
           </td>
           <td>
-            <%= number_to_currency(item.product.current_price) %>
+            <%= number_to_currency(item.product.current_price(@current_user)) %>
           </td>
           <td>
-            <%= number_to_currency(item.line_total) %>
+            <%= number_to_currency(item.line_total(@current_user)) %>
           </td>
         </tr>
       <% end %>

@@ -62,16 +62,30 @@ module Ecommerce
     end
 
     def session_price(passed_object, field = nil)
-      case session[:currency]
-      when "pen"
-        value = field ? eval("passed_object.#{field}") : passed_object
-        return number_to_currency(value, locale: "en-PE")
-      when "usd"
-        value = field ? eval("passed_object.#{field}") : passed_object
-        return number_to_currency(value, locale: "en-US")
+      if field == "current_price"
+        case session[:currency]
+        when "pen"
+          value = passed_object.current_price(current_user)
+          return number_to_currency(value, locale: "en-PE")
+        when "usd"
+          value = passed_object.current_price(current_user)
+          return number_to_currency(value, locale: "en-US")
+        else
+          value = passed_object.current_price(current_user)
+          return number_to_currency(value, locale: "en-PE")
+        end
       else
-        value = field ? eval("passed_object.#{field}") : passed_object
-        return number_to_currency(value, locale: "en-PE")
+        case session[:currency]
+        when "pen"
+          value = field ? eval("passed_object.#{field}") : passed_object
+          return number_to_currency(value, locale: "en-PE")
+        when "usd"
+          value = field ? eval("passed_object.#{field}") : passed_object
+          return number_to_currency(value, locale: "en-US")
+        else
+          value = field ? eval("passed_object.#{field}") : passed_object
+          return number_to_currency(value, locale: "en-PE")
+        end
       end
     end
 

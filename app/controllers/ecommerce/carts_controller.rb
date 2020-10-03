@@ -10,7 +10,10 @@ module Ecommerce
     # GET /carts/1
     def show
       @cart_qty_subtotal = @cart.cart_items.includes(:product).sum(:quantity)
-      @cart_subtotal = @cart.cart_items.includes(:product).sum(&:line_total)  #different syntax as line_total is not a db column but method
+      @cart_subtotal = 0
+      @cart.cart_items.includes(:product).each do |cart_item|
+        @cart_subtotal += cart_item.line_total(current_user)
+      end
       render "ecommerce/#{Ecommerce.ecommerce_layout}/cart/show"
     end
 
