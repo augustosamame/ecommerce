@@ -21,8 +21,9 @@ module Ecommerce
     def post_send_recipients
       user_array = params[:other][:user_list].split(',').map(&:to_i)
       coupon_id = params[:other][:coupon_id]
-      user_array.each do |user_id|
-        SendCampaignEmailWorker.perform_async(user_id, coupon_id, @campaign.id)
+      unique_users_by_email = User.where(id: user_array).uniq{|p| p.email}
+      unique_users_by_email.each do |user|
+        SendCampaignEmailWorker.perform_async(user.id, coupon_id, @campaign.id)
       end
       redirect_to :backoffice_campaigns, notice: "#{user_array.length} Bulk Emails sent"
     end

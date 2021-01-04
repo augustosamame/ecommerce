@@ -87,7 +87,7 @@
             <%= link_to t('.dynamic_coupons'), backoffice_dynamic_coupon_index_path %>
           </li>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'campaigns' && controller.action_name == 'index')}) %>">
-            <%= link_to t('.campañas'), backoffice_campaigns_path %>
+            <%= link_to t('.campaigns'), backoffice_campaigns_path %>
           </li>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'stock_alerts' && controller.action_name == 'index')}) %>">
             <%= link_to t('.stock_alerts'), backoffice_stock_alerts_path %>
