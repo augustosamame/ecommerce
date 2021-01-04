@@ -20,5 +20,12 @@ module Ecommerce
       return {tot_acum: tot_acum, tot_qty: qty_items}
     end
 
+    def self.send_email_to_all_abandoned_carts
+      Cart.where(status: 'active', abandoned_email_sent: false).where("created_at < ?", Time.now - 12.hours).each do |cart|
+        #puts "sent #{cart.id}" unless cart.cart_items.empty?
+        SendAbandonedCartEmailWorker.perform_async(cart.id) unless cart.cart_items.empty?
+      end
+    end
+
   end
 end

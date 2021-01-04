@@ -60,7 +60,7 @@ module Ecommerce
         #something like @cart.update(user_id: current_user.id)
         @cart = Cart.find_by(id: session[:cart_id], status: "active")
         unless @cart
-          @cart = Cart.create(status: "active")
+          @cart = Cart.create(status: "active", abandoned_email_sent: false)
           session[:cart_id] = @cart.id
         end
       end
