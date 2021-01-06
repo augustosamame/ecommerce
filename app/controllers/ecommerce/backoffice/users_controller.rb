@@ -2,7 +2,7 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   class Backoffice::UsersController < Backoffice::BaseController
-    before_action :set_backoffice_user, only: [:show, :edit, :update, :destroy]
+    before_action :set_backoffice_user, only: [:show, :edit, :update, :destroy, :user_points, :new_user_points]
     authorize_resource :class => "User" #we have to do this because controller and model do not have the same namespace
 
     # GET /backoffice/users
@@ -52,6 +52,34 @@ module Ecommerce
       redirect_to backoffice_users_url, notice: 'User was successfully destroyed.'
     end
 
+    def new_user_points
+      @points_transaction = PointsTransaction.new(user_id: @backoffice_user.id, tx_type: 'customer_service')
+    end
+
+    def create_user_points
+      @points_transaction = PointsTransaction.new(user_id: params[:points_transaction][:hidden_user_id], tx_type: 'customer_service', points: params[:points_transaction][:points])
+      if @points_transaction.save
+        redirect_to backoffice_user_points_path(@points_transaction.user_id), notice: 'Points Record was successfully created.'
+      else
+        render :new
+      end
+    end
+
+    def user_points
+      @points_transactions = @backoffice_user.points_transactions
+    end
+
+    def void_points
+      @points_transaction = PointsTransaction.find(params[:id])
+      if @points_transaction.active?
+        ActiveRecord::Base.transaction do
+          @points_transaction.update(status: 'inactive')
+          PointsTransaction.create(user_id: @points_transaction.user_id, points: -@points_transaction.points, tx_type: 'void', tx_id: nil)
+        end
+      end
+      redirect_to backoffice_user_points_path(@points_transaction.user_id)
+    end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_backoffice_user
@@ -60,7 +88,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_user_params
-        params.require(:user).permit(:first_name, :last_name, :phone, :username, :address, :doc_id, :avatar, :avatar_cache, :email, :role, :pricelist_id, :status)
+        params.require(:user).permit(:first_name, :last_name, :phone, :username, :address, :doc_id, :avatar, :avatar_cache, :email, :role, :pricelist_id, :status, :points)
       end
   end
 end

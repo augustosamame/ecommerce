@@ -20,7 +20,17 @@ module Ecommerce
       unless self.pending?
         if Payment.where(order: self.order_id).sum(:amount_cents) >= self.order.amount_cents
           self.order.update(stage: "stage_paid", payment_status: "paid")
+          add_points(self.order)
         end
+      end
+    end
+
+    def add_points(order)
+      user = order.user
+      current_points = user.points
+      Payment.transaction do
+        user.update(points: current_points + order.amount_cents)
+        PointsTransaction.create(user_id: user.id, points: order.amount_cents, tx_type: 'purchase', tx_id: order.id)
       end
     end
 

@@ -1,0 +1,22 @@
+<div class="page-header">
+  <%= link_to backoffice_user_points_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <h1>New User Points Record</h1>
+</div>
+
+<%= simple_form_for([:backoffice, @points_transaction]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :user_id, collection: User.all, label: 'User Name', disabled: true  %>
+    <%= f.input :hidden_user_id, :as => :hidden, :input_html => { :value => @points_transaction.user_id }  %>
+    <%= f.input :points, label: 'Points'  %>
+    <%= f.input :tx_type, collection: PointsTransaction.tx_types.keys, label: 'Tx Type', disabled: true  %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, 'Create User Points', class: "btn btn-primary" %>
+  </div>
+<% end %>

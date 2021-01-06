@@ -167,7 +167,7 @@ module Ecommerce
 
     def close_cart_and_create_new
       @cart.update(status: "closed")
-      @cart = Cart.create(user_id: current_user.id, status: "active", abandoned_cart_email: false)
+      @cart = Cart.create(user_id: current_user.id, status: "active", abandoned_email_sent: false)
       session[:cart_id] = @cart.id
     end
 

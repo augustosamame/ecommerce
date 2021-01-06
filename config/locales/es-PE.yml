@@ -785,6 +785,7 @@ es-PE:
           name: 'Nombre'
           email: 'Email'
           role: 'Rol'
+          points: 'Puntos'
           pricelist: 'LIsta de Precios'
           delete: 'Eliminar'
         edit:

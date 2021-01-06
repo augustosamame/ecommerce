@@ -13,6 +13,7 @@
         <th><%= t('.name') %></th>
         <th><%= t('.email') %></th>
         <th><%= t('.role') %></th>
+        <th><%= t('.points') %></th>
         <th><%= t('.pricelist') %></th>
         <th><%= t('common.show') %></th>
         <th><%= t('common.edit') %></th>
@@ -22,11 +23,12 @@
 
     <tbody>
       <%= content_tag_for(:tr, @backoffice_users) do |backoffice_user| %>
-            <td><%= backoffice_user.name %></td>
-            <td><%= backoffice_user.email %></td>
-            <td><%= backoffice_user.role %></td>
-            <td><%= backoffice_user.pricelist.try(:name) %></td>
-            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_user_path(backoffice_user) %></td>
+        <td><%= backoffice_user.name %></td>
+        <td><%= backoffice_user.email %></td>
+        <td><%= backoffice_user.role %></td>
+        <td><%= link_to backoffice_user.points, backoffice_user_points_path(backoffice_user) %></td>
+        <td><%= backoffice_user.pricelist.try(:name) %></td>
+        <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_user_path(backoffice_user) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_user_path(backoffice_user) %></td>
         <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_user_path(backoffice_user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>

@@ -1,0 +1,8 @@
+<div class="page-header">
+  <%= link_to backoffice_new_user_points_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    <%= 'New Points Transaction' %>
+  <% end %>
+  <h1><%= "User Points - #{@points_transactions.try(:first).try(:user).try(:name)} - Total: #{@points_transactions.try(:first).try(:user).try(:points)}" %></h1>
+</div>
+<%= render "ecommerce/backoffice/users/points_details" %>

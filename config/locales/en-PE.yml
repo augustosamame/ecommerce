@@ -723,6 +723,7 @@ en-PE:
           name: 'Name'
           email: 'Email'
           role: 'Role'
+          points: 'Points'
           pricelist: 'Pricelist'
           delete: 'Delete'
         edit:
