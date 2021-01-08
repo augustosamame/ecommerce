@@ -150,7 +150,9 @@ es-PE:
           shipping: "Costo de Envío"
           i_need_a_factura: "Necesito Factura"
           text_over_700: "Los pedidos con boleta sobre S/. 700 requieren DNI, CE o Pasaporte"
-          pay_in_soles: "Pagar en soles"
+          pay_in_soles: "Usar mis Puntos"
+          pay_in_points: "Usar Mis Puntos para Pagar"
+          points_total: "Mi Total de Puntos Actual"
           accept_marketing: "Acepto recibir comunicaciones de marketing vía correo y SMS"
           docs_over_700: "DNI / CE / Pasaporte"
           enter_coupon: "Tiene un código de cupón? Ingréselo aquí:"
@@ -188,6 +190,10 @@ es-PE:
           address_has_been_saved: "La Dirección Ha Sido Grabada!"
           mandatory_field: "(*) Grabar o Seleccionar una Dirección es Obligatorio."
           location_on_map: "Ubicación en Mapa"
+      user:
+        points_index:
+          title: "Mis Puntos"
+          my_points: "Mis Puntos"
       order:
         show:
           order: "Pedido"
@@ -205,6 +211,7 @@ es-PE:
           total: "Total"
           my_orders: "Mis Pedidos"
           order_not_placed: "ERROR: El Pedido no fue creado"
+          points_won: "Puntos Ganados"
         index:
           title: "Mis Pedidos"
           date: "Fecha"
@@ -267,6 +274,7 @@ es-PE:
           search: "Buscar"
           search_instructions: "Escriba el término de búsqueda y presione Enter"
           search_placeholder: "Buscar..."
+          my_points: 'Mis Puntos'
         footer:
           slogan: "ExpatShop se especializa en importar productos innovadores de la más alta calidad desde todo el mundo hasta Perú."
           developed_with_love: "Desarollado con _love_icon por"
@@ -518,6 +526,7 @@ es-PE:
           shipping_policy_menu: "Política de Envíos"
           manage_blog_posts: "Administrar Blog"
           my_orders: "Mis Pedidos"
+          my_points: "Mis Puntos"
           my_account: "Mi Cuenta"
           sign_out: "Cerrar Sesión"
           sign_in: "Iniciar Sesión"

@@ -50,6 +50,7 @@ Ecommerce::Engine.routes.draw do
   get 'favorites', :to => 'products#favorites'
   resources :categories, only: [:index]
   resources :orders, only: [:index, :show]
+  get '/points', :to => 'users#points_index'
   get '/checkout/check_stock_cart_js_from_checkout', :to => 'checkout#check_stock_cart_js_from_checkout'
   post '/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'
   post '/store/checkout/pay_order_culqi_checkout', :to => 'checkout#pay_order_culqi_checkout'

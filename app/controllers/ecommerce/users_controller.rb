@@ -13,6 +13,11 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/user/show"
     end
 
+    def points_index
+      @points_transactions = PointsTransaction.where(user_id: current_user.id).order(:id)
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/user/points_index"
+    end
+
     private
 
   end

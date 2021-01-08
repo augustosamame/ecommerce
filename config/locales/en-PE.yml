@@ -137,11 +137,13 @@ en-PE:
           blog: "Blog"
           contact: "Contact"
           my_orders: "My Orders"
+          my_points: "My Points"
           my_account: "My Account"
           sign_out: "Sign Out"
           sign_in: "Sign In"
           search_instructions: "Type and Press Enter to Search"
           search_placeholder: "Search..."
+          my_points: 'My Points'
         footer:
           slogan: "ExpatShop specializes in bringing innovative, high quality products from all over the world to Perú."
           developed_with_love: "Developed with _love_icon by"
@@ -221,6 +223,8 @@ en-PE:
           i_need_a_factura: "I need a Factura"
           text_over_700: "Boleta orders over S/. 700 require DNI / CE / Passport"
           pay_in_soles: "Pay in soles"
+          pay_in_points: "Use My Points"
+          points_total: "My Current Points Total"
           accept_marketing: "I agree to receive email and SMS marketing communications"
           docs_over_700: "DNI / CE / Passport"
           enter_coupon: "Got a coupon code? Enter it Here:"
@@ -257,6 +261,10 @@ en-PE:
           address_has_been_saved: "Address Has Been Saved!"
           mandatory_field: "(*) Saving or Picking an address is mandatory."
           location_on_map: "Location on Map"
+      user:
+        points_index:
+          title: "My Points"
+          my_points: "My Points"
       order:
         show:
           order: "Order"
@@ -274,6 +282,7 @@ en-PE:
           total: "Total"
           my_orders: "My Orders"
           order_not_placed: "ERROR: Order Not Placed"
+          points_won: "Points Won"
         index:
           title: "My Orders"
           date: "Date"

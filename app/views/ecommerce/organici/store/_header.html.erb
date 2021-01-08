@@ -166,6 +166,7 @@
 											<li class="menu-item-has-children menu-item-bottom">
 												<a href="#"><%= "#{current_user.name}".html_safe %></a>
 												<ul class="sub-menu">
+													<li><%= link_to "#{t('.my_points')}: #{current_user.try(:points)}", Ecommerce::Engine.routes.url_helpers.points_path, class: "off-canvas-nav-my-orders", style: "color: red;" %></li>
 													<li><%= link_to t('.my_orders'), Ecommerce::Engine.routes.url_helpers.orders_path, class: "off-canvas-nav-my-orders" %></li>
 													<li><%= link_to t('.my_account'), main_app.edit_user_registration_path, class: "off-canvas-nav-my-account" %></li>
 													<li><%= link_to t('.sign_out'), main_app.logout_path %></li>
@@ -192,6 +193,7 @@
 										<li class="menu-item-has-children">
 											<a href="#"><%= "<i class='fa fa-user'></i> #{current_user.name} <span class='caret'></span>".html_safe %></a>
 											<ul class="sub-menu">
+												<li><%= link_to "#{t('.my_points')}: #{current_user.try(:points)}", Ecommerce::Engine.routes.url_helpers.points_path, class: "off-canvas-nav-my-orders", style: "color: red;" %></li>
 												<li><%= link_to t('.my_orders'), Ecommerce::Engine.routes.url_helpers.orders_path, class: "off-canvas-nav-my-orders" %></li>
 												<li><%= link_to t('.my_account'), main_app.edit_user_registration_path, class: "off-canvas-nav-my-account" %></li>
 												<li><%= link_to t('.sign_out'), main_app.logout_path %></li>

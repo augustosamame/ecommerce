@@ -78,10 +78,23 @@
                   </tfoot>
                 </table>
 
+                <% if current_user.try(:points) > 0 %>
+                  <div class="commerce-checkout-payment">
+                    <ul class="payment_methods">
+                      <li class="wc_payment_method" style: "margin-bottom: 0px;">
+                        <%= check_box_tag("pay_in_points", "0", false, class: "pay_in_points_checkbox") %>
+                        <label for="pay_in_points" style="font-size: 12px;">
+                          <%= t('.pay_in_points') %>
+                          <label style="font-size: 14px; margin-left: 40px; padding-right: 0px;"></label>
+                          <label id="points-amount" style="font-size: 14px;"><%= current_user.try(:points) %></label>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                <% end %>
 
                 <div class="commerce-checkout-payment">
                   <ul class="payment_methods">
-
                     <li class="wc_payment_method" style: "margin-bottom: 0px;">
                       <%= check_box_tag("pay_in_soles", "0", false, class: "pay_in_soles_checkbox") %>
                       <label for="pay_in_soles" style="font-size: 12px;">
@@ -89,8 +102,6 @@
                         <label style="font-size: 14px; margin-left: 40px; padding-right: 0px;">S/. </label>
                         <label id="payment-amount-in-soles" style="font-size: 14px;"><%= @cart_subtotal * @exchange_rate %></label>
                       </label>
-
-
                     </li>
                   </ul>
                 </div>
@@ -346,6 +357,11 @@ $( document ).ready(function() {
     recalculate_checkout_totals();
   })
 
+  // recalculate totals (basically for culqi) when pay_in_points checkbox changes
+  $('#pay_in_points').on('change', function() {
+    recalculate_checkout_totals();
+  })
+
   function calculate_shipping(street, district, origin) {
     $.ajax({
       url: "calculate_shipping",
@@ -396,7 +412,13 @@ $( document ).ready(function() {
     Culqi.publicKey = "<%= Culqi.public_key %>";
     // console.log('Culqi.publicKey: ',Culqi.publicKey)
     Culqi.orderKey = "<%= Culqi.secret_key %>";
-    var total_amount = (Number($("#coupon-amount").html()) + Number($("#shipping-amount").html()) + Number($("#subtotal").html())).toFixed(2);
+    var points_to_redeem = ($('#pay_in_points').is(':checked')) ? Number($("#points-amount").html()) : 0
+    var total_amount = (
+      Number($("#coupon-amount").html()) +
+      Number($("#shipping-amount").html()) +
+      Number($("#subtotal").html()) -
+      points_to_redeem
+    ).toFixed(2);
 
     $('#payment-amount').html(total_amount)
     $('#payment-amount-in-soles').html((total_amount * exchange_rate).toFixed(2));
@@ -565,6 +587,7 @@ $( document ).ready(function() {
           delivery_instructions: $('#delivery-instructions').val(),
           applied_coupon: applied_coupon,
           discount_amount: discount_amount,
+          points_redeemed_amount: points_to_redeem,
           currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD"
           },
           function(data) {
@@ -601,6 +624,7 @@ $( document ).ready(function() {
               delivery_instructions: $('#delivery-instructions').val(),
               applied_coupon: applied_coupon,
               discount_amount: discount_amount,
+              points_redeemed_amount: points_to_redeem,
               currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
               pagoefectivo_payment_code: Culqi.order.payment_code
               },
@@ -641,7 +665,8 @@ $( document ).ready(function() {
       required_doc: $('#dni-required').val(),
       delivery_instructions: $('#delivery-instructions').val(),
       applied_coupon: applied_coupon,
-      discount_amount: discount_amount
+      discount_amount: discount_amount,
+      points_redeemed_amount: points_to_redeem
       },
       function(data) {
       }

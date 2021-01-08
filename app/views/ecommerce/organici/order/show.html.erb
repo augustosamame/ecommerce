@@ -18,7 +18,11 @@
               <table>
                 <tr class="cart-subtotal">
                   <th><%= t('.order_total') %></th>
-                  <td><span class="amount" style="display: inline;"><%= @order.amount.currency.symbol %></span><span class="amount" style="display: inline;" id="payment-amount"><%= @order.amount %></span></strong></td>
+                  <td><span class="amount" style="display: inline;"><%= @order.amount.currency.symbol %></span><span class="amount" style="display: inline;" id="payment-amount"><%= @order.amount %></span></td>
+                </tr>
+                <tr class="cart-subtotal">
+                  <th><%= t('.points_won') %></th>
+                  <td><span class="amount" style="display: inline;"><%= PointsTransaction.find_by(tx_type: 'purchase', tx_id: @order.id).try(:points) %></span></td>
                 </tr>
                 <tr class="cart-subtotal">
                   <th><%= t('.payment') %></th>

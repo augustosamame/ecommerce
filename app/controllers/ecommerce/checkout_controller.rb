@@ -125,6 +125,7 @@ module Ecommerce
           posted_address = params[:picked_shipping_address_id]
           last_user_address = Address.where(user_id: current_user.id).order(:id).last
           used_coupon = Coupon.find_by(coupon_code: params[:applied_coupon])
+          points_redeemed_amount = params[:points_redeemed_amount]
           ActiveRecord::Base.transaction do
             @order = Order.new( user_id: current_user.id,
                           amount: Money.new(params[:amount].to_i, session[:currency]),
@@ -139,6 +140,7 @@ module Ecommerce
                           delivery_comments: params[:delivery_instructions].try(:strip),
                           coupon_id: used_coupon.try(:id),
                           discount_amount: Money.new((params[:discount_amount].to_i), session[:currency]),
+                          points_redeemed_amount: points_redeemed_amount,
                           status: "active",
                           process_comments: params[:pagoefectivo_payment_code].blank? ? "" : "Pagoefectivo CIP #{params[:pagoefectivo_payment_code]}"
                           )
