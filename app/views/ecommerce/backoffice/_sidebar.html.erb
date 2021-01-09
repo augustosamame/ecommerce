@@ -49,7 +49,7 @@
         </ul>
       </li>
 
-      <li class="<%= class_string({ active: (['orders'].include? controller.controller_name) }) %>">
+      <li class="<%= class_string({ active: (['orders', 'payments'].include? controller.controller_name) }) %>">
         <a href="javascript:;"> <i class="material-icons">shopping_cart</i> <span class="title"><%=  t('.orders') %></span> <span class=" arrow"></span> </a>
         <ul class="sub-menu">
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.count %></span>
@@ -63,6 +63,10 @@
           <% end %>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'orders' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Order.where(stage: 'stage_closed').count %></span>
             <%= link_to t('.closed_orders'), backoffice_orders_path(stage: "stage_closed") %>
+          </li>
+
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'payments' && controller.action_name == 'index')}) %>"><span class=" badge badge-disable pull-right "><%= Ecommerce::Payment.count %></span>
+            <%= link_to 'Payments', backoffice_payments_path %>
           </li>
         </ul>
       </li>

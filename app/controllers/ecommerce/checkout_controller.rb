@@ -125,10 +125,10 @@ module Ecommerce
           posted_address = params[:picked_shipping_address_id]
           last_user_address = Address.where(user_id: current_user.id).order(:id).last
           used_coupon = Coupon.find_by(coupon_code: params[:applied_coupon])
-          points_redeemed_amount = params[:points_redeemed_amount]
+          points_redeemed_amount = params[:points_redeemed_amount].to_i
           ActiveRecord::Base.transaction do
             @order = Order.new( user_id: current_user.id,
-                          amount: Money.new(params[:amount].to_i, session[:currency]),
+                          amount: Money.new((params[:amount].to_i + points_redeemed_amount), session[:currency]),
                           shipping_amount: Money.new((params[:shipping_amount].to_i), session[:currency]),
                           stage: "stage_new",
                           cart_id: params[:cart_id].to_i,
@@ -149,18 +149,24 @@ module Ecommerce
               used_coupon.update(current_uses: current_uses + 1)
             end
             if @order.save
-              current_user.update(doc_id: @order.required_doc) unless @order.required_doc.blank?
-              @cart_items = CartItem.where(cart_id: params[:cart_id].to_i)
-              @cart_items.each do |item|
-                OrderItem.create!(
-                  order_id: @order.id,
-                  product_id: item.product_id,
-                  price: item.product.current_price(current_user),
-                  quantity: item.quantity,
-                  status: "active"
-                )
+              ActiveRecord::Base.transaction do
+                current_user.update(doc_id: @order.required_doc) unless @order.required_doc.blank?
+                unless @order.points_redeemed_amount.blank?
+                  current_user.update(points: (current_user.points - @order.points_redeemed_amount))
+                  PointsTransaction.create(user_id: current_user.id, points: -@order.points_redeemed_amount, tx_type: 'redemption', tx_id: @order.id)
+                end
+                @cart_items = CartItem.where(cart_id: params[:cart_id].to_i)
+                @cart_items.each do |item|
+                  OrderItem.create!(
+                    order_id: @order.id,
+                    product_id: item.product_id,
+                    price: item.product.current_price(current_user),
+                    quantity: item.quantity,
+                    status: "active"
+                  )
+                end
+                close_cart_and_create_new
               end
-              close_cart_and_create_new
             end
           end
         end
@@ -175,8 +181,32 @@ module Ecommerce
 
     def pay_order_culqi_checkout
       Rails.logger.debug params
+      points_payment_method = PaymentMethod.find_by(name: "Points")
       card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
-      payment_created = Payment.new.new_culqi_payment(current_user, card_token_created, params[:culqi_payment_amount], params[:currency], "Order", @order.id, params[:payment_request_id]) if card_token_created
+      if card_token_created
+
+        #points payment
+        Payment.create(
+          user_id: current_user.id,
+          order_id: @order.id,
+          payment_method_id: points_payment_method.id,
+          payment_request_id: params[:payment_request_id],
+          amount_cents: params[:points_redeemed_amount],
+          date: Time.now, status: "active"
+        ) unless params[:points_redeemed_amount].blank?
+
+        #card payment
+        payment_created = Payment.new.new_culqi_payment(
+          current_user,
+          card_token_created,
+          params[:culqi_payment_amount],
+          params[:currency],
+          "Order",
+          @order.id,
+          params[:payment_request_id]
+        )
+
+      end
       if payment_created[0]
         flash[:notice] = t('.your_order_was_successfully_placed')
         Rails.logger.info payment_created[0]

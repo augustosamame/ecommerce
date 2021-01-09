@@ -412,18 +412,27 @@ $( document ).ready(function() {
     Culqi.publicKey = "<%= Culqi.public_key %>";
     // console.log('Culqi.publicKey: ',Culqi.publicKey)
     Culqi.orderKey = "<%= Culqi.secret_key %>";
-    var points_to_redeem = ($('#pay_in_points').is(':checked')) ? Number($("#points-amount").html()) : 0
+
     var total_amount = (
       Number($("#coupon-amount").html()) +
       Number($("#shipping-amount").html()) +
-      Number($("#subtotal").html()) -
-      points_to_redeem
+      Number($("#subtotal").html())
     ).toFixed(2);
 
     $('#payment-amount').html(total_amount)
     $('#payment-amount-in-soles').html((total_amount * exchange_rate).toFixed(2));
     payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
     culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
+
+    var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
+
+    if (points_to_redeem > 0) {
+      total_amount = (Number(total_amount) - (points_to_redeem / 100)).toFixed(2)
+      $('#payment-amount').html(total_amount)
+      $('#payment-amount-in-soles').html((total_amount * exchange_rate).toFixed(2));
+      payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
+      culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
+    }
 
     // console.log('recalculate_checkout_totals')
 
@@ -573,6 +582,7 @@ $( document ).ready(function() {
         var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
         var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
         //var payment_amount = $('#payment_amount').html() * 100;
+        var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
         $.post(
           "checkout/pay_order_culqi_checkout",
           {
@@ -608,6 +618,7 @@ $( document ).ready(function() {
             var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
             var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
             var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
+            var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
             console.log('Order exists but no Token = Pagoefectivo');
             console.log(Culqi.order)
             $.post(
@@ -649,9 +660,11 @@ $( document ).ready(function() {
 
   function manual_payment() {
     var picked_shipping_address_id = $('#address_id').val();
+
     var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
     var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
+    var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
 
     //var payment_amount = $('#payment_amount').html() * 100;
     $.post(

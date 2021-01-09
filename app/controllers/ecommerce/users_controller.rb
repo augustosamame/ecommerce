@@ -14,7 +14,7 @@ module Ecommerce
     end
 
     def points_index
-      @points_transactions = PointsTransaction.where(user_id: current_user.id).order(:id)
+      @points_transactions = PointsTransaction.where(user_id: current_user.id).order(id: :desc)
       render "ecommerce/#{Ecommerce.ecommerce_layout}/user/points_index"
     end
 

@@ -22,6 +22,7 @@ Ecommerce::Engine.routes.draw do
     resources :orders
     post '/orders/einvoice'
     resources :payment_methods
+    resources :payments, only: [:index]
     get '/translations/index', :to => "translations#index"
     resources :coupons
     get '/dynamic_coupon_index', :to => "coupons#dynamic_index"

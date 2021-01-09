@@ -34,6 +34,7 @@ module Ecommerce
     # GET /backoffice/orders/1
     def show
       @order_details = Order.find(@backoffice_order.id).order_items.includes(:product)
+      @payments = Payment.where(order_id: @backoffice_order.id).order(id: :desc)
       @epdf = @backoffice_order.efact_invoice_url
       if @backoffice_order.efact_response_text == "OK"
         @erefund_pdf = @backoffice_order.efact_refund_url
@@ -111,7 +112,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_order_params
-        params.require(:order).permit(:efact_type, :customer_comments, :process_comments, :delivery_comments, :user_id, :amount_cents, :shipping_amount_cents, :stage, :shipping_address_id, :billing_address_id, :coupon_id, :payment_status, :status, order_items_attributes: [:id, :product_id, :price_cents, :quantity, :status, :_destroy])
+        params.require(:order).permit(:efact_type, :customer_comments, :process_comments, :delivery_comments, :user_id, :amount_cents, :shipping_amount_cents, :stage, :shipping_address_id, :billing_address_id, :coupon_id, :payment_status, :status, :points_redeemed_amount, order_items_attributes: [:id, :product_id, :price_cents, :quantity, :status, :_destroy])
       end
   end
 end

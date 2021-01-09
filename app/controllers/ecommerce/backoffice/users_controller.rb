@@ -66,7 +66,7 @@ module Ecommerce
     end
 
     def user_points
-      @points_transactions = @backoffice_user.points_transactions
+      @points_transactions = @backoffice_user.points_transactions.order(id: :desc)
     end
 
     def void_points

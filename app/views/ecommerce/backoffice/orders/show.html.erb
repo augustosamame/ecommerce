@@ -63,6 +63,9 @@
 
 <%= render 'order_details' %>
 
+<h3 style='margin-top: 50px;'>Associated Payment Records</h3>
+<%= render :partial => "ecommerce/backoffice/orders/payment_index", locals: {payments: @payments} %>
+
 <h3 style='margin-top: 50px;'>Associated Order Adresses</h3>
 <%= render "ecommerce/backoffice/addresses/index" %>
 

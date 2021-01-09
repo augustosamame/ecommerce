@@ -6,7 +6,7 @@ module Ecommerce
 
     enum status: {status_exception: 0, active: 1, void: 2, refunded: 3, pending: 4}
 
-    #monetize :amount_cents, :as => "amount"
+    monetize :amount_cents, :as => "amount"
 
     after_commit :check_if_order_paid
 
@@ -18,9 +18,10 @@ module Ecommerce
     def check_if_order_paid
       self.order.update(process_comments: self.payment_method.name)
       unless self.pending?
+        points_payment_method = PaymentMethod.find_by(name: "Points")
         if Payment.where(order: self.order_id).sum(:amount_cents) >= self.order.amount_cents
           self.order.update(stage: "stage_paid", payment_status: "paid")
-          add_points(self.order)
+          add_points(self.order) unless self.payment_method_id == points_payment_method.id #do not add points for points payments
         end
       end
     end
@@ -30,11 +31,11 @@ module Ecommerce
       current_points = user.points
       Payment.transaction do
         user.update(points: current_points + order.amount_cents)
-        PointsTransaction.create(user_id: user.id, points: order.amount_cents, tx_type: 'purchase', tx_id: order.id)
+        PointsTransaction.create(user_id: user.id, points: (order.amount_cents / 100).floor, tx_type: 'purchase', tx_id: order.id)
       end
     end
 
-    def new_culqi_payment(current_user, card_token_data, amount, currency, payment_type, order_id = nil, payment_request_id = nil)
+    def new_culqi_payment(current_user, card_token_data, payment_amount, currency, payment_type, order_id = nil, payment_request_id = nil)
       Rails.logger.debug "Received Order: #{order_id}"
       Rails.logger.debug "Card Token Data:"
       Rails.logger.debug card_token_data
@@ -66,7 +67,7 @@ module Ecommerce
       :first_name => current_user.first_name,
       :last_name => current_user.last_name,
       :phone_number => current_user.phone || "986976377",
-      :amount => amount.to_i,
+      :amount => payment_amount.to_i,
       :capture => true,
       :currency_code => currency,
       :description => culqi_description,
@@ -117,7 +118,7 @@ module Ecommerce
 
     end
 
-    def new_pagoefectrivo_payment(current_user, culqi_order_id, amount, currency, payment_type, order_id = nil, payment_request_id = nil)
+    def new_pagoefectrivo_payment(current_user, culqi_order_id, payment_amount, currency, payment_type, order_id = nil, payment_request_id = nil)
       Rails.logger.debug "Received Order: #{order_id}"
       Rails.logger.debug "Pagoefectivo Order Id:"
       Rails.logger.debug culqi_order_id
@@ -136,7 +137,7 @@ module Ecommerce
         new_payment.user_id = current_user.id
         new_payment.payment_method_id = PaymentMethod.find_by!(name: "PagoEfectivo").id
         new_payment.processor_transaction_id = culqi_order_id
-        new_payment.amount_cents = amount
+        new_payment.amount_cents = payment_amount
         new_payment.date = Time.now
         new_payment.status = "pending"
         new_payment.order_id = order_id

@@ -1,0 +1,31 @@
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th><%= t('.name') %></th>
+        <th>Amount</th>
+        <th>Payment Request</th>
+        <th>Processor</th>
+        <th>Processor Transaction Id</th>
+        <th>Processor Token</th>
+        <th>Date</th>
+        <th>Comment</th>
+        <th><%= t('.status') %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, payments) do |payment| %>
+        <td><%= payment.payment_method.name %></td>
+        <td><%= number_to_currency(payment.amount) %></td>
+        <td><%= payment.payment_request_id %></td>
+        <td><%= payment.payment_method.try(:processor) %></td>
+        <td><%= payment.processor_transaction_id %></td>
+        <td><%= payment.processor_token %></td>
+        <td><%= friendly_date(payment.date) %></td>
+        <td><%= payment.comment %></td>
+        <td><%= payment.status %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
