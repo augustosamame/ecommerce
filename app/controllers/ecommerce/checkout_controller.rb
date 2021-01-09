@@ -193,7 +193,7 @@ module Ecommerce
           payment_request_id: params[:payment_request_id],
           amount_cents: params[:points_redeemed_amount],
           date: Time.now, status: "active"
-        ) unless params[:points_redeemed_amount].blank?
+        ) unless (params[:points_redeemed_amount].blank? || params[:points_redeemed_amount].to_i == 0)
 
         #card payment
         payment_created = Payment.new.new_culqi_payment(
@@ -225,6 +225,18 @@ module Ecommerce
 
     def pay_order_pagoefectivo_checkout
       Rails.logger.debug params
+      points_payment_method = PaymentMethod.find_by(name: "Points")
+
+      #points payment
+      Payment.create(
+        user_id: current_user.id,
+        order_id: @order.id,
+        payment_method_id: points_payment_method.id,
+        payment_request_id: params[:payment_request_id],
+        amount_cents: params[:points_redeemed_amount],
+        date: Time.now, status: "active"
+      ) unless (params[:points_redeemed_amount].blank? || params[:points_redeemed_amount].to_i == 0)
+
       payment_created = Payment.new.new_pagoefectrivo_payment(current_user, params[:culqi_order_id], params[:culqi_payment_amount], params[:currency], "Order", @order.id, params[:payment_request_id])
       flash[:notice] = t('.your_order_was_successfully_placed_pagoefectivo')
       flash.keep(:notice)
@@ -233,6 +245,18 @@ module Ecommerce
 
     def pay_order_bank
       Rails.logger.debug params
+      points_payment_method = PaymentMethod.find_by(name: "Points")
+
+      #points payment
+      Payment.create(
+        user_id: current_user.id,
+        order_id: @order.id,
+        payment_method_id: points_payment_method.id,
+        payment_request_id: params[:payment_request_id],
+        amount_cents: params[:points_redeemed_amount],
+        date: Time.now, status: "active"
+      ) unless (params[:points_redeemed_amount].blank? || params[:points_redeemed_amount].to_i == 0)
+
       flash[:notice] = t('.your_order_was_successfully_placed')
       flash.keep(:notice)
       render js: "window.location = '#{order_path(@order.id)}'"
@@ -240,6 +264,18 @@ module Ecommerce
 
     def pay_order_manual
       Rails.logger.debug params
+      points_payment_method = PaymentMethod.find_by(name: "Points")
+
+      #points payment
+      Payment.create(
+        user_id: current_user.id,
+        order_id: @order.id,
+        payment_method_id: points_payment_method.id,
+        payment_request_id: params[:payment_request_id],
+        amount_cents: params[:points_redeemed_amount],
+        date: Time.now, status: "active"
+      ) unless (params[:points_redeemed_amount].blank? || params[:points_redeemed_amount].to_i == 0)
+
       flash[:notice] = t('.your_order_was_successfully_placed')
       flash.keep(:notice)
       render js: "window.location = '#{order_path(@order.id)}'"
