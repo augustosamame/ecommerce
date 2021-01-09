@@ -17,7 +17,7 @@ module Ecommerce
         referring_user = User.find_by(referral_code: self.user.referrer_id)
         ActiveRecord::Base.transaction do
           self.user.update(referral_paid: true)
-          PointsTransaction.create(user_id: self.user.referrer_id, points: ((self.amount_cents / 100) * 0.05).floor, tx_type: 'referral', tx_id: self.order.id, referred_user_id: self.user.id)
+          PointsTransaction.create(user_id: self.user.referrer_id, points: ((self.amount_cents) * 0.05).floor, tx_type: 'referral', tx_id: self.order.id, referred_user_id: self.user.id)
         end
       end
     end
