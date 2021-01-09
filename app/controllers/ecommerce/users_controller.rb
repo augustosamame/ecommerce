@@ -18,6 +18,11 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/user/points_index"
     end
 
+    def referrals_index
+      @referrals = User.where(referrer_id: current_user.id).order(id: :desc)
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/user/referrals_index"
+    end
+
     private
 
   end

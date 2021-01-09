@@ -194,6 +194,14 @@ es-PE:
         points_index:
           title: "Mis Puntos"
           my_points: "Mis Puntos"
+        referrals_index:
+          title: "Mis Referidos"
+          my_referral_link: "Mi Enlace para Referidos"
+          date: "Fecha"
+          name: "Nombre"
+          points: "Puntos"
+          my_referral_instructions_1: "Invite a sus amigos a comprar en Expatshop.pe utilizando su enlace de referidos arriba. Por cada amigo que se registra utilizando su enlace, usted obtendrá el 5% de su primera compra!"
+          my_referral_instructions_2: "Podrá ver todos los amigos que se han registrado utilizando su enlance, y los puntos que ha ganado por sus compras, en la siguiente tabla"
       order:
         show:
           order: "Pedido"
@@ -275,6 +283,8 @@ es-PE:
           search_instructions: "Escriba el término de búsqueda y presione Enter"
           search_placeholder: "Buscar..."
           my_points: 'Mis Puntos'
+          my_referral_program: "Programa de Referidos"
+          my_referral_code: "Código: "
         footer:
           slogan: "ExpatShop se especializa en importar productos innovadores de la más alta calidad desde todo el mundo hasta Perú."
           developed_with_love: "Desarollado con _love_icon por"

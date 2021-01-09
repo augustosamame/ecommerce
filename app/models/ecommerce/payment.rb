@@ -9,6 +9,18 @@ module Ecommerce
     monetize :amount_cents, :as => "amount"
 
     after_commit :check_if_order_paid
+    after_commit :check_if_referrer_first_sale
+
+    def check_if_referrer_first_sale
+      points_payment_method = PaymentMethod.find_by(name: "Points")
+      if !self.user.referral_paid && !self.user.referrer_id.blank? && self.payment_method_id != points_payment_method.id
+        referring_user = User.find_by(referral_code: self.referrer_id)
+        ActiveRecord::Base.transaction do
+          self.user.update(referral_paid: true)
+          PointsTransaction.create(user_id: self.user.id, points: (self.amount_cents * 0.05).floor, tx_type: 'referral', tx_id: self.order.id)
+        end
+      end
+    end
 
     #necessary so simple_form will not convert to UTC
     def date_before_type_cast

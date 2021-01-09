@@ -138,6 +138,8 @@ en-PE:
           contact: "Contact"
           my_orders: "My Orders"
           my_points: "My Points"
+          my_referral_program: "Referral Program"
+          my_referral_code: "Code: "
           my_account: "My Account"
           sign_out: "Sign Out"
           sign_in: "Sign In"
@@ -265,6 +267,14 @@ en-PE:
         points_index:
           title: "My Points"
           my_points: "My Points"
+        referrals_index:
+          title: "My Referrals"
+          my_referral_link: "My Referral Link"
+          date: "Date"
+          name: "Name"
+          points: "Points"
+          my_referral_instructions_1: "Invite your friends to shop at Expatshop.pe using your referral link above. For every friend who signs up using your link, you'll earn 5% of their first purchase!"
+          my_referral_instructions_2: "You can see all yor friends that have signed up using your link and any points you've earned from their purchases in the following table"
       order:
         show:
           order: "Order"

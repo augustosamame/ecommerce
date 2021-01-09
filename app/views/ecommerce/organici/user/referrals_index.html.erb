@@ -1,0 +1,40 @@
+<section class="noo-page-heading eff">
+  <div class="container">
+    <div class="noo-heading-content">
+      <h1 class="page-title eff"><%= t('.title') %></h1>
+      <div class="noo-page-breadcrumb eff">
+        <a href="./" class="home">ExpatShop</a>/<span><%= t('.my_referrals') %></span>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="main">
+  <div class="commerce commerce-account noo-shop-main">
+    <div class="container">
+      <div class="row" style="margin-top: 50px;">
+        <h2><span><%= "#{t('.my_referral_link')}: " %></span><%= link_to current_user.referral_link, current_user.referral_link, {style: 'color: blue;'} %></h2>
+        <h4><%= t('.my_referral_instructions_1') %></h4>
+        <h4><%= t('.my_referral_instructions_2') %></h4>
+        <div class="table-responsive" style="margin-top: 30px;">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th><%= t('.date') %></th>
+                <th><%= t('.name') %></th>
+                <th><%= t('.points') %></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <%= content_tag_for(:tr, @referrals) do |referred_user| %>
+                <td><%= referred_user.created_at.localtime.strftime("%d-%b-%y") %></td>
+                <td><%= "#{referred_user.first_name} #{referred_user.last_name}" %></td>
+                <td><%= referred_user.points %></td>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
