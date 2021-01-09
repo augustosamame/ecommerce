@@ -10,7 +10,7 @@
 </section>
 <div class="main">
   <div class="commerce commerce-account noo-shop-main">
-<div class="container">
+<div class="container expatshop-store-table-container">
   <div class="row" style="margin-top: 50px;">
   <h2><%= "#{t('.my_points')}: #{current_user.points}" %></h2>
 <div class="table-responsive">
@@ -27,12 +27,12 @@
 
     <tbody>
       <%= content_tag_for(:tr, @points_transactions) do |tx| %>
-        <td><%= tx.created_at.localtime.strftime("%d-%b-%y") %></td>
-        <td><%= tx.points %></td>
-        <td><%= tx.tx_type %></td>
-        <td><%= tx.tx_id %></td>
+        <td style="white-space: normal;"><%= tx.created_at.localtime.strftime("%d-%b-%y") %></td>
+        <td style="white-space: normal;"><%= tx.points %></td>
+        <td style="white-space: normal;"><%= PointsTransaction.human_enum_name(:tx_type, tx.tx_type) %></td>
+        <td style="white-space: normal;"><%= tx.tx_id %></td>
         <% if tx.tx_id %>
-          <td><%= link_to "<i class='fa fa-eye'></i>".html_safe, order_path(tx.tx_id) %></td>
+          <td style="white-space: normal;"><%= link_to "<i class='fa fa-eye'></i>".html_safe, order_path(tx.tx_id) %></td>
         <% else %>
           <td></td>
         <% end %>

@@ -78,7 +78,6 @@
 								<%= image_tag Ecommerce.header_logo, alt: "Store Logo", class: "noo-logo-img noo-logo-normal noo-logo-mobile", style: "margin-top: -18px;" %>
 						<% else %>
 								<%= image_tag Ecommerce.header_landing_logo, style: "margin-top: -22px;", alt: "Store Logo", class: "noo-logo-img noo-logo-normal", width: 140 %>
-								<span><%= session[:referrer] %></span>
 						<% end %>
 						</a>
 					</div>
@@ -171,8 +170,10 @@
 													<li><%= link_to t('.my_orders'), Ecommerce::Engine.routes.url_helpers.orders_path, class: "off-canvas-nav-my-orders" %></li>
 													<li><%= link_to t('.my_account'), main_app.edit_user_registration_path, class: "off-canvas-nav-my-account" %></li>
 													<li>
-														<%= link_to "#{t('.my_referral_program')}", Ecommerce::Engine.routes.url_helpers.referral_path, class: "off-canvas-nav-my-orders" %>
-														<span><%= "#{t('.my_referral_code')}#{current_user.try(:referral_code)}" %></span>
+														<a class="off-canvas-nav-my-orders" href="<%= Ecommerce::Engine.routes.url_helpers.referral_path %>">
+															<span><%= "#{t('.my_referral_program')}" %></span>
+															<span><%= "#{t('.my_referral_code')}#{current_user.try(:referral_code)}" %></span>
+														</a>
 													</li>
 													<li><%= link_to t('.sign_out'), main_app.logout_path %></li>
 
@@ -203,8 +204,10 @@
 												<li><%= link_to t('.my_orders'), Ecommerce::Engine.routes.url_helpers.orders_path, class: "off-canvas-nav-my-orders" %></li>
 												<li><%= link_to t('.my_account'), main_app.edit_user_registration_path, class: "off-canvas-nav-my-account" %></li>
 												<li>
-													<%= link_to "#{t('.my_referral_program')}", Ecommerce::Engine.routes.url_helpers.referral_path, class: "off-canvas-nav-my-orders" %>
-													<span><%= "#{t('.my_referral_code')}#{current_user.try(:referral_code)}" %></span>
+													<a class="off-canvas-nav-my-orders" href="<%= Ecommerce::Engine.routes.url_helpers.referral_path %>">
+														<span><%= "#{t('.my_referral_program')}" %></span>
+														<span><%= "#{t('.my_referral_code')}#{current_user.try(:referral_code)}" %></span>
+													</a>
 												</li>
 												<li><%= link_to t('.sign_out'), main_app.logout_path %></li>
 

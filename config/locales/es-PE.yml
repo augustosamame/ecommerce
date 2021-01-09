@@ -42,6 +42,15 @@ es-PE:
         max_times_per_user_exceeded: "El cupón ya ha sido utilizado el máximo de veces permitido"
         max_times_exceeded: "El cupón ya ha sido utilizado el máximo de veces permitido"
         coupon_expired: "El cupón ha expirado"
+  activerecord:
+    attributes:
+      ecommerce/address:
+        address_types:
+          home: 'Casa'
+          doorman: 'Portería'
+          office: 'Oficina'
+          warehouse: 'Almacén'
+          other: 'Otros'
   activemodel:
     errors:
       models:
@@ -194,6 +203,11 @@ es-PE:
         points_index:
           title: "Mis Puntos"
           my_points: "Mis Puntos"
+          date: "Fecha"
+          points: "Puntos"
+          tx_type: 'Tipo Tx'
+          tx_id: 'Id de Tx'
+          show: 'Ver'
         referrals_index:
           title: "Mis Referidos"
           my_referral_link: "Mi Enlace para Referidos"
@@ -201,7 +215,9 @@ es-PE:
           name: "Nombre"
           points: "Puntos"
           my_referral_instructions_1: "Invite a sus amigos a comprar en Expatshop.pe utilizando su enlace de referidos arriba. Por cada amigo que se registra utilizando su enlace, usted obtendrá el 5% de su primera compra!"
-          my_referral_instructions_2: "Podrá ver todos los amigos que se han registrado utilizando su enlance, y los puntos que ha ganado por sus compras, en la siguiente tabla"
+          my_referral_instructions_2: "Podrá ver todos los amigos que se han registrado utilizando su enlace, y los puntos que ha ganado por sus compras, en la siguiente tabla:"
+          copy: "Copiar"
+          clipboard_message: "Enlace copiado al Portapapeles"
       order:
         show:
           order: "Pedido"

@@ -267,6 +267,11 @@ en-PE:
         points_index:
           title: "My Points"
           my_points: "My Points"
+          date: "Date"
+          points: "Points"
+          tx_type: 'Tx Type'
+          tx_id: 'Tx Id'
+          show: 'Show'
         referrals_index:
           title: "My Referrals"
           my_referral_link: "My Referral Link"
@@ -274,7 +279,9 @@ en-PE:
           name: "Name"
           points: "Points"
           my_referral_instructions_1: "Invite your friends to shop at Expatshop.pe using your referral link above. For every friend who signs up using your link, you'll earn 5% of their first purchase!"
-          my_referral_instructions_2: "You can see all yor friends that have signed up using your link and any points you've earned from their purchases in the following table"
+          my_referral_instructions_2: "You can see all yor friends that have signed up using your link and any points you've earned from their purchases in the following table:"
+          copy: "Copy"
+          clipboard_message: "Link copied to Clipboard"
       order:
         show:
           order: "Order"

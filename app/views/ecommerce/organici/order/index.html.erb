@@ -10,11 +10,11 @@
 </section>
 <div class="main">
   <div class="commerce commerce-account noo-shop-main">
-<div class="container">
+<div class="container expatshop-store-table-container">
   <div class="row" style="margin-top: 50px;">
   <h2><a href="<%= orders_path %>"><%= t('.title') %></a></h2>
 <div class="table-responsive">
-  <table class="table table-bordered table-hover">
+  <table class="table table-bordered table-hover" style="display: block; border-collapse: collapse;">
     <thead>
       <tr>
         <th>Id</th>
@@ -29,13 +29,13 @@
 
     <tbody>
       <%= content_tag_for(:tr, @orders) do |order| %>
-        <td><%= order.id %></td>
-        <td><%= order.created_at.localtime.strftime("%d-%b-%y") %></td>
-        <td><%= order.stage %></td>
-        <td><%= order.payment_status %></td>
-        <td><%= number_to_currency(order.amount) %></td>
-        <td><%= link_to "<i class='fa fa-eye'></i>".html_safe, order_path(order) %></td>
-        <td><%= link_to "<i class='fa fa-ban'></i>".html_safe, order_path(order) %></td>
+        <td style="white-space: normal;"><%= order.id %></td>
+        <td style="white-space: normal;"><%= order.created_at.localtime.strftime("%d-%b-%y") %></td>
+        <td style="white-space: normal;"><%= order.stage %></td>
+        <td style="white-space: normal;"><%= order.payment_status %></td>
+        <td style="white-space: normal;"><%= number_to_currency(order.amount) %></td>
+        <td style="white-space: normal;"><%= link_to "<i class='fa fa-eye'></i>".html_safe, order_path(order) %></td>
+        <td style="white-space: normal;"><%= link_to "<i class='fa fa-ban'></i>".html_safe, order_path(order) %></td>
       <% end %>
     </tbody>
   </table>
