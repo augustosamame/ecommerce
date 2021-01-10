@@ -180,20 +180,25 @@ module Ecommerce
     end
 
     def pay_order_culqi_checkout
-      Rails.logger.debug params
+      #Rails.logger.debug params
       points_payment_method = PaymentMethod.find_by(name: "Points")
       card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
       if card_token_created
 
-        #points payment
-        Payment.create(
-          user_id: current_user.id,
-          order_id: @order.id,
-          payment_method_id: points_payment_method.id,
-          payment_request_id: params[:payment_request_id],
-          amount_cents: params[:points_redeemed_amount],
-          date: Time.now, status: "active"
-        ) unless (params[:points_redeemed_amount].blank? || params[:points_redeemed_amount].to_i == 0)
+        unless params[:points_redeemed_amount].blank?
+          unless params[:points_redeemed_amount].to_i == 0
+
+            #points payment
+            Payment.create(
+              user_id: current_user.id,
+              order_id: @order.id,
+              payment_method_id: points_payment_method.id,
+              payment_request_id: params[:payment_request_id],
+              amount_cents: params[:points_redeemed_amount],
+              date: Time.now, status: "active"
+            )
+          end
+        end
 
         #card payment
         payment_created = Payment.new.new_culqi_payment(
@@ -224,18 +229,23 @@ module Ecommerce
     end
 
     def pay_order_pagoefectivo_checkout
-      Rails.logger.debug params
+      #Rails.logger.debug params
       points_payment_method = PaymentMethod.find_by(name: "Points")
 
-      #points payment
-      Payment.create(
-        user_id: current_user.id,
-        order_id: @order.id,
-        payment_method_id: points_payment_method.id,
-        payment_request_id: params[:payment_request_id],
-        amount_cents: params[:points_redeemed_amount],
-        date: Time.now, status: "active"
-      ) unless (params[:points_redeemed_amount].blank? || params[:points_redeemed_amount].to_i == 0)
+      unless params[:points_redeemed_amount].blank?
+        unless params[:points_redeemed_amount].to_i == 0
+
+          #points payment
+          Payment.create(
+            user_id: current_user.id,
+            order_id: @order.id,
+            payment_method_id: points_payment_method.id,
+            payment_request_id: params[:payment_request_id],
+            amount_cents: params[:points_redeemed_amount],
+            date: Time.now, status: "active"
+          )
+        end
+      end
 
       payment_created = Payment.new.new_pagoefectrivo_payment(current_user, params[:culqi_order_id], params[:culqi_payment_amount], params[:currency], "Order", @order.id, params[:payment_request_id])
       flash[:notice] = t('.your_order_was_successfully_placed_pagoefectivo')
@@ -244,18 +254,23 @@ module Ecommerce
     end
 
     def pay_order_bank
-      Rails.logger.debug params
+      #Rails.logger.debug params
       points_payment_method = PaymentMethod.find_by(name: "Points")
 
-      #points payment
-      Payment.create(
-        user_id: current_user.id,
-        order_id: @order.id,
-        payment_method_id: points_payment_method.id,
-        payment_request_id: params[:payment_request_id],
-        amount_cents: params[:points_redeemed_amount],
-        date: Time.now, status: "active"
-      ) unless (params[:points_redeemed_amount].blank? || params[:points_redeemed_amount].to_i == 0)
+      unless params[:points_redeemed_amount].blank?
+        unless params[:points_redeemed_amount].to_i == 0
+
+          #points payment
+          Payment.create(
+            user_id: current_user.id,
+            order_id: @order.id,
+            payment_method_id: points_payment_method.id,
+            payment_request_id: params[:payment_request_id],
+            amount_cents: params[:points_redeemed_amount],
+            date: Time.now, status: "active"
+          )
+        end
+      end
 
       flash[:notice] = t('.your_order_was_successfully_placed')
       flash.keep(:notice)
@@ -263,18 +278,23 @@ module Ecommerce
     end
 
     def pay_order_manual
-      Rails.logger.debug params
+      #Rails.logger.debug params
       points_payment_method = PaymentMethod.find_by(name: "Points")
 
-      #points payment
-      Payment.create(
-        user_id: current_user.id,
-        order_id: @order.id,
-        payment_method_id: points_payment_method.id,
-        payment_request_id: params[:payment_request_id],
-        amount_cents: params[:points_redeemed_amount],
-        date: Time.now, status: "active"
-      ) unless (params[:points_redeemed_amount].blank? || params[:points_redeemed_amount].to_i == 0)
+      unless params[:points_redeemed_amount].blank?
+        unless params[:points_redeemed_amount].to_i == 0
+
+          #points payment
+          Payment.create(
+            user_id: current_user.id,
+            order_id: @order.id,
+            payment_method_id: points_payment_method.id,
+            payment_request_id: params[:payment_request_id],
+            amount_cents: params[:points_redeemed_amount],
+            date: Time.now, status: "active"
+          )
+        end
+      end
 
       flash[:notice] = t('.your_order_was_successfully_placed')
       flash.keep(:notice)
