@@ -7,7 +7,7 @@ module Ecommerce
 
     # GET /backoffice/users
     def index
-      @backoffice_users = User.all
+      @backoffice_users = User.all.order(id: :desc)
     end
 
 
