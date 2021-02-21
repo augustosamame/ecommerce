@@ -46,5 +46,33 @@ module Ecommerce
       mail(to: @user.email, subject: t('.subject'))
     end
 
-end
+    def abandoned_cart_email(user, order, coupon)
+      @user = user
+      @order = order
+      @coupon = coupon
+      mail(to: @user.email, subject: t('.subject'))
+    end
+
+    def referral_program_email(user)
+      @user = user
+      mail(to: @user.email, subject: t('.subject'))
+    end
+
+    def earned_referral_points_email(user, order)
+      @user = user
+      @order = order
+      mail(to: @user.email, subject: t('.subject'))
+    end
+
+    def points_will_expire_monthly_email(user)
+      @user = user
+      mail(to: @user.email, subject: t('.subject'))
+    end
+
+    def points_will_expire_daily_email(user)
+      @user = user
+      mail(to: @user.email, subject: t('.subject'))
+    end
+
+  end
 end
