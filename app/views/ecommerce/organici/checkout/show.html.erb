@@ -440,7 +440,7 @@ $( document ).ready(function() {
   }
 
   $('#pay-now-button').on('click', function(e) {
-    gtag_report_conversion(document.URL)
+    // gtag_report_conversion(document.URL)
     $.ajax({
       url: "checkout/check_stock_cart_js_from_checkout",
       dataType: "json",
