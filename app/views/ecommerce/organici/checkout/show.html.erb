@@ -440,6 +440,7 @@ $( document ).ready(function() {
   }
 
   $('#pay-now-button').on('click', function(e) {
+    gtag_report_conversion(document.URL)
     $.ajax({
       url: "checkout/check_stock_cart_js_from_checkout",
       dataType: "json",
@@ -687,4 +688,9 @@ $( document ).ready(function() {
 
   }
 
+</script>
+
+<!-- Event snippet for Purchase conversion page In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+<script>
+  function gtag_report_conversion(url) { var callback = function () { if (typeof(url) != 'undefined') { window.location = url; } }; gtag('event', 'conversion', { 'send_to': 'AW-670036400/O8dpCK38rPYBELDjv78C', 'transaction_id': '<%= "#{@cart.id}" if @cart %>', 'event_callback': callback }); return false; }
 </script>
