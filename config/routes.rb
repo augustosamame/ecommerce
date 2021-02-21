@@ -37,6 +37,7 @@ Ecommerce::Engine.routes.draw do
     get "export_products" => "dashboard#export_products", as: :export_products
     get "export_users" => "dashboard#export_users", as: :export_users
     get "export_orders" => "dashboard#export_orders", as: :export_orders
+    get "export_points" => "dashboard#export_points", as: :export_points
     get "user_points/:id" => "users#user_points", as: :user_points
     get "new_user_points/:id" => "users#new_user_points", as: :new_user_points
     post "points_transactions" => "users#create_user_points", as: :points_transactions

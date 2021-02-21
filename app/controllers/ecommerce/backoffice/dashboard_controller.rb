@@ -86,5 +86,67 @@ module Ecommerce
       end
     end
 
+    def export_points
+
+
+      @total_earned_points = (PointsTransaction.active.where(tx_type: ['redemption', 'referral', 'customer_service']).sum(:points)).try(:abs)
+      @total_redeeemed_points = (PointsTransaction.active.where(tx_type: 'redemption').sum(:points)).try(:abs)
+      @total_expired_points = (PointsTransaction.active.where(tx_type: ['expiration', 'void', 'refund']).sum(:points)).try(:abs)
+      @total_owed_points = @total_earned_points - @total_redeeemed_points - @total_expired_points
+
+      initial_year = 2021
+      initial_month = 1
+
+      current_year = Time.now.year
+      current_month = Time.now.month
+
+      points_report_grid = Hash.new
+
+      respond_to do |format|
+
+        format.html {
+          p = Axlsx::Package.new
+          wb = p.workbook
+          wb.add_worksheet(:name => "Exported Points") do |sheet|
+            sheet.add_row ["Global Totals", "Total Earned", "Total Redeemed", "Total Expired", "Total Owed"]
+            sheet.add_row ['', @total_earned_points, @total_redeeemed_points, @total_expired_points, @total_owed_points]
+            sheet.add_row
+            sheet.add_row ["Month / Year / Concept","Points x month"]
+
+
+            for r_year in initial_year..current_year
+              for r_month in initial_month..current_month
+                begin_date = "1/#{r_month}/#{r_year}".to_date
+                puts 'begin_date:'
+                puts begin_date
+                end_date = begin_date.end_of_month
+                puts 'end_date:'
+                puts end_date
+
+                earned_key_name = "#{r_year} #{Date::MONTHNAMES[r_month]} Earned:"
+                redeemed_key_name = "#{r_year} #{Date::MONTHNAMES[r_month]} Redeemed:"
+                expired_key_name = "#{r_year} #{Date::MONTHNAMES[r_month]} Expired:"
+
+                points_report_grid[earned_key_name] = (PointsTransaction.active.where(tx_type: ['purchase', 'referral', 'customer_service']).where(created_at: begin_date..end_date).sum(:points)).try(:abs)
+                points_report_grid[redeemed_key_name] = (PointsTransaction.active.where(tx_type: 'redemption').where(created_at: begin_date..end_date).sum(:points)).try(:abs)
+                points_report_grid[expired_key_name] = (PointsTransaction.active.where(tx_type: ['expiration', 'void', 'refund']).where(created_at: begin_date..end_date).sum(:points)).try(:abs)
+
+                sheet.add_row [earned_key_name, points_report_grid[earned_key_name]]
+                sheet.add_row [redeemed_key_name, points_report_grid[redeemed_key_name]]
+                sheet.add_row [expired_key_name, points_report_grid[expired_key_name]]
+              end
+            end
+            sheet.add_row
+            sheet.add_row ["Earned includes purchase, referral and customer_service"]
+            sheet.add_row ["Expired includes refunds, void and expired"]
+
+          end
+
+          send_data p.to_stream.read, :filename => 'Points Report.xlsx', :type => "application/vnd.openxmlformates-officedocument.spreadsheetml.sheet"
+        }
+
+      end
+    end
+
   end
 end
