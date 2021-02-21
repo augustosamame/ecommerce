@@ -15,6 +15,7 @@ module Ecommerce
       dynamic_coupon = Coupon.create(
         coupon_code: dynamic_coupon_code,
         coupon_type: 'percentage_discount',
+        discount_percentage_decimal: 5.0,
         start_date: Time.now,
         end_date: Time.now + 3.days,
         max_uses_per_user: 1,
