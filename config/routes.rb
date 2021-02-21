@@ -42,6 +42,7 @@ Ecommerce::Engine.routes.draw do
     get "new_user_points/:id" => "users#new_user_points", as: :new_user_points
     post "points_transactions" => "users#create_user_points", as: :points_transactions
     get 'void_points_transaction/:id' => "users#void_points", as: :void_points_transaction
+    get 'cross_selling' => "products#cross_selling"
     resources :stock_alerts
   end
 
@@ -64,6 +65,7 @@ Ecommerce::Engine.routes.draw do
   post '/orders/checkout/pay_order_pagoefectivo_checkout', :to => 'checkout#pay_order_pagoefectivo_checkout'
   post '/checkout/pay_order_manual', :to => 'checkout#pay_order_manual'
   get '/checkout', :to => 'checkout#show'
+  get '/pre_checkout', :to => 'checkout#pre_checkout'
   get '/my_account', :to => 'users#show'
 
   post '/calculate_shipping', :to => 'integrations#get_shipping_quote'

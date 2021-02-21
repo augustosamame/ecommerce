@@ -212,6 +212,10 @@ en-PE:
           alert_me: "Alert Me when back in Stock"
           no_more_stock_available: "No More Stock Available"
       checkout:
+        pre_checkout:
+          you_might_also_like: 'You Might Also Like'
+          you_might_also_like_reccomendations: 'Based on your cart contents, we would like to suggest the following products'
+          not_interested_proceed_to_checkout: "I'm not interested, proceed to Checkout"
         show:
           shipping_address: "Shipping Address"
           pick_address: "Pick an Address"

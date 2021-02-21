@@ -10,6 +10,12 @@ module Ecommerce
       @backoffice_products = Product.all.order(:product_order, id: :desc)
     end
 
+    def cross_selling
+      children = Ecommerce::Product.where(cross_sell_default: true).pluck(:id).uniq
+      children += Ecommerce::Product.where("cross_parent_id IS NOT NULL").pluck(:cross_parent_id).uniq
+      @backoffice_products = Ecommerce::Product.where(id: children).order(:product_order, id: :desc)
+    end
+
     # GET /backoffice/products/1
     def show
       @product_prices = ProductPrice.where(product_id: @backoffice_product.id)
@@ -29,6 +35,7 @@ module Ecommerce
         eval("@backoffice_product.tax_#{counter}_amount = amount.to_f")
         counter +=1
       }
+      @cross_sell_products = Ecommerce::Product.active
 
       #@backoffice_product.product_skus.build
     end
@@ -49,6 +56,7 @@ module Ecommerce
       found_other = @backoffice_product.product_taxes.find_by(tax_id: Ecommerce::Tax.third.try(:id))
       @backoffice_product.tax_3_check = true if found_other
       @backoffice_product.tax_3_amount = found_other.try(:tax_amount) if @backoffice_product.tax_3_check
+      @cross_sell_products = Ecommerce::Product.active
 
       #@backoffice_product.product_taxes.each do |pt|
       #  eval("@backoffice_product.tax_#{counter}_check = true")
@@ -161,7 +169,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_params
-        params.require(:product).permit(:weight, :coupon, :coupons, :coupon_id, :tax_1_check, :tax_1_amount, :tax_2_check, :tax_2_amount, :tax_3_check, :tax_3_amount, :status, :brand_id, :supplier_id, :name, :short_description, :description, :description2, :price_cents, :discounted_price_cents, :total_quantity, :stockable, :home_featured, :product_order, :image, :image_cache, Product.globalize_attribute_names, category_id: [], category_list: [], coupon_ids: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
+        params.require(:product).permit(:weight, :coupon, :coupons, :coupon_id, :tax_1_check, :tax_1_amount, :tax_2_check, :tax_2_amount, :tax_3_check, :tax_3_amount, :status, :brand_id, :supplier_id, :name, :short_description, :description, :description2, :price_cents, :discounted_price_cents, :total_quantity, :stockable, :home_featured, :product_order, :image, :image_cache, Product.globalize_attribute_names, :cross_sell_default, cross_sell_product_ids: [], cross_parent_ids: [], category_id: [], category_list: [], coupon_ids: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
       end
   end
 end

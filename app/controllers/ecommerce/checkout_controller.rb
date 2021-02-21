@@ -67,8 +67,37 @@ module Ecommerce
       end
     end
 
+    def pre_checkout
+      session[:pre_checkout_shown_cart] = @cart.id
+      children = Ecommerce::Product.active.where(cross_sell_default: true).pluck(:id).uniq
+      @cart.cart_items.includes(:product).each do |cart_item|
+        children += [cart_item.product.id] unless cart_item.product.cross_sell_products.blank?
+      end
+      @products = Ecommerce::Product.where(id: children.uniq).page(params[:page])
+      #render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
+      render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pre_checkout" and return
+    end
+
     # GET /checkout
     def show
+      unless @cart.cart_items.blank?
+        #session[:pre_checkout_shown_cart] = nil #remove to show pre_checkout only once per cart
+        unless @cart.id == session[:pre_checkout_shown_cart] #show pre_checkout only once per cart
+          #check if cross_selling setting is true AND (default_cross_sell OR cross_sell products in cart exist)
+          if Ecommerce::Control.find_by(name: 'cross_selling_pre_checkout_active').try(:boolean_value)
+            if Ecommerce::Product.active.find_by(cross_sell_default: true).blank?
+              found_cross_sell = false
+              @cart.cart_items.includes(:product).each do |cart_item|
+                found_cross_sell = true unless cart_item.product.cross_sell_products.blank?
+              end
+              redirect_to pre_checkout_path and return if found_cross_sell
+            else
+              redirect_to pre_checkout_path and return
+            end
+          end
+        end
+      end
+
       @address = Address.new(user_id: current_user.id)
       @picked_address = Address.new(user_id: current_user.id)
       @checkout_addresses = Address.where(user_id: current_user.id)

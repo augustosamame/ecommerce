@@ -8,6 +8,8 @@
     <%= f.input :status, collection: Ecommerce::Product.statuses.keys, label: t('.status') %>
     <%= f.input :name, label: t('.name') %>
     <%= f.association :coupons, :value_method => lambda { |coupon| "#{coupon.id}" }, :label_method => lambda { |coupon| "#{coupon.coupon_code}" }, label: t('.any_coupons') %>
+    <%= f.input :cross_sell_default, label: 'Cross Selling Default' %>
+    <%= f.association :cross_sell_products, :value_method => lambda { |product| "#{product.id}" }, :label_method => lambda { |product| "#{product.name}" }, label: 'Cross Sell Products' %>
     <%= f.input :short_description, label: t('.short_description') %>
     <%= f.input :description, label: t('.long_description') %>
     <%= f.input :price_cents, :input_html => { :id => 'price-cents' }, label: t('.price') %>
@@ -97,6 +99,8 @@
 
     $('select.form-control.tags').val(JSON.parse(<%=raw @backoffice_product.category_list.to_json.inspect %>));
     $('select.form-control.tags').trigger('change'); // Notify any JS components that the value changed
+
+    $('#product_cross_sell_product_ids').select2({ });
 
   };
   });

@@ -1,0 +1,49 @@
+<div class="page-header">
+  <%= link_to new_backoffice_product_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    <%= t('.new_product') %>
+  <% end %>
+  <h1><%= t('.listing_products') %></h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th><%= t('.id') %></th>
+        <th><%= t('.name') %></th>
+        <th>Default Cross Selling</th>
+        <th>Products Cross Selling</th>
+        <th><%= t('.category') %></th>
+        <th><%= t('.description') %></th>
+        <th><%= t('.price') %></th>
+        <th><%= t('.discounted_price') %></th>
+        <th><%= t('.total_quantity') %></th>
+        <th><%= t('.image') %></th>
+        <th><%= t('.order') %></th>
+        <th><%= t('.show') %></th>
+        <th><%= t('.edit') %></th>
+        <th><%= t('.delete') %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @backoffice_products) do |backoffice_product| %>
+            <td><%= backoffice_product.id %></td>
+            <td><%= backoffice_product.name %></td>
+            <td><%= backoffice_product.cross_sell_default %></td>
+            <td><%= backoffice_product.cross_sell_products.joins(:translations).pluck("ecommerce_product_translations.name") %></td>
+            <td><%= backoffice_product.category_list.to_s %></td>
+            <td><%= backoffice_product.description %></td>
+            <td><%= backoffice_product.price_cents %></td>
+            <td><%= backoffice_product.discounted_price_cents %></td>
+            <td><%= backoffice_product.total_quantity %></td>
+            <td><%= image_tag backoffice_product.image_url(:thumb_100), width: 100 %></td>
+            <td><%= best_in_place backoffice_product, :product_order, :as => :input, :url => "products_in_place/#{backoffice_product.id}", :method => :put %></td>
+            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_path(backoffice_product) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_product_path(backoffice_product) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_product_path(backoffice_product), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

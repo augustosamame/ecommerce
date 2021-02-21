@@ -1507,6 +1507,12 @@ header .navbar,
   background: 0 0;
   padding: 0;
 }
+
+.continue-checkout-button {
+  padding: 15 50 15 50;
+  font-size: 20px;
+}
+
 @media (max-width: 767px) {
 	.masonry-container .masonry-item {
 		width: 100%;
@@ -1535,6 +1541,9 @@ header .navbar,
 	.noo-menu-extend {
 		display: none;
 	}
+  .page-title-pre-checkout {
+    font-size: 34px !important;
+  }
 }
 @media (max-width: 414px) {
     .noo-clients.noo-clients-3 {

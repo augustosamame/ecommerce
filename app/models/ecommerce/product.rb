@@ -20,6 +20,8 @@ module Ecommerce
     has_many :active_variants, -> { where(deleted_at: nil) }, class_name: 'ProductSku'
     has_many :product_prices
 
+    has_many :cross_sell_products, :class_name => "Ecommerce::Product", :foreign_key => "cross_parent_id"
+
     #after_commit :create_product_taxes, on: :create
 
     attr_accessor :tax_1_check, :tax_2_check, :tax_3_check, :tax_1_amount, :tax_2_amount, :tax_3_amount
