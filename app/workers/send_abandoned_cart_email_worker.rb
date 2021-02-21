@@ -5,6 +5,11 @@ class SendAbandonedCartEmailWorker
     cart = Ecommerce::Cart.find(cart_id)
     user = cart.user
     cart.update(abandoned_email_sent: true)
-    UserMailer.abandoned_cart_email(user, cart, nil).deliver! #unless Rails.env == "development"
+    if Ecommerce::Control.find_by(name: 'send_abandoned_cart_coupon').boolean_value
+      coupon = Ecommerce::Coupon.one_time_coupon(user.id)
+      UserMailer.abandoned_cart_email(user, cart, coupon).deliver! #unless Rails.env == "development"
+    else
+      UserMailer.abandoned_cart_email(user, cart, nil).deliver! #unless Rails.env == "development"
+    end
   end
 end

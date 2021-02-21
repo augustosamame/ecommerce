@@ -1,10 +1,14 @@
 <div class="HeaderLogo">
-  <%= image_tag "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_180x180.png", style: "position: absolute; width: 120px; height: 120px; top: 0px;" %>
+<%= image_tag "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_180x180.png", style: "position: absolute; width: 120px; height: 120px; top: 0px;" %>
 </div>
-<div style="margin-top: 140px">
-  <p>Estimado cliente <%= @user.name %><br></p>
-  <p>Hay items en su carrito de compras. Esperamos que pueda completar su transacción pronto. Si tiene algún incoveniente contáctenos al 989080023</p>
-  <p>
+<div style="margin-top: 140px;">
+<p>Estimado cliente <%= @user.name %><br></p>
+<p>Hay items en su carrito de compras. Esperamos que pueda completar su transacción pronto. Si tiene algún incoveniente contáctenos al 989080023</p>
+<br>
+<% if @coupon %>
+  Puede utilizar este cupón: <%= @coupon %> al momento del checkout, y obtener un 5% de descuento en su compra. Cupón válido por las siguientes 48 horas.
+<% end %>
+<p>
 <p> <%= t('.thank_you') %></p>
 <p> <%= t('.thank_you_2') %></p>
 <p><%= t('.farewell_1') %></p>
