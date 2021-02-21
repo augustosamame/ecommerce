@@ -89,7 +89,7 @@ module Ecommerce
       invoice_lines_array = Array.new
       line = 0
       weight = 0.0
-      total_order_amount = (self.amount).to_f
+      total_order_amount = (self.amount).to_f - (self.points_redeemed_amount.to_f / 100)
       discount_total = (self.discount_amount).to_f.abs + (self.points_redeemed_amount.to_f / 100)
       #since igv amount is taken by certifact as the sum of igv lines, the igv in tax lines need to be reduced based on the discount
       OrderItem.where(order_id: self.id).includes(:product).each do |item|
