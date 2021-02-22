@@ -89,7 +89,7 @@ module Ecommerce
     def export_points
 
 
-      @total_earned_points = (PointsTransaction.active.where(tx_type: ['redemption', 'referral', 'customer_service']).sum(:points)).try(:abs)
+      @total_earned_points = (PointsTransaction.active.where(tx_type: ['purchase', 'referral', 'customer_service']).sum(:points)).try(:abs)
       @total_redeeemed_points = (PointsTransaction.active.where(tx_type: 'redemption').sum(:points)).try(:abs)
       @total_expired_points = (PointsTransaction.active.where(tx_type: ['expiration', 'void', 'refund']).sum(:points)).try(:abs)
       @total_owed_points = @total_earned_points - @total_redeeemed_points - @total_expired_points
