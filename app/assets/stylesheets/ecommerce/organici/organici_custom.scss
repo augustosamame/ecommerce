@@ -1513,6 +1513,16 @@ header .navbar,
   font-size: 20px;
 }
 
+.noo-page-heading-precheckout{
+  height: 140px !important;
+}
+.noo-page-breadcrumb-precheckout{
+  margin-top: 0px !important;
+}
+.precheckout-product-height {
+  padding-bottom: 20px !important;
+}
+
 @media (max-width: 767px) {
 	.masonry-container .masonry-item {
 		width: 100%;
@@ -1543,6 +1553,12 @@ header .navbar,
 	}
   .page-title-pre-checkout {
     font-size: 34px !important;
+  }
+  .noo-page-heading-precheckout{
+    height: 100px !important;
+  }
+  .noo-heading-content-precheckout {
+    vertical-align: top !important;
   }
 }
 @media (max-width: 414px) {

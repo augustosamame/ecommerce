@@ -81,7 +81,7 @@ module Ecommerce
     # GET /checkout
     def show
       unless @cart.cart_items.blank?
-        #session[:pre_checkout_shown_cart] = nil #remove to show pre_checkout only once per cart
+        session[:pre_checkout_shown_cart] = nil #remove to show pre_checkout only once per cart
         unless @cart.id == session[:pre_checkout_shown_cart] #show pre_checkout only once per cart
           #check if cross_selling setting is true AND (default_cross_sell OR cross_sell products in cart exist)
           if Ecommerce::Control.find_by(name: 'cross_selling_pre_checkout_active').try(:boolean_value)

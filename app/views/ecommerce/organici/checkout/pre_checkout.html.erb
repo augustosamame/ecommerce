@@ -1,8 +1,8 @@
-<section class="noo-page-heading eff">
+<section class="noo-page-heading noo-page-heading-precheckout eff">
   <div class="container">
-    <div class="noo-heading-content">
+    <div class="noo-heading-content noo-heading-content-precheckout">
       <h1 class="page-title page-title-pre-checkout eff"><%= t('.you_might_also_like') %></h1>
-      <div class="noo-page-breadcrumb eff">
+      <div class="noo-page-breadcrumb noo-page-breadcrumb-precheckout eff">
         <span><%= t('.you_might_also_like_reccomendations') %></span>
       </div>
     </div>
@@ -10,16 +10,11 @@
 </section>
 
 <div class="main">
-  <div style='width: 90%; margin: 20 auto; text-align: center;'>
-    <div style='display: flex; justify-content: center'>
-      <%= link_to t('.not_interested_proceed_to_checkout'), checkout_path, class: "btn-primary continue-checkout-button" %>
-    </div>
-  </div>
   <div class="commerce noo-shop-main">
     <div class="container">
       <div class="row" >
         <div class="noo-main col-md-9" style="margin-top: 0px;">
-          <div class="noo-height-product pt-8 pb-10">
+          <div class="noo-height-product pt-8 pb-10 precheckout-product-height">
             <div class="container">
               <div class="row">
                 <div class="col-sm-12">
@@ -41,6 +36,11 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div style='width: 90%; margin: 20 auto; text-align: center;'>
+        <div style='display: flex; justify-content: center'>
+          <%= link_to t('.not_interested_proceed_to_checkout'), checkout_path, class: "btn-primary continue-checkout-button" %>
         </div>
       </div>
     </div>
