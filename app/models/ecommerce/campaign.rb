@@ -5,6 +5,8 @@ module Ecommerce
     enum campaign_type: {next_purchase_email: 0, bulk_email: 1}
     enum status: {inactive: 0, active: 1}
 
+    validates :link, format: URI::regexp(%w[http https]), :allow_blank => true
+
     mount_uploader :image, Ecommerce::CampaignImageUploader
 
     def self.send_recipients(order_id)

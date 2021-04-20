@@ -882,6 +882,8 @@ es-PE:
           campaign_name: 'Nombre de la Campaña'
           coupon: 'Cupón'
           campaign_type: 'Tipo de Campaña'
+          image: 'Imagen'
+          link: 'Enlace'
           status: 'Estado'
           send: 'Enviar'
         new:
@@ -892,6 +894,8 @@ es-PE:
           name: 'Nombre'
           coupon_id: 'Id Cupón'
           campaign_type: 'Tipo de Campaña'
+          image: 'Imagen'
+          link: 'Enlace'
           status: 'Estado'
           email_subject: 'Asunto Correo'
           email_subject_es: 'Asunto Correo Español'

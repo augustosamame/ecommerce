@@ -811,6 +811,8 @@ en-PE:
           campaign_name: 'Campaign Name'
           coupon: 'Coupon'
           campaign_type: 'Campaign Type'
+          image: 'Image'
+          link: 'Link'
           status: 'Status'
           send: 'Send'
         new:
@@ -820,6 +822,8 @@ en-PE:
         form:
           coupon_id: 'Coupon Id'
           campaign_type: 'Campaign Type'
+          image: 'Image'
+          link: 'Link'
           status: 'Status'
           email_subject: 'Email Subject'
           email_subject_es: 'Email Subject Spanish'

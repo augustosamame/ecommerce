@@ -93,7 +93,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def campaign_params
-        params.require(:campaign).permit(:email_subject, :email_subject_es, :email_coupon_description, :email_coupon_description_es, :image, :image_cache, :campaign_type, :coupon, :coupon_id, :name, :email_template_id, :status)
+        params.require(:campaign).permit(:email_subject, :email_subject_es, :email_coupon_description, :email_coupon_description_es, :image, :image_cache, :campaign_type, :coupon, :coupon_id, :name, :email_template_id, :status, :link)
       end
   end
 end

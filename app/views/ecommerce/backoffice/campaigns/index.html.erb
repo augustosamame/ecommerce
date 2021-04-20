@@ -13,6 +13,8 @@
         <th><%= t('.campaign_name') %></th>
         <th><%= t('.coupon') %></th>
         <th><%= t('.campaign_type') %></th>
+        <th><%= t('.image') %></th>
+        <th><%= t('.link') %></th>
         <th><%= t('.status') %></th>
         <th><%= t('.send') %></th>
         <th><%= t('common.show') %></th>
@@ -26,6 +28,8 @@
         <td><%= campaign.name %></td>
         <td><%= campaign.coupon.try(:coupon_code) %></td>
         <td><%= campaign.campaign_type %></td>
+        <td><%= image_tag campaign.image.thumb_100.url if campaign.image %></td>
+        <td><%= campaign.link %></td>
         <td><%= campaign.status %></td>
         <% if campaign.bulk_email? && campaign.active? %>
           <td><%= link_to "<i class='material-icons'>email</i>".html_safe, backoffice_send_recipients_path(campaign) %></td>
