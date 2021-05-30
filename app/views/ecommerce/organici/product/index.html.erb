@@ -87,7 +87,7 @@ $(document).ready(function(){
       e.preventDefault();
     });
 
-    $(".devtech_minus_class").click(function(e) {
+    $('body').on('click', ".devtech_minus_class", function(e) {
       var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
       var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
       outOfStockTextElement.hide();

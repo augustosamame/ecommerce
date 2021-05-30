@@ -14,7 +14,7 @@
       <div class='center-form'>
         <% if item && (item.price == item.discounted_price) %>
           <span class="price"><span class="amount"><%= session_price(item, "current_price") %></span></span>
-          
+
         <% else %>
 
           <span class="price">
@@ -35,7 +35,7 @@
           <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart", id: "new_cart_item_#{item.id}" } do |f| %>
             <div class="plus-minus-container">
               <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class" id=<%= "devtech_minus_#{item.id}" %>>
-                <a href="#" class="add_to_wishlist devtech_minus_a_class">-</a>
+                <a href="#" class="add_to_wishlist devtech_minus_a_class"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.total_quantity}" %>>-</a>
               </div>
               <div class="quantity" id="devtech_quantity">
                 <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners', id: "devtech_quantity_field_#{item.id}", value: "1", size: "4", step: "1", min: "1" } %>
