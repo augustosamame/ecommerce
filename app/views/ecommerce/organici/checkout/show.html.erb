@@ -533,7 +533,7 @@ $( document ).ready(function() {
           },
           data: JSON.stringify(data_to_send),
           success: function(data){
-            // console.log(data.id, '<= Culqi Order Id');
+            console.log(data.id, '<= Culqi Order Id');
             culqi_order_id = data.id
             Culqi.settings({
               title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',

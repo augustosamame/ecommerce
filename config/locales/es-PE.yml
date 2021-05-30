@@ -229,6 +229,8 @@ es-PE:
           order_total: "Total del Pedido"
           payment: "Pago"
           shipping: "Costo de Envío"
+          pay_in_soles: "Pagar en soles"
+          pay_with_cc: "Pagar con Tarjeta Ahora"
           invoice: "Comprobante"
           not_yet_invoiced: "Comprobante aún no generado"
           manual_payment_instructions: "Instrucciones Para Pago Manual"

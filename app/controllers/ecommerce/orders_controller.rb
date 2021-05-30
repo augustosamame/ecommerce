@@ -20,6 +20,12 @@ module Ecommerce
       @error_alert = params[:error]
       @payment_credit_card_visanet = PaymentMethod.is_active.find_by(name: "Card", processor: "Visanet")
       @payment_credit_card_culqi = PaymentMethod.is_active.find_by(name: "Card", processor: "Culqi")
+
+      @current_user_first_name = current_user.first_name
+      @current_user_last_name = current_user.last_name
+      @current_user_email = current_user.email
+      @current_user_phone = "+51#{current_user.username}".split(':')[0].gsub(/[^\d]/, '')
+      
       render "ecommerce/#{Ecommerce.ecommerce_layout}/order/show"
     end
 
