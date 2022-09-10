@@ -3,8 +3,8 @@ require_dependency "ecommerce/application_controller"
 module Ecommerce
   class OrdersController < ApplicationController
 
-    skip_before_action :verify_authenticity_token, only: [:culqi_webhook]
-    skip_before_action :authenticate_user!, only: [:culqi_webhook]
+    skip_before_action :verify_authenticity_token, only: [:culqi_webhook, :einvoice_webhook]
+    skip_before_action :authenticate_user!, only: [:culqi_webhook, :einvoice_webhook]
 
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}"
     before_action :set_order, only: [:show]
