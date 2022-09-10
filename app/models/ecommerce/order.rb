@@ -313,5 +313,225 @@ module Ecommerce
       self.save
     end
 
+    def generate_einvoice_from_woocommerce(payload)
+      return {einvoice_number: rand(1..100).to_s.rjust(8, "0") }
+      invoice_lines_array = Array.new
+      line = 0
+      weight = 0.0
+      total_order_amount = (self.amount).to_f - (self.points_redeemed_amount.to_f / 100)
+      discount_total = ((self.discount_amount).to_f.abs + (self.points_redeemed_amount.to_f / 100)) / 1.18
+      #since igv amount is taken by certifact as the sum of igv lines, the igv in tax lines need to be reduced based on the discount
+      OrderItem.where(order_id: self.id).includes(:product).each do |item|
+        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: (item.price * item.quantity).to_f, price_subtotal: item.price.to_f, weight: (item.quantity * item.product.weight).to_f }
+        igv_found = item.product.product_taxes.find_by(tax_id: Ecommerce::Tax.first.try(:id))
+        weight += (item.quantity * item.product.weight).to_f
+        if igv_found
+          invoice_lines_array[line][:igv_tax] = true
+          invoice_lines_array[line][:igv_amount] = igv_found.try(:tax_amount)
+        else
+          invoice_lines_array[line][:igv_tax] = false
+          invoice_lines_array[line][:igv_amount] = 0
+        end
+        isc_found = item.product.product_taxes.find_by(tax_id: Ecommerce::Tax.second.try(:id))
+        if isc_found
+          invoice_lines_array[line][:isc_tax] = true
+          invoice_lines_array[line][:isc_amount] = isc_found.try(:tax_amount)
+        else
+          invoice_lines_array[line][:isc_tax] = false
+          invoice_lines_array[line][:isc_amount] = 0
+        end
+        line +=1
+      end
+      if self.shipping_amount_cents > 0
+        invoice_lines_array << {name: "Costo de envío (shipping)", quantity: 1, product_id: 1000, price_total: shipping_amount.to_i, price_subtotal: shipping_amount.to_i, igv_tax: true, igv_amount: 18 }
+      end
+
+      case self.payment_status
+        when "paid"
+          return false if efact_number
+          case self.efact_type
+            when "boleta"
+              invoice_hash = {
+                einvoice_type: "boleta",
+                number: "B#{Ecommerce.serie_boleta}-#{Ecommerce::Control.find_by!(name: "next_boleta_number").integer_value}",
+                currency_id: "USD",
+                id: self.id,
+                zip: "030101",
+                catalog_06_id: (self.required_doc.blank? || self.required_doc.try(:strip).try(:length) == 8) ? "1 - DNI" : "4 - CARNET DE EXTRANJERIA",
+                partner_id: "#{self.user.first_name} #{self.user.last_name} (#{self.user.username})",
+                company_id: Ecommerce.company_legal_name,
+                email: self.user.email,
+                vat: self.amount.to_i >= 210 ? self.required_doc : "",
+                company_id_city: Ecommerce.company_city,
+                company_id_street: Ecommerce.company_street,
+                date_invoice: smart_date_invoice,
+                payment_term_id: "Contado",
+                date: smart_date_invoice,
+                amount_total: total_order_amount,
+                discount_total: discount_total,
+                weight: weight,
+                observation: self.delivery_comments,
+                company_id_zip: 33,
+                partner_shipping_id: "shipping_id",
+                company_id_vat: Ecommerce.company_vat,
+                street: payload.try(:street),
+                district_id: payload.try(:district),
+                province_id: payload.try(:city),
+                state_id: payload.try(:state),
+                invoice_line_ids: invoice_lines_array
+              }
+              correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_boleta_number")
+            when "factura"
+              invoice_hash = {
+                einvoice_type: "factura",
+                number: "F#{Ecommerce.serie_factura}-#{Ecommerce::Control.find_by!(name: "next_factura_number").integer_value}",
+                currency_id: "USD",
+                id: self.id,
+                zip: "030101",
+                catalog_06_id: "6 - RUC",
+                partner_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social) + " (#{self.user.username})",
+                company_id: Ecommerce.company_legal_name,
+                email: self.user.email,
+                vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
+                company_id_city: Ecommerce.company_city,
+                company_id_street: Ecommerce.company_street,
+                date_invoice: smart_date_invoice,
+                payment_term_id: "Contado",
+                date: smart_date_invoice,
+                amount_total: total_order_amount,
+                discount_total: discount_total,
+                weight: weight,
+                observation: self.delivery_comments,
+                company_id_zip: 33,
+                partner_shipping_id: "shipping_id",
+                company_id_vat: Ecommerce.company_vat,
+                street: payload.try(:street),
+                district_id: payload.try(:district),
+                province_id: payload.try(:city),
+                state_id: payload.try(:state),
+                street_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:address),
+                district_id_razon_social: "",
+                province_id_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
+                state_id_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
+                invoice_line_ids: invoice_lines_array
+              }
+              correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_factura_number")
+          end
+        when "refunded"
+          return false if !efact_number || efact_refund_number
+          case self.efact_number[0]
+            when "B"
+              invoice_hash = {
+                einvoice_type: "nota_de_credito",
+                number: "B#{Ecommerce.serie_nota_de_credito}-#{Ecommerce::Control.find_by!(name: "next_nota_de_credito_boleta_number").integer_value}",
+                affected_document: self.efact_number,
+                currency_id: "USD",
+                id: self.id,
+                zip: "030101",
+                catalog_06_id: (self.required_doc.blank? || self.required_doc.try(:strip).try(:length) == 8) ? "1 - DNI" : "4 - CARNET DE EXTRANJERIA",
+                partner_id: "#{self.user.first_name} #{self.user.last_name}",
+                company_id: Ecommerce.company_legal_name,
+                email: self.user.email,
+                vat: self.amount.to_i >= 210 ? self.required_doc : "",
+                company_id_city: Ecommerce.company_city,
+                company_id_street: Ecommerce.company_street,
+                date_invoice: smart_date_invoice,
+                payment_term_id: "Contado",
+                date: smart_date_invoice,
+                amount_total: total_order_amount,
+                company_id_zip: 33,
+                partner_shipping_id: "shipping_id",
+                company_id_vat: Ecommerce.company_vat,
+                street: payload.try(:street),
+                district_id: payload.try(:district),
+                province_id: payload.try(:city),
+                state_id: payload.try(:state),
+                invoice_line_ids: invoice_lines_array
+              }
+              correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_nota_de_credito_boleta_number")
+            when "F"
+              invoice_hash = {
+                einvoice_type: "nota_de_credito",
+                number: "F#{Ecommerce.serie_nota_de_credito}-#{Ecommerce::Control.find_by!(name: "next_nota_de_credito_factura_number").integer_value}",
+                affected_document: self.efact_number,
+                currency_id: "USD",
+                id: self.id,
+                zip: "030101",
+                catalog_06_id: "6 - RUC",
+                partner_id: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:razon_social),
+                company_id: Ecommerce.company_legal_name,
+                email: self.user.email,
+                vat: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:vat),
+                company_id_city: Ecommerce.company_city,
+                company_id_street: Ecommerce.company_street,
+                date_invoice: smart_date_invoice,
+                payment_term_id: "Contado",
+                date: smart_date_invoice,
+                amount_total: total_order_amount,
+                company_id_zip: 33,
+                partner_shipping_id: "shipping_id",
+                company_id_vat: Ecommerce.company_vat,
+                street: payload.try(:street),
+                district_id: payload.try(:district),
+                province_id: payload.try(:city),
+                state_id: payload.try(:state),
+                street_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:address),
+                district_id_razon_social: "",
+                province_id_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
+                state_id_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:city),
+                invoice_line_ids: invoice_lines_array
+              }
+              correlativo_to_update_on_200 = Ecommerce::Control.find_by!(name: "next_nota_de_credito_factura_number")
+          end
+        when "payment_void"
+          return false if !efact_number
+          invoice_hash = {
+            einvoice_type: "anulacion",
+            affected_document: self.efact_number,
+            void_reason: "Cancelación"
+          }
+        else
+          invoice_hash = {
+            error: "invoice is unpaid"
+          }
+      end
+
+      url = URI(Ecommerce::Control.find_by(name: 'efact_url').text_value)
+      puts "invoice_hash: #{invoice_hash.to_json} sent to #{url}"
+      Rails.logger.debug "invoice_hash: #{invoice_hash.to_json} sent to #{url}"
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true if url.scheme == "https"
+      request = Net::HTTP::Post.new(url)
+      request["Content-Type"] = 'application/json'
+      #TODO add type of authentication field in backoffice to support Bearer Token
+      request["Authorization"] = "Bearer #{Ecommerce::Control.find_by!(name: "efact_token").text_value}"
+      request["Cache-Control"] = 'no-cache'
+      request.body = invoice_hash.to_json
+      self.update_columns(efact_sent_text: invoice_hash.to_json)
+      response = http.request(request)
+      if response.code == "200"
+        response_body = JSON.parse(response.read_body)
+        if response.read_body && response_body["response_text"] == "OK"
+          case invoice_hash[:einvoice_type]
+            when "nota_de_credito"
+              self.update_columns(efact_response_text: "OK", efact_refund_url: response_body["response_url"], efact_refund_number: invoice_hash[:number] )
+            when "anulacion"
+              self.update_columns(efact_response_text: "OK", efact_void_url: response_body["response_url"] )
+            else
+              self.update_columns(efact_response_text: "OK", efact_invoice_url: response_body["response_url"], efact_number: invoice_hash[:number] )
+          end
+          correlativo_to_update_on_200.update_columns(integer_value: correlativo_to_update_on_200.integer_value + 1) if correlativo_to_update_on_200
+        else
+          self.update_columns(efact_response_text: "Internal Error #{response.code} - #{response_body["response_text"]}")
+          AdminMailer.einvoice_error_email(self).deliver! #unless Rails.env == "development"
+        end
+        return response_body.to_json
+      else
+        self.update_columns(efact_response_text: "Internal Error #{response.code}")
+        AdminMailer.einvoice_error_email(self).deliver! #unless Rails.env == "development"
+        return response.read_body
+      end
+    end
+
   end
 end
