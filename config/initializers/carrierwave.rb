@@ -1,10 +1,10 @@
-require 'carrierwave'
-require 'carrierwave/storage/fog'
-require 'dotenv-rails'
+#require 'carrierwave'
+#require 'carrierwave/storage/fog'
+#require 'dotenv-rails'
 
-CarrierWave.configure do |config|
+#CarrierWave.configure do |config|
 
-  Dotenv::Railtie.load
+  #Dotenv::Railtie.load
 
   #config.fog_provider = 'fog/aws'
 
@@ -15,4 +15,4 @@ CarrierWave.configure do |config|
   #}
   #config.fog_directory  = ENV["CARRIERWAVE_CONFIG_FOG_DIRECTORY"]
   #config.storage = :fog
-end
+#end
