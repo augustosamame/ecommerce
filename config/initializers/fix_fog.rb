@@ -1,1 +1,1 @@
-module CarrierWave; module Storage; class Fog; end; end; end
+#module CarrierWave; module Storage; class Fog; end; end; end
