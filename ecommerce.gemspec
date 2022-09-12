@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'decorators'
   s.add_dependency 'kaminari'#, "~> 1.1.1"
   s.add_dependency 'friendly_id'#, '~> 5.1.0'
-  s.add_dependency 'carrierwave'#, '~> 1.2.1'
+  #s.add_dependency 'carrierwave'#, '~> 1.2.1'
   s.add_dependency 'fog-aws'#, '~> 1.4.1'
   s.add_dependency 'mini_magick'#, '~> 4.8.0'
   s.add_dependency 'social-share-button'
