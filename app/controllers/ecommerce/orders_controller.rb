@@ -29,16 +29,6 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/order/show"
     end
 
-    def einvoice_webhook
-      einvoice_data = JSON.parse(params[:data])
-      result = Order.new.generate_einvoice_from_woocommerce(einvoice_data)
-      if result[:success]
-        render json: { einvoice_number: result[:einvoice_number] }
-      else
-        render json: { error: result[:error] }, :status => 422
-      end
-    end
-
     def culqi_webhook
       if params[:object] == "event" && params[:type] == "order.status.changed"
         Rollbar.info("Webhook Received",
