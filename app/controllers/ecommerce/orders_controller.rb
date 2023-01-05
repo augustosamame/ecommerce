@@ -54,6 +54,12 @@ module Ecommerce
       head :ok
     end
 
+    def einvoice_webhook
+      Rails.logger.info "Webhook Received"
+      Rails.logger.info params
+      Rails.logger.info params.to_json
+    end
+
     def calculate_coupon
       puts params
       found_coupon = Coupon.find_by(coupon_code: params[:coupon_code])
