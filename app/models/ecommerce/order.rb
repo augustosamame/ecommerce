@@ -143,6 +143,7 @@ module Ecommerce
           street2: payload[:order][:shipping_addres][:address_2],
           district: payload[:order][:shipping_addres][:city],
           city: payload[:order][:shipping_addres][:state],
+          state: 'Lima',
           address_type: 'home',
           shipping_or_billing: 'shipping'
         )
@@ -152,12 +153,14 @@ module Ecommerce
           street2: payload[:order][:billing_addres][:address_2],
           district: payload[:order][:billing_addres][:city],
           city: payload[:order][:billing_addres][:state],
+          state: 'Lima',
           address_type: 'home',
           shipping_or_billing: 'billing'
         )
         new_order.update_columns(billing_address_id: new_address_billing.id, shipping_address_id: new_address_shipping.id)
       end
-      new_einvoice = new_order.generate_einvoice
+      new_einvoice_data = new_order.generate_einvoice
+      return new_einvoice_data
     end
 
 
