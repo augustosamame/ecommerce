@@ -46,7 +46,7 @@ module Ecommerce
     accepts_nested_attributes_for :product_properties, reject_if: proc { |attributes| attributes['description'].blank? }, allow_destroy: true
     #accepts_nested_attributes_for :images,             reject_if: proc { |t| (t['photo'].nil? && t['photo_from_link'].blank? && t['id'].blank?) }, allow_destroy: true
 
-    mount_uploader :image, Ecommerce::ProductImageUploader
+    #mount_uploader :image, Ecommerce::ProductImageUploader
 
     monetize :price_cents
     monetize :discounted_price_cents

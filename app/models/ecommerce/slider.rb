@@ -5,7 +5,7 @@ module Ecommerce
 
     enum status: {active: 0, inactive: 1}
 
-    mount_uploader :slider_image, Ecommerce::SliderImageUploader
+    #mount_uploader :slider_image, Ecommerce::SliderImageUploader
 
   end
 end
