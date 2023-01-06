@@ -5,7 +5,6 @@ PATH
       best_in_place
       bootstrap-sass
       browser
-      carrierwave
       cocoon
       culqi-ruby
       decorators
@@ -80,10 +79,6 @@ GEM
       sass (>= 3.3.4)
     browser (2.5.3)
     builder (3.2.3)
-    carrierwave (1.2.3)
-      activemodel (>= 4.0.0)
-      activesupport (>= 4.0.0)
-      mime-types (>= 1.16)
     cocoon (1.2.11)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)

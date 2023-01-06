@@ -1,8 +1,8 @@
 require "ecommerce/engine"
 require 'decorators'
 require "friendly_id"
-require 'carrierwave'
-require 'carrierwave/storage/fog'
+#require 'carrierwave'
+#require 'carrierwave/storage/fog'
 require 'mini_magick'
 require 'social-share-button'
 require 'simple_form'
