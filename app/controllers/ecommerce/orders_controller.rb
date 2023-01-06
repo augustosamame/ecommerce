@@ -56,8 +56,11 @@ module Ecommerce
 
     def einvoice_webhook
       Rails.logger.info "Webhook Received"
-      Rails.logger.info params
       Rails.logger.info params.to_json
+      @einvoice_data = Order.new.generate_user_address_order_woocommerce(params)
+      respond_to do |format|
+        format.json { render json: @einvoice_data.to_json and return}
+      end
     end
 
     def calculate_coupon

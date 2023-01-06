@@ -104,7 +104,9 @@ module Ecommerce
     private
 
       def set_home_items
-        @top_bar_new_hash = Ecommerce::Control.find_by(name: 'top_bar_cookie_read_hash').text_value #this will be set as a cookie via javascript if user closes top_bar
+        top_bar_data = Ecommerce::Control.find_by(name: 'top_bar_cookie_read_hash')
+        @top_bar_new_hash = Hash.new
+        @top_bar_new_hash = top_bar_data.text_value if top_bar_data #this will be set as a cookie via javascript if user closes top_bar
         @secondary_menu_categories = Ecommerce::Category.where(main_menu: true, category_type: "secondary", status: "active").order(:category_order)
       end
 

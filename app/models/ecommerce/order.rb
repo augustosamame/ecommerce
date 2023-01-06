@@ -16,11 +16,11 @@ module Ecommerce
 
     monetize :amount_cents, :shipping_amount_cents, :discount_amount_cents, with_model_currency: :currency
 
-    after_commit :notify_new_order, on: :create
-    after_commit :blank_user_carts, on: :create
-    after_commit :notify_unpaid_to_paid, on: :update, if: :saved_change_to_payment_status
+    #after_commit :notify_new_order, on: :create
+    #after_commit :blank_user_carts, on: :create
+    #after_commit :notify_unpaid_to_paid, on: :update, if: :saved_change_to_payment_status
     after_commit :fire_einvoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
-    after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
+    #after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
 
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
@@ -81,6 +81,81 @@ module Ecommerce
       else
         return (Time.now - 5.hours).to_s[0..9]
       end
+    end
+
+    def generate_user_address_order_woocommerce(payload)
+      byebug
+      user = User.find_by(email: payload[:user][:email])
+      unless user
+        user = User.find_by(phone: payload[:user][:phone])
+      end
+      unless user
+        user = User.create!(
+          email: payload[:user][:email],
+          first_name: payload[:user][:first_name],
+          last_name: payload[:user][:last_name],
+          role: 'standard',
+          password: '12345678',
+          phone: payload[:user][:phone],
+          username: payload[:user][:phone],
+          address: "#{payload[:order][:shipping_addres][:address_1]}, #{payload[:order][:shipping_addres][:city]}, #{payload[:order][:shipping_addres][:state]}",
+          status: 'regular')
+      end
+      new_order = Order.create!(
+        user_id: user.id,
+        woocommerce_order_number: payload[:order][:order_number],
+        amount_cents: ((payload[:order][:amount].to_f)*100).to_i,
+        shipping_amount_cents: ((payload[:order][:shipping_amount].to_f)*100).to_i,
+        stage: 'stage_paid',
+        payment_status: 'paid',
+        status: 'active',
+        efact_type: payload[:user][:document_type] == 'boleta' ? 'boleta' : 'factura',
+        customer_comments: payload[:order][:order_comments],
+        currency: payload[:order][:currency],
+        discount_amount_cents: ((payload[:order][:discount_amount].to_f)*100).to_i
+      )
+      if new_order.persisted?
+        list_of_products = payload[:order][:products]
+        brand_id = Brand.first.id
+        supplier_id = Supplier.first.id
+        list_of_products.each do |product|
+          new_product = Product.create!(
+            brand_id: brand_id,
+            supplier_id: supplier_id,
+            price_cents: ((product[:product_price].to_f)*100).to_i,
+            description2: product[:product_name],
+          )
+          OrderItem.create!(
+            order_id: new_order.id,
+            product_id: new_product.id,
+            currency: payload[:order][:currency],
+            status: 'active',
+            product_id: product[:product_id],
+            price_cents: ((product[:product_price].to_f)*100).to_i,
+            quantity: product[:quantity],
+          )
+        end
+        new_address_shipping = Address.create!(
+          user_id: user.id,
+          street: payload[:order][:shipping_addres][:address_1],
+          street2: payload[:order][:shipping_addres][:address_2],
+          district: payload[:order][:shipping_addres][:city],
+          city: payload[:order][:shipping_addres][:state],
+          address_type: 'home',
+          shipping_or_billing: 'shipping'
+        )
+        new_address_billing = Address.create!(
+          user_id: user.id,
+          street: payload[:order][:billing_addres][:address_1],
+          street2: payload[:order][:billing_addres][:address_2],
+          district: payload[:order][:billing_addres][:city],
+          city: payload[:order][:billing_addres][:state],
+          address_type: 'home',
+          shipping_or_billing: 'billing'
+        )
+        order.update_columns(billing_address_id: new_address_billing.id, shipping_address_id: new_address_shipping.id)
+      end
+      new_einvoice = new_order.generate_einvoice
     end
 
 
