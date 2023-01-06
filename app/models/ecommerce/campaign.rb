@@ -7,7 +7,7 @@ module Ecommerce
 
     validates :link, format: URI::regexp(%w[http https]), :allow_blank => true
 
-    mount_uploader :image, Ecommerce::CampaignImageUploader
+    #mount_uploader :image, Ecommerce::CampaignImageUploader
 
     def self.send_recipients(order_id)
       order_user_id = Order.find(order_id).user_id
