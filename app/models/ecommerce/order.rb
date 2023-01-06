@@ -84,7 +84,6 @@ module Ecommerce
     end
 
     def generate_user_address_order_woocommerce(payload)
-      byebug
       user = User.find_by(email: payload[:user][:email])
       unless user
         user = User.find_by(phone: payload[:user][:phone])
@@ -103,7 +102,7 @@ module Ecommerce
       end
       new_order = Order.create!(
         user_id: user.id,
-        woocommerce_order_number: payload[:order][:order_number],
+        #woocommerce_order_number: payload[:order][:order_number],
         amount_cents: ((payload[:order][:amount].to_f)*100).to_i,
         shipping_amount_cents: ((payload[:order][:shipping_amount].to_f)*100).to_i,
         stage: 'stage_paid',
@@ -122,15 +121,18 @@ module Ecommerce
           new_product = Product.create!(
             brand_id: brand_id,
             supplier_id: supplier_id,
+            name: product[:name],
             price_cents: ((product[:product_price].to_f)*100).to_i,
-            description2: product[:product_name],
+            description: product[:product_description],
+            short_description: product[:product_description],
+            category_list: ["Default"],
+            weight: 0
           )
           OrderItem.create!(
             order_id: new_order.id,
             product_id: new_product.id,
             currency: payload[:order][:currency],
             status: 'active',
-            product_id: product[:product_id],
             price_cents: ((product[:product_price].to_f)*100).to_i,
             quantity: product[:quantity],
           )
@@ -153,7 +155,7 @@ module Ecommerce
           address_type: 'home',
           shipping_or_billing: 'billing'
         )
-        order.update_columns(billing_address_id: new_address_billing.id, shipping_address_id: new_address_shipping.id)
+        new_order.update_columns(billing_address_id: new_address_billing.id, shipping_address_id: new_address_shipping.id)
       end
       new_einvoice = new_order.generate_einvoice
     end
