@@ -23,7 +23,7 @@
 			<div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-right">
 							<% if browser.device.mobile? %>
 								<% if Ecommerce.enable_language_selector %>
-									<div class="dropdown mobile-lang-selector " style="padding-left:30px;">
+									<div class="dropdown mobile-lang-selector " style="padding-left:0px;">
 										<% if session[:locale] == "en-PE" %>
 											<a href="" data-toggle="dropdown" class="dropdown-toggle"> Idioma <%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a>
 										<% else %>
@@ -32,6 +32,18 @@
 										<ul class="sub-menu flag-sub-menu dropdown-menu" style="list-style: none;">
 											<li><a id="en-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/us_flag.png", alt: "US" %> EN</a></li>
 											<li><a id="es-lang" href="#"><%= image_tag "ecommerce/img/icons/flags/pe_flag.png", alt: "PE" %> ES</a></li>
+										</ul>
+									</div>
+
+                  <div class="dropdown mobile-currency-selector " style="margin-left:100px;">
+										<% if session[:currency] == "usd" %>
+											<a href="" data-toggle="dropdown" class="dropdown-toggle"> USD $ </a>
+										<% else %>
+											<a href="" data-toggle="dropdown" class="dropdown-toggle"> PEN S/. </a>
+										<% end %>
+										<ul class="sub-menu flag-sub-menu dropdown-menu" style="list-style: none;">
+											<li><a id="usd-currency" href="#"> USD $</a></li>
+											<li><a id="pen-currency" href="#"> PEN S/. </a></li>
 										</ul>
 									</div>
 								<% end %>
