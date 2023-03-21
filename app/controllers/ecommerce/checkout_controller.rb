@@ -258,6 +258,7 @@ module Ecommerce
     end
 
     def pay_order_pagoefectivo_checkout
+      #byebug
       #Rails.logger.debug params
       points_payment_method = PaymentMethod.find_by(name: "Points")
 

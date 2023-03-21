@@ -299,7 +299,8 @@
 
 <!-- Incluyendo .js de Culqi Checkout-->
 <!--<script src="https://checkout.culqi.com/v2"></script> -->
-<script src="https://checkout.culqi.com/js/v3"></script>
+<!--<script src="https://checkout.culqi.com/js/v3"></script> -->
+<script src="https://checkout.culqi.com/js/v4"></script>
 
 <script>
 $( document ).ready(function() {
@@ -541,6 +542,19 @@ $( document ).ready(function() {
               currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
               description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
               order: data.id
+            });
+
+            Culqi.options({
+              lang: "auto",
+              installments: false, // Habilitar o deshabilitar el campo de cuotas
+              paymentMethods: {
+                tarjeta: true,
+                yape: true, 
+                bancaMovil: true,
+                agente: true,
+                billetera: true,
+                cuotealo: true,
+              },
             });
 
             Culqi.open();

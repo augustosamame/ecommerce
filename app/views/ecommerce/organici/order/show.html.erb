@@ -135,7 +135,8 @@
 
 <!-- Incluyendo .js de Culqi Checkout-->
 <!-- <script src="https://checkout.culqi.com/v2"></script> -->
-<script src="https://checkout.culqi.com/js/v3"></script>
+<!--<script src="https://checkout.culqi.com/js/v3"></script> -->
+<script src="https://checkout.culqi.com/js/v4"></script>
 
 <script>
 
@@ -160,6 +161,20 @@ $('#retry-pay-now-button').on('click', function(e) {
     description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@order.id}" %>',
     amount: culqi_payment_amount
   });
+
+  Culqi.options({
+              lang: "auto",
+              installments: false, // Habilitar o deshabilitar el campo de cuotas
+              paymentMethods: {
+                tarjeta: true,
+                yape: false, 
+                bancaMovil: false,
+                agente: false,
+                billetera: false,
+                cuotealo: false,
+              },
+            });
+
 
   Culqi.open();
   e.preventDefault();
