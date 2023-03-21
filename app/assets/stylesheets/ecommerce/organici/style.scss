@@ -13482,6 +13482,19 @@ a.go-to-top:hover a.go-to-top:focus.on:hover {
 */
 
 @media (max-width: 480px) {
+    .noo-main {
+      list-style-position: inside;
+    }
+    .noo-product-column {
+        width: 100%;
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+    }
+    .col-sm-12 {
+      width: 100%;
+      padding-right: 0px !important;
+      padding-left: 0px !important;
+  }
     .noo_testimonial_wrap .testimonial-content div {
         padding: 0;
     }
