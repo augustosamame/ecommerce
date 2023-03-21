@@ -13,13 +13,13 @@
       </a>
       <div class='center-form'>
         <% if item && (item.price == item.discounted_price) %>
-          <span class="price"><span class="amount"><%= session_price(item, "current_price") %></span></span>
+          <span class="price"><span class="amount"><%= product_session_price(item, "current_price") %></span></span>
 
         <% else %>
 
           <span class="price">
-            <span class="amount original-price-index"><%= session_price(item, "price") %></span>
-            <span class="amount"><%= session_price(item, "discounted_price") %></span>
+            <span class="amount original-price-index"><%= product_session_price(item, "price") %></span>
+            <span class="amount"><%= product_session_price(item, "discounted_price") %></span>
           </span>
 
         <% end %>

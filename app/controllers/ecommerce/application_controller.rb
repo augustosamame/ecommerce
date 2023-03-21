@@ -11,6 +11,7 @@ module Ecommerce
     before_action :set_cart
     before_action :set_wishlist
     before_action :set_header_menu_items
+    before_action :set_currency
     #before_render :set_controller_meta_tags
 
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"

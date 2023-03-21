@@ -94,13 +94,6 @@
 							<li><a href="<%= about_us_path %>"><%= t('.about_us_menu') %></a></li>
 							<li><a href="<%= shipping_policy_path %>"><%= t('.shipping_policy_menu') %></a></li>
 							<li class="menu-item-has-children">
-								<a href="<%= Blog::Engine.routes.url_helpers.root_path %>">Blog</a>
-								<ul class="sub-menu">
-									<% Blog::Post.where(post_published: true).each do |post| %>
-										<li><a href="<%= Blog::Engine.routes.url_helpers.blog_path(post.id) %>"><%= post.title %></a></li>
-									<% end %>
-									<li><a href="<%= Blog::Engine.routes.url_helpers.root_path %>">See All Blog Articles</a></li>
-								</ul>
 							</li>
 
 							<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
@@ -255,7 +248,7 @@
 									</li>
 									<% end %>
 
-									<% if Ecommerce.enable_currency_selector %>
+									
 									<li class="menu-item-has-children">
 										<% if session[:currency] == "usd" %>
 											<a href="">USD $</a>
@@ -267,7 +260,7 @@
 											<li><a id="pen-currency" href="#">PEN S/</a></li>
 										</ul>
 									</li>
-									<% end %>
+									
 
 									<li class="menu-item fly-right">
 										<a id="noo-search" class="search-button noo-search" href="#">
