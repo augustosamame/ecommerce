@@ -171,6 +171,7 @@ es-PE:
           enter_coupon: "Tiene un código de cupón? Ingréselo aquí:"
           delivery_instructions: "Instrucciones especiales para la entrega"
           apply_coupon: "Aplicar"
+          new_address: "Nueva Dirección"
           coupon_line: "Cupón Aplicado"
           coupon_error: "Cupón Inválido"
           address: "Dirección"
@@ -192,6 +193,7 @@ es-PE:
         pick_address_form:
           pick_an_address: "Selecciona Una Dirección"
         new_address_form:
+          create_a_new_address: "Crear Nueva Dirección"
           type: "Tipo"
           select_type_of_address: "Selecciona el Tipo de Dirección"
           street: "Dirección (max 85 caracteres)"
@@ -428,6 +430,7 @@ es-PE:
           free_shipping: "(Envío gratis en pedidos sobre $30)"
           bank_deposit_instructions: "Te enviaremos el número de cuenta bancaria a depositar luego de confirmar tu pedido"
         new_address_form:
+          create_a_new_address: "Ingresa una Nueva Dirección"
           type: "Tipo"
     banchero:
       product:

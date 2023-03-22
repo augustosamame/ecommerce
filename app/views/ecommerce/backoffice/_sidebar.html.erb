@@ -102,7 +102,7 @@
         </ul>
       </li>
 
-      <li class="<%= class_string({ active: (['payment_methods','controls','sliders','translations'].include? controller.controller_name) }) %>">
+      <li class="<%= class_string({ active: (['payment_methods','controls','sliders','translations', 'provinces'].include? controller.controller_name) }) %>">
         <a href="javascript:;"> <i class="material-icons">autorenew</i> <span class="title"> <%= t('.settings') %></span> <span class=" arrow"></span> </a>
         <ul class="sub-menu">
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'translations' && controller.action_name == 'index')}) %>">
@@ -110,6 +110,9 @@
           </li>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'payment_methods' && controller.action_name == 'index')}) %>">
             <%= link_to t('.payment_methods'), backoffice_payment_methods_path %>
+          </li>
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'provinces' && controller.action_name == 'index')}) %>">
+            <%= link_to 'Provinces', backoffice_provinces_path %>
           </li>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'sliders' && controller.action_name == 'index')}) %>">
             <%= link_to t('.sliders'), backoffice_sliders_path %>

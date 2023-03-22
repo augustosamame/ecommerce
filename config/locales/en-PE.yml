@@ -236,6 +236,7 @@ en-PE:
           enter_coupon: "Got a coupon code? Enter it Here:"
           delivery_instructions: "Enter any special delivery instructions"
           apply_coupon: "Apply"
+          new_address: "New Address"
           coupon_line: "Applied Coupon"
           coupon_error: "Invalid Coupon"
           address: "Address"

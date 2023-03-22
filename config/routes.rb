@@ -19,6 +19,7 @@ Ecommerce::Engine.routes.draw do
     resources :product_sku_properties
     resources :properties
     resources :addresses
+    resources :provinces, only: [:new, :create, :index, :destroy]
     resources :orders
     post '/orders/einvoice'
     resources :payment_methods
