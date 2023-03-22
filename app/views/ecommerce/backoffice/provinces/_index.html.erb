@@ -1,0 +1,25 @@
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Province</th>
+        <th>District</th>
+        <th>Priority (1 first)</th>
+        <th>Status</th>
+        <th>Destroy</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @backoffice_provinces) do |backoffice_province| %>
+        <td><%= backoffice_province.id %></td>
+        <td><%= backoffice_province.province %></td>
+        <td><%= backoffice_province.district %></td>
+        <td><%= backoffice_province.priority %></td>
+        <td><%= backoffice_province.status %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_province_path(backoffice_province), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
