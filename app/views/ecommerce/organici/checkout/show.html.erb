@@ -399,7 +399,7 @@ $( document ).ready(function() {
       success: function(data){
         if (data.currency == "pen") { cur_sym = "S/. " } else { cur_sym = "$ " }
         $("#shipping-amount").html(data.amount.toFixed(2))
-        $("#free-shipping-text").show()
+        //$("#free-shipping-text").show()
         recalculate_checkout_totals();
         shipping_calculated_flag = true
         if (origin == 'save_address') {
