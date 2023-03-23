@@ -332,7 +332,8 @@ $( document ).ready(function() {
   // console.log('length of address options: ', address_option_length)
   // if (address_option_length == 2) {
   $("#address_id").get(0).selectedIndex = address_option_length - 1;
-  calculate_shipping($("#address_street").val(), $("#address_district").val(), 'save_address');
+  var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+  calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
   //}
 });
 
@@ -363,7 +364,8 @@ $( document ).ready(function() {
   // calculate and update shipping html tag when shipping address is picked
   $('#address_id').on('change', function() {
     if ( this.value ) {
-      calculate_shipping($("#address_street").val(), $("#address_district").val(), 'save_address');
+      var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+      calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
     } else {
       var my_zero = 0
       $("#shipping-amount").html(my_zero.toFixed(2))
@@ -380,6 +382,13 @@ $( document ).ready(function() {
   $('#pay_in_points').on('change', function() {
     recalculate_checkout_totals();
   })
+
+  function extract_address_and_district() {
+    var address_and_district = $('#address_id').val().split('|');
+    var address = address_and_district[0];
+    var district = address_and_district[1];
+    return [address, district]
+  }
 
   function calculate_shipping(street, district, origin) {
     $.ajax({
@@ -416,7 +425,8 @@ $( document ).ready(function() {
             $("#shipping-amount").html(0)
             $("#free-shipping-text").hide()
           } else {
-            calculate_shipping($("#address_street").val(), $("#address_district").val(), 'coupon');
+            var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+            calculate_shipping($("#address_street").val(), district_from_dropdown, 'coupon');
           }
           recalculate_checkout_totals();
         }

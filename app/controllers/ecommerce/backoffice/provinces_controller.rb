@@ -59,7 +59,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_province_params
-        params.require(:province).permit(:province, :district, :delivery_zone, :cost_per_kilo_cents, :delivery_time_in_days, :priority, :status)
+        params.require(:province).permit(:province, :district, :delivery_zone, :delivery_formula, :cost_first_kilo_cents, :cost_per_kilo_cents, :delivery_time_in_days, :priority, :status)
       end
   end
 end

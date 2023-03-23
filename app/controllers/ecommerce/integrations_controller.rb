@@ -13,11 +13,21 @@ module Ecommerce
       raise "missing parameters" unless params[:address] && params[:district]
       case Ecommerce.shipping_integrator
       when "Urbaner"
-        case
-        when @cart.get_totals(current_user)[:tot_acum].to_f < 30
-          response = {:amount => 3.00}
-        #when @cart.get_totals(current_user)[:tot_acum].to_f < 100
-          #response = {:amount => 7.00}
+        shipping_province = params[:district].split("-")[0].try(:strip)
+        shipping_district = params[:district].split("-")[1].try(:strip)
+        province = Province.find_by(province: shipping_province, district: shipping_district) || Province.find_by(delivery_zone: "lima_metropolitana") #if not found, use lima_metropolitana
+        case province.delivery_zone
+        when "lima_metropolitana"
+          if @cart.get_totals(current_user)[:tot_acum].to_f < 30
+            response = {:amount => 3.00}
+          #when @cart.get_totals(current_user)[:tot_acum].to_f < 100
+            #response = {:amount => 7.00}
+          else
+            response = {:amount => 0.00}
+          end
+        when "provincias"
+          #calculate shipping cost per kg here
+          response = {:amount => 10.00}
         else
           response = {:amount => 0.00}
         end
@@ -26,7 +36,7 @@ module Ecommerce
           format.json { render json: response.to_json }
         end
       when "Olva"
-
+        
       else
         raise "unrecognized Ecommerce.shipping_integrator"
       end
