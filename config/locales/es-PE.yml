@@ -359,7 +359,7 @@ es-PE:
         shipping_policy:
           shipping_policy: "Política de Envíos"
           shipping_rates: "Tarifas de Envíos"
-          shipping_rates_p_html: "Costo de envío: $3 </br>Envío gratis por pedidos sobre $30"
+          shipping_rates_p_html: "Costo de envío: $4 </br>Costo de $1.5 por pedidos sobre $30"
           shipping_times: "Tiempos de Envíos"
           shipping_times_p_html: "Los pedidos serán entregados al siguiente día útil (martes a viernes)"
     canvas_shop:
@@ -625,7 +625,7 @@ es-PE:
         shipping_policy:
           shipping_policy: "Política de Envíos"
           shipping_rates: "Tarifas de Envíos"
-          shipping_rates_p_html: "Costo de envío: $3 </br>Envío gratis por pedidos sobre $30"
+          shipping_rates_p_html: "Costo de envío: $4 </br>Costo de $1.5 por pedidos sobre $30"
           shipping_times: "Tiempos de Envíos"
           shipping_times_p_html: "Los pedidos serán entregados al siguiente día útil (martes a viernes)"
     backoffice:
