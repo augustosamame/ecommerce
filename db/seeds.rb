@@ -23,6 +23,11 @@ Ecommerce::Control.create(name: 'next_boleta_number', localized_name: 'Next Fact
 Ecommerce::Control.create(name: 'next_nota_de_credito_boleta_number', localized_name: 'Next Nota de Crédito Boleta Number', value_field_type: "integer", integer_value: 1 )
 Ecommerce::Control.create(name: 'next_nota_de_credito_factura_number', localized_name: 'Next Nota de Crédito Factura Number', value_field_type: "integer", integer_value: 1 )
 Ecommerce::Control.create(name: 'default_taxes', localized_name: 'Default Tax list (tax1,amount1,tax2,amount2)', value_field_type: "text", text_value: "IGV,18" )
+
+Ecommerce::Control.create(name: 'flat_shipping_cutoff_amount', localized_name: 'Flat Shipping Cutoff Amount in USD', value_field_type: "float", float_value: 30 )
+Ecommerce::Control.create(name: 'flat_shipping_under_cutoff_rate', localized_name: 'Flat Shipping Under Cutoff Rate', value_field_type: "float", float_value: 4 )
+Ecommerce::Control.create(name: 'flat_shipping_over_cutoff_rate', localized_name: 'Flat Shipping Over Cutoff Rate', value_field_type: "float", float_value: 1.50 )
+
 Ecommerce::Tax.create(tax_name: "IGV", tax_friendly_name: "Impuesto General a las Ventas")
 Ecommerce::Tax.create(tax_name: "ISC", tax_friendly_name: "Impuesto Selectivo al Consumo")
 

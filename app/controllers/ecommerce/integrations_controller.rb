@@ -18,16 +18,26 @@ module Ecommerce
         province = Province.find_by(province: shipping_province, district: shipping_district) || Province.find_by(delivery_zone: "lima_metropolitana") #if not found, use lima_metropolitana
         case province.delivery_zone
         when "lima_metropolitana"
-          if @cart.get_totals(current_user)[:tot_acum].to_f < 30
-            response = {:amount => 3.00}
+          cutoff_price = Ecommerce::Control.get_control_value("flat_shipping_cutoff_amount")
+          if @cart.get_totals(current_user)[:tot_acum].to_f < cutoff_price
+            response = {:amount => Ecommerce::Control.get_control_value("flat_shipping_under_cutoff_rate")}
           #when @cart.get_totals(current_user)[:tot_acum].to_f < 100
             #response = {:amount => 7.00}
           else
-            response = {:amount => 0.00}
+            response = {:amount => Ecommerce::Control.get_control_value("flat_shipping_over_cutoff_rate")}
           end
         when "provincias"
           #calculate shipping cost per kg here
-          response = {:amount => 10.00}
+          total_kgs = @cart.get_totals(current_user)[:tot_kgs]
+          if total_kgs <= 1
+            first_kg = 1
+            extra_kgs = 0
+          else
+            first_kg = 1
+            extra_kgs = total_kgs - 1
+          end
+          total_shipping_cost = ((first_kg * province.cost_first_kilo_cents.to_f) + (extra_kgs * province.cost_per_kilo_cents.to_f)) / 100
+          response = {:amount => total_shipping_cost}
         else
           response = {:amount => 0.00}
         end

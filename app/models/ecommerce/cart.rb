@@ -13,11 +13,13 @@ module Ecommerce
     def get_totals(current_user)
       tot_acum = 0
       qty_items = 0
+      tot_acum_kgs = 0
       self.cart_items.each do |item|
         tot_acum += item.line_total(current_user)
         qty_items += item.quantity
+        tot_acum_kgs += (item.try(:product).try(:weight) || 0) * item.quantity
       end
-      return {tot_acum: tot_acum, tot_qty: qty_items}
+      return {tot_acum: tot_acum, tot_qty: qty_items, tot_kgs: tot_acum_kgs}
     end
 
     def self.send_email_to_all_abandoned_carts

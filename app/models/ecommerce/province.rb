@@ -11,10 +11,10 @@ module Ecommerce
 
       Ecommerce::Province.delete_all
       lima_metropolitana_districts.each do |each_district|
-        Ecommerce::Province.create(province: "Lima Metropolitana", district: each_district, delivery_zone: "lima_metropolitana", delivery_formula: 'flat', cost_per_kilo_cents: 1000, delivery_time_in_days: 1, status: "active", priority: 1)
+        Ecommerce::Province.create(province: "Lima Metropolitana", district: each_district, delivery_zone: "lima_metropolitana", delivery_formula: 'flat', cost_per_kilo_cents: 0, cost_first_kilo_cents: 0, delivery_time_in_days: 1, status: "active", priority: 1)
       end
-      Ecommerce::Province.create(province: "Lima Provincia", district: "Huaral", delivery_zone: "provincias", delivery_formula: 'per_kg', cost_per_kilo_cents: 5000, delivery_time_in_days: 2, status: "active", priority: 2)
-      Ecommerce::Province.create(province: "Arequipa", district: "Arequipa", delivery_zone: "provincias", delivery_formula: 'per_kg', cost_per_kilo_cents: 5000, delivery_time_in_days: 3, status: "active", priority: 3)
+      Ecommerce::Province.create(province: "Lima Provincia", district: "Huaral", delivery_zone: "provincias", delivery_formula: 'per_kg', cost_per_kilo_cents: 400, cost_first_kilo_cents: 60, delivery_time_in_days: 2, status: "active", priority: 2)
+      Ecommerce::Province.create(province: "Arequipa", district: "Arequipa", delivery_zone: "provincias", delivery_formula: 'per_kg', cost_per_kilo_cents: 800, cost_first_kilo_cents: 120, delivery_time_in_days: 3, status: "active", priority: 3)
     end
 
   end
