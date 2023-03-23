@@ -10,6 +10,7 @@
         <th>Cost First Kg</th>
         <th>Cost Addtl Kg</th>
         <th>Status</th>
+        <th>Edit</th>
         <th>Destroy</th>
       </tr>
     </thead>
@@ -24,6 +25,7 @@
         <td><%= backoffice_province.cost_first_kilo_cents %></td>
         <td><%= backoffice_province.cost_per_kilo_cents %></td>
         <td><%= backoffice_province.status %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_province_path(backoffice_province) %></td>
         <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_province_path(backoffice_province), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>
     </tbody>

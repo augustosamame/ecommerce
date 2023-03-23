@@ -5,6 +5,9 @@
     <%= f.input :province %>
     <%= f.input :district %>
     <%= f.input :priority, label: "Priority (1 first)" %>
+    <%= f.input :delivery_formula, collection: Ecommerce::Province.delivery_formulas.keys %>
+    <%= f.input :cost_first_kilo_cents %>
+    <%= f.input :cost_per_kilo_cents, label: "Cost Addtl Kilo" %>
   </div>
 
   <div class="form-actions">
