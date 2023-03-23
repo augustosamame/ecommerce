@@ -89,6 +89,14 @@ es-PE:
       destroy:
         item_deleted: "Ítem eliminado"
     addresses:
+      index:
+        title: "Mis Direcciones"
+        date: "Fecha"
+        name: "Tipo"
+        street: "Dirección"
+        show: "Ver"
+        delete: "Eliminar"
+        are_you_sure: "Está seguro?"
       create:
         address_was_successfully_created: 'La dirección fue creada.'
     checkout:
@@ -293,6 +301,7 @@ es-PE:
           shipping_policy_menu: "Política de Envíos"
           manage_blog_posts: "Administrar Blog"
           my_orders: "Mis Pedidos"
+          my_addresses: "Mis Direcciones"
           my_account: "Mi Cuenta"
           sign_out: "Cerrar Sesión"
           sign_in: "Iniciar Sesión"

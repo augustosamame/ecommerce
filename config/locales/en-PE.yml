@@ -112,6 +112,14 @@ en-PE:
         error_when_processing_payment: 'Error when processing payment'
         error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
     addresses:
+      index:
+        title: "My Addresses"
+        date: "Date"
+        name: "Type"
+        street: "Address"
+        show: "Show"
+        delete: "Delete"
+        are_you_sure: "Are you sure?"
       create:
         address_was_successfully_created: 'Address was successfully created.'
     processor:
@@ -137,6 +145,7 @@ en-PE:
           blog: "Blog"
           contact: "Contact"
           my_orders: "My Orders"
+          my_addresses: "My Addresses"
           my_points: "My Points"
           my_referral_program: "Referral Program"
           my_referral_code: "Code: "
@@ -287,6 +296,9 @@ en-PE:
           my_referral_instructions_2: "You can see all yor friends that have signed up using your link and any points you've earned from their purchases in the following table:"
           copy: "Copy"
           clipboard_message: "Link copied to Clipboard"
+      address:
+        index:
+          title: "My Addresses"
       order:
         show:
           order: "Order"
