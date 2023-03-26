@@ -158,8 +158,8 @@ module Ecommerce
           points_redeemed_amount = params[:points_redeemed_amount].to_i
           ActiveRecord::Base.transaction do
             @order = Order.new( user_id: current_user.id,
-                          amount: Money.new((params[:amount].to_i + points_redeemed_amount), params[:currency],
-                          shipping_amount: Money.new((params[:shipping_amount].to_i), params[:currency],
+                          amount: Money.new((params[:amount].to_i + points_redeemed_amount), 'usd'),
+                          shipping_amount: Money.new((params[:shipping_amount].to_i), 'usd'),
                           stage: "stage_new",
                           cart_id: params[:cart_id].to_i,
                           shipping_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
@@ -169,7 +169,7 @@ module Ecommerce
                           required_doc: params[:required_doc],
                           delivery_comments: params[:delivery_instructions].try(:strip),
                           coupon_id: used_coupon.try(:id),
-                          discount_amount: Money.new((params[:discount_amount].to_i), params[:currency]),
+                          discount_amount: Money.new((params[:discount_amount].to_i), 'usd'),
                           points_redeemed_amount: points_redeemed_amount,
                           status: "active",
                           process_comments: params[:pagoefectivo_payment_code].blank? ? "" : "Pagoefectivo CIP #{params[:pagoefectivo_payment_code]}"
