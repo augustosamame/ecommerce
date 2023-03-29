@@ -20,14 +20,18 @@
   <p> <%= t('.order_amount') %> <%= "#{@order.amount.currency.symbol} #{@order.amount.to_s}" %></p>
 </br>
 <% if @order.unpaid? %>
-<p class="well"> <%= t('.delivered_after_payment') %> </p>
+  <p class="well"> <%= t('.delivered_after_payment') %> </p>
 <% else %>
-<p> <%= t('.will_receive_invoice') %></p>
-<p> <%= t('.will_be_delivered', friendly_delivery_window: friendly_delivery_window(@order.created_at - 5.hours)) %> <%= t('.shipping_address') %> <%= "#{@order.shipping_address.try(:street)} - #{@order.shipping_address.try(:district)}" %></p>
-<p> <%= t('.special_delivery_instructions') %> <span style="color: red;"><%= "#{@order.delivery_comments}" %></span></p>
-<p>
-   <%= t('.will_contact_you', delivery_phone: @user.username, delivery_email: @user.email) %>
-</p>
+  <p> <%= t('.will_receive_invoice') %></p>
+  <% if (@order.try(:shipping_address).try(:city)) && (@order.shipping_address.city.starts_with?("Lima")) %>
+    <p> <%= t('.will_be_delivered', friendly_delivery_window: friendly_delivery_window(@order.created_at - 5.hours)) %> <%= t('.shipping_address') %> <%= "#{@order.shipping_address.try(:street)} - #{@order.shipping_address.try(:district)}" %></p>
+  <% else %>
+    <p> <%= t('.will_be_delivered_provinces') %> <%= t('.shipping_address') %> <%= "#{@order.shipping_address.try(:street)} - #{@order.shipping_address.try(:district)}" %></p>
+  <% end %>
+  <p> <%= t('.special_delivery_instructions') %> <span style="color: red;"><%= "#{@order.delivery_comments}" %></span></p>
+  <p>
+    <%= t('.will_contact_you', delivery_phone: @user.username, delivery_email: @user.email) %>
+  </p>
 <% end %>
 </br>
 <p> <%= t('.thank_you') %></p>
