@@ -146,7 +146,7 @@ module Ecommerce
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
                 street: order_billing_address.try(:street),
-                district_id: order_billing_address.try(:district).gsub("Lima Metropolitana - ", ""),
+                district_id: normalize_district_for_einvoice(order_billing_address),
                 province_id: order_billing_address.try(:city),
                 state_id: order_billing_address.try(:state),
                 invoice_line_ids: invoice_lines_array
@@ -177,7 +177,7 @@ module Ecommerce
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
                 street: order_billing_address.try(:street),
-                district_id: order_billing_address.try(:district).gsub("Lima Metropolitana - ", ""),
+                district_id: normalize_district_for_einvoice(order_billing_address),
                 province_id: order_billing_address.try(:city),
                 state_id: order_billing_address.try(:state),
                 street_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:address),
@@ -214,7 +214,7 @@ module Ecommerce
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
                 street: order_billing_address.try(:street),
-                district_id: order_billing_address.try(:district).gsub("Lima Metropolitana - ", ""),
+                district_id: normalize_district_for_einvoice(order_billing_address),
                 province_id: order_billing_address.try(:city),
                 state_id: order_billing_address.try(:state),
                 invoice_line_ids: invoice_lines_array
@@ -243,7 +243,7 @@ module Ecommerce
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
                 street: order_billing_address.try(:street),
-                district_id: order_billing_address.try(:district).gsub("Lima Metropolitana - ", ""),
+                district_id: normalize_district_for_einvoice(order_billing_address),
                 province_id: order_billing_address.try(:city),
                 state_id: order_billing_address.try(:state),
                 street_razon_social: Ecommerce::DataBizInvoice.find_by(user_id: self.user.id).try(:address),
@@ -301,6 +301,18 @@ module Ecommerce
         self.update_columns(efact_response_text: "Internal Error #{response.code}")
         AdminMailer.einvoice_error_email(self).deliver! #unless Rails.env == "development"
         return response.read_body
+      end
+    end
+
+    def normalize_district_for_einvoice(order_billing_address)
+      if order_billing_address.district
+        if order_billing_address.district.starts_with?("Lima Metropolitana - ") || order_billing_address.district.starts_with?("Lima Provincia - ")
+          return order_billing_address.district.gsub("Lima Metropolitana - ", "").gsub("Lima Provincia - ", "").strip
+        else
+          return order_billing_address.district.gsub("#{order_billing_address.city} - ", "").strip
+        end
+      else
+        return order_billing_address.district
       end
     end
 
