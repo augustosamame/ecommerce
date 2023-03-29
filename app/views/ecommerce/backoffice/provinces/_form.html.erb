@@ -4,6 +4,7 @@
   <div class="form-inputs">
     <%= f.input :province %>
     <%= f.input :district %>
+    <%= f.input :delivery_zone, collection: Ecommerce::Province.delivery_zones.keys %>
     <%= f.input :priority, label: "Priority (1 first)" %>
     <%= f.input :delivery_formula, collection: Ecommerce::Province.delivery_formulas.keys %>
     <%= f.input :cost_first_kilo_cents %>
