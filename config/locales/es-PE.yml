@@ -312,6 +312,7 @@ es-PE:
           cart: "Carrito de Compras"
           view_cart: "Ver Carrito"
           wishlist: "Lista de Deseos"
+          testimonials: "Testimoniales"
           search: "Buscar"
           search_instructions: "Escriba el término de búsqueda y presione Enter"
           search_placeholder: "Buscar..."

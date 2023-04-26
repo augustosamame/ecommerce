@@ -14,6 +14,7 @@ module Ecommerce
         can :read, Property
         can :read, Category
         can :read, Product
+        can :read, Testimonial
         can [:favorites, :stock_alert, :search], Product
         can :read, ProductSku
         can :read, ProductSkuProperty

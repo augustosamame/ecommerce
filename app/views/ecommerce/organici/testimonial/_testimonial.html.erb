@@ -1,0 +1,25 @@
+
+<div class="noo-product-column fixed-column col-md-4 col-sm-6 product ">
+  <div class="noo-product-inner">
+    <div class="noo-product-thumbnail">
+
+    <video width="350px" height="350px"
+        controls="controls"/>
+         
+        <source src=<%= item.video.url %>
+            type="video/mp4">
+    </video>
+      
+    </div>
+    
+    <div class="noo-product-title" style="height: 150px;">
+      <h3><%= "#{item.user_fullname} - #{item.user_title}" %></h3><br>
+      <a href="">
+      <span class="short-descrip" style="font-size:13px;"><%= item.product_name %></span><br>
+      </a>
+      <div class='center-form'>
+      </div>
+
+    </div>
+  </div>
+</div>

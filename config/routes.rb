@@ -45,6 +45,7 @@ Ecommerce::Engine.routes.draw do
     get 'void_points_transaction/:id' => "users#void_points", as: :void_points_transaction
     get 'cross_selling' => "products#cross_selling"
     resources :stock_alerts
+    resources :testimonials
   end
 
   post 'locale', :to => 'application#locale'
@@ -74,6 +75,7 @@ Ecommerce::Engine.routes.draw do
 
   post '/culqi_webhook', :to => 'orders#culqi_webhook'
 
+  resources :testimonials, only: [:index]
   resources :carts, except: [:index, :new, :create]
   resources :cart_items
   post 'stock_alerts', :to => 'products#stock_alert', as: 'stock_alerts'

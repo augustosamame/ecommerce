@@ -1,0 +1,40 @@
+<div class="page-header">
+  <%= link_to backoffice_testimonials_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    <%= t('common.back') %>
+  <% end %>
+  <%= link_to edit_backoffice_testimonial_path(@backoffice_testimonial), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    <%= t('common.edit') %>
+  <% end %>
+  <h1><%= t('.show_testimonial') %></h1>
+</div>
+
+<dl class="dl-horizontal">
+
+  <dt>Id:</dt>
+  <dd><%= @backoffice_testimonial.id %></dd>
+
+  <dt>User Fullname:</dt>
+  <dd><%= @backoffice_testimonial.user_fullname %></dd>
+
+  <dt>User Title:</dt>
+  <dd><%= @backoffice_testimonial.user_title %></dd>
+
+  <dt>Product Name:</dt>
+  <dd><%= @backoffice_testimonial.product_name %></dd>
+
+  <dt>Video URL:</dt>
+  <dd><%= @backoffice_testimonial.video %></dd>
+
+  <dt style="margin-top: 20px;">Video Thumbnail:</dt>
+  <dd><%= image_tag @backoffice_testimonial.thumbnail_url(:medium_400), style: "margin-top: 20px;" %></dd>
+
+  <dt>Priority (1 will be shown first):</dt>
+  <dd><%= @backoffice_testimonial.priority %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @backoffice_testimonial.status %></dd>
+
+
+</dl>

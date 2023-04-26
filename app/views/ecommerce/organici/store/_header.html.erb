@@ -226,6 +226,12 @@
 										</li>
 									<% end %>
 
+                  <% if Ecommerce::Testimonial.active.count > 0 %>
+                    <li class="menu-item">
+                      <a href="<%= Ecommerce::Engine.routes.url_helpers.testimonials_path %>" target="_blank" class=""><i class='fa fa-bullhorn'></i> <%= t('.testimonials')%></a>
+                    </li>
+                  <% end %>
+
 									<li class="menu-item">
 										<a href="https://wa.me/51989080023" target="_blank" class=""><i class='fa fa-whatsapp'></i> WhatsApp</a>
 									</li>

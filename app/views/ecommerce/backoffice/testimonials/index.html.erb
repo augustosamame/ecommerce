@@ -1,0 +1,41 @@
+<div class="page-header">
+  <%= link_to new_backoffice_testimonial_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    <%= t('.new_testimonial') %>
+  <% end %>
+  <h1><%= t('.listing_testimonials') %></h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>User Full Name</th>
+        <th>User Title</th>
+        <th>Video URL</th>
+        <th>Video Thumbnail</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th><%= t('.show') %></th>
+        <th><%= t('.edit') %></th>
+        <th><%= t('.delete') %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @backoffice_testimonials) do |backoffice_testimonial| %>
+            <td><%= backoffice_testimonial.id %></td>
+            <td><%= backoffice_testimonial.user_fullname %></td>
+            <td><%= backoffice_testimonial.user_title %></td>
+            <td><%= backoffice_testimonial.video.url %></td>
+            <td><%= image_tag backoffice_testimonial.thumbnail_url(:medium_400), width: 100 %></td>
+            <td><%= backoffice_testimonial.priority %></td>
+            <td><%= backoffice_testimonial.status %></td>
+            <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_testimonial_path(backoffice_testimonial) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_testimonial_path(backoffice_testimonial) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_testimonial_path(backoffice_testimonial), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
