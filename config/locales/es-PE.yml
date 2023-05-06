@@ -180,6 +180,7 @@ es-PE:
           delivery_instructions: "Instrucciones especiales para la entrega"
           apply_coupon: "Aplicar"
           new_address: "Nueva Dirección"
+          delete_address: "Eliminar Dirección"
           coupon_line: "Cupón Aplicado"
           coupon_error: "Cupón Inválido"
           address: "Dirección"
@@ -342,6 +343,7 @@ es-PE:
           view_cart: "Ver Carrito"
           checkout: "Checkout"
         main:
+          testimonials: "Testimoniales"
           all_products: "Todos los Productos"
           favorite_products: 'Mis Productos Favoritos'
           new_products: "Productos Destacados"

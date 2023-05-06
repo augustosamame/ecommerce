@@ -24,7 +24,8 @@
                   </div>
                   <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
                 <% end %>
-                <button type="button" class="btn button" id="new-address-button" style="margin-bottom: 30px;"><%= t('.new_address') %></button>
+                <button type="button" class="btn button" id="new-address-button" style="margin-bottom: 30px;" ><%= t('.new_address') %> </button>
+                <button type="button" class="btn button" id="delete-address-button" style="margin-bottom: 30px; margin-left: 30px; background-color:#bf0404;"><%= t('.delete_address') %></button>
                 <div id="new-address-container" style="display: none;">
                   <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
                 </div>
@@ -309,6 +310,11 @@ $( document ).ready(function() {
   $('#new-address-button').click(function(){
     $('#new-address-container').show();
     // $(this).parent.hide();
+  });
+
+    $('#delete-address-button').click(function(){
+      window.location.href = "<%= Ecommerce::Engine.routes.url_helpers.addresses_path %>";
+    
   });
 
   $('#radio_form').change(function() {

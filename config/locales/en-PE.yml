@@ -176,6 +176,7 @@ en-PE:
           view_cart: "View Cart"
           checkout: "Checkout"
         main:
+          testimonials: "Testimonials"
           all_products: "All Products"
           favorite_products: "My Favorite Products"
           new_products: "Featured Products"
@@ -247,6 +248,7 @@ en-PE:
           delivery_instructions: "Enter any special delivery instructions"
           apply_coupon: "Apply"
           new_address: "New Address"
+          delete_address: "Delete Address"
           coupon_line: "Applied Coupon"
           coupon_error: "Invalid Coupon"
           address: "Address"

@@ -172,9 +172,17 @@
 			    <ul class="botones_lista " style="margin-top:30px;">
 
             <li>
+							<a href="<%= Ecommerce::Engine.routes.url_helpers.testimonials_path %>">
+								<div class="botones_contenedor_p" style="margin: auto; background-color:#bf0404;">
+									<span class="dvt_houses_titulos" style="text-align:center; word-spacing: 5px; color:white; font-size: 18px;"><%= t('.testimonials') %></span>
+				      	</div>
+							</a>
+						</li>
+
+            <li>
 							<a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>">
 								<div class="botones_contenedor_p" style="margin: auto;">
-									<span class="dvt_houses_titulos" style="text-align:center; word-spacing: 5px;"><%= t('.all_products') %></span>
+									<span class="dvt_houses_titulos" style="text-align:center; word-spacing: 5px; font-size: 18px;"><%= t('.all_products') %></span>
 				      	</div>
 							</a>
 						</li>
@@ -182,7 +190,7 @@
 			      <li>
 							<a href=" /store/houses_m ">
 								<div class="botones_contenedor_p" style="margin: auto;">
-									<span class="dvt_houses_titulos" style="text-align:center; word-spacing: 5px;"><%= t('.by_country') %></span>
+									<span class="dvt_houses_titulos" style="text-align:center; word-spacing: 5px; font-size: 18px;"><%= t('.by_country') %></span>
 				      	</div>
 							</a>
 						</li>
@@ -191,7 +199,7 @@
 							<li>
 								<a href="<%= Ecommerce::Engine.routes.url_helpers.favorites_path %>">
 									<div class="botones_contenedor_p" style="margin: auto;">
-										<span class="dvt_houses_titulos" style="text-align:center; word-spacing: 5px; color:red;"><%= t('.favorite_products') %></span>
+										<span class="dvt_houses_titulos" style="text-align:center; word-spacing: 5px; color:red; font-size: 18px;"><%= t('.favorite_products') %></span>
 									</div>
 								</a>
 								<div class="linea">1</div>
