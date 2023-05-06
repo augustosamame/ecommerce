@@ -82,6 +82,22 @@
                             window.location.href = url + "&currency=pen"
                           }
                         }
+                        else if (e.target.id === "floating-usd-currency") {
+                          var url = window.location.pathname + window.location.search
+                          if (url.indexOf('?') == -1) {
+                            window.location.href = url + "?currency=usd"
+                          } else {
+                            window.location.href = url + "&currency=usd"
+                          }
+                        }
+                        else if (e.target.id === "floating-pen-currency") {
+                          var url = window.location.pathname + window.location.search
+                          if (url.indexOf('?') == -1) {
+                            window.location.href = url + "?currency=pen"
+                          } else {
+                            window.location.href = url + "&currency=pen"
+                          }
+                        }
                         else {
                             e.stopPropagation();
                         }

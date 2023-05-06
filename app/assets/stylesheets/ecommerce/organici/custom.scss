@@ -28,6 +28,20 @@
   z-index: 1000;
 }
 
+.wa-currency {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 160px;
+  right: 20px;
+  background-color: #666;
+  color: #FFF;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 1000;
+}
+
 .wa-my-float{
 	margin-top:11px;
   font-size: 40px;
