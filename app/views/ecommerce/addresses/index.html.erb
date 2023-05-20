@@ -31,7 +31,7 @@
         <td style="white-space: normal;"><%= address.created_at.localtime.strftime("%d-%b-%y") %></td> 
         <td style="white-space: normal;"><%= address.name %></td>
         <td style="white-space: normal;"><%= "#{address.street}, #{address.district}" %></td>
-        <td style="white-space: normal;"><%= link_to "<i class='fa fa-ban'></i>".html_safe, address_path(address), method: :delete, data: { confirm: t('.are_you_sure') } %></td>
+        <td style="white-space: normal;"><%= button_to t('.delete'), address_path(address), method: :delete, data: { confirm: t('.are_you_sure') }, :class => 'address-delete-button' %></td>
       <% end %>
     </tbody>
   </table>
