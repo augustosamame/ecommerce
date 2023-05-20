@@ -51,7 +51,7 @@ module Ecommerce
         if @cart
           session[:cart_id] = @cart.id
         else
-          @cart = Cart.find_by(id: session[:cart_id], status: "active") || Cart.create(user_id: current_user.id, status: "active")
+          @cart = Cart.find_by(id: session[:cart_id], status: "active") || Cart.create(user_id: current_user.id, status: "active", abandoned_email_sent: false)
           @cart.update(user_id: current_user.id)
           session[:cart_id] = @cart.id
         end
