@@ -30,7 +30,7 @@ module Ecommerce
       if @backoffice_slider.save
         redirect_to backoffice_slider_path(@backoffice_slider), notice: 'Slider was successfully created.'
       else
-        render :new
+        render :new, notice: "Slider was not successfully created: Errors: #{backoffice_slider.errors.inspect}"
       end
     end
 

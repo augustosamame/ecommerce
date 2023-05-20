@@ -224,7 +224,8 @@ $(document).ready(function() {
 		addClassActive: true,
 		autoPlay: false,
 		loop:true,
-		pagination: true
+		pagination: true,
+    video: true,
 	});
 
 	//Owl Carousel
@@ -245,7 +246,8 @@ $(document).ready(function() {
 		addClassActive: true,
 		autoPlay: true,
 		loop:true,
-		pagination: false
+		pagination: false,
+    video: true,
 	});
 
 	$('.noo-simple-product-slider').owlCarousel({
@@ -260,7 +262,8 @@ $(document).ready(function() {
 		addClassActive: true,
 		autoPlay: false,
 		loop:true,
-		pagination: false
+    pagination: false,
+    video: true,
 	});
 
 	//Testimonial Carousel
@@ -347,6 +350,7 @@ $(document).ready(function() {
 			autoPlay: true,
 			loop:true,
 			pagination: true,
+      video: true,
 			afterInit : function(el){
 				el.find(".owl-item").eq(1).addClass("synced");
 			}

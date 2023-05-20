@@ -18,6 +18,8 @@
 //= require ecommerce/organici/jquery.carouFredSel-6.2.1
 //= require ecommerce/organici/jquery.isotope.min
 //= require ecommerce/organici/owl.carousel.min
+//= require ecommerce/organici/jquery.bxslider.min
+//= require ecommerce/organici/jquery.fitvids
 //= require ecommerce/organici/jquery.magnific-popup
 //= require ecommerce/organici/jquery.themepunch.tools.min
 //= require ecommerce/organici/jflickrfeed.min

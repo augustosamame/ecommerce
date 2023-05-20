@@ -95,8 +95,22 @@
 		</div>
 		<!--fin menu izquierda -->
 		<% unless browser.device.mobile? %>
-			<!--slide -->
+			
 					<div class="col-md-10 col-sm-12"  >
+
+      <!-- new slider that supports video  -->       
+            <ul class="video-slider">
+              <% Ecommerce::Slider.all.order(:slider_order).each do |slider| %>
+                <% if slider.slider_image.url[-3..-1] != 'mp4' %>
+                  <li><img class="bximage-inside-slide" src="<%= slider.slider_image.url %>" title="<%= slider.slider_text %>" /></li>
+                <% else %>
+                  <li class="video-slide"><video class="vid" src="<%= slider.slider_image.url %>" autoplay controls onended="nextSlide()" title="<%= slider.slider_text %>" /></li>
+                <% end %>
+              <% end %>
+            </ul>
+
+          </div>
+      
 			<div id="myCarousel" class="carousel slide" data-ride="carousel">
 					<!-- Indicators -->
 					<ol class="carousel-indicators">
@@ -105,7 +119,7 @@
 					</ol>
 
 					<!-- Wrapper for slides -->
-
+          <!-- Old slider 
 					<div class="carousel-inner">
 
 						<% if Ecommerce::Slider.where(slider_view: 'Desktop').order(:slider_order).first %>
@@ -160,6 +174,8 @@
 						<span class="sr-only">Next</span>
 					</a>
 				</div>
+
+        
 			</div>
 			</div>
 			<!--fin slide -->
@@ -307,3 +323,67 @@
 	    </div>
 	  </div>
 </div>
+
+
+<script>
+  $(document).ready(function(){
+
+    var bx = $('.video-slider').bxSlider(
+      {
+        mode: 'horizontal',
+        auto: true,
+        //autoControls: true,
+        //captions: true,
+        //stopAutoOnClick: true,
+        slideWidth: 1280,
+        video: true,
+        infiniteLoop: true,
+        adaptiveheight: true,
+        // pager: false,
+        // startSlide: 0,
+        // speed: 5000,
+        // useCSS: false,
+        // responsive: true,
+        autoHover: true,
+        autoDelay: 5000,
+        controls: true,
+        autostart: true,
+        //onSliderLoad: function(currentIndex) {
+        //  $("video").trigger("play");
+        //},
+        //onSlideBefore: function(slide) {
+        //  bx.stopAuto;
+        //  console.log('Stop Auto')
+        //}
+        onSlideAfter: function($slideElement, oldIndex, newIndex) {
+          if ($slideElement.hasClass('video-slide')) {
+            var video = $slideElement.find('video').get(0);
+            video.addEventListener('ended', function() {
+              slider.goToNextSlide();
+            });
+          }
+        }
+      }
+    );
+
+    function nextSlide() {
+      slider.goToNextSlide();
+    }
+
+    $('.vid-bak').each(function(i) {
+      //This is the regular vanilla 'this'.(optional/required for next function)
+      var self = this;
+      //Click on the video element to play or pause.(optional)
+      $(this).on('click', function() {
+        (self.paused) ? self.play(): self.pause();
+      });
+      //When this video ends, go to next slide
+      $(this).on('ended', function() {
+        bx.goToNextSlide();
+      });
+    });
+
+  });
+</script>
+
+
