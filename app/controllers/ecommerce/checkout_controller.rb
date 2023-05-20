@@ -100,7 +100,7 @@ module Ecommerce
 
       @address = Address.new(user_id: current_user.id)
       @picked_address = Address.new(user_id: current_user.id)
-      @checkout_addresses = Address.where(user_id: current_user.id)
+      @checkout_addresses = Address.where(user_id: current_user.id).order(id: :asc)
       #@districts = ['San Isidro', 'Miraflores', 'Barranco', 'Santiago de Surco', 'La Molina','Chorrillos','San Borja','San Luis','Surquillo','San Miguel','Pueblo Libre','La Victoria','Magdalena','Jesus María','Lince', 'Bellavista de Callao', 'La Perla', 'Breña', 'San Martin de Porras', 'Los Olivos', 'San Juan de Miraflores'].sort
       @districts = Province.all.order(priority: :asc).map{|p| "#{p.province} - #{p.district}"}
       @cart_subtotal = 0

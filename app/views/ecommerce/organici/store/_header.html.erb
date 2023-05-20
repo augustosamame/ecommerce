@@ -112,9 +112,6 @@
 								<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
 							<% end %>
 
-							<% if current_user && ["admin", "blogger"].include?(current_user.role) && controller_name == "blog" %>
-								<li><%= link_to t('.manage_blog_posts'), Blog::Engine.routes.url_helpers.posts_path, style: "color: red;" %></li>
-							<% end %>
 						</ul>
 						</nav>
 -->
