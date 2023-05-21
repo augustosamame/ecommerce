@@ -148,7 +148,8 @@ Culqi.settings({
   title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
   currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
   description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@order.id}" %>',
-  amount: culqi_payment_amount
+  amount: Number(culqi_payment_amount),
+  order: '<%= @order.id %>'
 });
 
 $('#retry-pay-now-button').on('click', function(e) {
@@ -168,10 +169,10 @@ $('#retry-pay-now-button').on('click', function(e) {
               paymentMethods: {
                 tarjeta: true,
                 yape: true, 
-                bancaMovil: false,
-                agente: false,
-                billetera: false,
-                cuotealo: false,
+                bancaMovil: true,
+                agente: true,
+                billetera: true,
+                cuotealo: true,
               },
               style: {
                 logo: 'https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
