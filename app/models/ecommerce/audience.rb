@@ -1,14 +1,10 @@
 module Ecommerce
-  class Campaign < ApplicationRecord
-    belongs_to :coupon, optional: true
-    belongs_to :audience, optional: true
+  class Audience < ApplicationRecord
+    has_many :campaigns
+    has_many :user_audiences
 
-    enum campaign_type: {next_purchase_email: 0, bulk_email: 1}
     enum status: {inactive: 0, active: 1}
-
-    validates :link, format: URI::regexp(%w[http https]), :allow_blank => true
-
-    mount_uploader :image, Ecommerce::CampaignImageUploader
+    enum audience_type: {test: 0, email_campaign: 1}
 
     def self.send_recipients(order_id)
       order_user_id = Order.find(order_id).user_id

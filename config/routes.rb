@@ -35,6 +35,15 @@ Ecommerce::Engine.routes.draw do
     post 'send_recipients/:id', :to => "campaigns#post_send_recipients", as: 'post_send_recipients'
     get 'get_purchasers', :to => "campaigns#get_product_purchasers"
     get 'get_no_purchase_within_days', :to => "campaigns#get_no_purchase_within_days"
+
+    resources :audiences
+    get 'audience_create_recipients/:id', :to => "audiences#create_recipients", as: 'audience_create_recipients'
+    post 'audience_create_recipients/:id', :to => "audiences#post_create_recipients", as: 'audience_post_create_recipients'
+    get 'audience_send_recipients/:id', :to => "audiences#send_recipients", as: 'audience_send_recipients'
+    post 'audience_send_recipients/:id', :to => "audiences#post_send_recipients", as: 'audience_post_send_recipients'
+    get 'audience_get_purchasers', :to => "audiences#get_product_purchasers"
+    get 'audience_get_no_purchase_within_days', :to => "audiences#get_no_purchase_within_days"
+
     get "export_products" => "dashboard#export_products", as: :export_products
     get "export_users" => "dashboard#export_users", as: :export_users
     get "export_orders" => "dashboard#export_orders", as: :export_orders

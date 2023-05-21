@@ -1,0 +1,9 @@
+<div class="page-header">
+  <%= link_to backoffice_audiences_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    <%= t('common.back') %>
+  <% end %>
+  <h1><%= t('.new_audience') %></h1>
+</div>
+
+<%= render 'form' %>

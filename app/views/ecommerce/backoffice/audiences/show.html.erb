@@ -1,0 +1,29 @@
+<div class="page-header">
+  <%= link_to backoffice_audiences_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_audience_path(@audience), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show Audience</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Audience Name:</dt>
+  <dd><%= @audience.audience_name %></dd>
+
+  <dt>Audience Description:</dt>
+  <dd><%= @audience.audience_description %></dd>
+
+  <dt>Audience Type:</dt>
+  <dd><%= @audience.audience_type %></dd>
+
+  <dt>Recipients Total:</dt>
+  <dd><%= @audience.user_total %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @audience.status %></dd>
+
+</dl>

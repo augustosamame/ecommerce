@@ -23,7 +23,7 @@ module Ecommerce
     end
 
     def self.send_email_to_all_abandoned_carts
-      Ecommerce::Cart.where(status: 'active', abandoned_email_sent: false).where("ecommerce_carts.created_at < ? AND ecommerce_carts.created_at > ?", Time.now - 15.minutes, Time.now - 36.hours).where.not(user_id: nil).joins(:cart_items).distinct.each do |cart|
+      Ecommerce::Cart.where(status: 'active', abandoned_email_sent: false).where("ecommerce_carts.created_at < ? AND ecommerce_carts.created_at > ?", Time.now - 15.minutes, Time.now - 36.hours).where.not(user_id: nil).distinct.each do |cart|
         unless cart.cart_items.empty?
           if cart.user.id == 2
             coupon = Ecommerce::Coupon.one_time_coupon(cart.user.id)

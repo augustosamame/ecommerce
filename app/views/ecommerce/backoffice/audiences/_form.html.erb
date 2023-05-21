@@ -1,0 +1,26 @@
+<%= simple_form_for([:backoffice, @audience]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :audience_name, label: "Audience Name" %>
+    <%= f.input :audience_description, label: "Audience Description" %>
+    <%= f.input :audience_type, label: t('.audience_type'), collection: Ecommerce::Audience.audience_types.keys %>
+    <%= f.input :user_total, label: "Recipients Total" %>
+    <%= f.input :status, label: t('.status'), collection: Ecommerce::Audience.statuses.keys %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<script>
+
+  $(document).ready(function(){
+
+    
+
+  });
+
+
+</script>

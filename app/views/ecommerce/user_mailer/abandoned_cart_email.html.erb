@@ -1,0 +1,16 @@
+<div class="HeaderLogo">
+  <%= image_tag "https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_180x180.png", style: "position: absolute; width: 120px; height: 120px; top: 0px;" %>
+</div>
+<div style="margin-top: 140px">
+  <p>Dear customer <%= @user.name %><br></p>
+  <p>You have products in your shopping cart. We hope you can complete your purchase soon. If you have any issues, please contact us at 989080023</p>
+  <p>
+  <br>
+  <% if @coupon %>
+    You may use the following coupon: <%= @coupon.coupon_code %> to complete your purchase. Please enter it at checkout, and you'll get 5% discount in this purchase. Coupon is valid for the next 48 hours.
+  <% end %>
+<p> <%= t('.thank_you') %></p>
+<p> <%= t('.thank_you_2') %></p>
+<p><%= t('.farewell_1') %></p>
+<p><%= t('.farewell_2') %></p>
+</div>
