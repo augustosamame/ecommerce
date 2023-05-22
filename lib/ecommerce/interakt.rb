@@ -12,9 +12,9 @@ module Ecommerce
       }
     end
 
-    def create_user(hash) #hash with key: userId
+    def create_user(hash) #hash with key: user_id
       begin
-        user = User.find(hash[:userId])
+        user = User.find(hash[:user_id])
         tags = Array.new
         tags << "user.new"
         tags << "user.test" if user.interakt_test
@@ -42,18 +42,15 @@ module Ecommerce
       end
     end
 
-    def update_user(options) #hash with (optional) keys: userId, fullPhoneNumber, traits hash, tags hash
+    def update_user(hash) #hash with (optional) keys: user_id, traits hash, tags hash
       begin
-        user = User.find!(options[:user_id])
+        user = User.find(hash[:user_id])
         tags = Array.new
         tags << "user.registeredMoreThan7DaysAgo" if user.created_at < 7.days.ago
         options = {
           fullPhoneNumber: user.normalized_phone,
-          traits: {
-            name: user.name,
-            email: user.email
-          },
-          tags: tags
+          traits: hash[:traits],
+          tags: hash[:tags]
         }
         call_options = {
           headers: @headers,
@@ -70,13 +67,13 @@ module Ecommerce
       end
     end
 
-    def create_event(options) #hash with keys: user_id, event, traits hash
+    def create_event(hash) #hash with keys: user_id, event, traits hash
       begin
-        user = User.find!(options[:user_id])
+        user = User.find(hash[:user_id])
         options = {
           userId: user.id,
-          event: options[:event],
-          traits: traits
+          event: hash[:event],
+          traits: hash[:traits]
         }
         call_options = {
           headers: @headers,
@@ -93,17 +90,18 @@ module Ecommerce
       end
     end
 
-    def send_whatsapp(options) #hash with keys: user_id, template, language_code, header_values, body_values
+    def send_whatsapp(hash) #hash with keys: user_id, template, language_code, header_values, body_values, button_values (header and body values are an array of strings, button values are a hash in format: {"0": ["1234"]})
       begin
-        user = User.find!(options[:user_id])
+        user = User.find!(hash[:user_id])
         options = {
           fullPhoneNumber: user.normalized_phone,
           type: "Template",
           template: {
-            name: options[:template],
-            languageCode: options[:language_code],
-            headerValues: options[:header_values],
-            bodyValues: options[:body_values]
+            name: hash[:template],
+            languageCode: hash[:language_code],
+            headerValues: hash[:header_values],
+            bodyValues: hash[:body_values],
+            buttonValues: hash[:button_values],
           }
         }
         call_options = {
