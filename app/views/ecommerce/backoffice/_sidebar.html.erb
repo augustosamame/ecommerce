@@ -83,7 +83,7 @@
         </ul>
       </li>
 
-      <li class="<%= class_string({ active: (['coupons','campaigns', 'stock_alerts', 'testimonials'].include? controller.controller_name) }) %>">
+      <li class="<%= class_string({ active: (['coupons','campaigns', 'audiences', 'stock_alerts', 'testimonials'].include? controller.controller_name) }) %>">
         <a href="javascript:;"> <i class="material-icons">attach_money</i> <span class="title">Marketing</span><span class=" arrow"></span>
         </a>
         <ul class="sub-menu">
@@ -95,6 +95,9 @@
           </li>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'campaigns' && controller.action_name == 'index')}) %>">
             <%= link_to t('.campaigns'), backoffice_campaigns_path %>
+          </li>
+          <li class="<%= class_string({ start: true, active: (controller.controller_name == 'audiences' && controller.action_name == 'index')}) %>">
+            <%= link_to t('.audiences'), backoffice_audiences_path %>
           </li>
           <li class="<%= class_string({ start: true, active: (controller.controller_name == 'stock_alerts' && controller.action_name == 'index')}) %>">
             <%= link_to t('.stock_alerts'), backoffice_stock_alerts_path %>
