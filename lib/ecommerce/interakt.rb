@@ -14,7 +14,7 @@ module Ecommerce
 
     def create_user(hash) #hash with key: userId
       begin
-        user = User.find!(hash[:userId])
+        user = User.find(hash[:userId])
         tags = Array.new
         tags << "user.new"
         tags << "user.test" if user.interakt_test
