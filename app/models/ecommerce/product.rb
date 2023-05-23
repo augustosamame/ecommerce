@@ -35,7 +35,7 @@ module Ecommerce
 
     scope :in_stock, -> { where("stockable = ? or total_quantity != ?", false, 0) }
     scope :active, -> { where(status: "active") }
-    scope :active_not_banana, -> { where(status: "active").tagged_with("Alcoholic Drinks") }
+    scope :active_not_banana, -> { where(status: "active").tagged_with("Alcoholic Drinks", :exclude => true) }
 
     paginates_per 8
 
