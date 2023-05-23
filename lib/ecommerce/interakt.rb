@@ -90,9 +90,9 @@ module Ecommerce
       end
     end
 
-    def send_whatsapp(hash) #hash with keys: user_id, template, language_code, header_values, body_values, button_values (header and body values are an array of strings, button values are a hash in format: {"0": ["1234"]})
+    def send_message(hash) #hash with keys: user_id, template, language_code, header_values, body_values, button_values (header and body values are an array of strings, button values are a hash in format: {"0": ["1234"]})
       begin
-        user = User.find!(hash[:user_id])
+        user = User.find(hash[:user_id])
         options = {
           fullPhoneNumber: user.normalized_phone,
           type: "Template",
@@ -108,7 +108,7 @@ module Ecommerce
           headers: @headers,
           body: options.to_json,
         }
-        response = self.class.post("/whatsapp/send/", call_options)
+        response = self.class.post("/message/", call_options)
         if response.code == 200 || response.code == 202
           return response.parsed_response
         else
