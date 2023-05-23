@@ -134,7 +134,7 @@
 
 										<% @primary_menu_categories.each do |category| %>
 
-                      <% unless category.name == 'Alcoholic Drinks' && !@banana_permission %>
+                      <% unless category.id == 30 && !@banana_permission # Alcoholic Drinks %>
 
                         <% Globalize.with_locale(:"en-PE") do %>
                           <% if Ecommerce::Category.active.tagged_with(category.name).count > 0 %>
@@ -311,7 +311,7 @@
 
 									<% @primary_menu_categories.each do |category| %>
 
-                    <% unless category.name == 'Alcoholic Drinks' && !@banana_permission %>
+                    <% unless category.id == 30 && !@banana_permission %>
 									    <li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "active header-menu-no-wrap" %></li>
                     <% end %>
 
