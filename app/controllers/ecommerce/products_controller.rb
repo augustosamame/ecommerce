@@ -14,7 +14,11 @@ module Ecommerce
       set_index_meta_tags
 
       if params[:search]
-        @products = Product.search_by_name(params[:search]).active.page(params[:page])
+        if @banana_permission
+          @products = Product.search_by_name(params[:search]).active.page(params[:page])
+        else
+          @products = Product.search_by_name(params[:search]).active_not_banana.page(params[:page])
+        end
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
       end
 
