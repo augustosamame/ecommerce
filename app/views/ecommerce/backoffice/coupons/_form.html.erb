@@ -13,6 +13,21 @@
     <%= f.input :max_uses, label: t('.max_uses') %>
     <%= f.input :current_uses, label: t('.current_uses') %>
     <%= f.input :free_shipping, label: t('.free_shipping') %>
+    <div class="well">
+      <%= f.input :always_on_active, label: 'Always On Coupon' %>
+      <%= f.input :always_on_message_en, label: 'Message in ENGLISH to show for always on coupon' %>
+      <%= f.input :always_on_message_es, label: 'Message in SPANISH to show for always on coupon' %>
+    </div>
+    <div class="well">
+      <%= f.input :minimum_quantity_applies, label: 'Only valid for a minimum quantity of a product' %>
+      <%= f.input :minimum_quantity, label: 'Minimum quantity' %>
+      <%= f.input :minimum_quantity_product, label: 'Minimum quantity product' %>
+    </div>
+    <div class="well">
+      <%= f.input :combo_applies, label: 'Only valid for a specific product combo' %>
+      <%= f.input :combo_products, label: 'List of product combo' %>
+    </div>
+    
     <%= f.input :status, label: t('.status'), collection: Ecommerce::Coupon.statuses.keys %>
   </div>
 

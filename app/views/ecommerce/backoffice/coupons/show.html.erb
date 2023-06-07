@@ -44,6 +44,30 @@
   <dt>Free Shipping?</dt>
   <dd><%= @coupon.free_shipping %></dd>
 
+  <dt>Always On:</dt>
+  <dd><%= @coupon.always_on_active %></dd>
+
+  <dt>Message in ENGLISH to show for always on coupon:</dt>
+  <dd><%= @coupon.always_on_message_en %></dd>
+
+  <dt>Message in SPANISH to show for always on coupon:</dt>
+  <dd><%= @coupon.always_on_message_es %></dd>
+
+  <dt>Only valid for a minimum quantity of a product:</dt>
+  <dd><%= @coupon.minimum_quantity_applies %></dd>
+
+  <dt>Minimum quantity:</dt>
+  <dd><%= @coupon.minimum_quantity %></dd>
+
+  <dt>Minimum quantity product:</dt>
+  <dd><%= @coupon.minimum_quantity_product %></dd>
+
+  <dt>Only valid for a specific product combo:</dt>
+  <dd><%= @coupon.combo_applies %></dd>
+
+  <dt>List of product combo:</dt>
+  <dd><%= @coupon.combo_products %></dd>
+
   <dt>Status:</dt>
   <dd><%= @coupon.status %></dd>
 

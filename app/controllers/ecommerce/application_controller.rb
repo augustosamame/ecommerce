@@ -11,6 +11,7 @@ module Ecommerce
     before_action :set_cart
     before_action :set_wishlist
     before_action :set_header_menu_items
+    before_action :set_always_on_coupon
     #before_render :set_controller_meta_tags
 
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"
@@ -25,6 +26,10 @@ module Ecommerce
     def add_body_css_class(css_class)
       @body_css_classes ||= []
       @body_css_classes << css_class
+    end
+
+    def set_always_on_coupon
+      @always_on_coupon = Ecommerce::Coupon.where(always_on_active: true).first
     end
 
     def set_controller_meta_tags

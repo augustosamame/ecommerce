@@ -355,12 +355,14 @@ en-PE:
           no_items_in_cart: "No items in Cart"
           continue_shopping: "Continue Shopping"
           update_cart: "Update Cart"
+          coupon_active_message: "Coupon %{coupon_code} is active for this order. The discount will be applied at checkout."
           proceed_to_checkout: "Proceed to Checkout"
           cart_totals: "Cart Totals"
           total_items: "Total Items"
           subtotal: "Subtotal"
           shipping: "Shipping"
           shipping_costs_text: "Shipping costs will be calculated once you have provided your address."
+          coupon: "Coupon"
       canvas_ecommerce:
         header:
           home_menu: "Store"

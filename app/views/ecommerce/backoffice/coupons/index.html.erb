@@ -22,6 +22,7 @@
         <th><%= t('.max_uses_total') %></th>
         <th><%= t('.current_uses') %></th>
         <th><%= t('.free_shipping') %></th>
+        <th>Always On</th>
         <th><%= t('.status') %></th>
         <th><%= t('common.show') %></th>
         <th><%= t('common.edit') %></th>
@@ -47,6 +48,7 @@
         <td><%= coupon.max_uses %></td>
         <td><%= coupon.current_uses %></td>
         <td><%= coupon.free_shipping %></td>
+        <td><%= coupon.always_on_active %></td>
         <td><%= coupon.status %></td>
         <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_coupon_path(coupon) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_coupon_path(coupon) %></td>

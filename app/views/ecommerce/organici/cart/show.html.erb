@@ -75,6 +75,13 @@
                 <% end %>
                 <tr>
                   <td colspan="5" class="actions">
+                    <% if @always_on_coupon %>
+                      <%= t('.coupon_active_message', coupon_code: @always_on_coupon.coupon_code) %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="actions">
                     <div class="row">
 
                       <% if browser.device.mobile? %>
@@ -154,6 +161,12 @@
                     <th><%= t('.subtotal') %></th>
                     <td><span class="amount" id="subtotal-amount"><%= session_price(@cart_subtotal) %></span></td>
                   </tr>
+                  <% if @always_on_coupon %>
+                    <tr class="cart-subtotal">
+                      <th><%= t('.coupon') %></th>
+                      <td><span class="amount" id="subtotal-amount"><%= t('.coupon_active_message', coupon_code: @always_on_coupon.coupon_code) %></span></td>
+                    </tr>
+                  <% end %>
                   <tr class="shipping">
                     <th><%= t('.shipping') %></th>
                     <td>

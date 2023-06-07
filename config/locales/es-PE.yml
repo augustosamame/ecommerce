@@ -271,12 +271,14 @@ es-PE:
           no_items_in_cart: "No hay items en el Carrito"
           continue_shopping: "Continuar Comprando"
           update_cart: "Actualizar Carrito"
+          coupon_active_message: "El cupón %{coupon_code} está activo para este pedido. El descuento se aplicará en el checkout."
           proceed_to_checkout: "Proceder a Checkout"
           cart_totals: "Totales"
           total_items: "Cant de Items"
           subtotal: "Subtotal"
           shipping: "Costo de Envío"
           shipping_costs_text: "El costo de envío será calculado una vez proporcione su dirección."
+          coupon: "Cupón"
       wishlist:
         show:
           title: "Lista de Deseos"

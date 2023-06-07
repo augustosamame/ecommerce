@@ -128,27 +128,28 @@
 
                 <% if @coupons_active %>
 
-                <div class="commerce-checkout-payment">
-                  <ul class="payment_methods">
+                  <% unless @always_on_coupon %>
+                    <div class="commerce-checkout-payment">
+                      <ul class="payment_methods">
 
-                    <li class="wc_payment_method">
+                          <li class="wc_payment_method">
 
-                      <div class="payment_box payment_method_cheque">
+                            <div class="payment_box payment_method_cheque">
 
-                          <label for="coupon_code" style="font-size: 12px;">
-                            <%= t('.enter_coupon') %>
-                          </label>
+                                <label for="coupon_code" style="font-size: 12px;">
+                                  <%= t('.enter_coupon') %>
+                                </label>
 
-                          <input type="text" name="coupon_code" id="coupon-code" />
-                          <button type="button" class="btn btn-info coupon-apply"><%= t('.apply_coupon') %></button>
-                          <label id="coupon-error" style="font-size: 12px; color: red;"></label>
+                                <input type="text" name="coupon_code" id="coupon-code" />
+                                <button type="button" class="btn btn-info coupon-apply"><%= t('.apply_coupon') %></button>
+                                <label id="coupon-error" style="font-size: 12px; color: red;"></label>
 
+                            </div>
+
+                          </li>  
+                        </ul>
                       </div>
-
-                    </li>
-                  </ul>
-                </div>
-
+                    <% end %>  
                 <% end %>
 
 
@@ -307,6 +308,14 @@
 <script>
 $( document ).ready(function() {
 
+  <% if @always_on_coupon %>
+    var applied_coupon = "<%= @always_on_coupon.coupon_code %>";
+    // calculate coupon and recalculate_checkout_totals
+    calculate_coupon(applied_coupon);
+  <% else %>
+    var applied_coupon = '';
+  <% end %>
+
   $('#new-address-button').click(function(){
     $('#new-address-container').show();
     // $(this).parent.hide();
@@ -353,7 +362,6 @@ $( document ).ready(function() {
   var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
   var culqi_payment_amount = Number(($('#payment-amount').html() * 100).toFixed(2));
   var shipping_calculated_flag = false
-  var applied_coupon = ''
   var exchange_rate = <%= @exchange_rate %>
   var info_factura_blank = <%= @info_factura_available.blank? %>
   var address_saved_flag = false

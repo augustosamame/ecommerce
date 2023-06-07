@@ -9,6 +9,8 @@ module Ecommerce
 
     validates_presence_of :coupon_code, :coupon_type, :status
 
+    validate :can_only_exist_one_always_on_coupon
+
     def self.one_time_coupon(order_user_id)
       charset = %w{ 2 3 4 6 7 9 A C D E F G H J K M N P Q R T V W X Y Z}
       dynamic_coupon_code = (0...6).map{ charset.to_a[rand(charset.size)] }.join
@@ -30,6 +32,15 @@ module Ecommerce
 
     def clear_all_expired_dynamic_coupons
       Ecommerce::Coupon.where("end_date < ? AND dynamic = ?", Time.now, true).destroy_all
+    end
+
+    def can_only_exist_one_always_on_coupon
+      if self.always_on_active
+        coupon_always_on_already_exists = Ecommerce::Coupon.where(always_on_active: true).where.not(id: self.id).first
+        if coupon_always_on_already_exists
+          errors.add(:always_on_active, 'There is already a coupon with Always On active.')
+        end
+      end
     end
 
   end
