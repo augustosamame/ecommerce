@@ -366,6 +366,7 @@ $( document ).ready(function() {
   var info_factura_blank = <%= @info_factura_available.blank? %>
   var address_saved_flag = false
   var culqi_order_id = ''
+  var applied_coupon = '';
 
   // calculate and update shipping html tag when shipping address is created
   $("#save-address-button").click(function() {
