@@ -21,11 +21,11 @@
     <div class="well">
       <%= f.input :minimum_quantity_applies, label: 'Only valid for a minimum quantity of a product' %>
       <%= f.input :minimum_quantity, label: 'Minimum quantity' %>
-      <%= f.input :minimum_quantity_product, label: 'Minimum quantity product' %>
+      <%= f.input :minimum_quantity_product, label: 'Minimum quantity product id' %>
     </div>
     <div class="well">
       <%= f.input :combo_applies, label: 'Only valid for a specific product combo' %>
-      <%= f.input :combo_products, label: 'List of product combo' %>
+      <%= f.input :combo_products, as: :array, label: 'List of product combo ids' %>
     </div>
     
     <%= f.input :status, label: t('.status'), collection: Ecommerce::Coupon.statuses.keys %>

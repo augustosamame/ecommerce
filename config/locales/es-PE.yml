@@ -38,6 +38,7 @@ es-PE:
       calculate_coupon:
         coupon_not_found: "Cupón No Encontrado"
         order_under_coupon_threshold: "No ha llegado al monto mínimo del cupón"
+        not_enough_quantity: "Debe tener por lo menos %{minimum_quantity} de %{product_name} en su carrito para activar este cupón"
         no_qualifying_products: "No hay productos en su carrito que califiquen para este cupón"
         max_times_per_user_exceeded: "El cupón ya ha sido utilizado el máximo de veces permitido"
         max_times_exceeded: "El cupón ya ha sido utilizado el máximo de veces permitido"

@@ -103,54 +103,103 @@ module Ecommerce
         cart.cart_items.includes(:product).each do |cart_item|
           cart_subtotal += cart_item.line_total(current_user)
         end
-        case found_coupon.coupon_type
-        when "percentage_discount"
-          discount = cart_subtotal.to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
-          response = {
-                      :result => "ok",
-                      :discount => - discount,
-                      :free_shipping => found_coupon.free_shipping?
-                     }
-        when "fixed_discount_with_threshold"
-          if cart_subtotal.to_f < found_coupon.discount_threshold
+
+        if found_coupon.minimum_quantity_applies
+          product_name = Ecommerce::Product.find(found_coupon.minimum_quantity_product).try(:name)
+          case found_coupon.coupon_type
+          when "percentage_discount"
+            applicable_cart_items = cart.cart_items.includes(:product).where(product_id: found_coupon.minimum_quantity_product)
+            discount = 0
+            total_quantity = 0
+            applicable_cart_items.each do |cart_item|
+              line_discount = cart_item.line_total(current_user).to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
+              discount += line_discount
+              total_quantity += cart_item.quantity
+            end
+            if total_quantity >= found_coupon.minimum_quantity
+              response = {
+                          :result => "ok",
+                          :discount => - discount,
+                          :free_shipping => found_coupon.free_shipping?
+                        }
+            else
+              response = {
+                          :result => "error",
+                          :error_message => I18n.t('controllers.orders.calculate_coupon.not_enough_quantity', product_name: product_name, minimum_quantity: found_coupon.minimum_quantity)
+                        }
+            end
+          when "fixed_discount_without_threshold"
+            applicable_cart_items = cart.cart_items.includes(:product).where(product_id: found_coupon.minimum_quantity_product)
+            total_quantity = 0
+            applicable_cart_items.each do |cart_item|
+              total_quantity += cart_item.quantity
+            end
+            if total_quantity >= found_coupon.minimum_quantity
+              discount = found_coupon.discount_fixed
+              response = {
+                          :result => "ok",
+                          :discount => - discount,
+                          :free_shipping => found_coupon.free_shipping?
+                        }
+            else
+              discount = 0
+              response = {
+                          :result => "error",
+                          :error_message => I18n.t('controllers.orders.calculate_coupon.not_enough_quantity', product_name: product_name, minimum_quantity: found_coupon.minimum_quantity)
+                        }
+            end
+          end
+        else
+
+          case found_coupon.coupon_type
+          when "percentage_discount"
+            discount = cart_subtotal.to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
             response = {
-                        :result => "error",
-                        :error_message => I18n.t('controllers.orders.calculate_coupon.order_under_coupon_threshold')
-                       }
-          else
+                        :result => "ok",
+                        :discount => - discount,
+                        :free_shipping => found_coupon.free_shipping?
+                      }
+          when "fixed_discount_with_threshold"
+            if cart_subtotal.to_f < found_coupon.discount_threshold
+              response = {
+                          :result => "error",
+                          :error_message => I18n.t('controllers.orders.calculate_coupon.order_under_coupon_threshold')
+                        }
+            else
+              discount = found_coupon.discount_fixed || 0
+              response = {
+                          :result => "ok",
+                          :discount => - discount,
+                          :free_shipping => found_coupon.free_shipping?
+                        }
+            end
+          when "fixed_discount_without_threshold"
             discount = found_coupon.discount_fixed || 0
             response = {
                         :result => "ok",
                         :discount => - discount,
                         :free_shipping => found_coupon.free_shipping?
-                       }
-          end
-        when "fixed_discount_without_threshold"
-          discount = found_coupon.discount_fixed || 0
-          response = {
-                      :result => "ok",
-                      :discount => - discount,
-                      :free_shipping => found_coupon.free_shipping?
-                     }
-        when "percentage_discount_per_product"
+                      }
+          when "percentage_discount_per_product"
 
-          qualifying_products = found_coupon.products.pluck(:id)
-          qualifying_products_in_cart = cart.cart_items.where(product_id: qualifying_products)
-          if qualifying_products_in_cart.empty?
-            response = {
-                        :result => "error",
-                        :error_message => I18n.t('controllers.orders.calculate_coupon.no_qualifying_products')
-                       }
-          else
-            discount = 0
-            qualifying_products_in_cart.each do |cart_line|
-              discount += cart_line.line_total(current_user).to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
+            qualifying_products = found_coupon.products.pluck(:id)
+            qualifying_products_in_cart = cart.cart_items.where(product_id: qualifying_products)
+            if qualifying_products_in_cart.empty?
+              response = {
+                          :result => "error",
+                          :error_message => I18n.t('controllers.orders.calculate_coupon.no_qualifying_products')
+                        }
+            else
+              discount = 0
+              qualifying_products_in_cart.each do |cart_line|
+                discount += cart_line.line_total(current_user).to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
+              end
+              response = {
+                        :result => "ok",
+                        :discount => - discount,
+                        :free_shipping => found_coupon.free_shipping?
+                        }
             end
-            response = {
-                       :result => "ok",
-                       :discount => - discount,
-                       :free_shipping => found_coupon.free_shipping?
-                       }
           end
         end
       else

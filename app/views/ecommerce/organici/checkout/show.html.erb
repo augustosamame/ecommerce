@@ -307,7 +307,7 @@
 
 <script>
 $( document ).ready(function() {
-
+  var applied_coupon = '';
   <% if @always_on_coupon %>
     var applied_coupon = "<%= @always_on_coupon.coupon_code %>";
     // calculate coupon and recalculate_checkout_totals
