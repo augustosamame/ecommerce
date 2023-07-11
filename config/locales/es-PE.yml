@@ -40,6 +40,7 @@ es-PE:
         order_under_coupon_threshold: "No ha llegado al monto mínimo del cupón"
         not_enough_quantity: "Debe tener por lo menos %{minimum_quantity} de %{product_name} en su carrito para activar este cupón"
         no_qualifying_products: "No hay productos en su carrito que califiquen para este cupón"
+        no_combo_qualifying_products: "Al menos uno de los productos: %{product_names} debe estar presente para poder utilizar este cupón"
         max_times_per_user_exceeded: "El cupón ya ha sido utilizado el máximo de veces permitido"
         max_times_exceeded: "El cupón ya ha sido utilizado el máximo de veces permitido"
         coupon_expired: "El cupón ha expirado"
@@ -280,6 +281,8 @@ es-PE:
           shipping: "Costo de Envío"
           shipping_costs_text: "El costo de envío será calculado una vez proporcione su dirección."
           coupon: "Cupón"
+          my_orders: "Mis Pedidos"
+          my_account: "Mi Cuenta"
       wishlist:
         show:
           title: "Lista de Deseos"

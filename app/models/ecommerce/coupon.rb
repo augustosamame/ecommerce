@@ -65,8 +65,8 @@ module Ecommerce
         if !self.combo_products.blank? && self.combo_products[0].split(",").length < 2
           errors.add(:combo_products, 'Combo coupons must have at least 2 products.')
         end
-        products = Ecommerce::Product.where(id: self.combo_products)
-        if products.blank? || products.length != self.combo_products.length
+        products = Ecommerce::Product.where(id: self.combo_products[0].split(","))
+        if products.blank? || products.length != self.combo_products[0].split(",").length
           errors.add(:combo_products, 'All products must exist.')
         end
         if !['percentage_discount', 'fixed_discount_without_threshold'].include?(self.coupon_type)

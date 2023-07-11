@@ -55,6 +55,7 @@ en-PE:
         order_under_coupon_threshold: "Order total under coupon threshold"
         not_enough_quantity: "You must add at least %{minimum_quantity} of product %{product_name} in cart for this coupon code"
         no_qualifying_products: "No qualifying products in cart for this coupon code"
+        no_combo_qualifying_products: "At least one of the products: %{product_names} must be added to cart for this coupon code"
         max_times_per_user_exceeded: "Coupon has exceeded the max number of times it can be used"
         max_times_exceeded: "Coupon has exceeded the max number of times it can be used"
         coupon_expired: "Coupon has expired"
@@ -364,6 +365,8 @@ en-PE:
           shipping: "Shipping"
           shipping_costs_text: "Shipping costs will be calculated once you have provided your address."
           coupon: "Coupon"
+          my_orders: "My Orders"
+          my_account: "My Account"
       canvas_ecommerce:
         header:
           home_menu: "Store"

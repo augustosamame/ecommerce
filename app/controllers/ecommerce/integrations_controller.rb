@@ -34,7 +34,7 @@ module Ecommerce
             extra_kgs = 0
           else
             first_kg = 1
-            extra_kgs = total_kgs - 1
+            extra_kgs = ((total_kgs - 1).ceil).to_f
           end
           total_shipping_cost = ((first_kg * province.cost_first_kilo_cents.to_f) + (extra_kgs * province.cost_per_kilo_cents.to_f)) / 100
           response = {:amount => total_shipping_cost.to_f}

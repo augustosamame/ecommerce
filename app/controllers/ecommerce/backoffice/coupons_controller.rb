@@ -24,11 +24,14 @@ module Ecommerce
     def new
       @coupon = Coupon.new
       @coupon.status = "active"
+      @coupon.combo_products = [""]
     end
 
     # GET /coupons/1/edit
     def edit
-      #byebug
+      if @coupon.combo_products.blank?
+        @coupon.combo_products = [""]
+      end
       #@coupon.combo_products = @coupon.combo_products.join(',')
     end
 

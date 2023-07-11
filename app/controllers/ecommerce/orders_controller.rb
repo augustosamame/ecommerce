@@ -150,55 +150,91 @@ module Ecommerce
             end
           end
         else
-
-          case found_coupon.coupon_type
-          when "percentage_discount"
-            discount = cart_subtotal.to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
-            response = {
-                        :result => "ok",
-                        :discount => - discount,
-                        :free_shipping => found_coupon.free_shipping?
-                      }
-          when "fixed_discount_with_threshold"
-            if cart_subtotal.to_f < found_coupon.discount_threshold
-              response = {
-                          :result => "error",
-                          :error_message => I18n.t('controllers.orders.calculate_coupon.order_under_coupon_threshold')
-                        }
+          if found_coupon.combo_applies
+            combo_product_ids = found_coupon.combo_products[0].split(",").map(&:to_i)            
+            combo_products = Ecommerce::Product.where(id: combo_product_ids)
+            qualifying_unique_cart_items = cart.cart_items.includes(:product).where(product_id: combo_product_ids).select(:product_id).distinct
+            if qualifying_unique_cart_items.length == combo_product_ids.length
+              found_number_of_combos = qualifying_unique_cart_items.min(:quantity) #this is the number of combos that can be applied (at least x quantity of each product in the combo)
             else
+              found_number_of_combos = 0 #no complete combos were found
+            end
+            case found_coupon.coupon_type
+            when "percentage_discount"
+              discount_per_combo = 0
+              combo_products.each do |combo_product|
+                product_price = combo_product.current_price(current_user)
+                discount_per_combo += (product_price * (found_coupon.discount_percentage_decimal.to_f / 100))
+              end
+              discount = discount_per_combo * found_number_of_combos
+              if discount == 0
+                product_names = combo_products.map(&:name).join(", ")
+                response = {
+                            :result => "error",
+                            :error_message => I18n.t('controllers.orders.calculate_coupon.no_combo_qualifying_products', product_names: product_names)
+                           }
+              else
+                response = {
+                            :result => "ok",
+                            :discount => - discount,
+                            :free_shipping => found_coupon.free_shipping?
+                           }
+              end
+            when "fixed_discount_without_threshold"
+              discount_per_combo = found_coupon.discount_fixed
+            end
+          
+          else
+
+            case found_coupon.coupon_type
+            when "percentage_discount"
+              discount = cart_subtotal.to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
+              response = {
+                          :result => "ok",
+                          :discount => - discount,
+                          :free_shipping => found_coupon.free_shipping?
+                        }
+            when "fixed_discount_with_threshold"
+              if cart_subtotal.to_f < found_coupon.discount_threshold
+                response = {
+                            :result => "error",
+                            :error_message => I18n.t('controllers.orders.calculate_coupon.order_under_coupon_threshold')
+                          }
+              else
+                discount = found_coupon.discount_fixed || 0
+                response = {
+                            :result => "ok",
+                            :discount => - discount,
+                            :free_shipping => found_coupon.free_shipping?
+                          }
+              end
+            when "fixed_discount_without_threshold"
               discount = found_coupon.discount_fixed || 0
               response = {
                           :result => "ok",
                           :discount => - discount,
                           :free_shipping => found_coupon.free_shipping?
                         }
-            end
-          when "fixed_discount_without_threshold"
-            discount = found_coupon.discount_fixed || 0
-            response = {
-                        :result => "ok",
-                        :discount => - discount,
-                        :free_shipping => found_coupon.free_shipping?
-                      }
-          when "percentage_discount_per_product"
+            when "percentage_discount_per_product"
 
-            qualifying_products = found_coupon.products.pluck(:id)
-            qualifying_products_in_cart = cart.cart_items.where(product_id: qualifying_products)
-            if qualifying_products_in_cart.empty?
-              response = {
-                          :result => "error",
-                          :error_message => I18n.t('controllers.orders.calculate_coupon.no_qualifying_products')
-                        }
-            else
-              discount = 0
-              qualifying_products_in_cart.each do |cart_line|
-                discount += cart_line.line_total(current_user).to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
+              qualifying_products = found_coupon.products.pluck(:id)
+              qualifying_products_in_cart = cart.cart_items.where(product_id: qualifying_products)
+              if qualifying_products_in_cart.empty?
+                response = {
+                            :result => "error",
+                            :error_message => I18n.t('controllers.orders.calculate_coupon.no_qualifying_products')
+                          }
+              else
+                discount = 0
+                qualifying_products_in_cart.each do |cart_line|
+                  discount += cart_line.line_total(current_user).to_f * (found_coupon.discount_percentage_decimal.to_f / 100)
+                end
+                response = {
+                          :result => "ok",
+                          :discount => - discount,
+                          :free_shipping => found_coupon.free_shipping?
+                          }
               end
-              response = {
-                        :result => "ok",
-                        :discount => - discount,
-                        :free_shipping => found_coupon.free_shipping?
-                        }
             end
           end
         end
