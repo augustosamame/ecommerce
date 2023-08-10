@@ -15,7 +15,15 @@ module Ecommerce
       when "Urbaner"
         shipping_province = params[:district].split("-")[0].try(:strip)
         shipping_district = params[:district].split("-")[1].try(:strip)
-        province = Province.find_by(province: shipping_province, district: shipping_district) || Province.find_by(delivery_zone: "lima_metropolitana") #if not found, use lima_metropolitana
+        province = Ecommerce::Province.find_by(province: shipping_province, district: shipping_district) || Ecommerce::Province.find_by(delivery_zone: "lima_metropolitana") #if not found, use lima_metropolitana
+        Rails.logger.info "params district: #{params[:district]}"
+        Rails.logger.info "shipping_district: #{shipping_district}"
+        Rails.logger.info "shipping_province: #{shipping_province}"
+        Rails.logger.info "calculated_province: #{province}"
+        puts "params district: #{params[:district]}"
+        puts "shipping_district: #{shipping_district}"
+        puts "shipping_province: #{shipping_province}"
+        puts "calculated_province: #{province}"
         case province.delivery_zone
         when "lima_metropolitana"
           cutoff_price = Ecommerce::Control.get_control_value("flat_shipping_cutoff_amount")
