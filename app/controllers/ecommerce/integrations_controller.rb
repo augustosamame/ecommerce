@@ -19,7 +19,7 @@ module Ecommerce
         Rails.logger.info "params district: #{params[:district]}"
         Rails.logger.info "shipping_district: #{shipping_district}"
         Rails.logger.info "shipping_province: #{shipping_province}"
-        Rails.logger.info "calculated_province: #{province}"
+        Rails.logger.info "calculated_province: #{province.inspect}"
         puts "params district: #{params[:district]}"
         puts "shipping_district: #{shipping_district}"
         puts "shipping_province: #{shipping_province}"
