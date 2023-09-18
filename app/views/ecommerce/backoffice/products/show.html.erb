@@ -124,7 +124,7 @@
 
       <% @product_prices.each do |product_price| %>
       <tr>
-        <td><%= product_price.pricelist.name %></td>
+        <td><%= product_price.pricelist.try(:name) %></td>
         <td><%= product_price.price %></td>
         <td><%= product_price.discounted_price %></td>
         <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_product_price_path(product_price) %></td>
