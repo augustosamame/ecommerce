@@ -15,46 +15,46 @@
 						<!-- Wrapper for slides -->
 
 						<div class="carousel-inner">
-							<% if Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).first %>
+							<% if Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).first %>
 							<div class="item active">
-								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).first.slider_text %></div>
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).first.slider_text %></div>
 								<div class="dvt_slide_video"><img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/home/Sliders/LiveDearestIndianskimmer-small.gif" width="100" height="80"></div>
-								<img src="<%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).first.slider_image.url %>">
+								<img src="<%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).first.slider_image.url %>">
 							</div>
 							<% end %>
 
-							<% if Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).second %>
+							<% if Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).second %>
 							<div class="item">
-								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).second.slider_text %></div>
-								<img src="<%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).second.slider_image.url %>">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).second.slider_text %></div>
+								<img src="<%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).second.slider_image.url %>">
 							</div>
 							<% end %>
 
-							<% if Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).third %>
+							<% if Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).third %>
 							<div class="item">
-								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).third.slider_text %></div>
-								<img src="<%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).third.slider_image.url %>">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).third.slider_text %></div>
+								<img src="<%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).third.slider_image.url %>">
 							</div>
 							<% end %>
 
-							<% if Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).fourth %>
+							<% if Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).fourth %>
 							<div class="item">
-								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).fourth.slider_text %></div>
-								<img src="<%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).fourth.slider_image.url %>">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).fourth.slider_text %></div>
+								<img src="<%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).fourth.slider_image.url %>">
 							</div>
 							<% end %>
 
-							<% if Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).fifth %>
+							<% if Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).fifth %>
 							<div class="item">
-								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).fifth.slider_text %></div>
-								<img src="<%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order).fifth.slider_image.url %>">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).fifth.slider_text %></div>
+								<img src="<%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).fifth.slider_image.url %>">
 							</div>
 							<% end %>
 
-							<% if Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order)[5] %>
+							<% if Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order)[5] %>
 							<div class="item">
-								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order)[5].slider_text %></div>
-								<img src="<%= Ecommerce::Slider.where(slider_view: 'Mobile').order(:slider_order)[5].slider_image.url %>">
+								<div class="tp-caption dvt_frase" style=""><%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order)[5].slider_text %></div>
+								<img src="<%= Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order)[5].slider_image.url %>">
 							</div>
 							<% end %>
 
@@ -100,7 +100,7 @@
 
       <!-- new slider that supports video  -->       
             <ul class="video-slider">
-              <% Ecommerce::Slider.all.order(:slider_order).each do |slider| %>
+              <% Ecommerce::Slider.where(slider_view: 'DESKTOP').order(:slider_order).each do |slider| %>
                 <% if slider.slider_image.url[-3..-1] != 'mp4' %>
                   <li><img class="bximage-inside-slide" src="<%= slider.slider_image.url %>" title="<%= slider.slider_text %>" /></li>
                 <% else %>
