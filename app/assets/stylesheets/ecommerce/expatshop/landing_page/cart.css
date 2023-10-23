@@ -1,0 +1,60 @@
+.cart .dropdown > button {
+  background-color: transparent;
+  border: none;
+}
+.dropdown-menu {
+  width: 420px;
+  padding: 25px 0;
+  left: -380px;
+  top: 192%;
+}
+.dropdown-menu::after {
+  position: absolute;
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: var(--white-color);
+  border: 2px solid var(--form-border-color);
+  border-right: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  right: 25px;
+  top: -10px;
+  transform: rotate(45deg);
+}
+.dropdown-menu .row {
+  border-bottom: 2px solid var(--form-border-color);
+  margin: 0 15px;
+  padding: 10px 0;
+}
+.dropdown-menu .col-md-7 p:first-of-type {
+  margin: 0;
+}
+.dropdown-menu .col-md-7 p:last-of-type {
+  color: var(--primary-btn-color);
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+.dropdown-menu .col-md-7 span {
+  color: var(--form-border-color);
+}
+.subtotal {
+  margin: 15px;
+}
+.subtotal p:first-child {
+  color: var(--black-color);
+}
+.subtotal p:last-child {
+  color: var(--primary-btn-color);
+}
+.subtotal p:last-child,
+.subtotal p:first-child {
+  font-weight: 700;
+  font-size: 2rem;
+}
+.cart-btn-group button:first-child {
+  background-color: var(--secondary-btn-color);
+}
+.cart-btn-group button {
+  border-radius: 8px;
+}

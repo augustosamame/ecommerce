@@ -1,0 +1,35 @@
+header .header-hero img {
+  min-width: 100%;
+  max-height: 523px;
+}
+header .header-slider {
+  background-color: var(--label-color);
+  padding: 25px 0;
+}
+header .header-slider div {
+  background-color: var(--label-color);
+}
+.slick-list {
+  width: 95%;
+  margin: auto;
+}
+.slick-next {
+  right: 0;
+}
+.slick-prev {
+  left: 0;
+}
+.slick-prev:before,
+.slick-next:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f0da";
+  color: var(--black-color);
+  font-size: 30px;
+}
+.slick-prev:before {
+  content: "\f0d9";
+}
+.responsive div {
+  margin: 0 15px;
+}

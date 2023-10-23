@@ -1,0 +1,16 @@
+.sub-links ul {
+  flex-direction: column;
+}
+.sub-links ul li {
+  padding: 12px 0;
+  text-align: center;
+  background-color: #d7def1;
+  color: var(--black-color);
+  width: 100%;
+  margin: auto;
+  margin-bottom: 7px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+}

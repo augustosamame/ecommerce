@@ -1,0 +1,18 @@
+.categories-principles {
+  background-color: var(--label-color);
+  text-align: center;
+}
+.categories-principles h2 {
+  text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+}
+.categories-principles img {
+  background: var(--white-color);
+  border-radius: 50%;
+  padding: 20px;
+}
+.categories-principles p {
+  font-weight: 700;
+  margin: 15px 0 25px;
+}

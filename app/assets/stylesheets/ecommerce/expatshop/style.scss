@@ -1,0 +1,106 @@
+@import url("./landing-page/navbar.css");
+@import url("./landing-page//cart.css");
+@import url("./landing-page/header.css");
+@import url("./landing-page/featured-product.css");
+@import url("./landing-page/sub-links.css");
+@import url("./landing-page/categories-principles.css");
+@import url("./landing-page/testimonial.css");
+@import url("./landing-page/global-products.css");
+@import url("./landing-page/offer.css");
+@import url("./landing-page/footer.css");
+@import url("./media.css");
+/* GLOBAL */
+:root {
+  --label-color: #fbe5e2;
+  --links-color: #d1e1f3;
+  --background-color: #f1f1f1;
+  --primary-btn-color: #de203c;
+  --secondary-btn-color: #32373a;
+  --white-color: #ffff;
+  --black-color: #000;
+  --form-color: #eeefed;
+  --form-border-color: #d4d6d3;
+  --icons-color: #67696c;
+  --best-seller-color: #ffc342;
+}
+body {
+  font-family: "Poppins", sans-serif;
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+a {
+  font-family: "Open Sans", sans-serif;
+  text-decoration: none;
+  color: inherit;
+}
+h2 {
+  margin: 25px 15px;
+  color: var(--black-color);
+}
+section {
+  padding: 25px 0 50px;
+}
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+/* UTILITIES  */
+.container-fluid {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.active {
+  background-color: var(--white-color);
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+.sale,
+.best-seller::after {
+  position: absolute;
+  padding: 3px 8px;
+  right: 0;
+  font-weight: 700;
+}
+.sale {
+  background: var(--primary-btn-color);
+  top: 90px;
+  color: var(--white-color);
+}
+.best-seller::after {
+  content: "BEST SELLER";
+  background: var(--best-seller-color);
+  top: 60px;
+  color: black;
+}
+.icon-color {
+  color: var(--icons-color) !important;
+}
+.d-flex {
+  display: flex;
+}
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+.space-between {
+  justify-content: space-between;
+}
+.position-relative {
+  position: relative;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.text-uppercase {
+  text-transform: uppercase;
+}
+.main-btn {
+  background: var(--primary-btn-color);
+  border: 0;
+  padding: 10px 30px;
+  color: var(--white-color);
+  margin-right: 15px;
+}

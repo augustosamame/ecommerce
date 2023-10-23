@@ -1,0 +1,57 @@
+<% if @cart && @cart.id %>
+<a class="cart-button" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
+  <% if browser.device.mobile? %>
+  Checkout
+  <% end %>
+  <span class="cart-item has-items" id="shopping-cart">
+    <i class="fa fa-shopping-cart"></i>
+    <span>(<%= @cart.get_totals(@current_user)[:tot_qty] %>)
+    <% unless browser.device.mobile? %>
+      </span> <%= t('.items') %> </span>
+    <% end %>
+</a>
+<div class="noo-minicart">
+  <div class="minicart-header"><%= @cart.get_totals(@current_user)[:tot_qty] %> <%= t('.items_in_shopping_cart') %></div>
+  <div class="minicart-body">
+
+    <% @cart.cart_items.each do |item| %>
+    <div class="cart-product clearfix">
+      <div class="cart-product-image">
+        <a class="cart-product-img" href="shop-detail.html">
+          <img width="100" height="100" src="<%= item.product.image.thumb_100.url %>" alt="" />
+        </a>
+      </div>
+      <div class="cart-product-details">
+        <div class="cart-product-title">
+          <a href="shop-detail.html"><%= item.product.name %></a>
+        </div>
+        <div class="cart-product-price">
+          <span class="amount"><%= session_price(item.product, "current_price") %></span>
+        </div>
+        <div class="cart-product-quantity">x <%= item.quantity %></div>
+      </div>
+      <%= link_to "&times;".html_safe, cart_item_path(item.id), method: :delete, remote: true, class: "remove" %>
+    </div>
+    <% end %>
+
+  </div>
+  <div class="minicart-footer">
+    <div class="minicart-total">
+      Subtotal <span class="amount"><%= session_price(@cart.get_totals(@current_user)[:tot_acum]) %></span>
+    </div>
+    <% if session[:currency] != "PEN" %>
+      <div class="minicart-total">
+        <span class="amount" style="margin-top: -15px;">S/. <%= @cart.get_totals(@current_user)[:tot_acum] * @exchange_rate %></span>
+      </div>
+    <% end %>
+    <div class="minicart-actions clearfix">
+      <a class="button btn-primary" style:"width: 40%;" href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
+        <span class="text"><%= t('.view_cart') %></span>
+      </a>
+      <a class="checkout-button button btn-primary" style:"width: 40%;" href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
+        <span class="text"><%= t('.checkout') %></span>
+      </a>
+    </div>
+  </div>
+</div>
+<% end %>

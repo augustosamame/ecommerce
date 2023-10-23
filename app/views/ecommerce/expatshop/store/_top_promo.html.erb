@@ -1,0 +1,9 @@
+<% if @always_on_coupon %>
+  <div class="top_promo">
+    <% if session[:locale] == 'es-PE' %>
+      <%= @always_on_coupon.always_on_message_es.try(:html_safe) %>
+    <% else %> 
+      <%= @always_on_coupon.always_on_message_en.try(:html_safe) %>
+    <% end %> 
+  </div>
+<% end %> 

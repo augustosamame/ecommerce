@@ -1,0 +1,214 @@
+  <section class="noo-page-heading eff">
+    <div class="container">
+      <div class="noo-heading-content">
+        <h1 class="page-title eff"><%= t('.order') %> # <%= @order.id %></h1>
+        <div class="noo-page-breadcrumb eff">
+          <a href="./" class="home">ExpatShop</a>/<span><%= t('.order') %></span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="main">
+    <div class="commerce commerce-page commerce-cart noo-shop-main">
+      <div class="container">
+        <div class="row">
+          <div class="noo-main col-md-4">
+            <div class="cart_totals">
+              <h2><%= t('.order_status') %></h2>
+              <table>
+                <tr class="cart-subtotal">
+                  <th><%= t('.order_total') %></th>
+                  <td><span class="amount" style="display: inline;"><%= @order.amount.currency.symbol %></span><span class="amount" style="display: inline;" id="payment-amount"><%= @order.amount %></span></td>
+                </tr>
+                <tr class="cart-subtotal">
+                  <th><%= t('.points_won') %></th>
+                  <td><span class="amount" style="display: inline;"><%= PointsTransaction.find_by(tx_type: 'purchase', tx_id: @order.id).try(:points) %></span></td>
+                </tr>
+                <tr class="cart-subtotal">
+                  <th><%= t('.payment') %></th>
+                  <td><span class="show-order-payment-status" id="qty-subtotal-amount"><%= @order.payment_status.upcase %></span></td>
+                </tr>
+                <tr class="cart-subtotal">
+                  <th><%= t('.shipping') %></th>
+                  <td><span class="amount" id="subtotal-amount"><%= "Not yet shipped" %></span></td>
+                </tr>
+                <tr class="shipping">
+                  <th><%= t('.invoice') %></th>
+                  <td>
+                    <% if @order.efact_invoice_url %>
+                      <p><%= link_to t('.see_invoice'), @order.efact_invoice_url, target: "blank" %></p>
+                    <% else %>
+                      <p><%= t('.not_yet_invoiced') %></p>
+                    <% end %>
+                  </td>
+                </tr>
+              </table>
+
+              <% if @order.payment_status == "unpaid" && (@payment_credit_card_culqi || @payment_credit_card_visanet) %>
+                <div class="wc-proceed-to-checkout">
+                  <button class="button mt-5" id="retry-pay-now-button" class="checkout-button button alt wc-forward"><%= t('.pay_with_cc') %></button>
+                </div>
+
+                <div class="commerce-checkout" style="margin-top: 0px; margin-bottom: 20px;">
+                  <div class="commerce-checkout-payment" style="margin-top: 0px;">
+                    <ul class="payment_methods">
+                      <li class="wc_payment_method">
+                        <%= check_box_tag("pay_in_soles", "0", false, class: "pay_in_soles_checkbox") %>
+                        <label for="pay_in_soles" style="font-size: 12px;">
+                          <%= t('.pay_in_soles') %>
+                          <label style="font-size: 14px; margin-left: 40px; padding-right: 0px;">S/. </label>
+                          <label id="payment-amount-in-soles" style="font-size: 14px;"><%= @order.amount * @exchange_rate %></label>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+              <% end %>
+            </div>
+          </div>
+          <div class="noo-main col-md-8">
+            <h3><%= t('.manual_payment_instructions') %>:</h3>
+            <p>
+              Instructions Line #1</br>
+              Instructions Line #2</br>
+              Instructions Line #3</br>
+              Instructions Line #4</br>
+              Instructions Line #5</br>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="noo-main col-md-12">
+            <h2><%= t('.order_details') %></h2>
+            <table class="shop_table cart">
+              <thead>
+                <tr>
+                  <th class="product-thumbnail"><%= t('.image') %></th>
+                  <th class="product-price"><%= t('.price') %></th>
+                  <th class="product-quantity"><%= t('.quantity') %></th>
+                  <th class="product-subtotal"><%= t('.total') %></th>
+                  <th class="product-remove">&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @order.order_items.each do |item| %>
+                <tr class="cart_item">
+                  <td class="product-thumbnail">
+                    <a href="<%= product_path(item.product) %>">
+                      <%= image_tag item.product.image.thumb_100.url, width: 100, height: 100, alt: "" %>
+                    </a>
+                    <%= link_to item.product.name, product_path(item.product) %>
+                  </td>
+                  <td class="product-price">
+                    <span class="amount"><%= humanized_money_with_symbol item.price %></span>
+                  </td>
+                  <td class="product-quantity">
+                    <div class="quantity">
+                        <input type="number" step="1" min="0" name="qty" value="<%= item.quantity %>" class="input-text qty text" size="4"/>
+                    </div>
+                  </td>
+                  <td class="product-subtotal">
+                    <span class="amount"><%= humanized_money_with_symbol item.line_total(@current_user) %></span>
+                  </td>
+                </tr>
+                <% end %>
+                <tr>
+                  <td colspan="5" class="actions">
+                    <a class="continue" href="<%= orders_path %>"><%= t('.my_orders') %></a>
+                    <div class="coupon">
+                      <label for="coupon_code">Coupon:</label>
+                      <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
+                      <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<!-- Incluyendo .js de Culqi Checkout-->
+<!-- <script src="https://checkout.culqi.com/v2"></script> -->
+<!--<script src="https://checkout.culqi.com/js/v3"></script> -->
+<script src="https://checkout.culqi.com/js/v4"></script>
+
+<script>
+
+Culqi.publicKey = "<%= Culqi.public_key %>";
+Culqi.orderKey = "<%= Culqi.secret_key %>";
+var culqi_payment_amount = $('#pay_in_soles').attr('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+
+Culqi.settings({
+  title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
+  currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+  description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@order.id}" %>',
+  amount: Number(culqi_payment_amount),
+  order: '<%= @order.id %>'
+});
+
+$('#retry-pay-now-button').on('click', function(e) {
+  // Abre el formulario con las opciones de Culqi.settings
+  var culqi_payment_amount = $('#pay_in_soles').attr('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+
+  Culqi.settings({
+    title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
+    currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+    description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@order.id}" %>',
+    amount: culqi_payment_amount
+  });
+
+  Culqi.options({
+              lang: "auto",
+              installments: false, // Habilitar o deshabilitar el campo de cuotas
+              paymentMethods: {
+                tarjeta: true,
+                yape: true, 
+                bancaMovil: true,
+                agente: true,
+                billetera: true,
+                cuotealo: true,
+              },
+              style: {
+                logo: 'https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
+              },
+            });
+
+
+  Culqi.open();
+  e.preventDefault();
+
+});
+
+function culqi() {
+
+  if(Culqi.token) { // ¡Token creado exitosamente!
+      // Get the token ID:
+      var token = Culqi.token;
+      var culqi_payment_amount = $('#pay_in_soles').attr('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+      $.post(
+        "checkout/pay_order_culqi_checkout",
+        {
+        culqi_token: token,
+        amount: culqi_payment_amount,
+        culqi_payment_amount: culqi_payment_amount,
+        currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+        order_id: '<%= "#{@order.id}" if @order %>'
+        },
+        function(data) {
+        }
+     );
+     //alert('Se ha creado un token:' + token);
+
+  } else { // ¡Hubo algún problema!
+      // Mostramos JSON de objeto error en consola
+      console.log(Culqi.error);
+      // alert(Culqi.error.mensaje);
+  }
+};
+</script>

@@ -1,0 +1,120 @@
+@media (max-width: 768px) {
+  /* navbar */
+  .dd-select {
+    background-color: transparent !important;
+    margin: 0;
+  }
+  .dd-selected {
+    padding: 0 !important;
+  }
+  .dd-option-image,
+  .dd-selected-image {
+    margin: 0 !important  ;
+  }
+  .dd-pointer {
+    display: none;
+  }
+  .dd-options {
+    width: 150% !important;
+    display: block;
+    position: absolute;
+    top: 33px;
+    right: 0px;
+  }
+  #currency {
+    margin: 0;
+  }
+  /* slick slider */
+  .slick-slider .slick-track,
+  .slick-slider .slick-list {
+    margin: 0 15px;
+  }
+  .slick-next {
+    right: -15px;
+  }
+  .slick-prev {
+    left: -5px;
+  }
+  .slick-prev:before,
+  .slick-next:before {
+    font-size: 25px;
+  }
+  /* featured product */
+  .featured-products {
+    background-color: var(--white-color);
+  }
+  .featured-product {
+    border: 2px solid var(--form-border-color);
+    margin: 0 5px;
+  }
+  .featured-product img {
+    max-height: 150px !important;
+  }
+  .featured-product-info .price p {
+    width: 40%;
+  }
+  /* testimonial */
+  .testimonial-body {
+    margin: 0 5px;
+  }
+  .testimonial-body video {
+    height: 150px;
+  }
+  .testimonial-info {
+    padding: 10px 0 0;
+  }
+  /* global products */
+  .global-products {
+    padding: 0;
+  }
+  .global-products h2 {
+    text-align: center;
+  }
+  .countries-mobile .row .col-xs-6 {
+    margin-bottom: 15px;
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+  }
+  .countries-mobile p {
+    font-size: 1.4rem;
+  }
+  /* offer */
+  .offer h3 {
+    font-size: 2rem;
+  }
+  .offer .btn-group {
+    top: 20px;
+    right: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .offer .btn-group .main-btn {
+    font-size: 10px;
+    padding: 7px 11px !important;
+    width: 103px;
+    font-weight: 600;
+  }
+  .offer .pe {
+    font-size: 3.5rem;
+    right: 35px;
+    top: 75%;
+  }
+  /* footer */
+  footer .details {
+    background-color: var(--white-color);
+  }
+  footer .row .col-md-4 {
+    border: none;
+  }
+  footer .row .col-md-4:nth-child(2) {
+    margin-bottom: 15px;
+  }
+  footer .copyright .row {
+    flex-direction: column;
+  }
+  footer .copyright .row .col-xs-12,
+  footer .copyright .row .col-xs-12 ul {
+    display: flex;
+    justify-content: center;
+  }
+}

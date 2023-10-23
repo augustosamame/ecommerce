@@ -1,0 +1,755 @@
+  <section class="noo-page-heading eff">
+    <div class="container">
+      <div class="noo-heading-content">
+        <h1 class="page-title eff">Checkout</h1>
+        <div class="noo-page-breadcrumb eff">
+          <a href="./" class="home"><%= Ecommerce.site_name %></a>/<span>Checkout</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="main">
+    <div class="commerce commerce-page commerce-checkout">
+      <div class="container">
+        <div class="row">
+          <div class="noo-main col-md-8">
+            <div class="customer-details">
+              <div class="commerce-address-fields">
+                <h3><%= t('.shipping_address') %></h3>
+                <% if @checkout_addresses.count > 0 %>
+                  <div class="form-row form-row">
+                    <label>
+                      <h4><%= t('.pick_address') %></h4>
+                    </label>
+                  </div>
+                  <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
+                <% end %>
+                <button type="button" class="btn button" id="new-address-button" style="margin-bottom: 30px;" ><%= t('.new_address') %> </button>
+                <button type="button" class="btn button" id="delete-address-button" style="margin-bottom: 30px; margin-left: 30px; background-color:#bf0404;"><%= t('.delete_address') %></button>
+                <div id="new-address-container" style="display: none;">
+                  <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="order-review-wrap">
+              <h3><%= t('.your_order') %></h3>
+              <div class="commerce-checkout-review-order">
+                <table class="shop_table commerce-checkout-review-order-table">
+                  <thead>
+                    <tr>
+                      <th class="product-name"><%= t('.product') %></th>
+                      <th class="product-total"><%= t('.total') %></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @cart.cart_items.each do |item| %>
+                      <tr class="cart_item">
+                        <td class="product-name">
+                          <%= item.product.name %>
+                          <strong class="product-quantity">× <%= item.quantity %></strong>
+                        </td>
+                        <td class="product-total">
+                          <span class="amount"><%= session_price(item.line_total(@current_user)) %></span>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                  <tfoot>
+                    <tr class="cart-subtotal">
+                      <th><%= t('.subtotal') %></th>
+                      <td><strong><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="subtotal"><%= @cart_subtotal %></span></strong></td>
+                    </tr>
+                    <tr class="cart-subtotal">
+                      <th><%= t('.shipping') %></br>
+                      <span id="free-shipping-text" class="amount" style="color: red; font-size: 12px; display: none;"><%= t('.free_shipping') %></span></th>
+                      <td><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="shipping-amount">0.00</span></td>
+                    </tr>
+                    <tr class="cart-subtotal coupon-subtotal-hidden" id="coupon-subtotal-id">
+                      <th><%= t('.coupon_line') %></th>
+                      <td><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="coupon-amount">0.00</span></td>
+                    </tr>
+                    <tr class="order-total">
+                      <th><%= t('.total') %></th>
+                      <td><strong><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="payment-amount"><%= @cart_subtotal %></span></strong></td>
+                    </tr>
+                  </tfoot>
+                </table>
+
+                <% if current_user.try(:points) > 0 %>
+                  <div class="commerce-checkout-payment">
+                    <ul class="payment_methods">
+                      <li class="wc_payment_method" style: "margin-bottom: 0px;">
+                        <%= check_box_tag("pay_in_points", "0", false, class: "pay_in_points_checkbox") %>
+                        <label for="pay_in_points" style="font-size: 12px;">
+                          <%= t('.pay_in_points') %>
+                          <label style="font-size: 14px; margin-left: 40px; padding-right: 0px;"></label>
+                          <label id="points-amount" style="font-size: 14px;"><%= current_user.try(:points) %></label>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                <% end %>
+
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+                    <li class="wc_payment_method" style: "margin-bottom: 0px;">
+                      <%= check_box_tag("pay_in_soles", "0", false, class: "pay_in_soles_checkbox") %>
+                      <label for="pay_in_soles" style="font-size: 12px;">
+                        <%= t('.pay_in_soles') %>
+                        <label style="font-size: 14px; margin-left: 40px; padding-right: 0px;">S/. </label>
+                        <label id="payment-amount-in-soles" style="font-size: 14px;"><%= @cart_subtotal * @exchange_rate %></label>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+
+                <% if @dni_required %>
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+
+                    <li class="wc_payment_method payment_method_card" style="margin-left: 10px;">
+                      <p> <%= t('.text_over_700') %> </p>
+
+                      <div class="payment_box payment_method_cheque">
+
+                          <label for="dni_required">
+                            <%= t('.docs_over_700') %>
+                          </label>
+                          <input type="text" name="dni_required" id="dni-required" value="<%= @current_doc_id %>" />
+
+                      </div>
+
+                    </li>
+                  </ul>
+                </div>
+                <% end %>
+
+                <% if @coupons_active %>
+
+                  <% unless @always_on_coupon %>
+                    <div class="commerce-checkout-payment">
+                      <ul class="payment_methods">
+
+                          <li class="wc_payment_method">
+
+                            <div class="payment_box payment_method_cheque">
+
+                                <label for="coupon_code" style="font-size: 12px;">
+                                  <%= t('.enter_coupon') %>
+                                </label>
+
+                                <input type="text" name="coupon_code" id="coupon-code" />
+                                <button type="button" class="btn btn-info coupon-apply"><%= t('.apply_coupon') %></button>
+                                <label id="coupon-error" style="font-size: 12px; color: red;"></label>
+
+                            </div>
+
+                          </li>  
+                        </ul>
+                      </div>
+                    <% end %>  
+                <% end %>
+
+
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+
+                    <li class="wc_payment_method payment_method_card">
+                      <%= check_box_tag("want_factura", "0", @info_factura_available, class: "factura_checkbox", id: "factura-checkbox") %>
+
+                      <label for="want_factura">
+                        <%= t('.i_need_a_factura') %>
+                      </label>
+                      <div class="payment_box payment_method_cheque">
+
+                        <% if @info_factura_available %>
+                           <p><%= "RUC: #{@factura_vat}" %></p>
+                           <p><%= "Razón Social: #{@factura_razon_social}" %></p>
+                           <p><%= "#{t('.address')}: #{@factura_address}, #{@factura_city}" %></p>
+                         <% else %>
+                            <p><%= link_to t('.click_here_to_setup_factura_info'), main_app.edit_user_registration_path(origin: "checkout"), style: "color: red; font-weight: bold;" %></p>
+                         <% end %>
+                      </div>
+
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="commerce-checkout-payment">
+                <form id="radio_form">
+                  <ul class="payment_methods">
+
+                    <% if @payment_credit_card_culqi %>
+                    
+
+                    <li class="wc_payment_method payment_method_card">
+                      <input id="payment_method_card" type="radio" class="input-radio" name="payment_method" value="card" checked="checked" />
+                      <label for="payment_method_card">
+                        <%= t('.credit_debit_card') %>
+                      </label>
+                      <label for="payment_method_card">
+                        <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row1.png" alt="Credit Card Images">
+                        <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row2.png" alt="Credit Card Images">
+                      </label>
+                    </li>
+
+                    <li class="wc_payment_method payment_method_card">
+                      <input id="payment_method_card" type="radio" class="input-radio" name="payment_method" value="yape"/>
+                      <label for="payment_method_card">
+                      
+                      </label>
+                      <label for="payment_method_card">
+                        <img src="https://devtechperu-expatshop-prod.s3.amazonaws.com/yape_logo.png" alt="Credit Card Images" style="height: 100px;">
+
+                      </label>
+                    </li>
+
+                    <li class="wc_payment_method payment_method_card">
+                      <input id="payment_method_card" type="radio" class="input-radio" name="payment_method" value="card" />
+                      <label for="payment_method_card">
+                        <%= t('.mobile_banking') %>
+                      </label>
+                      <label for="payment_method_card">
+                        <img src="https://devtechperu-expatshop-prod.s3.amazonaws.com/banca_movil.png" alt="Credit Card Images">
+
+                      </label>
+                    </li>
+
+                    <li class="wc_payment_method payment_method_card">
+                      <input id="payment_method_card" type="radio" class="input-radio" name="payment_method" value="card" />
+                      <label for="payment_method_card">
+                        Pagoefectivo
+                      </label>
+                      <label for="payment_method_card">
+                        <img src="https://devtechperu-expatshop-prod.s3.amazonaws.com/logos_culqi.png" alt="Credit Card Images" style="height: 160px; margin-left: 30px;">
+
+                      </label>
+                    </li>
+
+                    <% end %>
+
+                    <% if @payment_bank_deposit %>
+
+                    <li>
+                      <input id="payment_method_bank" type="radio" class="input-radio" name="payment_method" value="manual" />
+                      <label for="payment_method_bank">
+                        <%= t('.bank_deposit') %>
+                      </label>
+                      <div class="payment_box payment_method_cheque">
+                        <p><%= @payment_bank_deposit.pre_message %></p>
+                      </div>
+                    </li>
+
+                    <% end %>
+
+                    <% if @payment_manual %>
+
+                    <li>
+                      <input id="payment_method_manual" type="radio" class="input-radio" name="payment_method" value="manual" />
+                      <label for="payment_method_manual">
+                        <%= t('.manual_payment') %>
+                      </label>
+                      <div class="payment_box payment_method_cheque">
+                        <p><%= @payment_manual.pre_message %></p>
+                      </div>
+                    </li>
+
+                    <% end %>
+
+                  </ul>
+                  </form>
+                </div>
+
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+
+                    <li class="wc_payment_method payment_method_card">
+                      <label for="delivery_instructions" style="font-size: 12px;">
+                        <%= t('.delivery_instructions') %>
+                      </label>
+                      <textarea rows="2" type="text" name="delivery_instructions" id="delivery-instructions">
+                      </textarea>
+                    </li>
+                  </ul>
+                </div>
+
+                <button onclick="return gtag_report_conversion()" class="button mt-5" id ="pay-now-button"><%= t('.place_order') %></button>
+
+                <div class="commerce-checkout-payment">
+                  <ul class="payment_methods">
+
+                    <li class="wc_payment_method" id="accept-marketing-wrapper" style: "margin-bottom: 0px; display: flex !important;">
+                      <%= check_box_tag("accept_marketing", "1", true, class: "pay_in_soles_checkbox") %>
+                      <label for="accept_marketing" style="font-size: 12px;">
+                        <%= t('.accept_marketing') %>
+                      </label>
+
+
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<!-- Incluyendo .js de Culqi Checkout-->
+<!--<script src="https://checkout.culqi.com/v2"></script> -->
+<!--<script src="https://checkout.culqi.com/js/v3"></script> -->
+<script src="https://checkout.culqi.com/js/v4"></script>
+
+<script>
+$( document ).ready(function() {
+  var applied_coupon = '';
+  <% if @always_on_coupon %>
+    var applied_coupon = "<%= @always_on_coupon.coupon_code %>";
+    // calculate coupon and recalculate_checkout_totals
+    calculate_coupon(applied_coupon);
+  <% else %>
+    var applied_coupon = '';
+  <% end %>
+
+  $('#new-address-button').click(function(){
+    $('#new-address-container').show();
+    // $(this).parent.hide();
+  });
+
+    $('#delete-address-button').click(function(){
+      window.location.href = "<%= Ecommerce::Engine.routes.url_helpers.addresses_path %>";
+    
+  });
+
+  $('#radio_form').change(function() {
+    selected_value = $("input[name = 'payment_method']:checked").val();
+    if (selected_value === 'yape') {
+      console.log('clicked yape');
+      $('#pay_in_soles').prop('checked', true);
+      recalculate_checkout_totals();
+    }
+    })
+
+  if (<%= !@not_in_stock_array.blank? %>) {
+    Swal({
+        type: 'error',
+        title: '<%= session[:locale] == 'es-PE' ? 'Algunos de los productos de su carrito no están disponibles' : 'Some of the products in your cart are not available' %>',
+        text: "<%= session[:locale] == 'es-PE' ? @not_in_stock_alert_es : @not_in_stock_alert_en %>"
+      });
+  }
+
+  var address_option_length = $('#address_id > option').length;
+  // console.log('length of address options: ', address_option_length)
+  // if (address_option_length == 2) {
+  $("#address_id").get(0).selectedIndex = address_option_length - 1;
+  var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+  calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
+  //}
+});
+
+
+
+</script>
+
+<!-- Configurando el checkout-->
+<script>
+
+  var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+  var culqi_payment_amount = Number(($('#payment-amount').html() * 100).toFixed(2));
+  var shipping_calculated_flag = false
+  var exchange_rate = <%= @exchange_rate %>
+  var info_factura_blank = <%= @info_factura_available.blank? %>
+  var address_saved_flag = false
+  var culqi_order_id = ''
+  var applied_coupon = '';
+
+  // calculate and update shipping html tag when shipping address is created
+  $("#save-address-button").click(function() {
+    calculate_shipping($("#address_street").val(), $("#address_district").val(), 'save_address');
+  });
+  // calculate coupon and recalculate_checkout_totals
+  $(".coupon-apply").click(function() {
+    calculate_coupon( $("#coupon-code").val() );
+  });
+  // calculate and update shipping html tag when shipping address is picked
+  $('#address_id').on('change', function() {
+    if ( this.value ) {
+      var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+      calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
+    } else {
+      var my_zero = 0
+      $("#shipping-amount").html(my_zero.toFixed(2))
+      $("#free-shipping-text").hide()
+      shipping_calculated_flag = false
+    }
+  })
+  // recalculate totals (basically for culqi) when pay_in_soles checkbox changes
+  $('#pay_in_soles').on('change', function() {
+    recalculate_checkout_totals();
+  })
+
+  // recalculate totals (basically for culqi) when pay_in_points checkbox changes
+  $('#pay_in_points').on('change', function() {
+    recalculate_checkout_totals();
+  })
+
+  function extract_address_and_district() {
+    var address_and_district = $('#address_id').val().split('|');
+    var address = address_and_district[0];
+    var district = address_and_district[1];
+    return [address, district]
+  }
+
+  function calculate_shipping(street, district, origin) {
+    $.ajax({
+      url: "calculate_shipping",
+      dataType: "json",
+      method: "POST",
+      data: { address: street, district: district },
+      success: function(data){
+        if (data.currency == "pen") { cur_sym = "S/. " } else { cur_sym = "$ " }
+        $("#shipping-amount").html(data.amount.toFixed(2))
+        //$("#free-shipping-text").show()
+        recalculate_checkout_totals();
+        shipping_calculated_flag = true
+        if (origin == 'save_address') {
+          address_saved_flag = true
+        }
+      }
+    });
+  }
+
+  function calculate_coupon(coupon_code) {
+    $.ajax({
+      url: "calculate_coupon",
+      dataType: "json",
+      method: "POST",
+      data: { coupon_code: coupon_code.toUpperCase(), cart_id: "<%= @cart.id %>" },
+      success: function(data){
+        if (data.result == "ok") {
+          $("#coupon-amount").html(Number(data.discount).toFixed(2));
+          $("#coupon-subtotal-id").removeClass('coupon-subtotal-hidden');
+          $("#coupon-error").html("");
+          applied_coupon = coupon_code
+          if (data.free_shipping == true) {
+            $("#shipping-amount").html(0)
+            $("#free-shipping-text").hide()
+          } else {
+            var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+            calculate_shipping($("#address_street").val(), district_from_dropdown, 'coupon');
+          }
+          recalculate_checkout_totals();
+        }
+        else {
+          $("#coupon-error").html(data.error_message);
+        }
+      }
+    });
+  }
+
+  function recalculate_checkout_totals() {
+    Culqi.publicKey = "<%= Culqi.public_key %>";
+    // console.log('Culqi.publicKey: ',Culqi.publicKey)
+    Culqi.orderKey = "<%= Culqi.secret_key %>";
+
+    var total_amount = (
+      Number($("#coupon-amount").html()) +
+      Number($("#shipping-amount").html()) +
+      Number($("#subtotal").html())
+    ).toFixed(2);
+
+    $('#payment-amount').html(total_amount)
+    $('#payment-amount-in-soles').html((total_amount * exchange_rate).toFixed(2));
+    payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
+    culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
+
+    var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
+
+    if (points_to_redeem > 0) {
+      total_amount = (Number(total_amount) - (points_to_redeem / 100)).toFixed(2)
+      $('#payment-amount').html(total_amount)
+      $('#payment-amount-in-soles').html((total_amount * exchange_rate).toFixed(2));
+      payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
+      culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
+    }
+
+    // console.log('recalculate_checkout_totals')
+
+
+  }
+
+  $('#pay-now-button').on('click', function(e) {
+    $.ajax({
+      url: "checkout/check_stock_cart_js_from_checkout",
+      dataType: "json",
+      success: function(data) {
+        if (data.in_stock) {
+          process_payment(e)
+        } else {
+          window.location.replace("<%= checkout_path %>");
+        }
+      }
+    });
+   });
+
+
+  function process_payment(e) {
+    var errors_present = false
+    // Abre el formulario con las opciones de Culqi.settings
+    var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+    if ((payment_amount * exchange_rate) >= 700 && !$('#factura-checkbox').is(':checked') && typeof $('#dni-required').val() != "undefined" && !$.isNumeric( $('#dni-required').val() ) ) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_enter_doc') %>"
+        });
+      }
+    if (typeof $('#dni-required').val() != "undefined" && !$('#factura-checkbox').is(':checked') && $('#dni-required').val().length > 12) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_enter_doc') %>"
+        });
+      }
+    if (!address_saved_flag && !$('#address_id').val()) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_pick_or_save_an_address') %>"
+        });
+      }
+    if ($('#factura-checkbox').is(':checked') && info_factura_blank) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_enter_factura_info') %>"
+        });
+      }
+
+    if (!($('#accept_marketing').is(':checked'))) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_check_marketing') %>"
+        });
+      }
+
+    if (!errors_present) {
+      if (($('input[name=payment_method]:checked').val() == "card") || ($('input[name=payment_method]:checked').val() == "yape")) {
+
+        var myDate = new Date().getTime()/1000;
+        var futureDate = myDate + ( 72 * 60 * 60 );
+
+        data_to_send = {
+              title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
+              amount: Number(culqi_payment_amount),
+              currency_code: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+              description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
+              order_number: <%= session[:cart_id] %> + '-cart-' + (Math.floor(Math.random() * 10000)).toString(),
+              expiration_date: futureDate,
+              confirm: false,
+              client_details: {
+                 first_name: '<%= @current_user_first_name %>',
+                 last_name: '<%= @current_user_last_name %>',
+                 email: '<%= @current_user_email %>',
+                 phone_number: '<%= @current_user_phone %>'
+               },
+              }
+
+        $.ajax({
+          url: "https://api.culqi.com/v2/orders",
+          dataType: "json",
+          method: "POST",
+          headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'authorization': 'Bearer ' + Culqi.orderKey
+          },
+          data: JSON.stringify(data_to_send),
+          success: function(data){
+            console.log(data.id, '<= Culqi Order Id');
+            culqi_order_id = data.id
+            Culqi.settings({
+              title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
+              amount: Number(culqi_payment_amount),
+              currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+              description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
+              order: data.id
+            });
+
+            Culqi.options({
+              lang: "auto",
+              installments: false, // Habilitar o deshabilitar el campo de cuotas
+              paymentMethods: {
+                tarjeta: true,
+                yape: true, 
+                bancaMovil: true,
+                agente: true,
+                billetera: true,
+                cuotealo: true,
+              },
+              style: {
+                logo: 'https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
+              },
+            });
+
+            Culqi.open();
+            e.preventDefault();
+          }
+        });
+
+      /*
+      Culqi.settings({
+        title: '<%= t('ecommerce.processor.culqi.payment_popup_title') %>',
+        amount: Number(culqi_payment_amount),
+        currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+        description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>'
+        // order: data.id
+      });
+      console.log('Culqi.publicKey: ',Culqi.publicKey)
+      Culqi.open();
+      e.preventDefault();
+*/
+
+      }
+      else if ($('input[name=payment_method]:checked').val() == "manual") {
+        manual_payment();
+        e.preventDefault();
+      }
+    }
+  };
+
+  function culqi() {
+
+    // console.log('function Culqi just ran')
+
+    if(Culqi.token) { // ¡Token creado exitosamente!
+        // Get the token ID:
+        // console.log('token created!');
+        var token = Culqi.token;
+        var picked_shipping_address_id = $('#address_id').val();
+        var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
+        var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
+        var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
+        //var payment_amount = $('#payment_amount').html() * 100;
+        var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
+        $.post(
+          "checkout/pay_order_culqi_checkout",
+          {
+          culqi_token: token,
+          amount: payment_amount,
+          culqi_payment_amount: culqi_payment_amount,
+          shipping_amount: shipping_amount,
+          picked_shipping_address_id: picked_shipping_address_id,
+          cart_id: '<%= "#{@cart.id}" if @cart %>',
+          want_factura: $('#factura-checkbox').is(":checked"),
+          required_doc: $('#dni-required').val(),
+          delivery_instructions: $('#delivery-instructions').val(),
+          applied_coupon: applied_coupon,
+          discount_amount: discount_amount,
+          points_redeemed_amount: points_to_redeem,
+          currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD"
+          },
+          function(data) {
+          }
+       );
+       //alert('Se ha creado un token:' + token);
+
+    }else{ // ¡Hubo algún problema!
+      // Here is Pagoefectivo
+      console.log('token NOT created! Pagoefectivo?');
+      console.log(Culqi.orderKey);
+        // Mostramos JSON de objeto error en consola
+        if (Culqi.orderKey !== null && Culqi.orderKey !== '')
+        {
+          if (Culqi.order) {
+            // async payment successfull (got ID via event webhook?)
+            var picked_shipping_address_id = $('#address_id').val();
+            var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
+            var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
+            var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
+            var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
+            console.log('Order exists but no Token = Pagoefectivo');
+            console.log(Culqi.order)
+            $.post(
+              "checkout/pay_order_pagoefectivo_checkout",
+              {
+              culqi_order_id: culqi_order_id,
+              amount: payment_amount,
+              culqi_payment_amount: culqi_payment_amount,
+              shipping_amount: shipping_amount,
+              picked_shipping_address_id: picked_shipping_address_id,
+              cart_id: '<%= "#{@cart.id}" if @cart %>',
+              want_factura: $('#factura-checkbox').is(":checked"),
+              required_doc: $('#dni-required').val(),
+              delivery_instructions: $('#delivery-instructions').val(),
+              applied_coupon: applied_coupon,
+              discount_amount: discount_amount,
+              points_redeemed_amount: points_to_redeem,
+              currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+              pagoefectivo_payment_code: Culqi.order.payment_code
+              },
+              function(data) {
+              })
+          } else {
+            console.log('order key is null');
+            console.log('Checkout closed by user without choosing payment option');
+            //Swal({
+            //    type: 'error',
+            //    title: '<%= t('.token_not_returned') %>',
+            //    text: Culqi.error
+            //  });
+
+          }
+        }
+
+        console.log(Culqi.error);
+
+    }
+  };
+
+  function manual_payment() {
+    var picked_shipping_address_id = $('#address_id').val();
+
+    var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
+    var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+    var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
+    var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
+
+    //var payment_amount = $('#payment_amount').html() * 100;
+    $.post(
+      "checkout/pay_order_manual",
+      {
+      amount: payment_amount,
+      shipping_amount: shipping_amount,
+      picked_shipping_address_id: picked_shipping_address_id,
+      cart_id: '<%= "#{@cart.id}" if @cart %>',
+      want_factura: $('#factura-checkbox').is(":checked"),
+      required_doc: $('#dni-required').val(),
+      delivery_instructions: $('#delivery-instructions').val(),
+      applied_coupon: applied_coupon,
+      discount_amount: discount_amount,
+      points_redeemed_amount: points_to_redeem
+      },
+      function(data) {
+      }
+   );
+
+  }
+
+</script>
+
+<!-- Event snippet for Purchase conversion page In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+<script>
+  function gtag_report_conversion(url) { var callback = function () { if (typeof(url) != 'undefined') { window.location = url; } }; gtag('event', 'conversion', { 'send_to': 'AW-670036400/O8dpCK38rPYBELDjv78C', 'transaction_id': '<%= "#{@cart.id}" if @cart %>', 'value': payment_amount, 'currency': ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD", 'event_callback': callback }); return false; }
+</script>

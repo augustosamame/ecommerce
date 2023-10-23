@@ -1,0 +1,25 @@
+.testimonials {
+  background: linear-gradient(to right, #d8e8f7, #f5e4e5);
+}
+.testimonial-body {
+  background: white;
+  margin: 0 15px;
+  padding: 15px;
+  border-radius: 8px;
+}
+.testimonial-body video {
+  height: 200px;
+  width: 100%;
+}
+.testimonial-info {
+  flex-direction: column;
+  padding: 15px;
+}
+.testimonial-info p:first-child {
+  color: var(--black-color);
+  font-weight: 700;
+}
+.testimonial-info p {
+  color: var(--black-color);
+  text-align: center;
+}

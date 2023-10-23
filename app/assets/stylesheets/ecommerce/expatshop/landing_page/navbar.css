@@ -1,0 +1,184 @@
+/* desktops navbar */
+nav.desktops,
+.nav-links {
+  padding: 25px 0;
+  background-color: var(--white-color);
+}
+.desktops .container-fluid > div {
+  align-items: center;
+  justify-content: space-between;
+}
+.desktops .logo a {
+  display: block;
+}
+.desktops .search-form {
+  width: 19%;
+}
+.desktops .search-form input {
+  width: 100%;
+  padding: 10px 50px 10px 25px;
+  border-radius: 2rem;
+  background-color: var(--form-color);
+  border: 1px solid var(--form-border-color);
+  color: var(--icons-color);
+  outline: none;
+}
+.desktops .search-form button {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.desktops ul li {
+  margin-right: 30px;
+}
+.desktops ul li i {
+  font-size: 5rem;
+  color: #25d366;
+  margin-left: 5px;
+}
+.desktops ul li:last-of-type i {
+  font-size: 3rem;
+  border: 3px solid;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+}
+.desktops form select {
+  border: none;
+  background: var(--form-color);
+  padding: 5px 10px;
+  border-radius: 8px;
+  margin-right: 30px;
+  outline: 0;
+  margin-right: 30px !important;
+}
+#currency {
+  margin-right: 30px;
+}
+.dd-select {
+  border: none !important;
+  background: var(--form-color) !important;
+  border-radius: 8px !important;
+  margin-right: 30px;
+  outline: 0 !important;
+  height: 100%;
+}
+.dd-selected {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding-left: 0 !important;
+}
+.dd-option-image,
+.dd-selected-image {
+  width: 25px;
+}
+.dd-selected label,
+.dd-option label {
+  line-height: 0 !important;
+  font-weight: 400;
+  color: var(--black-color);
+}
+.dd-option {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+}
+.dd-options li {
+  margin: 0 !important;
+}
+.desktops .fa-cart-shopping {
+  font-size: 3.5rem;
+}
+.cart {
+  padding: 0 15px;
+}
+.cart .cart-count {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: var(--primary-btn-color);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white-color);
+  right: 0;
+  top: 25px;
+}
+.nav-links {
+  background-color: var(--links-color);
+}
+.nav-links ul {
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+.nav-links ul li {
+  flex-basis: auto;
+  margin: 0 20px;
+}
+.nav-links ul li a {
+  color: var(--black-color);
+  font-weight: bold;
+}
+/* mobiles navbar */
+.mobiles {
+  padding: 10px 0;
+  border-bottom: 2px solid var(--form-border-color);
+}
+.mobiles p {
+  color: var(--black-color);
+  font-weight: 400;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+.mobiles p i {
+  margin: 0 5px;
+}
+.mobiles form label {
+  font-weight: 400;
+  margin: 0 5px 0;
+}
+.mobiles form select {
+  border: 0;
+  outline: 0;
+}
+.mobiles form select option[value="EN"] {
+  background-image: url("../imgs/united-kingdom.png");
+}
+
+.mobiles-main-nav {
+  padding: 10px 0;
+  background-color: var(--white-color);
+  border: none;
+  margin: 0;
+}
+.mobiles-main-nav .row {
+  padding-bottom: 10px;
+}
+.mobiles-main-nav .user-icon {
+  font-size: 2rem;
+  border: 3px solid;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #3a4454;
+  width: 25px;
+  border-radius: 0;
+  height: 2px;
+}
+.navbar-default .navbar-toggle:focus,
+.navbar-default .navbar-toggle:hover {
+  background-color: transparent;
+}
+.navbar-toggle {
+  border: none;
+}
