@@ -1,33 +1,73 @@
     <nav class="desktops hidden-xs">
+      <div id="js_now_flash">
+        <% if notice.present? %>
+          <%= render partial: "ecommerce/application/js_now_flash" %>
+        <% end %>
+      </div>
       <div class="container-fluid">
         <div class="d-flex">
           <div class="logo">
-            <a href="#home"
-              ><img src="imgs/logo.png" alt="expatshop.pe logo"
-            /></a>
+            <a href="/">
+              <%= image_tag Ecommerce.header_logo, alt: "expatshop.pe Logo" %>
+            </a>
           </div>
           <form action="" class="search-form position-relative">
             <input
               type="search"
               name="search"
               id="search"
-              placeholder="Look for your product here"
+              placeholder="<%= t('.search_placeholder') %>"
             />
             <button class="search-btn">
-              <i class="fa-solid fa-magnifying-glass icon-color fa-xl"></i>
+              <%= fa_icon "search lg" %>
             </button>
           </form>
           <ul class="d-flex flex-center text-uppercase">
             <li class="d-flex flex-center">
+              <a href="https://wa.me/51989080023" target="_blank">
               whatsapp
-              <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+              </a>
+              <a href="https://wa.me/51989080023" target="_blank">
+                <%= fa_icon ('whatsapp lg') %>
+              </a>
             </li>
-            <li class="d-flex flex-center">
-              my profile
-              <a href="#"
-                ><i class="fa-regular fa-user icon-color d-flex flex-center"></i
-              ></a>
-            </li>
+            <% if current_user %>
+              <% if !current_user.admin? %>
+                <li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
+              <% end %>
+              <li class="dropdown dropdown-hover d-flex flex-center">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <%= "#{current_user.name}".html_safe %>
+                  <span class="caret"></span>
+                  <%= fa_icon('user', style: 'color: #67696C;') %>
+                </a>
+
+                <ul class="dropdown-menu dropdown-user">
+                  <li class="dropdown-user-line"><%= link_to "#{t('.my_points')}: #{current_user.try(:points)}", Ecommerce::Engine.routes.url_helpers.points_path, class: "row", style: "color: red;" %></li>
+                  <li class="dropdown-user-line"><%= link_to t('.my_orders'), Ecommerce::Engine.routes.url_helpers.orders_path, class: "row " %></li>
+                  <li class="dropdown-user-line"><%= link_to t('.my_addresses'), Ecommerce::Engine.routes.url_helpers.addresses_path, class: "row " %></li>
+                  <li class="dropdown-user-line"><%= link_to t('.my_account'), main_app.edit_user_registration_path, class: "row" %></li>
+                  <li class="dropdown-user-line">
+                    <a class="row" href="<%= Ecommerce::Engine.routes.url_helpers.referral_path %>">
+                      <span><%= "#{t('.my_referral_program')}" %></span></br>
+                      <span><%= "#{t('.my_referral_code')}#{current_user.try(:referral_code)}" %></span>
+                    </a>
+                  </li>
+                  <li><%= link_to t('.sign_out'), main_app.logout_path %></li>
+
+                </ul>
+
+              </li>
+            <% else %>
+              <li class="d-flex flex-center">
+                <a href="<%= main_app.new_user_registration_path(sign_up_type: 'non-guest') %>">
+                  <%= t('.my_account') %>
+                </a>
+                <a href="<%= main_app.new_user_registration_path(sign_up_type: 'non-guest') %>"
+                  ><i class="fa-regular fa-user icon-color d-flex flex-center"></i
+                ></a>
+              </li>
+            <% end %>
           </ul>
           <form action="" class="d-flex">
             <select id="currency" class="cursor-pointer">
@@ -40,93 +80,8 @@
             </select>
           </form>
 
-          <div class="cart position-relative">
-            <div class="dropdown">
-              <button
-                id="dLabel"
-                type="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <i
-                  class="fa-solid fa-cart-shopping icon-color cursor-pointer"
-                ></i>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dLabel">
-                <div class="container-fluid">
-                  <div class="item">
-                    <div class="row d-flex flex-center">
-                      <div class="col-md-3">
-                        <img
-                          src="imgs/featured-product-2.png"
-                          class="img-responsive"
-                          alt=""
-                        />
-                      </div>
-                      <div class="col-md-7">
-                        <p>chivalon romano ROMAN oil.5L</p>
-                        <span>500g</span>
-                        <p>$ 10.5 <span>(x1)</span></p>
-                      </div>
-                      <div class="col-md-2">
-                        <i
-                          class="fa-solid fa-trash-can icon-color fa-xl cursor-pointer"
-                        ></i>
-                      </div>
-                    </div>
-                    <div class="row d-flex flex-center">
-                      <div class="col-md-3">
-                        <img
-                          src="imgs/featured-product-2.png"
-                          class="img-responsive"
-                          alt=""
-                        />
-                      </div>
-                      <div class="col-md-7">
-                        <p>chivalon romano ROMAN oil.5L</p>
-                        <span>500g</span>
-                        <p>$ 10.5 <span>(x1)</span></p>
-                      </div>
-                      <div class="col-md-2">
-                        <i
-                          class="fa-solid fa-trash-can icon-color fa-xl cursor-pointer"
-                        ></i>
-                      </div>
-                    </div>
-                    <div class="row d-flex flex-center">
-                      <div class="col-md-3">
-                        <img
-                          src="imgs/featured-product-2.png"
-                          class="img-responsive"
-                          alt=""
-                        />
-                      </div>
-                      <div class="col-md-7">
-                        <p>chivalon romano ROMAN oil.5L</p>
-                        <span>500g</span>
-                        <p>$ 10.5 <span>(x1)</span></p>
-                      </div>
-                      <div class="col-md-2">
-                        <i
-                          class="fa-solid fa-trash-can icon-color fa-xl cursor-pointer"
-                        ></i>
-                      </div>
-                    </div>
-                    <div class="subtotal d-flex space-between">
-                      <p>SUBTOTAL</p>
-                      <p>$ 31.5</p>
-                    </div>
-                    <div class="cart-btn-group text-center">
-                      <button class="main-btn">See cart</button>
-                      <button class="main-btn">Checkout</button>
-                    </div>
-                  </div>
-                </div>
-              </ul>
-            </div>
-            <span class="cart-count d-flex flex-center cursor-pointer">2</span>
-          </div>
+          <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
+
         </div>
       </div>
     </nav>
@@ -233,60 +188,6 @@
         </div>
       </div>
     </nav>
-    <!-- hero -->
-    <header>
-      <div class="header-hero">
-        <img src="imgs/hero-img.png" class="img-responsive" alt="" />
-      </div>
-      <div class="header-slider">
-        <div class="container-fluid">
-          <div class="brand-slider">
-            <div>
-              <img
-                src="imgs/starbucks-logo-png-1666.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-            <div>
-              <img
-                src="imgs/—Pngtree—coffee_3626459.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-            <div>
-              <img
-                src="imgs/starbucks-logo-png-1666.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-            <div>
-              <img
-                src="imgs/—Pngtree—coffee_3626459.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-            <div>
-              <img
-                src="imgs/starbucks-logo-png-1666.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-            <div>
-              <img
-                src="imgs/—Pngtree—coffee_3626459.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
 
 
 <%= render 'ecommerce/expatshop/store/top_promo' %>
@@ -302,3 +203,11 @@
 		</div>
 	</div>
 </header>
+
+<script>
+  function redirectToCart() {
+    console.log('cart clicked')
+    window.location.href = "<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>";
+  }
+
+</script>

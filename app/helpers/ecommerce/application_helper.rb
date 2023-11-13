@@ -1,6 +1,18 @@
 module Ecommerce
   module ApplicationHelper
 
+    def friendly_cart_weight(item_weight)
+      if item_weight.blank? || item_weight == 0
+        return ""
+      else
+        if item_weight < 1000
+          return "#{item_weight} gr"
+        else
+          return "#{(item_weight.to_f / 1000).round(2)} kg"
+        end
+      end
+    end
+
     def friendly_date(date)
       case
       when date > 60.minutes.ago

@@ -5,8 +5,8 @@
 .dropdown-menu {
   width: 420px;
   padding: 25px 0;
-  left: -380px;
-  top: 192%;
+  left: -350px;
+  top: 112%;
 }
 .dropdown-menu::after {
   position: absolute;

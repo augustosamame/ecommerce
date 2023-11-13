@@ -1,0 +1,39 @@
+.js_now_flash_class {
+  margin-bottom: 0px !important;
+}
+.dropdown-hover {
+  border: none;
+}
+.dropdown-hover:hover>.dropdown-user {
+  display: block;
+}
+.dropdown-user {
+  width: 250px;
+  padding: 25px 0;
+  left: -70px;
+  top: 90%;
+}
+.dropdown-user::after {
+  position: absolute;
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: var(--white-color);
+  border: 2px solid var(--form-border-color);
+  border-right: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  right: 25px;
+  top: -10px;
+  transform: rotate(45deg);
+}
+.dropdown-user-line {
+  margin-right: 0px !important;
+}
+.dropdown-user .row {
+  border-bottom: 2px solid var(--form-border-color);
+  margin: 0 15px;
+  padding: 10px 0;
+}
+.cart:hover .dropdown-menu {
+  display: block;
+}
