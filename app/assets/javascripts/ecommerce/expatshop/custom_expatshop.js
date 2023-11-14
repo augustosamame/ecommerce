@@ -60,16 +60,47 @@ $(function () {
       },
     ],
   });
-  $("#lang").ddslick({
-    width: "100%",
-    imagePosition: "left",
-  });
-  $("#langMobile").ddslick({
-    width: "100%",
-    imagePosition: "left",
-  });
+ 
+  
+});
 
-  $("#currency").ddslick({
-    width: "100%",
-  });
+$(document).ready(function () {
+  var bx = $('.video-slider').bxSlider(
+    {
+      mode: 'horizontal',
+      auto: true,
+      //autoControls: true,
+      //captions: true,
+      //stopAutoOnClick: true,
+      slideWidth: 1280,
+      video: true,
+      infiniteLoop: true,
+      adaptiveheight: true,
+      // pager: false,
+      // startSlide: 0,
+      // speed: 5000,
+      // useCSS: false,
+      // responsive: true,
+      autoHover: true,
+      autoDelay: 5000,
+      controls: true,
+      autostart: true,
+      //onSliderLoad: function(currentIndex) {
+      //  $("video").trigger("play");
+      //},
+      //onSlideBefore: function(slide) {
+      //  bx.stopAuto;
+      //  console.log('Stop Auto')
+      //}
+      onSlideAfter: function ($slideElement, oldIndex, newIndex) {
+        if ($slideElement.hasClass('video-slide')) {
+          var video = $slideElement.find('video').get(0);
+          video.addEventListener('ended', function () {
+            slider.goToNextSlide();
+          });
+        }
+      }
+    }
+  );
+
 });

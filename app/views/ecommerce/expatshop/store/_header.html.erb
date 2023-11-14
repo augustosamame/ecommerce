@@ -11,17 +11,27 @@
               <%= image_tag Ecommerce.header_logo, alt: "expatshop.pe Logo" %>
             </a>
           </div>
-          <form action="" class="search-form position-relative">
+
+          	
+          <form action="<%= search_product_path %>" class="search-form position-relative">
             <input
               type="search"
+              value=""
               name="search"
               id="search"
+              autocomplete="off"
               placeholder="<%= t('.search_placeholder') %>"
             />
-            <button class="search-btn">
+            <%= button_to class: "search-btn" do %>
               <%= fa_icon "search lg" %>
-            </button>
+            <% end %>
           </form>
+              
+
+
+          
+
+
           <ul class="d-flex flex-center text-uppercase">
             <li class="d-flex flex-center">
               <a href="https://wa.me/51989080023" target="_blank">
@@ -36,7 +46,7 @@
                 <li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
               <% end %>
               <li class="dropdown dropdown-hover d-flex flex-center">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <a class="dropdown-toggle d-flex flex-center" data-toggle="dropdown" href="#">
                   <%= "#{current_user.name}".html_safe %>
                   <span class="caret"></span>
                   <%= fa_icon('user', style: 'color: #67696C;') %>
@@ -69,16 +79,18 @@
               </li>
             <% end %>
           </ul>
-          <form action="" class="d-flex">
-            <select id="currency" class="cursor-pointer">
-              <option value="0">USD $</option>
-              <option value="1">PEN S</option>
-            </select>
-            <select id="lang" class="cursor-pointer">
-              <option value="0" data-imagesrc="./imgs/usa.png">English</option>
-              <option value="1" data-imagesrc="./imgs/peru.png">Español</option>
-            </select>
-          </form>
+          <div style="margin-top: 10px;">
+            <form action="" class="d-flex">
+              <select id="currency" class="cursor-pointer">
+                <option value="0">USD $</option>
+                <option value="1">PEN S</option>
+              </select>
+              <select id="lang" class="cursor-pointer">
+                <option value="0" data-imagesrc="./imgs/usa.png">English</option>
+                <option value="1" data-imagesrc="./imgs/peru.png">Español</option>
+              </select>
+            </form>
+          </div>
 
           <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
 
@@ -88,18 +100,17 @@
     <nav class="nav-links hidden-xs">
       <div class="container-fluid">
         <ul class="d-flex flex-center">
-          <li><a href="#" class="active">All the products</a></li>
-          <li>| <a href="#"> New products</a></li>
-          <li>| <a href="#"> Alcoholic beverages</a></li>
-          <li>| <a href="#"> Offers and discounts</a></li>
-          <li>| <a href="#"> Groceries</a></li>
-          <li>| <a href="#"> Kitchen items</a></li>
-          <li>| <a href="#"> Pharmaceutical products</a></li>
-          <li>| <a href="#"> Ecological Cleaning Products</a></li>
-          <li>| <a href="#"> Chocolates and candies</a></li>
-          <li>| <a href="#"> World of oils</a></li>
-          <li>| <a href="#"> Indian food</a></li>
-          <li>| <a href="#"> Drinks without alcohol</a></li>
+          <li><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>" class="<%= active_all_products_category() == 'active' ? 'active' : '' %>"><%= t('.all_products') %></a></li>
+          <% if current_user %>
+            <li>| <a style='color:red;' href="<%= Ecommerce::Engine.routes.url_helpers.favorites_path %>"><%= t('.favorite_products') %></a></li>
+          <% end %>
+
+          <% @primary_menu_categories.each do |category| %>
+            <% unless category.id == 30 && !@banana_permission %>
+              <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: match_active_category(category), style: 'margin-left: 10px;' %></li>
+            <% end %>
+          <% end %>
+          
         </ul>
       </div>
     </nav>
@@ -191,17 +202,7 @@
 
 
 <%= render 'ecommerce/expatshop/store/top_promo' %>
-	<!-- TODO Search should have alternate functionality if header is being shown from blog or ecommerce -->
-	<div class="search-header5">
-		<div class="remove-form"></div>
-		<div class="container">
-			<form action="<%= search_product_path %>" class="form-horizontal">
-				<label class="note-search"><%= t('.search_instructions') %></label>
-				<input type="search" name="search" class="form-control" value="" placeholder="Search..." autocomplete="off">
-				<input type="submit" value="Search">
-			</form>
-		</div>
-	</div>
+
 </header>
 
 <script>

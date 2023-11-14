@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'pg_search'
   #s.add dependency 'rails-assets-sweetalert', source: 'https://rails-assets.org'
   s.add_dependency 'sweetify'
+  s.add_dependency 'bxslider-rails'
 
   s.add_development_dependency "pg"
   s.add_development_dependency "jquery-rails"

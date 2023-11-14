@@ -1,6 +1,17 @@
 <!-- hero -->
     <header>
       <div class="header-hero">
+        <ul class="video-slider">
+          <% Ecommerce::Slider.where(slider_view: 'DESKTOP').order(:slider_order).each do |slider| %>
+            <% if slider.slider_image.url[-3..-1] != 'mp4' %>
+              <li><img class="bximage-inside-slide" src="<%= slider.slider_image.url %>" title="<%= slider.slider_text %>" /></li>
+            <% else %>
+              <li class="video-slide"><video class="vid" src="<%= slider.slider_image.url %>" autoplay controls onended="nextSlide()" title="<%= slider.slider_text %>" /></li>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+      <div class="header-hero">
         <img src="imgs/hero-img.png" class="img-responsive" alt="" />
       </div>
       <div class="header-slider">

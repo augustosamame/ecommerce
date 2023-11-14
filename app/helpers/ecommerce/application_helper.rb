@@ -13,6 +13,24 @@ module Ecommerce
       end
     end
 
+    def match_active_category(category)
+      current_url = request.original_url
+      if current_url.include?("category_id=#{category.id}")
+        return "active"
+      else
+        return ""
+      end
+    end
+
+    def active_all_products_category
+      current_url = request.original_url
+      if current_url.include?("products") && !current_url.include?("category_id=")
+        return "active"
+      else
+        return ""
+      end
+    end
+
     def friendly_date(date)
       case
       when date > 60.minutes.ago

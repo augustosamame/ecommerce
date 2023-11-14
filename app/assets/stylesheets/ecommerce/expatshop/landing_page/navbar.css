@@ -13,6 +13,9 @@ nav.desktops,
 }
 .desktops .search-form {
   width: 19%;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-top: 15px;
 }
 .desktops .search-form input {
   width: 100%;
@@ -45,6 +48,9 @@ nav.desktops,
   border-radius: 50%;
   width: 45px;
   height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .desktops form select {
   border: none;
@@ -119,7 +125,7 @@ nav.desktops,
 }
 .nav-links ul li {
   flex-basis: auto;
-  margin: 0 20px;
+  margin: 0 5 0 10;
 }
 .nav-links ul li a {
   color: var(--black-color);
