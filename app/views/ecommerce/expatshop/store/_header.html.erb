@@ -82,12 +82,12 @@
           <div style="margin-top: 10px;">
             <form action="" class="d-flex">
               <select id="currency" class="cursor-pointer">
-                <option value="0">USD $</option>
-                <option value="1">PEN S</option>
+                <option <%= session[:currency] == 'usd' ? "selected" : "" %>value="usd">USD $</option>
+                <option <%= session[:currency] == 'pen' ? "selected" : "" %> value="pen">PEN S</option>
               </select>
               <select id="lang" class="cursor-pointer">
-                <option value="0" data-imagesrc="./imgs/usa.png">English</option>
-                <option value="1" data-imagesrc="./imgs/peru.png">Español</option>
+                <option <%= session[:locale] == 'en-PE' ? "selected" : "" %> value="english" data-imagesrc="./imgs/usa.png">English</option>
+                <option <%= session[:locale] == 'es-PE' ? "selected" : "" %> value="spanish" data-imagesrc="./imgs/peru.png">Español</option>
               </select>
             </form>
           </div>
@@ -100,14 +100,14 @@
     <nav class="nav-links hidden-xs">
       <div class="container-fluid">
         <ul class="d-flex flex-center">
-          <li><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>" class="<%= active_all_products_category() == 'active' ? 'active' : '' %>"><%= t('.all_products') %></a></li>
+          <li><a style='font-size: 18px;' href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>" class="<%= active_all_products_category() == 'active' ? 'active' : '' %>"><%= t('.all_products') %></a></li>
           <% if current_user %>
-            <li>| <a style='color:red;' href="<%= Ecommerce::Engine.routes.url_helpers.favorites_path %>"><%= t('.favorite_products') %></a></li>
+            <li>| <a style='color:red; font-size: 18px;' href="<%= Ecommerce::Engine.routes.url_helpers.favorites_path %>"><%= t('.favorite_products') %></a></li>
           <% end %>
 
           <% @primary_menu_categories.each do |category| %>
             <% unless category.id == 30 && !@banana_permission %>
-              <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: match_active_category(category), style: 'margin-left: 10px;' %></li>
+              <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: match_active_category(category), style: 'margin-left: 10px; font-size: 18px;' %></li>
             <% end %>
           <% end %>
           

@@ -66,7 +66,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_slider_params
-        params.require(:slider).permit(:slider_name, :slider_text, :slider_image, :slider_image_cache, :slider_view, :slider_order, :status)
+        params.require(:slider).permit(:slider_name, :slider_text, :slider_image, :slider_image_cache, :slider_view, :slider_order, :slider_link, :status)
       end
   end
 end

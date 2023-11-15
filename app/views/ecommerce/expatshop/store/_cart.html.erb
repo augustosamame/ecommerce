@@ -44,15 +44,19 @@
             <p>SUBTOTAL</p>
             <p><%= session_price(@cart.get_totals(@current_user)[:tot_acum]) %></p>
           </div>
-          <% if session[:currency] != "PEN" %>
+          <% if session[:currency] != "xxx" %>
             <div class="subtotal d-flex space-between" style="margin-top: -25px;">
               <p></p>
               <p>S/. <%= @cart.get_totals(@current_user)[:tot_acum] * @exchange_rate %></p>
             </div>
           <% end %>
           <div class="cart-btn-group text-center">
-            <button class="main-btn"><%= t('.view_cart') %></button>
-            <button class="main-btn"><%= t('.checkout') %></button>
+            <a href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
+              <button class="secondary-btn"><%= t('.view_cart') %></button>
+            </a>
+            <a href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
+              <button class="main-btn"><%= t('.checkout') %></button>
+            </a>
           </div>
         </div>
       </div>

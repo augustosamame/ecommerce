@@ -177,7 +177,7 @@
                     <th>Total</th>
                     <td><strong><span class="amount" id="total-amount"><%= session_price(@cart_subtotal) %></span></strong> </td>
                   </tr>
-                  <% if session[:currency] != "PEN" %>
+                  <% if session[:currency] != "xxx" %>
                   <tr >
                     <th></th>
                     <td><strong><span class="amount" id="total-amount-soles" style="">S/. <%= @cart_subtotal * @exchange_rate %></span></strong> </td>

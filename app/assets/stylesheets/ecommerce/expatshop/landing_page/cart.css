@@ -52,9 +52,3 @@
   font-weight: 700;
   font-size: 2rem;
 }
-.cart-btn-group button:first-child {
-  background-color: var(--secondary-btn-color);
-}
-.cart-btn-group button {
-  border-radius: 2px;
-}

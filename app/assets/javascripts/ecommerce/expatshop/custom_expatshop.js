@@ -3,9 +3,10 @@ $(function () {
   $(".brand-slider").slick({
     dots: false,
     infinite: true,
+    arrows: true,
     speed: 300,
-    slidesToShow: 5,
-    slidesToScroll: 2,
+    slidesToShow: 1,
+    slidesToScroll: 1,
     responsive: [
       {
         breakpoint: 768,
@@ -100,7 +101,64 @@ $(document).ready(function () {
           });
         }
       }
+      
     }
   );
+
+  $('#country-mosaic').Mosaic({
+    maxRowHeight: 333,
+    maxRowHeightPolicy: 'tail',
+    defaultAspectRatio: 1.5,
+    responsiveWidthThreshold: 480,
+    innerGap: 15,
+  });
+
+  //$('#country-mosaic').justifiedGallery({
+  //  rowHeight: 333,
+  //  lastRow: 'justify',
+  //  margins: 15,
+  //  captions: false,
+  //  randomize: false,
+  // });
+
+
+  $('#currency').on('change', function () {
+    var url = window.location.pathname + window.location.search
+    var selectedValue = $(this).val();
+    console.log('Selected value:', selectedValue);
+    if (selectedValue == 'usd') {
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?currency=usd"
+      } else {
+        window.location.href = url + "&currency=usd"
+      }
+    } else {
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?currency=pen"
+      } else {
+        window.location.href = url + "&currency=pen"
+      }
+    }
+  });
+
+  $('#lang').on('change', function () {
+    var url = window.location.pathname + window.location.search
+    var selectedValue = $(this).val();
+    console.log('Selected value:', selectedValue);
+    if (selectedValue == 'english') {
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?lang=en-PE"
+      } else {
+        window.location.href = url + "&lang=en-PE"
+      }
+    } else {
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?lang=es-PE"
+      } else {
+        window.location.href = url + "&lang=es-PE"
+      }
+    }
+  });
+
 
 });

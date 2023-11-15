@@ -61,6 +61,7 @@ Ecommerce::Engine.routes.draw do
   #get '/category/:id', :to => 'store#shop_by_category', :as => 'category'
   #get '/product/:id', :to => 'store#product_detail', :as => 'product'
   resources :products, only: [:index, :show]
+  resources :brands, only: [:show]
   get 'favorites', :to => 'products#favorites'
   resources :categories, only: [:index]
   resources :orders, only: [:index, :show]

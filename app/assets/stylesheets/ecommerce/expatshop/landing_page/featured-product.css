@@ -25,26 +25,20 @@
   width: 100%;
   padding: 10px 0;
 }
-.featured-product-info .price p {
-  width: 20%;
-  margin: 0;
-}
-.featured-product-info .price p:first-of-type {
+.featured-product-info-price-regular {
   color: var(--primary-btn-color);
   margin: 0;
   position: relative;
   font-weight: 400;
-  width: 30%;
+  width: 50%;
 }
-.featured-product-info .price p:first-of-type::after {
-  content: "";
-  position: absolute;
-  height: 0.5px;
-  width: 100%;
-  background: red;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.featured-product-info-price-discounted {
+  text-decoration: line-through;
+  color: red !important;
+  position: relative;
+  font-weight: 400;
+  margin: 0;
+  width: 50%;
 }
 .featured-product button {
   background-color: var(--primary-btn-color);

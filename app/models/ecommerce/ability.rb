@@ -13,6 +13,7 @@ module Ecommerce
         can :read, Brand
         can :read, Property
         can :read, Category
+        can :read, Brand
         can :read, Product
         can :read, Testimonial
         can [:favorites, :stock_alert, :search], Product

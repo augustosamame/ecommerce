@@ -1,14 +1,3 @@
-@import url("./landing-page/navbar.css");
-@import url("./landing-page//cart.css");
-@import url("./landing-page/header.css");
-@import url("./landing-page/featured-product.css");
-@import url("./landing-page/sub-links.css");
-@import url("./landing-page/categories-principles.css");
-@import url("./landing-page/testimonial.css");
-@import url("./landing-page/global-products.css");
-@import url("./landing-page/offer.css");
-@import url("./landing-page/footer.css");
-@import url("./media.css");
 /* GLOBAL */
 :root {
   --label-color: #fbe5e2;
@@ -99,6 +88,13 @@ a:hover {
 }
 .main-btn {
   background: var(--primary-btn-color);
+  border: 0;
+  padding: 10px 30px;
+  color: var(--white-color);
+  margin-right: 15px;
+}
+.secondary-btn {
+  background: var(--secondary-btn-color);
   border: 0;
   padding: 10px 30px;
   color: var(--white-color);

@@ -4,61 +4,30 @@
         <ul class="video-slider">
           <% Ecommerce::Slider.where(slider_view: 'DESKTOP').order(:slider_order).each do |slider| %>
             <% if slider.slider_image.url[-3..-1] != 'mp4' %>
-              <li><img class="bximage-inside-slide" src="<%= slider.slider_image.url %>" title="<%= slider.slider_text %>" /></li>
+              <li><img class="bximage-inside-slide clickable-slide" src="<%= slider.slider_image.url %>" title="<%= slider.slider_text %>" /></li>
             <% else %>
-              <li class="video-slide"><video class="vid" src="<%= slider.slider_image.url %>" autoplay controls onended="nextSlide()" title="<%= slider.slider_text %>" /></li>
+              <li class="video-slide clickable-slide"><video class="vid" src="<%= slider.slider_image.url %>" autoplay controls onended="nextSlide()" title="<%= slider.slider_text %>" /></li>
             <% end %>
           <% end %>
         </ul>
       </div>
-      <div class="header-hero">
-        <img src="imgs/hero-img.png" class="img-responsive" alt="" />
-      </div>
+
       <div class="header-slider">
         <div class="container-fluid">
           <div class="brand-slider">
-            <div>
-              <img
-                src="imgs/starbucks-logo-png-1666.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-            <div>
-              <img
-                src="imgs/—Pngtree—coffee_3626459.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-            <div>
-              <img
-                src="imgs/starbucks-logo-png-1666.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-            <div>
-              <img
-                src="imgs/—Pngtree—coffee_3626459.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-            <div>
-              <img
-                src="imgs/starbucks-logo-png-1666.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
-            <div>
-              <img
-                src="imgs/—Pngtree—coffee_3626459.png"
-                alt=""
-                class="img-responsive"
-              />
-            </div>
+          
+            <% Ecommerce::Brand.where(featured: true).order(id: :desc).each do |brand_logo| %>
+              <div>
+                <%= link_to brand_url(brand_logo.id) do %>
+                <img
+                  src="<%= brand_logo.logo.medium_200.url %>"
+                  alt=""
+                  class="img-responsive"
+                />
+                <% end %>
+              </div>
+            <% end %>
+
           </div>
         </div>
       </div>
@@ -67,114 +36,37 @@
       <!-- featured product -->
       <section class="featured-products">
         <div class="container-fluid">
-          <h2>FEATURED PRODUCTS</h2>
+          <h2><%= t('.featured_products') %></h2>
           <div class="featured-product-slider">
-            <div>
-              <div class="featured-product position-relative d-flex">
-                <div class="featured-product-body">
-                  <img
-                    src="imgs/featured-product-1.png"
-                    alt=""
-                    class="img-responsive"
-                  />
-                  <div class="featured-product-info d-flex flex-center">
-                    <p>Frosch set lavender 90 ml</p>
-                    <div class="price d-flex flex-center">
-                      <p>38$</p>
-                      <p>50$</p>
+
+            <% Ecommerce::Product.where(home_featured: true).order(:product_order).each do |product| %>
+              <div>
+                <div class="featured-product position-relative d-flex">
+                  <div class="featured-product-body">
+                    <img
+                      src="<%= product.image.medium_400.url %>"
+                      alt=""
+                      class="img-responsive"
+                    />
+                    <div class="featured-product-info d-flex flex-center">
+                      <p><%= product.name %></p>
+                      <div class="price d-flex flex-center">
+                        <% if product.price == product.discounted_price %>
+                          <p class='featured-product-info-price-regular'><%= product_session_price(product, "current_price") %></p>
+                        <% else %>
+                          <p class='featured-product-info-price-discounted'><%= product_session_price(product, "current_price") %></p>
+                          <p class='featured-product-info-price-regular'><%= product_session_price(product, "price") %></p>
+                        <% end %>
+                      </div>
                     </div>
                   </div>
+                  <button>
+                    <i class="fa-solid fa-cart-shopping"></i><%= t('.add_to_cart') %>
+                  </button>
                 </div>
-                <button>
-                  <i class="fa-solid fa-cart-shopping"></i>ADD TO CART
-                </button>
               </div>
-            </div>
-            <div>
-              <div class="featured-product position-relative d-flex">
-                <div class="sale">-10%</div>
-                <div class="featured-product-body best-seller">
-                  <img
-                    src="imgs/featured-product-2.png"
-                    alt=""
-                    class="img-responsive"
-                  />
-                  <div class="featured-product-info d-flex flex-center">
-                    <p>Frosch set lavender 90 ml</p>
-                    <div class="price d-flex flex-center">
-                      <p>38$</p>
-                      <p>50$</p>
-                    </div>
-                  </div>
-                </div>
-                <button>
-                  <i class="fa-solid fa-cart-shopping"></i>ADD TO CART
-                </button>
-              </div>
-            </div>
-            <div>
-              <div class="featured-product position-relative d-flex">
-                <div class="featured-product-body">
-                  <img
-                    src="imgs/featured-product-1.png"
-                    alt=""
-                    class="img-responsive"
-                  />
-                  <div class="featured-product-info d-flex flex-center">
-                    <p>Frosch set lavender 90 ml</p>
-                    <div class="price d-flex flex-center">
-                      <p>38$</p>
-                      <p>50$</p>
-                    </div>
-                  </div>
-                </div>
-                <button>
-                  <i class="fa-solid fa-cart-shopping"></i>ADD TO CART
-                </button>
-              </div>
-            </div>
-            <div>
-              <div class="featured-product position-relative d-flex">
-                <div class="featured-product-body">
-                  <img
-                    src="imgs/featured-product-2.png"
-                    alt=""
-                    class="img-responsive"
-                  />
-                  <div class="featured-product-info d-flex flex-center">
-                    <p>Frosch set lavender 90 ml</p>
-                    <div class="price d-flex flex-center">
-                      <p>38$</p>
-                      <p>50$</p>
-                    </div>
-                  </div>
-                </div>
-                <button>
-                  <i class="fa-solid fa-cart-shopping"></i>ADD TO CART
-                </button>
-              </div>
-            </div>
-            <div>
-              <div class="featured-product position-relative d-flex">
-                <div class="featured-product-body">
-                  <img
-                    src="imgs/featured-product-1.png"
-                    alt=""
-                    class="img-responsive"
-                  />
-                  <div class="featured-product-info d-flex flex-center">
-                    <p>Frosch set lavender 90 ml</p>
-                    <div class="price d-flex flex-center">
-                      <p>38$</p>
-                      <p>50$</p>
-                    </div>
-                  </div>
-                </div>
-                <button>
-                  <i class="fa-solid fa-cart-shopping"></i>ADD TO CART
-                </button>
-              </div>
-            </div>
+            <% end %>
+
           </div>
         </div>
       </section>
@@ -254,242 +146,124 @@
       <!-- testimonial -->
       <section class="testimonials">
         <div class="container-fluid">
-          <h2>CUSTOMER TESTIMONIAL</h2>
+          <h2><%= t('.customer_testimonials') %></h2>
           <div class="testimonial-slider">
-            <div>
-              <div class="testimonial-body">
-                <video controls="controls">
-                  <source src="vid.mp4" type="video/mp4" />
-                </video>
-                <div class="testimonial-info d-flex flex-center">
-                  <p>Sally Chrem - artist</p>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
+
+            <% Ecommerce::Testimonial.where(status: "active").order(:priority).each do |testimonial| %>
+              <div>
+                <div class="testimonial-body">
+                  <video controls="controls" poster="<%= testimonial.thumbnail.medium_400.url %>">
+                    <source
+                      src="<%= testimonial.video.url %>"
+                      type="video/mp4"
+                    />
+                  </video>
+                  <div class="testimonial-info d-flex flex-center">
+                    <p><%= testimonial.user_fullname %> - <%= testimonial.user_title %></p>
+                    <p>
+                      <%= testimonial.product_name %>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
-              <div class="testimonial-body">
-                <video controls="controls">
-                  <source src="vid.mp4" type="video/mp4" />
-                </video>
-                <div class="testimonial-info d-flex flex-center">
-                  <p>Sally Chrem - artist</p>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="testimonial-body">
-                <video controls="controls">
-                  <source src="vid.mp4" type="video/mp4" />
-                </video>
-                <div class="testimonial-info d-flex flex-center">
-                  <p>Sally Chrem - artist</p>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="testimonial-body">
-                <video controls="controls">
-                  <source src="vid.mp4" type="video/mp4" />
-                </video>
-                <div class="testimonial-info d-flex flex-center">
-                  <p>Sally Chrem - artist</p>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="testimonial-body">
-                <video controls="controls">
-                  <source src="vid.mp4" type="video/mp4" />
-                </video>
-                <div class="testimonial-info d-flex flex-center">
-                  <p>Sally Chrem - artist</p>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <% end %>
+
           </div>
         </div>
       </section>
-      <!-- global products-->
+      <!-- country mosaic -->
       <section class="global-products">
         <div class="container-fluid">
-          <h2>PRODUCTS FROM THE WORLD</h2>
+          <h2><%= t('.products_from_the_world') %></h2>
           <!-- countries for desktop -->
-          <div class="countries hidden-xs">
-            <div class="div1">
-              <div class="country position-relative">
-                <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                <p>FRANCE</p>
+          <div id="country-mosaic">
+              
+                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/1-country-france.png') %>)">
+                <p><%= t('.france') %></p>
               </div>
-            </div>
-            <div class="div2">
-              <div class="country position-relative">
-                <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                <p>FRANCE</p>
+
+              
+                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/2-country-peru.png') %>)">
+                <p><%= t('.peru') %></p>
               </div>
-            </div>
-            <div class="div3">
-              <div class="country position-relative">
-                <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                <p>FRANCE</p>
+           
+
+                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/3-country-italy.png') %>)">
+                <p><%= t('.italy') %></p>
               </div>
-            </div>
-            <div class="div4">
-              <div class="country position-relative">
-                <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                <p>FRANCE</p>
+            
+              <div class="country-div" style="background-image: url(<%= image_url('ecommerce/img/expatshop/4-country-england.png') %>)">
+              <p><%= t('.england') %></p>
+                
+               </div>
+               
+                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/5-country-india.png') %>)">
+                <p><%= t('.india') %></p>
               </div>
-            </div>
-            <div class="div5">
-              <div class="country position-relative">
-                <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                <p>FRANCE</p>
+              
+                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/6-country-germany.png') %>)">
+                <p><%= t('.germany') %></p>
               </div>
-            </div>
-            <div class="div6">
-              <div class="country position-relative">
-                <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                <p>FRANCE</p>
+              
+                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/7-country-croatia.png') %>)">
+                <p><%= t('.croatia') %></p>
               </div>
-            </div>
-            <div class="div7">
-              <div class="country position-relative">
-                <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                <p>FRANCE</p>
+              
+                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/8-country-belgium.png') %>)">
+                <p><%= t('.belgium') %></p>
               </div>
-            </div>
-            <div class="div8">
-              <div class="country position-relative">
-                <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                <p>FRANCE</p>
+              
+                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/9-country-finland.png') %>)">
+                <p><%= t('.finland') %></p>
               </div>
-            </div>
-            <div class="div9">
-              <div class="country position-relative">
-                <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                <p>FRANCE</p>
-              </div>
-            </div>
-            <div class="div10">
-              <div class="country position-relative">
-                <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                <p>FRANCE</p>
-              </div>
-            </div>
-          </div>
-          <!-- countries for mobile -->
-          <div class="countries-mobile visible-xs">
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="country position-relative">
-                  <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                  <p>FRANCE</p>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="country position-relative">
-                  <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                  <p>FRANCE</p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="country position-relative">
-                  <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                  <p>FRANCE</p>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="country position-relative">
-                  <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                  <p>FRANCE</p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="country position-relative">
-                  <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                  <p>FRANCE</p>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="country position-relative">
-                  <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                  <p>FRANCE</p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="country position-relative">
-                  <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                  <p>FRANCE</p>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="country position-relative">
-                  <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                  <p>FRANCE</p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="country position-relative">
-                  <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                  <p>FRANCE</p>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="country position-relative">
-                  <img src="imgs/country-1.jpg" class="img-responsive" alt="" />
-                  <p>FRANCE</p>
-                </div>
-              </div>
-            </div>
+              
+                
+                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/10-country-thailand.png') %>)">
+                <p><%= t('.thailand') %></p>
+               </div>
           </div>
         </div>
       </section>
+
       <!-- offer -->
       <section class="offer">
         <div class="container">
           <div class="row">
             <div class="col-xs-7 col-md-8">
-              <p>Day 1: <span>Trade</span></p>
-              <h3>Expatshop and his commitment to grow in Peru</h3>
+              <p>Día 1: <span>El Comercio</span></p>
+              <h3>Expatshop y su apuesta por crecer en el Perú</h3>
               <p class="hidden-xs">
-                Learn a little more about the importer who, in the following
-                five -year period, expect your store to offer 15,000 products
-                from different categories.
+                Conoce un poco más de la importadora que, en el siguiente quinquenio,
+espera que su tienda pueda ofrecer 15,000 productos de diferentes
+categorías.
               </p>
             </div>
             <div class="col-xs-5 col-md-4 position-relative">
-              <img src="imgs/offer.png" class="img-responsive" alt="" />
-              <h4 class="pe">.Pe</h4>
+              <%= image_tag "ecommerce/img/expatshop/offer.png", class: "img-responsive" %>
+              <h4 class="pe">.pe</h4>
             </div>
             <div class="btn-group">
-              <button class="main-btn">Read article</button>
-              <button class="main-btn white">Press</button>
+              <button class="main-btn"><%= t('.read_article') %></button>
+              <button class="main-btn white"><%= t('.press') %></button>
             </div>
           </div>
         </div>
       </section>
     </main>
 
+<script>
+
+  function nextSlide() {
+    slider.goToNextSlide();
+  }
+
+  $(document).ready(function () {
+
+    $('.clickable-slide').on('mousedown', function () {
+      console.log("redirect to slider_link here using array: <%= @slider_array.to_json %>");
+    })
+
+  })
+
+</script>
 
