@@ -91,9 +91,9 @@
               </select>
             </form>
           </div>
-
-          <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
-
+          <li style="list-style-type: none;" id="cart-line">
+            <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
+          </li>
         </div>
       </div>
     </nav>

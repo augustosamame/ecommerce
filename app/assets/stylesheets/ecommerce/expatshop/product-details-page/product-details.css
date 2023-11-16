@@ -1,0 +1,127 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+.product-details-main {
+  background-color: #f7f8fb;
+}
+.product-details {
+  padding: 60px 0 75px;
+}
+.product-details h3 {
+  font-size: 27px;
+  margin: 0 0 45px;
+}
+.product-details .price {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid black;
+  margin-bottom: 35px;
+}
+.product-details .price p:first-child {
+  margin-right: 25px;
+  text-align: center;
+  width: 17%;
+  font-size: 30px;
+}
+.product-details .price p {
+  font-size: 28px;
+  font-weight: 400;
+}
+.product-details .col-md-7 > p:first-of-type {
+  font-size: 21px;
+  margin-bottom: 65px;
+}
+.product-details .col-md-7 > p:last-of-type {
+  font-size: 20px;
+  margin-bottom: 50px;
+  font-weight: 600;
+}
+.product-details .col-md-7 > p:last-of-type span {
+  font-weight: 400;
+}
+.product-details .product-btn-group {
+  width: 50%;
+}
+.product-details .product-btn-group button:nth-child(3),
+.related-products .product-btn-group button:nth-child(3) {
+  background-color: var(--primary-btn-color);
+}
+.product-details .product-btn-group button:nth-child(3) i,
+.related-products .product-btn-group button:nth-child(3) i {
+  margin-right: 10px;
+}
+.product-details .product-btn-group button,
+.related-products .product-btn-group button {
+  color: white;
+  border: none;
+  font-size: 21px;
+}
+.related-products {
+  padding-top: 0;
+}
+.related-products h3 {
+  position: relative;
+  text-align: center;
+  margin-bottom: 45px;
+  font-size: 27px;
+}
+.related-products h3::after,
+.related-products h3::before {
+  content: "";
+  position: absolute;
+  width: 40%;
+  height: 1px;
+  background: black;
+  top: 50%;
+}
+.related-products h3::after {
+  right: 0;
+}
+.related-products h3::before {
+  left: 0;
+}
+.related-products .related-product-body img {
+  max-height: 300px;
+}
+.related-products .related-product-body .related-product-info {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  text-align: center;
+}
+.related-products .related-product-body .related-product-info p:first-of-type {
+  margin-bottom: 4px;
+  font-size: 18px;
+}
+.related-products .related-product-body .related-product-info .product-info {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+.related-products .product-btn-group {
+  width: 100%;
+}
+.related-products .related-product-body {
+  background-color: white;
+}
+.related-products .related-product-body img {
+  width: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.related-products .related-product-body .related-product-info {
+  padding: 30px 35px 15px;
+}
+.related-products .related-product-body .related-product-info > p:first-child {
+  font-size: 20px;
+  font-weight: 500;
+}
+.related-products .related-product-body .related-product-info > p {
+  font-size: 16px;
+}

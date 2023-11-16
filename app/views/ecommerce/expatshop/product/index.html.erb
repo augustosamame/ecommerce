@@ -1,36 +1,17 @@
-<div class="main">
-  <div class="commerce noo-shop-main">
+<main>
+  <section class="section-background">
     <div class="container">
-      <div class="row" >
-        <div class="noo-main col-md-9" style="margin-top: 0px; padding-right: 0px; padding-left: 0px;">
-          <div class="noo-height-product pt-8 pb-10">
-            <div class="container">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="noo-product-grid-wrap commerce product-style2">
-                    <div class="pagination list-center" style="display:none;">
-                       <%= paginate @products %>
-                      <!--<span class="page-numbers current">1</span>
-                      <a class="page-numbers" href="#">2</a>
-                      <a class="page-numbers" href="#">3</a>
-                      <a class="next page-numbers" href="#"><i class="fa fa-long-arrow-right"></i></a>-->
-                    </div>
-                    <div class="noo-product-grid products row product-grid noo-grid-4 product-index-container" style= "display: contents;">
+      <div class="pagination list-center" style="display:none;">
+        <%= paginate @products %>
+      </div>
+      <div class="row products product-index-container">
 
-                       <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item %>
+        <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item %>        
 
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-  </div>
-
-</div>
+  </section>
+</main>
 
 <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js"></script>
 <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>

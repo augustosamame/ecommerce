@@ -1,0 +1,90 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+@media (max-width: 768px) {
+  .products .row > .col-md-4 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .products .featured-product {
+    margin-right: 0;
+    margin-left: 0;
+    -webkit-box-shadow: unset;
+    box-shadow: unset;
+    border: none;
+    margin-bottom: 44px;
+  }
+  .products .featured-product .featured-product-body img {
+    max-height: 450px !important;
+  }
+  .products .featured-product .featured-product-info {
+    padding: 10px 46px;
+  }
+  .products
+    .featured-product
+    .featured-product-body
+    .featured-product-info
+    > p:first-child {
+    margin-bottom: 22px;
+  }
+  .products
+    .featured-product
+    .featured-product-body
+    .featured-product-info
+    .product-info {
+    margin-bottom: 20px;
+  }
+  .products
+    .featured-product
+    .featured-product-body
+    .featured-product-info
+    .price
+    p:last-child {
+    text-align: start;
+    margin-left: 15px;
+    width: 25%;
+  }
+  .products .featured-product .product-btn-group button {
+    -webkit-box-flex: 3.5;
+    -ms-flex-positive: 3.5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .products .featured-product .sale {
+    width: 12%;
+    text-align: center;
+    top: 33px;
+  }
+  .products .featured-product .featured-product-body::after {
+    top: 0;
+    width: 25%;
+    text-align: center;
+  }
+  .products .continue-checkout {
+    padding-top: 26px;
+    padding-bottom: 0;
+  }
+
+  /* recommendation products */
+  .product-recommendation {
+    padding-top: 0;
+  }
+  .recommendation-label {
+    padding-right: 11px;
+    padding-left: 11px;
+  }
+  .recommendation-label h3 {
+    font-weight: 600;
+    font-size: 24px;
+  }
+  .recommendation-label p {
+    font-size: 14px;
+  }
+  .product-recommendation .col-md-4:last-child .featured-product {
+    margin-bottom: 0;
+  }
+}

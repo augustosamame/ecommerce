@@ -1,70 +1,74 @@
-
-<div class="noo-product-column fixed-column col-md-4 col-sm-6 product ">
-  <div class="noo-product-inner">
-    <div class="noo-product-thumbnail">
-      <a href="<%= product_path(item) %>">
-        <%= image_tag item.image.medium_260.url, {:style => "width: 350px; height: 350px;"} %>
-      </a>
-    </div>
-    <div class="noo-product-title" style="height: 380px;">
-      <h3><%= link_to item.name, product_path(item) %></h3><br>
-      <a href="<%= product_path(item) %>">
-      <span class="short-descrip" style="font-size:13px;"><%= item.short_description.gsub("**","<br>").html_safe if item.short_description %></span><br>
-      </a>
-      <div class='center-form'>
-        <% if item && (item.price == item.discounted_price) %>
-          <span class="price"><span class="amount"><%= product_session_price(item, "current_price") %></span></span>
-
-        <% else %>
-
-          <span class="price">
-            <span class="amount original-price-index"><%= product_session_price(item, "price") %></span>
-            <span class="amount"><%= product_session_price(item, "discounted_price") %></span>
-          </span>
-
-        <% end %>
-
-        <% unless item.in_stock? %>
-          <p class="out_of_stock" style="font-size: 18px;"><span class=""><%= t('.out_of_stock') %></span></p>
-        <% end %>
-      </div>
-
-      <% if item.in_stock? %>
-
-        <div class='center-form' style='display: inline-block; height: 105; margin-top: -35px;'>
-          <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart", id: "new_cart_item_#{item.id}" } do |f| %>
-            <div class="plus-minus-container">
-              <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class" id=<%= "devtech_minus_#{item.id}" %>>
-                <a href="#" class="add_to_wishlist devtech_minus_a_class"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.total_quantity}" %>>-</a>
-              </div>
-              <div class="quantity" id="devtech_quantity">
-                <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners', id: "devtech_quantity_field_#{item.id}", value: "1", size: "4", step: "1", min: "1" } %>
-              </div>
-              <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class" id= <%= "devtech_plus_#{item.id}" %>>
-                <a href="#" class="add_to_wishlist devtech_plus_a_class" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.total_quantity}" %>>+</a>
-              </div>
-              <div class='out_of_stock' style='font-size: 14px;'>
-                <div class='out_of_stock_text_class <%= "out_of_stock_text_#{item.id}" %>' style=" float: left;" %><%= t('.no_more_stock_available') %></div>
-              </div>
+<div class="col-md-4 product">
+  <div class="featured-product position-relative d-flex">
+    <%= link_to product_path(item) do %>
+      <div class="featured-product-body">
+        <%= image_tag item.image.medium_260.url, class: "img-responsive" %>
+        <div class="featured-product-info d-flex flex-center">
+          <p><%= item.name %></p>
+          <p class="product-info">
+            <%= item.short_description.gsub("**","<br>").html_safe if item.short_description %>
+          </p>
+          <% if item && (item.price == item.discounted_price) %>
+            <div class="price d-flex flex-center">
+              <p class='product-info-price-regular'  style="font-size: 24px;"><%= product_session_price(item, "current_price") %></p>
             </div>
-            <%= f.button :submit, t('.add_to_cart'), class: "index_single_add_to_cart_button button" %>
+          <% else %>
+            <div class="price d-flex flex-center" style="width: 60%;">
+              <p class="product-info-price-discounted"><%= product_session_price(item, "price") %></p>
+              <p class="product-info-price-regular"><%= product_session_price(item, "current_price") %></p>
+            </div>
+          <% end %>
+        </div>
+        <div class='out_of_stock' style='font-size: 14px;'>
+          <div class='out_of_stock_text_class <%= "out_of_stock_text_#{item.id}" %>' style=" float: left;" %><%= t('.no_more_stock_available') %></div>
+        </div>
+      </div>
+    <% end %>
+    <div class="add-to-cart-btn-group">
+      <% if item.in_stock? %>
+        
+        <!-- 
+        <button id=<%= "devtech_minus_#{item.id}" %>>-</button>
+        <p class="quantity" id="devtech_quantity">1</p>
+        
+        
+        <button>
+          <i class="fa-solid fa-cart-shopping"></i>ADD TO CART
+        </button>
+        <button>+</button>
+        -->
+        <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart-form", id: "new_cart_item_#{item.id}" } do |f| %>
+          <div class="add-to-cart-btn-container">
+            
+            <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %>>
+              <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.total_quantity}" %>>-</a>
+            </div>
+            <div class="quantity container-qty" id="devtech_quantity">
+              <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners', id: "devtech_quantity_field_#{item.id}", value: "1", size: "4", step: "1", min: "1" } %>
+            </div>
+
+            <%= button_tag type: 'submit', class: "btn btn-default index_single_add_to_cart_button button container-cart-button" do %>
+              <%= fa_icon('shopping-cart', style: 'color: white;') %>
+              <%= t('.add_to_cart') %>
+            <% end %>
+
+            <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %>>
+              <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.total_quantity}" %>>+</a>
+            </div>
+
+          
+          </div>
+            
             <%= f.hidden_field :product_id, value: item.id, id: "product_product_id_#{item.id}" %>
           <% end %>
 
-        </div>
 
       <% else %>
-
-      <div class='center-form' style='display: inline-block; height: 105; margin-top: -35px;'>
         <%= simple_form_for Ecommerce::StockAlert.new, remote: true, html: { class: "stock_alert", id: "stock_alert_#{item.id}" } do |f| %>
-          <%= f.button :submit, t('.alert_me'), class: "index_single_stock_alert_button button", style: "color: #fff; background-color: #337ab7;" %>
+          <%= f.button :submit, t('.alert_me'), class: "index_single_stock_alert_button button" %>
           <%= f.hidden_field :product_id, value: item.id, id: "product_product_id_#{item.id}" %>
         <% end %>
-
-      </div>
-
       <% end %>
-
     </div>
   </div>
 </div>

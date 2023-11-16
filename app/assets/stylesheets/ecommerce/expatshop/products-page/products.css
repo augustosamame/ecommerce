@@ -1,0 +1,132 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+.products {
+  padding-top: 47px;
+  padding-bottom: 0;
+}
+.products .featured-product {
+  -webkit-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  margin-bottom: 60px;
+}
+.products .featured-product .featured-product-info {
+  padding: 20px;
+  padding-bottom: 0;
+}
+.products .featured-product .featured-product-body img {
+  max-height: 300px;
+}
+.products
+  .featured-product
+  .featured-product-body
+  .featured-product-info
+  p:first-of-type {
+  margin-bottom: 4px;
+  font-size: 18px;
+}
+.products
+  .featured-product
+  .featured-product-body
+  .featured-product-info
+  .product-info {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.price {
+  padding: 0;
+  padding-bottom: 6px;
+}
+
+.price p:last-child {
+  font-size: 24px;
+}
+
+.price p {
+  font-weight: 600;
+  font-size: 20px;
+}
+.product-btn-group {
+  border: 1px solid #e8e8e8;
+}
+.product-btn-group button:nth-child(1),
+.product-btn-group button:last-of-type,
+.product-btn-group p {
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  font-size: 20px;
+}
+.product-btn-group button {
+  padding: 7px 0px;
+  -webkit-box-flex: 1.5;
+  -ms-flex-positive: 1.5;
+  flex-grow: 1.5;
+}
+.product-btn-group button:nth-child(1),
+.product-btn-group button:last-of-type {
+  background-color: var(--secondary-btn-color);
+}
+.product-btn-group p {
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.products .continue-checkout {
+  background: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 50px 0 10px;
+}
+.products .continue-checkout button {
+  font-size: 34px;
+  border: none;
+  background: #de203c;
+  padding: 12px 33px;
+  color: white;
+}
+/* products recommendation */
+.recommendation-label {
+  background-color: #fae6e3;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px 0;
+}
+.recommendation-label h3 {
+  color: #000;
+  font-size: 46px;
+  margin: 0;
+}
+.recommendation-label p {
+  color: #000;
+  margin: 0;
+  font-size: 25px;
+}

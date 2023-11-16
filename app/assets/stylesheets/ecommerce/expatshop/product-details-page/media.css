@@ -1,0 +1,67 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+@media (max-width: 768px) {
+  .product-details {
+    padding: 23px 0 65px;
+    background-color: white;
+  }
+  .product-details h3 {
+    font-size: 18px;
+    margin: 20px 50px;
+    text-align: center;
+  }
+  .product-details .col-md-7 > p:first-of-type {
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  .product-details .price {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+  .product-details .price {
+    border: none;
+    margin-bottom: 10px;
+  }
+  .product-details .price p:first-child {
+    width: 30%;
+  }
+  .related-products
+    .related-product-body
+    .related-product-info
+    p:first-of-type {
+    font-size: 22px;
+  }
+  .product-details .product-btn-group {
+    width: 100%;
+  }
+  .related-products h3 {
+    padding: 5px 0;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+  .related-products h3::after,
+  .related-products h3::before {
+    width: 100%;
+  }
+  .related-products h3::after {
+    right: 0;
+    top: 0;
+  }
+  .related-products h3::before {
+    left: 0;
+    bottom: 0;
+    top: 100%;
+  }
+  .related-products .related-product-body {
+    margin-bottom: 32px;
+  }
+  .related-products {
+    padding-bottom: 20px;
+  }
+}

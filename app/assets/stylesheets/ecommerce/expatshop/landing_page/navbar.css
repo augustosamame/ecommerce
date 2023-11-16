@@ -129,7 +129,7 @@ nav.desktops,
 }
 .nav-links ul li a {
   color: var(--black-color);
-  font-weight: bold;
+  font-weight: 600;
 }
 /* mobiles navbar */
 .mobiles {

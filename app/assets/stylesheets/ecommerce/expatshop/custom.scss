@@ -56,4 +56,116 @@
   letter-spacing: 1px;
   text-transform: uppercase;
 }
-
+.product-info-price-regular {
+  color: var(--primary-btn-color);
+  margin: 0;
+  position: relative;
+  font-weight: 400;
+  width: 50%;
+}
+.product-info-price-discounted {
+  text-decoration: line-through;
+  color: red !important;
+  position: relative;
+  font-weight: 400;
+  margin: 0;
+  width: 50%;
+}
+.stock_alert {
+  width: 100%;
+  margin-bottom: 0px;
+  height: 42px;
+}
+.index_single_stock_alert_button {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background-color: #337ab7;
+}
+.out_of_stock_text_class {
+  display: none;
+}
+.cart-form {
+  width: 100%;
+  margin-bottom: 0px;
+  height: 42px;
+}
+.add-to-cart-btn-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border: 1px solid #ccc;
+  height: 42px;  
+}
+.container-minus-plus {
+  flex: 0 1 auto;
+  width: 42px;
+  height: 42px;
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+.devtech_minus_a_class {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  text-decoration: none !important;
+}
+.devtech_plus_a_class {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  text-decoration: none !important;
+}
+.container-qty {
+  flex: 0 1 auto;
+  width: 42px;
+  height: 42px;
+  background-color: white;
+  color: black;
+  font-size: 20px;
+}
+.container-cart-button {
+  flex: 0 1 auto;
+  height: 42px;
+  width: calc(100% - 126px);
+  background-color: var(--primary-btn-color);
+  color: white;
+  font-size: 16px;
+}
+.cart_item_quantity {
+  width: 100%;
+  height: 42px;
+  margin-bottom: 0;
+}
+.no-spinners {
+  height: 42px;
+  width: 42px;
+  text-align: center;
+}
+.devtech_minus_class {
+  height: 42px;
+  width: 42px;
+}
+.no-click-styles {
+  text-decoration: none;
+  /* Remove underline */
+}
+.no-click-styles:visited {
+  color: white;
+  /* Inherit the color from the parent element */
+}
+.no-click-styles:focus {
+  color: white;
+  outline: none;
+  /* Inherit the color from the parent element */
+}
