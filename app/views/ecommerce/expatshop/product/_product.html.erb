@@ -26,17 +26,6 @@
     <% end %>
     <div class="add-to-cart-btn-group">
       <% if item.in_stock? %>
-        
-        <!-- 
-        <button id=<%= "devtech_minus_#{item.id}" %>>-</button>
-        <p class="quantity" id="devtech_quantity">1</p>
-        
-        
-        <button>
-          <i class="fa-solid fa-cart-shopping"></i>ADD TO CART
-        </button>
-        <button>+</button>
-        -->
         <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart-form", id: "new_cart_item_#{item.id}" } do |f| %>
           <div class="add-to-cart-btn-container">
             

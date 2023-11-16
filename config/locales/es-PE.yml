@@ -125,7 +125,7 @@ es-PE:
     expatshop:
       product:
         show:
-          add_to_cart: "Agr Carrito"
+          add_to_cart: "Agregar al Carrito"
           alert_me: "Alertarme cuando haya Stock"
           categories: "Categorías: "
           out_of_stock: "Fuera de Stock"

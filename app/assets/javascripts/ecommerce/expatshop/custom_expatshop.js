@@ -20,6 +20,7 @@ $(function () {
     ],
   });
 });
+
 // featured products slider
 $(function () {
   $(".featured-product-slider").slick({
@@ -41,6 +42,7 @@ $(function () {
     ],
   });
 });
+
 // testimonial slider
 $(function () {
   $(".testimonial-slider").slick({
@@ -158,6 +160,28 @@ $(document).ready(function () {
         window.location.href = url + "&lang=es-PE"
       }
     }
+  });
+
+  // related products slider
+  $(function () {
+    $(".related-product-slider").slick({
+      dots: true,
+      infinite: true,
+      speed: 300,
+      slidesToShow: 3,
+      slidesToScroll: 3,
+      responsive: [
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 4,
+            infinite: true,
+            dots: true,
+          },
+        },
+      ],
+    });
   });
 
 

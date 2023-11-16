@@ -169,3 +169,19 @@
   outline: none;
   /* Inherit the color from the parent element */
 }
+.out_of_stock {
+  display: none;
+}
+.max-360 {
+  max-width: 360px;
+}
+.desktop-500 {
+  @media (min-width: 800px) {
+    height: 400px;
+    width: 400px;
+  }
+  @media (min-width: 1500px) {
+    height: 500px;
+    width: 500px;
+  }
+}

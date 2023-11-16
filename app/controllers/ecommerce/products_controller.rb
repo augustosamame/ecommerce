@@ -60,6 +60,8 @@ module Ecommerce
       @cart_item = CartItem.new
       @wishlist_item = CartItem.new
 
+      @related_products = Ecommerce::Product.where(category_id: @product.category_id).active.order(:product_order).limit(20)
+
       set_show_meta_tags
 
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
