@@ -1,0 +1,58 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+@media (max-width: 768px) {
+  .cart-page {
+    padding-bottom: 40px;
+  }
+  .cart-desktop > .row {
+    border-bottom: 1px solid var(--form-border-color);
+    margin-bottom: 45px;
+  }
+  .cart-desktop > .row > .col-xs-6 p {
+    font-weight: 500;
+    margin: 0;
+  }
+  .cart-desktop > .row > .col-xs-6 span {
+    color: #888888;
+  }
+  .quantity-btn {
+    width: 100%;
+    margin-bottom: 7px;
+  }
+  .quantity-btn button {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .quantity-btn span {
+    -webkit-box-flex: 2;
+    -ms-flex-positive: 2;
+    flex-grow: 2;
+    text-align: center;
+  }
+  .cart-desktop .row .col-xs-6.col-xs-offset-4 p {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--black-color);
+  }
+  .cart-desktop .row .col-xs-6.col-xs-offset-4 span {
+    font-weight: 400;
+    margin-right: 13px;
+  }
+  .cart-desktop .row .col-xs-6.col-xs-offset-4 .quantity-btn span {
+    margin: 0;
+  }
+  .cart-info div p {
+    font-size: 18px;
+  }
+  .cart-info-container .checkout-btn.main-btn {
+    font-size: 18px;
+  }
+}
