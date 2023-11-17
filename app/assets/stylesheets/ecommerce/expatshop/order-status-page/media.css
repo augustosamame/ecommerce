@@ -1,0 +1,54 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+@media (max-width: 768px) {
+  .order-status {
+    padding: 26px 0 30px;
+  }
+  .order-status p {
+    font-size: 14px;
+  }
+  .order-status form .order-status-payment {
+    padding: 15px;
+    width: 90%;
+  }
+  .order-status form button {
+    padding: 15px;
+    font-size: 14px;
+    width: 90%;
+  }
+  .order-status-order-details .container-fluid {
+    padding: 0;
+  }
+  .order-status-order-details table {
+    background-color: white;
+  }
+  .order-status-order-details table tbody tr th {
+    padding-top: 33px;
+  }
+  .order-status-order-details table thead tr th,
+  .order-status-order-details table tbody tr th:first-child .row p,
+  .order-status-order-details table tbody tr th {
+    font-size: 14px;
+  }
+  .order-status-order-details table thead tr th {
+    padding: 15px 18px;
+  }
+  .order-status-order-details table tbody tr th:first-child {
+    padding-left: 15px;
+  }
+  .order-status-order-details table tbody tr th:last-child {
+    padding-right: 15px;
+  }
+  .order-status-order-details .quantity-btn {
+    width: 50%;
+  }
+  .order-status-order-details button {
+    font-size: 14px;
+    margin: 0 0 30px;
+  }
+}

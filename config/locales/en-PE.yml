@@ -80,7 +80,7 @@ en-PE:
       stage_delivered: "Delivered"
       stage_closed: "Closed"
       stage_void: "Void"
-      payment_stage_unpaid: "UNPAID"
+      payment_stage_unpaid: "Unpaid"
       payment_stage_paid: "Paid"
       payment_stage_refunded: "Refunded"
       payment_stage_void: "Void"
@@ -327,7 +327,7 @@ en-PE:
           clipboard_message: "Link copied to Clipboard"
       address:
         index:
-          title: "My Addresses"
+          title: "Delete Shipping Address"
       order:
         show:
           order: "Order"
@@ -337,10 +337,13 @@ en-PE:
           shipping: "Shipping"
           invoice: "Invoice"
           pay_in_soles: "Pay in soles"
+          pay_in_dollars: "Pay in dollars"
+          try_to_pay_now: "Try to pay now"
           pay_with_cc: "Pay with Credit Card Now"
           not_yet_invoiced: "Not Yet Invoiced"
           manual_payment_instructions: "Manual Payment Instructions"
           order_details: "Order Details"
+          product: "Product"
           image: "Image"
           price: "Price"
           quantity: "Quantity"
@@ -348,6 +351,8 @@ en-PE:
           my_orders: "My Orders"
           order_not_placed: "ERROR: Order Not Placed"
           points_won: "Points Won"
+          not_yet_shipped: "Not Yet Shipped"
+          see_invoice: "See Invoice"
         index:
           title: "My Orders"
           date: "Date"
@@ -356,6 +361,7 @@ en-PE:
           total: "Total"
           show: "Show"
           cancel: "Cancel"
+          my_order: "My Order"
       wishlist:
         show:
           title: "Wishlist"

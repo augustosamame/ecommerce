@@ -75,7 +75,7 @@ es-PE:
       stage_closed: "Completado"
       stage_void: "Anulado"
       payment_stage_paid: "Pagado"
-      payment_stage_unpaid: "AÚN NO PAGADO"
+      payment_stage_unpaid: "Aún No Pagado"
       payment_stage_refunded: "Pago Devuelto"
       payment_stage_void: "Pago Anulado"
       today_afternoon: "hoy en la tarde (martes a viernes)"
@@ -92,7 +92,7 @@ es-PE:
         item_deleted: "Ítem eliminado"
     addresses:
       index:
-        title: "Mis Direcciones"
+        title: "Eliminar Dirección"
         date: "Fecha"
         name: "Tipo"
         street: "Dirección"
@@ -232,11 +232,14 @@ es-PE:
           payment: "Pago"
           shipping: "Costo de Envío"
           pay_in_soles: "Pagar en soles"
+          pay_in_dollars: "Pagar en dólares"
+          try_to_pay_now: "Intentar pagar ahora"
           pay_with_cc: "Pagar con Tarjeta Ahora"
           invoice: "Comprobante"
           not_yet_invoiced: "Comprobante aún no generado"
           manual_payment_instructions: "Instrucciones Para Pago Manual"
           order_details: "Detalles del Pedido"
+          product: "Producto"
           image: "Imagen"
           price: "Precio"
           quantity: "Cantidad"
@@ -244,6 +247,8 @@ es-PE:
           my_orders: "Mis Pedidos"
           order_not_placed: "ERROR: El Pedido no fue creado"
           points_won: "Puntos Ganados"
+          not_yet_shipped: "Aún no ha sido enviado"
+          see_invoice: "Ver Comprobante"
         index:
           title: "Mis Pedidos"
           date: "Fecha"
@@ -252,6 +257,7 @@ es-PE:
           total: "Total"
           show: "Ver"
           cancel: "Anular"
+          my_order: "Mi Pedido"
       cart:
         show:
           cart_title: "Carrito de Compras"

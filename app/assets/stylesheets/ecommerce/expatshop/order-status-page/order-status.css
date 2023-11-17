@@ -1,0 +1,85 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+.order-status {
+  padding: 98px 0 67px;
+}
+.order-status p {
+  font-size: 22px;
+  font-weight: 500;
+}
+.order-status .order-status-details {
+  margin-bottom: 24px;
+}
+.order-status .order-status-details p {
+  border-bottom: 1.5px solid #dcdcdc;
+  padding-bottom: 10px;
+}
+.order-status form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+.order-status form .order-status-payment {
+  padding: 28px 17px;
+  border: 1px solid #dcdcdc;
+  width: 50%;
+  margin-bottom: 30px;
+}
+.order-status form .order-status-payment input {
+  width: 17px;
+}
+.order-status form .order-status-payment .order-status-payment-details {
+  width: 100%;
+}
+.order-status form .order-status-payment .order-status-payment-details p {
+  margin: 0 0 0 17px;
+}
+.order-status form .order-status-payment .order-status-payment-details span {
+  color: var(--primary-btn-color);
+}
+.order-status form button {
+  width: 50%;
+  border: 0;
+  font-size: 22px;
+  background: var(--primary-btn-color);
+  font-weight: 500;
+  padding: 24px 0;
+  color: var(--white-color);
+  border-radius: 5px;
+}
+.order-status-order-details {
+  padding: 0;
+}
+.order-status-order-details h3 {
+  font-size: 38px;
+  font-weight: 500;
+}
+.order-status-order-details button {
+  padding: 10px 50px;
+  font-size: 22px;
+  font-weight: 500;
+  border-radius: 5px;
+  margin: 45px 0 55px;
+}
+.order-status-order-details-button {
+  padding: 10px 50px;
+  font-size: 22px;
+  font-weight: 500;
+  border-radius: 5px;
+  margin: 45px 0 55px;
+}

@@ -1,42 +1,50 @@
-<section class="noo-page-heading eff">
-  <div class="container">
-    <div class="noo-heading-content">
-      <h1 class="page-title eff"><%= t('.title') %></h1>
-      <div class="noo-page-breadcrumb eff">
-        <a href="./" class="home">ExpatShop</a>/<span><%= t('.title') %></span>
+<main>
+  <!-- cart label -->
+  <section class="recommendation-label">
+    <div>
+      <h3><%= t('.title') %></h3>
+    </div>
+  </section>
+  <section class="orders delete-address">
+    <div class="container">
+      <!-- order table for desktop -->
+      <table class="hidden-xs">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th><%= t('.date') %></th>
+            <th><%= t('.name') %></th>
+            <th><%= t('.street') %></th>
+            <th><%= t('.delete') %></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <%= content_tag_for(:tr, @addresses) do |address| %>
+            <tr>
+              <th>
+                <p><%= address.id %></p>
+              </th>
+              <th>
+                <p><%= address.created_at.localtime.strftime("%d-%b-%y") %></p>
+              </th>
+              <th>
+                <p><%= address.name %></p>
+              </th>
+              <th>
+                <p><%= "#{address.street}, #{address.district}" %></p>
+              </th>
+              <th>
+                <%= button_to "", address_path(address), method: :delete, data: { confirm: t('.are_you_sure') }, :class => 'address-delete-button' do %>
+                  <%= fa_icon 'trash lg'%>
+                <% end %>      
+              </th>
+            </tr>
+          <% end %>
+          </table>
+        </div>
+        
       </div>
     </div>
-  </div>
-</section>
-<div class="main">
-  <div class="commerce commerce-account noo-shop-main">
-<div class="container expatshop-store-table-container">
-  <div class="row" style="margin-top: 50px;">
-  <h2><a href="<%= addresses_path %>"><%= t('.title') %></a></h2>
-<div class="table-responsive">
-  <table class="table table-bordered table-hover" style="display: block; border-collapse: collapse;">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th><%= t('.date') %></th>
-        <th><%= t('.name') %></th>
-        <th><%= t('.street') %></th>
-        <th><%= t('.delete') %></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <%= content_tag_for(:tr, @addresses) do |address| %>
-        <td style="white-space: normal;"><%= address.id %></td>
-        <td style="white-space: normal;"><%= address.created_at.localtime.strftime("%d-%b-%y") %></td> 
-        <td style="white-space: normal;"><%= address.name %></td>
-        <td style="white-space: normal;"><%= "#{address.street}, #{address.district}" %></td>
-        <td style="white-space: normal;"><%= button_to t('.delete'), address_path(address), method: :delete, data: { confirm: t('.are_you_sure') }, :class => 'address-delete-button' %></td>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-</div>
-</div>
-</div>
-</div>
+  </section>
+</main>

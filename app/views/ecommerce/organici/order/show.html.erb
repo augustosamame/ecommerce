@@ -142,11 +142,11 @@
 
 Culqi.publicKey = "<%= Culqi.public_key %>";
 Culqi.orderKey = "<%= Culqi.secret_key %>";
-var culqi_payment_amount = $('#pay_in_soles').attr('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+var culqi_payment_amount = $('#pay_in_soles').prop('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
 
 Culqi.settings({
   title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
-  currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+  currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
   description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@order.id}" %>',
   amount: Number(culqi_payment_amount),
   order: '<%= @order.id %>'
@@ -154,11 +154,11 @@ Culqi.settings({
 
 $('#retry-pay-now-button').on('click', function(e) {
   // Abre el formulario con las opciones de Culqi.settings
-  var culqi_payment_amount = $('#pay_in_soles').attr('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+  var culqi_payment_amount = $('#pay_in_soles').prop('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
 
   Culqi.settings({
     title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
-    currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+    currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
     description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@order.id}" %>',
     amount: culqi_payment_amount
   });
@@ -190,14 +190,14 @@ function culqi() {
   if(Culqi.token) { // ¡Token creado exitosamente!
       // Get the token ID:
       var token = Culqi.token;
-      var culqi_payment_amount = $('#pay_in_soles').attr('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+      var culqi_payment_amount = $('#pay_in_soles').prop('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
       $.post(
         "checkout/pay_order_culqi_checkout",
         {
         culqi_token: token,
         amount: culqi_payment_amount,
         culqi_payment_amount: culqi_payment_amount,
-        currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+        currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
         order_id: '<%= "#{@order.id}" if @order %>'
         },
         function(data) {

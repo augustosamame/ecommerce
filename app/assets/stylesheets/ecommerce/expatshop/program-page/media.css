@@ -1,0 +1,26 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+@media (max-width: 768px) {
+  .orders .program-details {
+    margin: 16px 0;
+  }
+  .orders .program-details p {
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+  .orders table th {
+    font-size: 14px !important;
+    font-weight: 400;
+  }
+  .orders table th p {
+    margin: 0;
+  }
+  .orders table tbody tr th {
+    background-color: var(--white-color);
+  }
+}
