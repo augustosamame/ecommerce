@@ -1,0 +1,382 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+.checkout {
+  padding-top: 67px;
+}
+.checkout h3 {
+  font-size: 40px;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+.checkout p {
+  font-size: 24px;
+  font-weight: 500;
+}
+.checkout label {
+  font-weight: 500;
+  font-size: 24px;
+  margin-right: 6px;
+}
+.checkout .have-address {
+  margin-bottom: 30px;
+}
+.checkout form select,
+.checkout .new-address .btn-group textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  width: 100%;
+  font-size: 24px;
+  padding: 10px 7px;
+  border-radius: 5px;
+  border-color: #8e8b8b;
+  margin-bottom: 40px;
+  position: relative;
+  background: transparent;
+}
+.checkout .have-address form::after,
+.checkout .new-address .btn-group:first-child::after,
+.checkout .new-address .btn-group:last-of-type::after {
+  content: "\f078";
+  position: absolute;
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  right: 40px;
+  top: 125px;
+  z-index: -1;
+}
+.checkout-address-button {
+  border: 0;
+  background: var(--label-color);
+  font-size: 20px;
+  font-weight: 500;
+  padding: 10px 58px;
+  margin-right: 75px;
+  border-radius: 5px;
+}
+.checkout .new-address .btn-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+}
+.checkout .new-address .btn-group span {
+  color: var(--primary-btn-color);
+}
+.checkout .new-address .btn-group:first-child:after,
+.checkout .new-address .btn-group:last-of-type:after {
+  top: 55px;
+  right: 25px;
+}
+.checkout .new-address .btn-group textarea {
+  resize: vertical;
+}
+.checkout .new-address button {
+  border: 0;
+  background: var(--primary-btn-color);
+  color: var(--white-color);
+  padding: 12px 42px;
+  font-size: 24px;
+  margin-bottom: 28px;
+}
+.checkout .new-address button + p {
+  color: red;
+}
+.checkout .mini-cart,
+.checkout .pay-in-soles,
+.checkout .coupon,
+.checkout .receipt {
+  background: #f0f3f7;
+  padding: 35px 40px 20px;
+  margin-bottom: 15px;
+}
+.checkout .mini-cart .mini-cart-title {
+  margin-bottom: 23px;
+}
+.checkout .mini-cart .mini-car-items-container {
+  margin-bottom: 32px;
+}
+.checkout .mini-cart .mini-cart-items {
+  background: white;
+  padding: 30px;
+  border: 1px solid #dcdcdc;
+}
+.checkout .mini-cart .mini-cart-items span {
+  color: var(--primary-btn-color);
+}
+.checkout .mini-cart .mini-cart-items .mini-cart-item p:last-of-type {
+  color: #888888;
+}
+.checkout .mini-cart .mini-cart-items p {
+  font-size: 19px;
+}
+.checkout .mini-cart > p {
+  margin-bottom: 25px;
+}
+.checkout .mini-cart > p:nth-child(5),
+.checkout .mini-cart > p:nth-child(6) {
+  border-bottom: 1.5px solid #dcdcdc;
+  padding-bottom: 10px;
+}
+.checkout .mini-cart > p:last-child span,
+.checkout .pay-in-soles span {
+  color: var(--primary-btn-color);
+}
+.checkout .pay-in-soles {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.checkout .pay-in-soles input,
+.checkout .receipt input,
+.checkout .coupon i,
+.checkout .payment input,
+.checkout .payment .internal-process input,
+.checkout .payment .receive-sms input {
+  margin-right: 20px;
+  margin-top: 0;
+  width: 17px;
+  height: 17px;
+}
+.checkout .pay-in-soles p,
+.checkout .coupon p,
+.checkout .coupon label,
+.checkout .receipt p {
+  margin: 0;
+  font-size: 20px;
+}
+.checkout .pay-in-soles p {
+  width: 100%;
+}
+.checkout .coupon p {
+  margin-bottom: 20px;
+}
+.checkout .coupon form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: center;
+}
+.checkout .coupon form input {
+  border: 1px solid var(--form-border-color);
+  outline: none;
+  padding: 16px;
+  width: 50%;
+}
+.checkout .coupon form button {
+  border: 0;
+  background: var(--label-color);
+  font-size: 18px;
+  padding: 15px 35px;
+  font-weight: 500;
+}
+.checkout .receipt input,
+.checkout .payment .internal-process input,
+.checkout .payment .receive-sms input {
+  position: relative;
+  top: 8px;
+}
+.checkout .receipt div {
+  width: 100%;
+}
+.checkout .receipt p {
+  margin-bottom: 8px;
+}
+.checkout .receipt div button {
+  width: 100%;
+  background-color: var(--label-color);
+  padding: 15px 0;
+  font-size: 22px;
+  font-weight: 500;
+  border: 0;
+}
+.checkout .payment {
+  padding-bottom: 15px;
+  margin-bottom: 0;
+}
+.checkout .payment p,
+.checkout .payment label,
+.checkout .payment .receive-sms p {
+  font-size: 20px;
+}
+.checkout .payment .payment-method {
+  margin-bottom: 50px;
+}
+.checkout .payment .payment-method .payment-img {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  padding-left: 35px;
+  display: flex;
+  margin-top: 10px;
+}
+.checkout .payment .payment-method .yape img {
+  width: 10%;
+}
+.checkout .payment img {
+  
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  margin-right: 15px;
+}
+.checkout .payment .payment-img + p {
+  color: #888888;
+  margin-top: 5px;
+}
+.checkout .payment .internal-process {
+  border-top: 1px solid var(--form-border-color);
+  border-bottom: 1px solid var(--form-border-color);
+  padding: 22px 0;
+}
+.checkout .payment .instructions {
+  margin-bottom: 25px;
+}
+.checkout .payment .instructions p {
+  color: var(--primary-btn-color);
+  margin: 26px 0 8px;
+}
+.checkout .payment .instructions textarea {
+  width: 100%;
+  resize: vertical;
+  height: 68px;
+  border: 0;
+  border-radius: 5px;
+  padding: 15px;
+  outline: none;
+}
+.payment + button {
+  width: 100%;
+  border: 0;
+  background: var(--primary-btn-color);
+  font-size: 26px;
+  padding: 15px 0;
+  color: var(--white-color);
+}
+.nullify-form-control-height {
+  height: auto !important;
+}
+.direction-btn {
+  margin-bottom: 30px;
+}
+.checkout-new-adress-button {
+    border: 0;
+    background: var(--primary-btn-color);
+    color: var(--white-color);
+    padding: 12px 42px;
+    font-size: 24px;
+    margin-bottom: 28px;
+}
+.hide-ok-label {
+  display: none;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+.checkout-p {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--primary-btn-color);
+}
+#map_partial {
+  margin-top: 20px;
+}
+.checkout-p-text {
+  font-size: 24px;
+  font-weight: 500;
+}
+.checkout-p-text-bottom-border {
+  border-bottom: 1.5px solid #dcdcdc;
+  padding-bottom: 10px;
+  padding-top: 15px;
+}
+.coupon-subtotal-hidden {
+  display: none;
+}
+.commerce-checkout-payment {
+  margin-top: 20px;
+}
+
+.pay_in_points_checkbox,
+.pay_in_soles_checkbox,
+.factura_checkbox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px !important;
+  height: 20px!important;
+  border-radius: 50%;
+  border: 2px solid #000;
+  position: relative;
+}
+
+.pay_in_points_checkbox:checked,
+.pay_in_soles_checkbox:checked,
+.factura_checkbox:checked {
+  background-color: #000;
+}
+
+.pay_in_points_checkbox:checked::after,
+.pay_in_soles_checkbox:checked:after,
+.factura_checkbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50%;
+}
+.checkout-pay-in-soles-p, .checkout-pay-in-points-p {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  display: flex;
+}
+#points-amount {
+  color: #333;
+}
+.commerce-checkout-payment {
+  padding: 20px;
+}
+.checkout-receipt-div {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  width: 100%;
+}
+.checkout-receipt-button {
+  width: 100% !important;
+  height: auto !important;
+  background-color: var(--label-color);
+  padding: 15px 0;
+  font-size: 22px;
+  font-weight: 500;
+  border: 0;
+  margin-bottom: 0px !important
+}
+.checkout-receipt-div-inner {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+}
+.checkout .payment {
+  background: #f0f3f7;
+  padding: 35px 40px 20px;
+  margin-bottom: 15px;
+}

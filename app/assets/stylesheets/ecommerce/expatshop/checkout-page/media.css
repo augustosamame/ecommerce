@@ -1,0 +1,98 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+@media (max-width: 768px) {
+  .checkout {
+    padding-top: 15px;
+    padding-bottom: 27px;
+  }
+  .checkout .container-fluid {
+    padding: 0;
+  }
+  .checkout .container-fluid .col-md-6:nth-child(2) {
+    padding: 0;
+  }
+  .checkout h3 {
+    font-size: 33px;
+  }
+  .checkout p {
+    font-size: 22px;
+  }
+  .checkout label,
+  .checkout .receipt div button {
+    font-size: 20px !important;
+  }
+  .checkout form select {
+    font-size: 16px;
+  }
+  .checkout .have-address form::after {
+    top: 110px;
+  }
+  .checkout .have-address .direction-btn {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+  .checkout .have-address form button {
+    font-size: 16px;
+    margin-right: 6px;
+    padding: 10px 30px;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+  }
+  .checkout .mini-cart,
+  .checkout .pay-in-soles,
+  .checkout .coupon,
+  .checkout .receipt,
+  .checkout .payment {
+    padding-top: 15px;
+    padding-bottom: 20px;
+  }
+  .checkout .container-fluid .mini-cart > p:first-child {
+    margin-bottom: 15px;
+    font-size: 28px;
+  }
+  .checkout .container-fluid .mini-cart p {
+    font-size: 17px;
+  }
+  .checkout .container-fluid .mini-cart .mini-cart-items p {
+    font-size: 12px;
+  }
+  .checkout .coupon form input {
+    padding: 7px;
+    width: 39%;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    margin: 0 10px;
+  }
+  .checkout .coupon form button {
+    font-size: 12px;
+    padding: 9px 35px;
+  }
+  .checkout .receipt div button {
+    padding: 7px 0;
+  }
+  .checkout .payment .payment-method {
+    margin-bottom: 30px;
+  }
+  .checkout .payment p,
+  .checkout .payment label,
+  .checkout .payment .receive-sms p {
+    font-size: 13px;
+  }
+  .payment + button {
+    font-size: 18px;
+  }
+}

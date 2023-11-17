@@ -84,6 +84,8 @@ SimpleForm.setup do |config|
   # ID to add for error notification helper.
   # config.error_notification_id = nil
 
+  config.label_text = lambda { |label, required, explicit_label| "#{label}" }
+
   # Series of attempts to detect a default label method for collection.
   # config.collection_label_methods = [ :to_label, :name, :title, :to_s ]
 

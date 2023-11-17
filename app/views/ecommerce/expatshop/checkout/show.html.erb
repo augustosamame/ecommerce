@@ -1,304 +1,258 @@
-  <section class="noo-page-heading eff">
-    <div class="container">
-      <div class="noo-heading-content">
-        <h1 class="page-title eff">Checkout</h1>
-        <div class="noo-page-breadcrumb eff">
-          <a href="./" class="home"><%= Ecommerce.site_name %></a>/<span>Checkout</span>
-        </div>
-      </div>
-    </div>
-  </section>
-  <div class="main">
-    <div class="commerce commerce-page commerce-checkout">
-      <div class="container">
-        <div class="row">
-          <div class="noo-main col-md-8">
-            <div class="customer-details">
-              <div class="commerce-address-fields">
-                <h3><%= t('.shipping_address') %></h3>
-                <% if @checkout_addresses.count > 0 %>
-                  <div class="form-row form-row">
-                    <label>
-                      <h4><%= t('.pick_address') %></h4>
-                    </label>
-                  </div>
-                  <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
-                <% end %>
-                <button type="button" class="btn button" id="new-address-button" style="margin-bottom: 30px;" ><%= t('.new_address') %> </button>
-                <button type="button" class="btn button" id="delete-address-button" style="margin-bottom: 30px; margin-left: 30px; background-color:#bf0404;"><%= t('.delete_address') %></button>
-                <div id="new-address-container" style="display: none;">
-                  <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="order-review-wrap">
-              <h3><%= t('.your_order') %></h3>
-              <div class="commerce-checkout-review-order">
-                <table class="shop_table commerce-checkout-review-order-table">
-                  <thead>
-                    <tr>
-                      <th class="product-name"><%= t('.product') %></th>
-                      <th class="product-total"><%= t('.total') %></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% @cart.cart_items.each do |item| %>
-                      <tr class="cart_item">
-                        <td class="product-name">
-                          <%= item.product.name %>
-                          <strong class="product-quantity">× <%= item.quantity %></strong>
-                        </td>
-                        <td class="product-total">
-                          <span class="amount"><%= session_price(item.line_total(@current_user)) %></span>
-                        </td>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                  <tfoot>
-                    <tr class="cart-subtotal">
-                      <th><%= t('.subtotal') %></th>
-                      <td><strong><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="subtotal"><%= @cart_subtotal %></span></strong></td>
-                    </tr>
-                    <tr class="cart-subtotal">
-                      <th><%= t('.shipping') %></br>
-                      <span id="free-shipping-text" class="amount" style="color: red; font-size: 12px; display: none;"><%= t('.free_shipping') %></span></th>
-                      <td><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="shipping-amount">0.00</span></td>
-                    </tr>
-                    <tr class="cart-subtotal coupon-subtotal-hidden" id="coupon-subtotal-id">
-                      <th><%= t('.coupon_line') %></th>
-                      <td><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="coupon-amount">0.00</span></td>
-                    </tr>
-                    <tr class="order-total">
-                      <th><%= t('.total') %></th>
-                      <td><strong><span class="amount curr-sym" style="display: inline;"><%= session_currency_symbol %></span><span class="amount" style="display: inline;" id="payment-amount"><%= @cart_subtotal %></span></strong></td>
-                    </tr>
-                  </tfoot>
-                </table>
-
-                <% if current_user.try(:points) > 0 %>
-                  <div class="commerce-checkout-payment">
-                    <ul class="payment_methods">
-                      <li class="wc_payment_method" style: "margin-bottom: 0px;">
-                        <%= check_box_tag("pay_in_points", "0", false, class: "pay_in_points_checkbox") %>
-                        <label for="pay_in_points" style="font-size: 12px;">
-                          <%= t('.pay_in_points') %>
-                          <label style="font-size: 14px; margin-left: 40px; padding-right: 0px;"></label>
-                          <label id="points-amount" style="font-size: 14px;"><%= current_user.try(:points) %></label>
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                <% end %>
-
-                <div class="commerce-checkout-payment">
-                  <ul class="payment_methods">
-                    <li class="wc_payment_method" style: "margin-bottom: 0px;">
-                      <%= check_box_tag("pay_in_soles", "0", false, class: "pay_in_soles_checkbox") %>
-                      <label for="pay_in_soles" style="font-size: 12px;">
-                        <%= t('.pay_in_soles') %>
-                        <label style="font-size: 14px; margin-left: 40px; padding-right: 0px;">S/. </label>
-                        <label id="payment-amount-in-soles" style="font-size: 14px;"><%= @cart_subtotal * @exchange_rate %></label>
-                      </label>
-                    </li>
-                  </ul>
-                </div>
-
-                <% if @dni_required %>
-                <div class="commerce-checkout-payment">
-                  <ul class="payment_methods">
-
-                    <li class="wc_payment_method payment_method_card" style="margin-left: 10px;">
-                      <p> <%= t('.text_over_700') %> </p>
-
-                      <div class="payment_box payment_method_cheque">
-
-                          <label for="dni_required">
-                            <%= t('.docs_over_700') %>
-                          </label>
-                          <input type="text" name="dni_required" id="dni-required" value="<%= @current_doc_id %>" />
-
-                      </div>
-
-                    </li>
-                  </ul>
-                </div>
-                <% end %>
-
-                <% if @coupons_active %>
-
-                  <% unless @always_on_coupon %>
-                    <div class="commerce-checkout-payment">
-                      <ul class="payment_methods">
-
-                          <li class="wc_payment_method">
-
-                            <div class="payment_box payment_method_cheque">
-
-                                <label for="coupon_code" style="font-size: 12px;">
-                                  <%= t('.enter_coupon') %>
-                                </label>
-
-                                <input type="text" name="coupon_code" id="coupon-code" />
-                                <button type="button" class="btn btn-info coupon-apply"><%= t('.apply_coupon') %></button>
-                                <label id="coupon-error" style="font-size: 12px; color: red;"></label>
-
-                            </div>
-
-                          </li>  
-                        </ul>
-                      </div>
-                    <% end %>  
-                <% end %>
-
-
-                <div class="commerce-checkout-payment">
-                  <ul class="payment_methods">
-
-                    <li class="wc_payment_method payment_method_card">
-                      <%= check_box_tag("want_factura", "0", @info_factura_available, class: "factura_checkbox", id: "factura-checkbox") %>
-
-                      <label for="want_factura">
-                        <%= t('.i_need_a_factura') %>
-                      </label>
-                      <div class="payment_box payment_method_cheque">
-
-                        <% if @info_factura_available %>
-                           <p><%= "RUC: #{@factura_vat}" %></p>
-                           <p><%= "Razón Social: #{@factura_razon_social}" %></p>
-                           <p><%= "#{t('.address')}: #{@factura_address}, #{@factura_city}" %></p>
-                         <% else %>
-                            <p><%= link_to t('.click_here_to_setup_factura_info'), main_app.edit_user_registration_path(origin: "checkout"), style: "color: red; font-weight: bold;" %></p>
-                         <% end %>
-                      </div>
-
-                    </li>
-                  </ul>
-                </div>
-
-                <div class="commerce-checkout-payment">
-                <form id="radio_form">
-                  <ul class="payment_methods">
-
-                    <% if @payment_credit_card_culqi %>
-                    
-
-                    <li class="wc_payment_method payment_method_card">
-                      <input id="payment_method_card" type="radio" class="input-radio" name="payment_method" value="card" checked="checked" />
-                      <label for="payment_method_card">
-                        <%= t('.credit_debit_card') %>
-                      </label>
-                      <label for="payment_method_card">
-                        <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row1.png" alt="Credit Card Images">
-                        <img src="https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/cards_row2.png" alt="Credit Card Images">
-                      </label>
-                    </li>
-
-                    <li class="wc_payment_method payment_method_card">
-                      <input id="payment_method_card" type="radio" class="input-radio" name="payment_method" value="yape"/>
-                      <label for="payment_method_card">
-                      
-                      </label>
-                      <label for="payment_method_card">
-                        <img src="https://devtechperu-expatshop-prod.s3.amazonaws.com/yape_logo.png" alt="Credit Card Images" style="height: 100px;">
-
-                      </label>
-                    </li>
-
-                    <li class="wc_payment_method payment_method_card">
-                      <input id="payment_method_card" type="radio" class="input-radio" name="payment_method" value="card" />
-                      <label for="payment_method_card">
-                        <%= t('.mobile_banking') %>
-                      </label>
-                      <label for="payment_method_card">
-                        <img src="https://devtechperu-expatshop-prod.s3.amazonaws.com/banca_movil.png" alt="Credit Card Images">
-
-                      </label>
-                    </li>
-
-                    <li class="wc_payment_method payment_method_card">
-                      <input id="payment_method_card" type="radio" class="input-radio" name="payment_method" value="card" />
-                      <label for="payment_method_card">
-                        Pagoefectivo
-                      </label>
-                      <label for="payment_method_card">
-                        <img src="https://devtechperu-expatshop-prod.s3.amazonaws.com/logos_culqi.png" alt="Credit Card Images" style="height: 160px; margin-left: 30px;">
-
-                      </label>
-                    </li>
-
-                    <% end %>
-
-                    <% if @payment_bank_deposit %>
-
-                    <li>
-                      <input id="payment_method_bank" type="radio" class="input-radio" name="payment_method" value="manual" />
-                      <label for="payment_method_bank">
-                        <%= t('.bank_deposit') %>
-                      </label>
-                      <div class="payment_box payment_method_cheque">
-                        <p><%= @payment_bank_deposit.pre_message %></p>
-                      </div>
-                    </li>
-
-                    <% end %>
-
-                    <% if @payment_manual %>
-
-                    <li>
-                      <input id="payment_method_manual" type="radio" class="input-radio" name="payment_method" value="manual" />
-                      <label for="payment_method_manual">
-                        <%= t('.manual_payment') %>
-                      </label>
-                      <div class="payment_box payment_method_cheque">
-                        <p><%= @payment_manual.pre_message %></p>
-                      </div>
-                    </li>
-
-                    <% end %>
-
-                  </ul>
-                  </form>
-                </div>
-
-                <div class="commerce-checkout-payment">
-                  <ul class="payment_methods">
-
-                    <li class="wc_payment_method payment_method_card">
-                      <label for="delivery_instructions" style="font-size: 12px;">
-                        <%= t('.delivery_instructions') %>
-                      </label>
-                      <textarea rows="2" type="text" name="delivery_instructions" id="delivery-instructions">
-                      </textarea>
-                    </li>
-                  </ul>
-                </div>
-
-                <button onclick="return gtag_report_conversion()" class="button mt-5" id ="pay-now-button"><%= t('.place_order') %></button>
-
-                <div class="commerce-checkout-payment">
-                  <ul class="payment_methods">
-
-                    <li class="wc_payment_method" id="accept-marketing-wrapper" style: "margin-bottom: 0px; display: flex !important;">
-                      <%= check_box_tag("accept_marketing", "1", true, class: "pay_in_soles_checkbox") %>
-                      <label for="accept_marketing" style="font-size: 12px;">
-                        <%= t('.accept_marketing') %>
-                      </label>
-
-
-                    </li>
-                  </ul>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+<main>
+<!-- cart label -->
+<section class="recommendation-label">
+  <div>
+    <h3>CHECKOUT</h3>
   </div>
+</section>
+<!-- cart -->
+<section class="checkout">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <h3><%= t('.shipping_address') %></h3>
+        <div class="have-address">
+          <p><%= t('.pick_address') %></p>
+
+          <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
+        </div>
+        <div class="direction-btn">
+          <button id="new-address-button" class="checkout-address-button"><%= t('.new_address') %></button>
+          <button id="delete-address-button" class="checkout-address-button"><%= t('.delete_address') %></button>
+        </div>
+
+        <div id="new-address-container" style="display: none;">
+          <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <p class="hidden-xs"><%= t('.your_order') %></p>
+        <div class="mini-cart">
+          <p class="visible-xs"><%= t('.your_order') %></p>
+          <div class="mini-cart-title d-flex space-between">
+            <p><%= t('.products') %></p>
+            <p>TOTAL</p>
+          </div>
+          <div class="mini-car-items-container">
+            <% @cart.cart_items.each do |item| %>
+              <div class="mini-cart-items d-flex space-between">
+                <div class="mini-cart-item">
+                  <p><%= item.product.name %> <span> (x<%= item.quantity %>) </span></p>
+                  <% if item.product.weight == 0 %>
+                    <p></p>
+                  <% else %>
+                    <p><%= item.product.weight %>g</p>
+                  <% end %>
+                </div>
+                <p><%= session_price(item.line_total(@current_user)) %></p>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border">
+            <%= t('.subtotal_dollars') %>
+            <div>
+              <span style="display: inline;">
+                <%= session_currency_symbol %>
+              </span>
+              <span id="subtotal" style="display: inline;">
+                <%= @cart_subtotal %>
+              </span>
+            </div>
+          </div>
+          <!--
+          <p class="d-flex space-between">
+            <%= t('.subtotal_soles') %> <span><%= session_currency_symbol %><%= @cart_subtotal %></span>
+          </p>
+          -->
+
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border">
+            <%= t('.shipping') %>
+            <span id="free-shipping-text" class="amount" style="color: red; font-size: 24px; display: none;"><%= t('.free_shipping') %></span>
+            <div>
+              <span style="display: inline;">
+                <%= session_currency_symbol %>
+              </span>
+              <span id="shipping-amount" style="display: inline;">
+                0.00
+              </span>
+            </div>
+          </div>
+
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border coupon-subtotal-hidden" id="coupon-subtotal-id">
+            <%= t('.coupon_line') %>
+            <div>
+              <span style="display: inline;">
+                <%= session_currency_symbol %>
+              </span>
+              <span id="coupon-amount" style="display: inline;">
+                0.00
+              </span>
+            </div>
+          </div>
+
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border">
+            <%= t('.total_dollars') %>
+            <div>
+              <span style="display: inline;">
+                <%= session_currency_symbol %>
+              </span>
+              <span id="payment-amount" style="display: inline;">
+                <%= @cart_subtotal %>
+              </span>
+            </div>
+          </div>
+
+          <% if current_user.try(:points) > 0 %>
+
+            <div class="d-flex space-between" style="margin-top: 20px;">
+              <div class="checkout-pay-in-points-p">
+                <%= check_box_tag("pay_in_points", "0", false, class: "pay_in_points_checkbox") %>
+                <label for="pay_in_points" style="font-size: 20px; margin-left: 20px; margin-bottom: 0px;">
+                <%= t('.pay_in_points') %>
+                
+                <label style="font-size: 20px; color: #333">( <span id="points-amount"><%= current_user.try(:points) %></span> pts )</label>
+              </label>
+              </div>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+        <div class="pay-in-soles d-flex space-between" style="padding-bottom: 30px;">
+          <div class="checkout-pay-in-soles-p d-flex" style="align-items: center;">
+            <%= check_box_tag("pay_in_soles", "0", false, class: "pay_in_soles_checkbox") %>
+            <%= t('.pay_in_soles') %>
+          </div>
+          <div>
+            <div class="checkout-pay-in-soles-p">
+              <span>S/.</span>
+              <span id="payment-amount-in-soles">
+                <%= @cart_subtotal * @exchange_rate %>
+              </span>
+            </div>
+          </div>
+        </div>
+
+         <% if @dni_required %>
+          <div class="commerce-checkout-payment">
+            <ul class="payment_methods">
+
+              <li class="wc_payment_method payment_method_card" style="margin-left: 10px;">
+                <p style="font-size: 20px;"> <%= t('.text_over_700') %> </p>
+
+                <div class="payment_box payment_method_cheque">
+
+                    <label style="font-size: 20px; margin-right: 20px;" for="dni_required">
+                      <%= t('.docs_over_700') %>
+                    </label>
+                    <input type="text" name="dni_required" id="dni-required" value="<%= @current_doc_id %>" />
+
+                </div>
+
+              </li>
+            </ul>
+          </div>
+        <% end %>
+
+        <% if @coupons_active %>
+          <% unless @always_on_coupon %>
+
+            <div class="coupon">
+              <p><%= fa_icon "tags" %><%= t('.enter_coupon_1') %></p>
+              <form action="">
+                <label for="coupon-code"><%= t('.enter_coupon_2') %></label>
+                <input type="text" name="" id="coupon-code" />
+                <button class="coupon-apply"><%= t('.apply_coupon') %></button>
+                <label id="coupon-error" style="font-size: 16px; color: red; margin-left: 10px;"></label>
+              </form>
+            </div>
+
+          <% end %>  
+        <% end %>
+
+         <div class="pay-in-soles d-flex space-between" style="padding-bottom: 20px;">
+          <div class="checkout-receipt-div">
+            <div class="checkout-receipt-div-inner">
+              <%= check_box_tag("pay_in_soles", "0", false, class: "factura_checkbox", id: "factura-checkbox") %>
+              <%= t('.i_need_a_factura') %>
+            </div>
+            <div style="margin-left: 30px;">
+              <% if @info_factura_available %>
+                <p><%= "RUC: #{@factura_vat}" %></p>
+                <p><%= "Razón Social: #{@factura_razon_social}" %></p>
+                <p><%= "#{t('.address')}: #{@factura_address}, #{@factura_city}" %></p>
+              <% else %>
+                <%= button_to t('.click_here_to_setup_factura_info'), main_app.edit_user_registration_path(origin: "checkout"), method: :get, class: "checkout-receipt-button" %>
+                
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <form id="radio_form">
+          <div class="payment">
+            <p style="margin-bottom: 25px;"><%= t('.select_payment') %></p>
+
+              <div class="payment-method">
+                <input type="radio" name="payment_method" value="card" id="payment_method_card" />
+                <label for="credit"><%= t('.credit_debit_card') %></label>
+                <div class="payment-img">
+                  <%= image_tag "ecommerce/img/expatshop/credit_card_icons.png", class: "img-responsive" %>
+                </div>
+
+              </div>
+
+              <div class="payment-method">
+                <input type="radio" name="payment_method" value="yape" id="payment_method_card" />
+                <label for="credit"><%= t('.yape') %></label>
+                <div class="payment-img" style="width: 120px;">
+                  <%= image_tag "ecommerce/img/expatshop/yape.png", class: "img-responsive yape-img" %>
+                </div>
+              </div>
+
+              <div class="payment-method">
+                <input type="radio" name="payment_method" value="card" id="payment_method_card" />
+                <label for="credit"><%= t('.mobile_banking') %></label>
+                <div class="payment-img">
+                  <%= image_tag "ecommerce/img/expatshop/bancos.png", class: "img-responsive" %>
+                </div>
+                <div class="payment-img" style="width: 161px; margin: 15 0 0 20;">
+                  <%= image_tag "ecommerce/img/expatshop/via_pagoefectivo.png", class: "img-responsive" %>
+                </div>
+              </div>
+
+        
+              <div class="internal-process d-flex">
+                <input type="radio" name="payment_method" id="payment_method_manual" value="manual" />
+                <div>
+                  <p><%= t('.manual_payment') %></p>
+                  <p><%= @payment_manual.pre_message %></p>
+                </div>
+              </div>
+
+            <div class="instructions">
+              <p><%= t('.delivery_instructions') %></p>
+              <textarea name="" id="" rows="6"></textarea>
+            </div>
+            <div class="receive-sms d-flex">
+              <input type="checkbox" name="" id="accept_marketing" />
+              <p>
+                <%= t('.accept_marketing') %>
+              </p>
+            </div>
+          </div>
+          <button id ="pay-now-button" onclick="return gtag_report_conversion()"><%= t('.place_order') %></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
 
 <!-- Incluyendo .js de Culqi Checkout-->
 <!--<script src="https://checkout.culqi.com/v2"></script> -->
@@ -375,6 +329,7 @@ $( document ).ready(function() {
   // calculate coupon and recalculate_checkout_totals
   $(".coupon-apply").click(function() {
     calculate_coupon( $("#coupon-code").val() );
+    event.preventDefault();
   });
   // calculate and update shipping html tag when shipping address is picked
   $('#address_id').on('change', function() {
@@ -466,7 +421,7 @@ $( document ).ready(function() {
     $('#payment-amount').html(total_amount)
     $('#payment-amount-in-soles').html((total_amount * exchange_rate).toFixed(2));
     payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
-    culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
+    culqi_payment_amount = ($('#pay_in_soles').prop('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
 
     var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
 
@@ -475,7 +430,7 @@ $( document ).ready(function() {
       $('#payment-amount').html(total_amount)
       $('#payment-amount-in-soles').html((total_amount * exchange_rate).toFixed(2));
       payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
-      culqi_payment_amount = ($('#pay_in_soles').attr('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
+      culqi_payment_amount = ($('#pay_in_soles').prop('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
     }
 
     // console.log('recalculate_checkout_totals')
@@ -553,7 +508,7 @@ $( document ).ready(function() {
         data_to_send = {
               title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
               amount: Number(culqi_payment_amount),
-              currency_code: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+              currency_code: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
               description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
               order_number: <%= session[:cart_id] %> + '-cart-' + (Math.floor(Math.random() * 10000)).toString(),
               expiration_date: futureDate,
@@ -582,7 +537,7 @@ $( document ).ready(function() {
             Culqi.settings({
               title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
               amount: Number(culqi_payment_amount),
-              currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+              currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
               description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
               order: data.id
             });
@@ -639,7 +594,7 @@ $( document ).ready(function() {
         var token = Culqi.token;
         var picked_shipping_address_id = $('#address_id').val();
         var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
-        var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
+        var culqi_payment_amount = Number(($('#pay_in_soles').prop('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
         var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
         //var payment_amount = $('#payment_amount').html() * 100;
         var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
@@ -658,7 +613,7 @@ $( document ).ready(function() {
           applied_coupon: applied_coupon,
           discount_amount: discount_amount,
           points_redeemed_amount: points_to_redeem,
-          currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD"
+          currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD"
           },
           function(data) {
           }
@@ -676,7 +631,7 @@ $( document ).ready(function() {
             // async payment successfull (got ID via event webhook?)
             var picked_shipping_address_id = $('#address_id').val();
             var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
-            var culqi_payment_amount = Number(($('#pay_in_soles').attr('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
+            var culqi_payment_amount = Number(($('#pay_in_soles').prop('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
             var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
             var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
             console.log('Order exists but no Token = Pagoefectivo');
@@ -696,7 +651,7 @@ $( document ).ready(function() {
               applied_coupon: applied_coupon,
               discount_amount: discount_amount,
               points_redeemed_amount: points_to_redeem,
-              currency: ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD",
+              currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
               pagoefectivo_payment_code: Culqi.order.payment_code
               },
               function(data) {
@@ -751,5 +706,5 @@ $( document ).ready(function() {
 
 <!-- Event snippet for Purchase conversion page In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
 <script>
-  function gtag_report_conversion(url) { var callback = function () { if (typeof(url) != 'undefined') { window.location = url; } }; gtag('event', 'conversion', { 'send_to': 'AW-670036400/O8dpCK38rPYBELDjv78C', 'transaction_id': '<%= "#{@cart.id}" if @cart %>', 'value': payment_amount, 'currency': ($('#pay_in_soles').attr('checked')) ? "PEN" : "USD", 'event_callback': callback }); return false; }
+  function gtag_report_conversion(url) { var callback = function () { if (typeof(url) != 'undefined') { window.location = url; } }; gtag('event', 'conversion', { 'send_to': 'AW-670036400/O8dpCK38rPYBELDjv78C', 'transaction_id': '<%= "#{@cart.id}" if @cart %>', 'value': payment_amount, 'currency': ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD", 'event_callback': callback }); return false; }
 </script>
