@@ -89,7 +89,7 @@
 
             <% Ecommerce::Category.where(parent_id: nil).order(:id).each do |category| %>
               <div class="col-xs-4">
-                <div class="principle">
+                <div class="principle" style="height: 200px;">
                   <%= link_to products_path(category_id: category.id) do %>
                     <img src="<%= category.image.medium_400.url %>" class="img-responsive" alt="" />
                     <p><%= category.name %></p>
