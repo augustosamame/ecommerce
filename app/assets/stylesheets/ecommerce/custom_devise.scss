@@ -218,8 +218,8 @@
   padding: 23px 53px 40px;
   margin-bottom: 160px;
   border-radius: 15px;
-  -webkit-box-shadow: 10px 10px 10px 0 rgb(0 0 0 / 10%);
-  box-shadow: 10px 10px 10px 0 rgb(0 0 0 / 10%);
+  -webkit-box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 .user-suggestion .already-user {
@@ -262,8 +262,8 @@
   width: 620px;
   background-color: #f9f3f4;
   padding-top: 110px;
-  -webkit-box-shadow: 0 4px 4px 0 rgb(0 0 0 / 25%);
-  box-shadow: 0 4px 4px 0 rgb(0 0 0 / 25%);
+  -webkit-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
 .forms-control .forms-control-body .register-title {
@@ -559,8 +559,8 @@ a:hover {
   background-color: var(--white-color);
   padding: 38px 60px 60px;
   border-radius: 15px;
-  -webkit-box-shadow: 10px 10px 10px 0 rgb(0 0 0 / 10%);
-  box-shadow: 10px 10px 10px 0 rgb(0 0 0 / 10%);
+  -webkit-box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 .registration form .register-title,
@@ -588,7 +588,7 @@ a:hover {
 
 .forms form .form-group i {
   padding: 11px 15px;
-  border: 1px solid rgb(0 0 0 / 50%);
+  border: 1px solid rgba(0, 0, 0, 0.5);
   border-right: 0;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -604,7 +604,7 @@ a:hover {
   border-radius: 5px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  border-color: rgb(0 0 0 / 50%);
+  border-color: rgba(0, 0, 0, 0.5);
 }
 
 .forms form .number-form p {
@@ -691,7 +691,7 @@ a:hover {
   border-radius: 5px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  border-color: rgb(0 0 0 / 50%);
+  border-color: rgba(0, 0, 0, 0.5);
 }
 .field_with_errors {
   padding: 1 1 1 0;
