@@ -1,4 +1,4 @@
-<div class="new-address hidden-xs">
+<div class="new-address">
   <p><%= t('.create_a_new_address') %></p>
 
   <%= simple_form_for(@address, remote: true) do |f| %>
@@ -20,7 +20,7 @@
 
     <p class="checkout-p" id="mandatory-address-id"><%= t('.mandatory_field') %></p>
 
-  <div id="map_partial" class= "hidden-xs">
+  <div id="map_partial" class= "">
     <%= render :partial => "ecommerce/addresses/google_map" %>
   </div>
 
