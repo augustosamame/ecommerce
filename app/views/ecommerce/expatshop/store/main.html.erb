@@ -87,7 +87,7 @@
           <h2 class="main-section-title"><%= t('.main_categories') %></h2>
           <div class="row">
 
-            <% % @primary_menu_categories.each do |category| %>
+            <% @primary_menu_categories.each do |category| %>
               <div class="col-xs-4">
                 <div class="principle" style="height: 200px;">
                   <%= link_to products_path(category_id: category.id) do %>
