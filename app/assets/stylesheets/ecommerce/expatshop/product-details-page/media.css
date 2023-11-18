@@ -12,7 +12,7 @@
   }
   .product-details h3 {
     font-size: 18px;
-    margin: 20px 50px;
+    margin: 20px 10px !important;
     text-align: center;
   }
   .product-details .col-md-7 > p:first-of-type {
@@ -29,7 +29,7 @@
     margin-bottom: 10px;
   }
   .product-details .price p:first-child {
-    width: 30%;
+    width: 30% !important;
   }
   .related-products
     .related-product-body
@@ -44,6 +44,7 @@
     padding: 5px 0;
     margin: 0;
     margin-bottom: 20px;
+    position: inherit !important;
   }
   .related-products h3::after,
   .related-products h3::before {

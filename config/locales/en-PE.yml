@@ -158,6 +158,7 @@ en-PE:
           search_instructions: "Type and Press Enter to Search"
           search_placeholder: "Search Products Here..."
           my_points: 'My Points'
+          language: "Language"
         footer:
           slogan: "ExpatShop specializes in bringing innovative, high quality products from all over the world to Perú."
           developed_with_love: "Developed with _love_icon by"
@@ -170,6 +171,9 @@ en-PE:
           social_responsibility: "Social Responsibility"
           press: "Press"
           links: "Links"
+          shipping_policy: "Shipping Policy"
+          who_we_are: "About Us"
+          home: "Home"
         prefooter:
           prefooter_text: "- Innovation - Quality - Great Prices -"
         cart:
@@ -207,6 +211,11 @@ en-PE:
           belgium: "Belgium"
           finland: "Finland"
           thailand: "Thailand"
+          all_the_products: "ALL THE PRODUCTS"
+          my_frequent_purchases: "MY FREQUENT PURCHASES"
+          new_products: "NEW PRODUCTS"
+          offers_and_discounts: "OFFERS AND DISCOUNTS"
+          main_categories: "MAIN CATEGORIES"
         about_us:
           about_us: "About Us - Aniruddha SAC"
           about_us_p_html: "<p>Born out of frustration from the lack of global products available in Peru at affordable pricing, we are a wholesale importer of products, offering international products at a reasonable price directly to Peruvian customers.</p><p>We carry a reasonable amount of stock of all our consumer products in Peru and deliver products Same-Day or Next-Day depending on the time the order is placed on our platform.</p><p>Our aim is to import high quality international consumer products at comparable price points to those available in the home country of said products. In particular our focus is on products that are currently not available in Peru and/or over priced in the Peruvian market. We also offer locally produced goods on our online platform, at better prices by working directly with the manufacturer, especially products that we think would be highly appealing to our customer base.</p>"
@@ -235,6 +244,7 @@ en-PE:
           share: "Share"
           search: "Search"
           search_placeholder: "Search Products"
+          related_products: "Related Products"
         product:
           out_of_stock: "Out of Stock"
           add_to_cart: "Add To Cart"

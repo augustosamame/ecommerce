@@ -10,7 +10,9 @@
 .categories-principles img {
   background: var(--white-color);
   border-radius: 50%;
-  padding: 20px;
+  padding: 10px;
+  height: 100px;
+  width: 100px;
 }
 .categories-principles p {
   font-weight: 700;

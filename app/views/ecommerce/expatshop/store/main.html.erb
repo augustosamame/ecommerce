@@ -2,7 +2,7 @@
     <header>
       <div class="header-hero">
         <ul class="video-slider">
-          <% Ecommerce::Slider.where(slider_view: 'DESKTOP').order(:slider_order).each do |slider| %>
+          <% Ecommerce::Slider.where(slider_view: (browser.device.mobile? ? 'MOBILE' : 'DESKTOP')).order(:slider_order).each do |slider| %>
             <% if slider.slider_image.url[-3..-1] != 'mp4' %>
               <li><img class="bximage-inside-slide clickable-slide" src="<%= slider.slider_image.url %>" title="<%= slider.slider_text %>" /></li>
             <% else %>
@@ -36,8 +36,8 @@
       <!-- featured product -->
       <section class="featured-products">
         <div class="container-fluid">
-          <h2><%= t('.featured_products') %></h2>
-          <div class="featured-product-slider">
+          <h2 class="main-section-title"><%= t('.featured_products') %></h2>
+          <div class="featured-product-slider" data-thumb="https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png">
 
             <% Ecommerce::Product.where(home_featured: true).order(:product_order).each do |product| %>
               <div>
@@ -60,7 +60,7 @@
                       </div>
                     </div>
                   </div>
-                  <button>
+                  <button class="featured-add-to-cart-button">
                     <i class="fa-solid fa-cart-shopping"></i><%= t('.add_to_cart') %>
                   </button>
                 </div>
@@ -74,79 +74,37 @@
       <section class="visible-xs sub-links">
         <div class="container-fluid">
           <ul class="d-flex flex-center">
-            <li>ALL THE PRODUCTS</li>
-            <li>MY FREQUENT PURCHASES</li>
-            <li>NEW PRODUCTS</li>
-            <li>OFFERS AND DISCOUNTS</li>
+            <a href="<%= products_path %>"><li><%= t('.all_the_products') %></li></a>
+            <a href="<%= favorites_path %>"><li><%= t('.my_frequent_purchases') %></li></a>
+            <a href="<%= products_path(filter: 'new_products') %>"><li><%= t('.new_products') %></li></a>
+            <a href="<%= products_path(filter: 'discounted_products') %>"><li><%= t('.offers_and_discounts') %></li></a>
           </ul>
         </div>
       </section>
       <!-- categories principles for mobiles -->
       <section class="visible-xs categories-principles">
         <div class="container-fluid">
-          <h2>CATEGORIES PRINCIPLES</h2>
+          <h2 class="main-section-title"><%= t('.main_categories') %></h2>
           <div class="row">
-            <div class="col-xs-4">
-              <div class="principle">
-                <img src="imgs/store.png" class="img-responsive" alt="" />
-                <p>Alcoholic drinks</p>
+
+            <% Ecommerce::Category.where(parent_id: nil).order(:id).each do |category| %>
+              <div class="col-xs-4">
+                <div class="principle">
+                  <%= link_to products_path(category_id: category.id) do %>
+                    <img src="<%= category.image.medium_400.url %>" class="img-responsive" alt="" />
+                    <p><%= category.name %></p>
+                  <% end %>
+                </div>
               </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="principle">
-                <img src="imgs/store.png" class="img-responsive" alt="" />
-                <p>Alcoholic drinks</p>
-              </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="principle">
-                <img src="imgs/store.png" class="img-responsive" alt="" />
-                <p>Alcoholic drinks</p>
-              </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="principle">
-                <img src="imgs/store.png" class="img-responsive" alt="" />
-                <p>Alcoholic drinks</p>
-              </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="principle">
-                <img src="imgs/store.png" class="img-responsive" alt="" />
-                <p>Alcoholic drinks</p>
-              </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="principle">
-                <img src="imgs/store.png" class="img-responsive" alt="" />
-                <p>Alcoholic drinks</p>
-              </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="principle">
-                <img src="imgs/store.png" class="img-responsive" alt="" />
-                <p>Alcoholic drinks</p>
-              </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="principle">
-                <img src="imgs/store.png" class="img-responsive" alt="" />
-                <p>Alcoholic drinks</p>
-              </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="principle">
-                <img src="imgs/store.png" class="img-responsive" alt="" />
-                <p>Alcoholic drinks</p>
-              </div>
-            </div>
+            <% end %>
+
           </div>
         </div>
       </section>
       <!-- testimonial -->
       <section class="testimonials">
         <div class="container-fluid">
-          <h2><%= t('.customer_testimonials') %></h2>
+          <h2 class="main-section-title"><%= t('.customer_testimonials') %></h2>
           <div class="testimonial-slider">
 
             <% Ecommerce::Testimonial.where(status: "active").order(:priority).each do |testimonial| %>
@@ -174,7 +132,7 @@
       <!-- country mosaic -->
       <section class="global-products">
         <div class="container-fluid">
-          <h2><%= t('.products_from_the_world') %></h2>
+          <h2 style="font-size: 2.5rem;"><%= t('.products_from_the_world') %></h2>
           <!-- countries for desktop -->
           <div id="country-mosaic">
               
@@ -258,6 +216,46 @@ categorías.
   }
 
   $(document).ready(function () {
+
+    var buttons_visible = <%= !browser.device.mobile? %>;
+    var bx = $('.video-slider').bxSlider(
+      {
+        mode: 'horizontal',
+        auto: true,
+        //autoControls: true,
+        //captions: true,
+        //stopAutoOnClick: true,
+        slideWidth: 1280,
+        video: true,
+        infiniteLoop: true,
+        adaptiveheight: true,
+        pager: buttons_visible,
+        // startSlide: 0,
+        // speed: 5000,
+        // useCSS: false,
+        // responsive: true,
+        autoHover: true,
+        autoDelay: 5000,
+        controls: buttons_visible,
+        autostart: true,
+        //onSliderLoad: function(currentIndex) {
+        //  $("video").trigger("play");
+        //},
+        //onSlideBefore: function(slide) {
+        //  bx.stopAuto;
+        //  console.log('Stop Auto')
+        //}
+        onSlideAfter: function ($slideElement, oldIndex, newIndex) {
+          if ($slideElement.hasClass('video-slide')) {
+            var video = $slideElement.find('video').get(0);
+            video.addEventListener('ended', function () {
+              slider.goToNextSlide();
+            });
+          }
+        }
+        
+      }
+    );
 
     $('.clickable-slide').on('mousedown', function () {
       console.log("redirect to slider_link here using array: <%= @slider_array.to_json %>");

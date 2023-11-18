@@ -44,9 +44,9 @@
     .featured-product-info
     .price
     p:last-child {
-    text-align: start;
-    margin-left: 15px;
-    width: 25%;
+    text-align: center;
+    margin-left: 0px;
+    width: 45%;
   }
   .products .featured-product .product-btn-group button {
     -webkit-box-flex: 3.5;

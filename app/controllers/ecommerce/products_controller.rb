@@ -22,6 +22,17 @@ module Ecommerce
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
       end
 
+      if params[:filter]
+        @filter = params[:filter]
+        case @filter
+        when "new_products"
+          @products = Product.where('created_at > ?', 30.days.ago).includes(:translations).active.order(:product_order).page(params[:page])
+        when "discounted_products"
+          @products = Product.where('ecommerce_products.price_cents != ecommerce_products.discounted_price_cents').includes(:translations).active.order(:product_order).page(params[:page])
+        end
+        render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
+      end
+
       if params[:category_id]
         @category = Category.find(params[:category_id])
         #@child_categories = Category.where(parent_id: @category.id)

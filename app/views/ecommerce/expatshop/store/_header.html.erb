@@ -7,7 +7,7 @@
       <div class="container-fluid">
         <div class="d-flex">
           <div class="logo">
-            <a href="/">
+            <a href="<%= root_path %>">
               <%= image_tag Ecommerce.header_logo, alt: "expatshop.pe Logo" %>
             </a>
           </div>
@@ -97,6 +97,7 @@
         </div>
       </div>
     </nav>
+
     <nav class="nav-links hidden-xs">
       <div class="container-fluid">
         <ul class="d-flex flex-center">
@@ -114,33 +115,38 @@
         </ul>
       </div>
     </nav>
+
+
     <!-- navbar for mobiles -->
     <nav class="mobiles visible-xs">
       <div class="container-fluid">
-        <div class="row">
+        <div class="row mobile-header-row">
           <div class="col-xs-4 d-flex flex-center">
             <div class="cart position-relative">
-              <p class="text-uppercase d-flex">
-                Checkout
-                <i class="fa-solid fa-cart-shopping cursor-pointer"></i>
-                (2)
-              </p>
+              <a href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
+                <p class="text-uppercase d-flex">
+                  Checkout
+                  <%= fa_icon 'shopping-cart' %>
+                  (<%= @cart.get_totals(@current_user)[:tot_qty] %>)
+                </p>
+              </a>
             </div>
           </div>
+
           <div class="col-xs-4 d-flex flex-center">
-            <form action="" class="d-flex">
-              <label class="text-uppercase">language</label>
-              <select id="langMobile" class="cursor-pointer">
-                <option value="0" data-imagesrc="./imgs/usa.png">EN</option>
-                <option value="1" data-imagesrc="./imgs/peru.png">ES</option>
+            <form action="" class="d-flex" style="align-items: center;">
+              <label class="text-uppercase"><%= t('.language') %></label>
+              <select id="lang-mobile" class="cursor-pointer" name="language" >
+                <option <%= session[:currency] == 'usd' ? "selected" : "" %>value="usd">USD $</option>
+                <option <%= session[:currency] == 'pen' ? "selected" : "" %> value="pen">PEN S</option>
               </select>
             </form>
           </div>
           <div class="col-xs-4 d-flex flex-center">
             <form action="">
-              <select class="cursor-pointer" name="currency" id="currency">
-                <option value="USD $">USD $</option>
-                <option value="PEN S">PEN S/</option>
+              <select id="currency-mobile" class="cursor-pointer" name="currency" >
+                <option <%= session[:locale] == 'en-PE' ? "selected" : "" %> value="english" data-imagesrc="./imgs/usa.png">English</option>
+                <option <%= session[:locale] == 'es-PE' ? "selected" : "" %> value="spanish" data-imagesrc="./imgs/peru.png">Español</option>
               </select>
             </form>
           </div>
@@ -152,19 +158,14 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="row d-flex flex-center">
           <div class="col-xs-6">
-            <a class="" href="#"
-              ><img
-                src=""
-                alt="expatshop logo"
-                class="img-responsive"
-            /></a>
+            <a class="" href="<%= root_path %>">
+              <%= image_tag Ecommerce.header_logo, alt: "expatshop.pe Logo", class: "img-responsive" %>
+            </a>
           </div>
           <div class="col-xs-3">
-            <a href="#" class="d-flex flex-center"
-              ><i
-                class="user-icon fa-regular fa-user icon-color d-flex flex-center"
-              ></i
-            ></a>
+            <a href="<%= main_app.new_user_session_path %>" class="d-flex flex-center">
+              <%= fa_icon 'user', class: "user-icon icon-color d-flex flex-center" %>
+            </a>
           </div>
           <div class="col-xs-3">
             <button
@@ -183,6 +184,19 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
+            
+            <li><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>" class="<%= active_all_products_category() == 'active' ? 'active' : '' %>"><%= t('.all_products') %></a></li>
+
+            <% if current_user %>
+              <li><a style='color:red;' href="<%= Ecommerce::Engine.routes.url_helpers.favorites_path %>"><%= t('.favorite_products') %></a></li>
+            <% end %>
+            
+            <% @primary_menu_categories.each do |category| %>
+              <% unless category.id == 30 && !@banana_permission %>
+                <li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: match_active_category(category) %></li>
+              <% end %>
+            <% end %>
+
             <li><a href="#" class="active">All the products</a></li>
             <li><a href="#"> New products</a></li>
             <li><a href="#"> Alcoholic beverages</a></li>

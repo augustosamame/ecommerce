@@ -133,6 +133,7 @@ es-PE:
           share: "Compartir"
           search: "Buscar"
           search_placeholder: "Buscar Productos"
+          related_products: "Productos Relacionados"
         product:
           out_of_stock: "Fuera de Stock"
           alert_me: "Alertarme cuando haya Stock"
@@ -321,8 +322,11 @@ es-PE:
           my_points: 'Mis Puntos'
           my_referral_program: "Programa de Referidos"
           my_referral_code: "Código: "
+          language: "Idioma"
         footer:
-          slogan: "ExpatShop se especializa en importar productos innovadores de la más alta calidad desde todo el mundo hasta Perú."
+          slogan_1: "ExpatShop se especializa en importar productos innovadores de la más alta calidad desde todo el mundo hasta Perú."
+          slogan_2: "Av Santo Toribio 173 - Vía Central 1125 Torre Real Ocho, Piso 16, San Isidro, Lima 33, Perú"
+          slogan_3: "No hay tienda física. La dirección legal de San Isidro es oficina administrativa, no es tienda. No atendemos clientes en oficina"
           developed_with_love: "Desarollado con _love_icon por"
           contact: "Contacto"
           contact_us_menu: "Contáctanos"
@@ -333,6 +337,9 @@ es-PE:
           social_responsibility: "Responsabilidad Social"
           press: "Prensa"
           links: "Enlaces"
+          shipping_policy: "Políticas de Envío"
+          who_we_are: "Quiénes Somos"
+          home: "Inicio"
         prefooter:
           prefooter_text: "- Innovación - Calidad - Los Mejores Precios -"
         wishlist:
@@ -373,6 +380,11 @@ es-PE:
           belgium: "Bélgica"
           finland: "Finlandia"
           thailand: "Tailandia"
+          all_the_products: "TODOS LOS PRODUCTOS"
+          my_frequent_purchases: "MIS COMPRAS FRECUENTES"
+          new_products: "PRODUCTOS NUEVOS"
+          offers_and_discounts: "OFERTAS Y DESCUENTOS"
+          main_categories: "CATEGORIAS PRINCIPALES"
         about_us:
           about_us: "Acerca de Nosotros - Aniruddha SAC"
           about_us_p_html: "<p>Nacemos de la frustración de no poder encontrar en el Perú, ciertos productos extranjeros a precios cómodos.  Somos un importador mayorista de productos de consumo masivo que ofrecemos directamente  al consumidor peruano productos extranjeros a precios razonables.</p><p>Manejamos un buen stock  en el Perú de todos los productos que importamos y hacemos la entrega de los mismos el mismo día o al día siguiente dependiendo de la hora en que se coloque el pedido en nuestra plataforma.</p><p>Nuestro objetivo es importar productos de consumo de alta calidad con un nivel de precios  comparables a los precios de su país de origen.  En especial nos focalizaremos en aquellos productos que no se encuentran fácilmente en Perú y/o  si se encuentran con precios muy elevados.  También ofrecemos en nuestra plataforma virtual, algunos productos nacionales, especialmente aquellos que consideramos que son de interés para nuestros clientes, los que encontraran con precios muy atractivos, ya que trabajamos directamente con productores locales.</p>"

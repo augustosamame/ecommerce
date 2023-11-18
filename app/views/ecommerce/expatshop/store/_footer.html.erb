@@ -6,27 +6,23 @@
             <p>
               EXPATSHOP:
               <span>
-                It specializes in exporting innovative products of the highest
-                quality wishes everyone to Peru
+                <%= t('.slogan_1') %>
               </span>
             </p>
           </div>
           <div class="col-md-6">
             <p>
-              WORKSHOPS:
+              OFICINAS:
               <span>
-                AV.SAN TOTORIC 173-VIA CENTRA 1125 PEAL OCHO tower, Peso 16. San
-                Isidro five 33,
+                <%= t('.slogan_2') %>
               </span>
             </p>
           </div>
           <div class="col-md-6 col-md-offset-3">
             <p>
-              IMPORTANT:
+              IMPORTANTE:
               <span>
-                There is no physical store.The legal direction of San Isidro is
-                an administrative office, it is not a store.Do not serve us
-                clients in office
+                <%= t('.slogan_3') %>
               </span>
             </p>
           </div>
@@ -36,36 +32,36 @@
         <div class="container">
           <div class="row">
             <div class="col-md-4">
-              <h4>Product category</h4>
+              <h4><%= t('.product_categories') %></h4>
               <ul>
-                <li><a href="#">- alcoholic beverages</a></li>
-                <li><a href="">- comestibles</a></li>
-                <li><a href="">- Ecological Cleaning Products</a></li>
+                <li><a href="#">- Bebidas Alcohólicas</a></li>
+                <li><a href="">- Comestibles</a></li>
+                <li><a href="">- Productos de Limpieza Ecológicos</a></li>
               </ul>
             </div>
             <div class="col-md-4">
               <ul>
-                <li><a href="">- world of oils</a></li>
-                <li><a href="">- Indian food</a></li>
-                <li><a href="">- Chocolates and candies</a></li>
-                <li><a href="">- drinks without alcohol</a></li>
+                <li><a href="">- Mundo de Aceites</a></li>
+                <li><a href="">- Comida India</a></li>
+                <li><a href="">- Chocolates y Caramelos</a></li>
+                <li><a href="">- Bebidas Sin Alcohol</a></li>
               </ul>
             </div>
             <div class="col-md-2">
-              <h4>Customer Zone</h4>
+              <h4><%= t('.customer_zone') %></h4>
               <ul>
-                <li><a href="">- start</a></li>
-                <li><a href="">- about us</a></li>
-                <li><a href="">- shipping policies</a></li>
+                <li><a href="<%= root_path %>">- <%= t('.home') %></a></li>
+                <li><a href="https://expatshop.com/store/about_us">- <%= t('.who_we_are') %></a></li>
+                <li><a href="https://expatshop.com/store/shipping_policy">- <%= t('.shipping_policy') %></a></li>
               </ul>
             </div>
             <div class="col-md-2">
               <ul>
-                <li><a href="">- terms and Conditions</a></li>
-                <li><a href="">- contact us</a></li>
+                <li><a href="https://expatshop.com/store/terms_and_conditions">- <%= t('.terms_and_conditions') %></a></li>
+                <li><a href="https://expatshop.com/store/contact_us">- <%= t('.contact_us_menu') %></a></li>
                 <li>
-                  <i class="fa-solid fa-book-open"></i>
-                  <a href="">complaints book</a>
+                  <%= fa_icon 'book' %>
+                  <a href="https://expatshop.perulibrodereclamaciones.com/">Libro de Reclamaciones</a>
                 </li>
               </ul>
             </div>

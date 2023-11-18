@@ -5,8 +5,10 @@ $(function () {
     infinite: true,
     arrows: true,
     speed: 300,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+    slidesToShow: 5,
+    slidesToScroll: 5,
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
     responsive: [
       {
         breakpoint: 768,
@@ -15,6 +17,7 @@ $(function () {
           slidesToScroll: 3,
           infinite: true,
           dots: false,
+          arrows: true,
         },
       },
     ],
@@ -24,19 +27,27 @@ $(function () {
 // featured products slider
 $(function () {
   $(".featured-product-slider").slick({
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 300,
     slidesToShow: 4,
     slidesToScroll: 4,
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+    customPaging: function (slider, i) {
+      var thumb = $(slider.$slides[i]).data('thumb');
+      console.log('thumb', thumb)
+      return "<button><img src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'></button>";
+    },
     responsive: [
       {
         breakpoint: 768,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 4,
+          slidesToScroll: 2,
           infinite: true,
-          dots: true,
+          dots: false,
+          pager: false,
         },
       },
     ],
@@ -51,6 +62,8 @@ $(function () {
     speed: 300,
     slidesToShow: 4,
     slidesToScroll: 4,
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
     responsive: [
       {
         breakpoint: 768,
@@ -59,6 +72,7 @@ $(function () {
           slidesToScroll: 4,
           infinite: true,
           dots: false,
+          pager: false,
         },
       },
     ],
@@ -68,50 +82,11 @@ $(function () {
 });
 
 $(document).ready(function () {
-  var bx = $('.video-slider').bxSlider(
-    {
-      mode: 'horizontal',
-      auto: true,
-      //autoControls: true,
-      //captions: true,
-      //stopAutoOnClick: true,
-      slideWidth: 1280,
-      video: true,
-      infiniteLoop: true,
-      adaptiveheight: true,
-      // pager: false,
-      // startSlide: 0,
-      // speed: 5000,
-      // useCSS: false,
-      // responsive: true,
-      autoHover: true,
-      autoDelay: 5000,
-      controls: true,
-      autostart: true,
-      //onSliderLoad: function(currentIndex) {
-      //  $("video").trigger("play");
-      //},
-      //onSlideBefore: function(slide) {
-      //  bx.stopAuto;
-      //  console.log('Stop Auto')
-      //}
-      onSlideAfter: function ($slideElement, oldIndex, newIndex) {
-        if ($slideElement.hasClass('video-slide')) {
-          var video = $slideElement.find('video').get(0);
-          video.addEventListener('ended', function () {
-            slider.goToNextSlide();
-          });
-        }
-      }
-      
-    }
-  );
 
   $('#country-mosaic').Mosaic({
     maxRowHeight: 333,
     maxRowHeightPolicy: 'tail',
     defaultAspectRatio: 1.5,
-    responsiveWidthThreshold: 480,
     innerGap: 15,
   });
 
@@ -165,11 +140,13 @@ $(document).ready(function () {
   // related products slider
   $(function () {
     $(".related-product-slider").slick({
-      dots: true,
+      dots: false,
       infinite: true,
       speed: 300,
       slidesToShow: 3,
       slidesToScroll: 3,
+      prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+      nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
       responsive: [
         {
           breakpoint: 768,
@@ -177,7 +154,7 @@ $(document).ready(function () {
             slidesToShow: 2,
             slidesToScroll: 4,
             infinite: true,
-            dots: true,
+            dots: false,
           },
         },
       ],
