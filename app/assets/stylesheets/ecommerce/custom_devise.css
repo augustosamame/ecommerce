@@ -1,0 +1,704 @@
+@media (max-width: 768px) {
+  .forms form .already-user {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
+    text-align: start;
+    margin-top: 34px;
+  }
+
+  .forms form .already-user p {
+    font-weight: 500;
+  }
+
+  .forms form .main-form-btn {
+    margin-top: 13px;
+  }
+
+  .forms form .already-user p {
+    margin-bottom: 1rem;
+  }
+
+  .forms form .already-user button {
+    width: 100%;
+  }
+
+  .login {
+    padding-top: 0;
+  }
+
+  .login h1 {
+    margin-bottom: 42px;
+  }
+
+  .login h1 img {
+    margin: 40px 0;
+  }
+
+  .login .form {
+    max-width: 450px;
+    padding-top: 140px !important;
+  }
+
+  .login form .register-title {
+    top: 8%;
+  }
+
+  .login form .register-title i {
+    width: 60px;
+    height: 60px;
+    font-size: 3rem;
+  }
+
+  .login form .already-user {
+    margin-top: 26px;
+  }
+
+  .buy-as-guest form {
+    margin-bottom: 43px;
+  }
+
+  .buy-as-guest form .main-form-btn {
+    width: 100%;
+  }
+
+  .user-suggestion {
+    padding: 28px 30px 43px;
+    margin-bottom: 0;
+  }
+
+  .user-suggestion div {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
+  }
+
+  .user-suggestion .already-user {
+    margin-bottom: 18px;
+  }
+
+  .user-suggestion div button {
+    width: 100%;
+  }
+
+  .user-suggestion div p {
+    margin-bottom: 8px;
+  }
+}
+
+.forms-control {
+  padding: 0;
+  display: block !important;
+  min-height: 90vh;
+}
+
+.forms-control h1 {
+  margin-bottom: 42px;
+}
+
+.forms-control h1 img {
+  margin: 40px 0;
+}
+
+.forms-control .forms-control-body {
+  max-width: 450px;
+  padding: 60px 40px 32px;
+  -webkit-box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.05);
+}
+
+.forms-control .forms-control-body .register-title i {
+  width: 60px;
+  height: 60px;
+  font-size: 3rem;
+}
+
+.forms-control .forms-control-body .control-btn div {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.forms-control .forms-control-body .control-btn div p {
+  margin-bottom: 6px;
+  width: 100%;
+  font-size: 16px;
+}
+
+.forms-control .forms-control-body .control-btn div button {
+  width: 100%;
+}
+
+.login h1 {
+  margin-bottom: 40px;
+}
+
+.login h1 img {
+  margin-bottom: 40px;
+}
+
+.login form {
+  padding-top: 150px;
+  width: 620px;
+}
+
+.login form .register-title {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.login form .register-title i {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 1px solid;
+  font-size: 5rem;
+  position: relative;
+  background-color: var(--white-color);
+}
+
+.login form.register-title h2 {
+  margin-top: 27px;
+}
+
+.login form p {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.login form p a {
+  color: #0100fe;
+  font-weight: 500;
+}
+
+.login form .already-user {
+  margin-top: 20px;
+}
+
+.buy-as-guest form {
+  margin-bottom: 16px;
+}
+
+.buy-as-guest form .main-form-btn {
+  width: 50%;
+}
+
+.user-suggestion {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background: white;
+  padding: 23px 53px 40px;
+  margin-bottom: 160px;
+  border-radius: 15px;
+  -webkit-box-shadow: 10px 10px 10px 0 rgb(0 0 0 / 10%);
+  box-shadow: 10px 10px 10px 0 rgb(0 0 0 / 10%);
+}
+
+.user-suggestion .already-user {
+  margin-bottom: 25px;
+}
+
+.user-suggestion div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+}
+
+.user-suggestion div p {
+  width: 50%;
+  margin: 0;
+  text-align: start;
+  font-weight: 500;
+}
+
+.user-suggestion div button {
+  width: 75%;
+  margin: 0;
+}
+
+.forms-control h1 {
+  margin-bottom: 40px;
+}
+
+.forms-control h1 img {
+  margin-bottom: 59px;
+}
+
+.forms-control .forms-control-body {
+  padding-top: 150px;
+  padding-bottom: 30px;
+  width: 620px;
+  background-color: #f9f3f4;
+  padding-top: 110px;
+  -webkit-box-shadow: 0 4px 4px 0 rgb(0 0 0 / 25%);
+  box-shadow: 0 4px 4px 0 rgb(0 0 0 / 25%);
+}
+
+.forms-control .forms-control-body .register-title {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.forms-control .forms-control-body .register-title i {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 1px solid;
+  font-size: 5rem;
+  position: relative;
+  background-color: var(--white-color);
+}
+
+.forms-control .forms-control-body .control-btn .already-user {
+  margin-bottom: 25px;
+}
+
+.forms-control .forms-control-body .control-btn div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.forms-control .forms-control-body .control-btn div p {
+  width: 50%;
+  margin: 0;
+  text-align: start;
+  font-weight: 500;
+}
+
+.forms-control .forms-control-body .control-btn div button {
+  width: 65%;
+  margin: 0;
+}
+
+:root {
+  --label-color: #fbe5e2;
+  --links-color: #d1e1f3;
+  --background-color: #f1f1f1;
+  --primary-btn-color: #de203c;
+  --secondary-btn-color: #32373a;
+  --white-color: #ffff;
+  --black-color: #000;
+  --form-color: #eeefed;
+  --form-border-color: #d4d6d3;
+  --icons-color: #67696c;
+  --best-seller-color: #ffc342;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  font-family: "Open Sans", sans-serif;
+  text-decoration: none;
+  color: inherit;
+}
+
+h2 {
+  margin: 25px 15px;
+  color: var(--black-color);
+}
+
+section {
+  padding: 25px 0 50px;
+}
+
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* UTILITIES  */
+.container-fluid {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.linear-background {
+  background: -webkit-gradient(linear,
+      left top,
+      right top,
+      from(#d8e8f7),
+      to(#f5e4e5));
+  background: -o-linear-gradient(left, #d8e8f7, #f5e4e5);
+  background: linear-gradient(to right, #d8e8f7, #f5e4e5);
+}
+
+.section-background {
+  background-color: #f7f8fb;
+}
+
+.active {
+  background-color: var(--white-color);
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.sale,
+.best-seller::after {
+  position: absolute;
+  padding: 3px 8px;
+  right: 0;
+  font-weight: 700;
+}
+
+.sale {
+  background: var(--primary-btn-color);
+  top: 90px;
+  color: var(--white-color);
+}
+
+.best-seller::after {
+  content: "BEST SELLER";
+  background: var(--best-seller-color);
+  top: 60px;
+  color: black;
+}
+
+.icon-color {
+  color: var(--icons-color) !important;
+}
+
+.d-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.flex-center {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.space-between {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.justify-end {
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: end;
+}
+
+.border-left {
+  border-left: 2px solid var(--form-border-color);
+}
+
+.position-relative {
+  position: relative;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.main-btn {
+  background: var(--primary-btn-color);
+  border: 0;
+  padding: 10px 30px;
+  color: var(--white-color);
+  margin-right: 15px;
+}
+
+.secondary-btn {
+  background-color: var(--secondary-btn-color);
+  border: 0;
+  padding: 10px 30px;
+  color: var(--white-color);
+}
+
+.main-form-btn {
+  border-radius: 5px;
+  padding: 13px 0;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 13px;
+}
+
+.return-to-categories-btn {
+  padding: 10px 14px 10px 8px;
+  border-radius: 3rem;
+  background: var(--primary-btn-color);
+  border: none;
+  color: var(--white-color);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.return-to-categories-btn i {
+  border-radius: 50%;
+  background: var(--white-color);
+  color: var(--secondary-btn-color);
+  margin-right: 8.5px;
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.logo-alt a {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.logo-alt a button {
+  width: 60%;
+  margin-right: 10px;
+}
+
+.logo-alt a img {
+  width: 14%;
+}
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+.forms,
+.forms-control {
+  min-height: 100vh;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.forms h1,
+.forms-control h1 {
+  margin-bottom: 0;
+}
+
+.forms h1 img,
+.forms-control h1 img {
+  max-width: 88%;
+  margin: 30px 0;
+}
+
+.forms form,
+.forms-control .forms-control-body {
+  max-width: 620px;
+  background-color: var(--white-color);
+  padding: 38px 60px 60px;
+  border-radius: 15px;
+  -webkit-box-shadow: 10px 10px 10px 0 rgb(0 0 0 / 10%);
+  box-shadow: 10px 10px 10px 0 rgb(0 0 0 / 10%);
+}
+
+.registration form .register-title,
+.buy-as-guest form .register-title {
+  margin: 0 0 15px;
+}
+
+.registration form .register-title h2,
+.buy-as-guest form .register-title h2 {
+  margin: 0;
+  margin-left: 24px;
+}
+
+.buy-as-guest form .register-title i {
+  font-size: 4rem;
+  border: 3px solid;
+  border-radius: 50%;
+  width: 62px;
+  height: 62px;
+}
+
+.forms form .form-group {
+  margin-bottom: 18px;
+}
+
+.forms form .form-group i {
+  padding: 11px 15px;
+  border: 1px solid rgb(0 0 0 / 50%);
+  border-right: 0;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  color: #c0d6ed;
+  font-size: 2.2rem;
+}
+
+.forms form .form-group input {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  padding: 22px 0;
+  border-left: 0;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-color: rgb(0 0 0 / 50%);
+}
+
+.forms form .number-form p {
+  margin-bottom: 21px;
+}
+
+.forms form .form-group input::-webkit-input-placeholder {
+  color: #3d4044;
+}
+
+.forms form .form-group input::-moz-placeholder {
+  color: #3d4044;
+}
+
+.forms form .form-group input:-ms-input-placeholder {
+  color: #3d4044;
+}
+
+.forms form .form-group input::-ms-input-placeholder {
+  color: #3d4044;
+}
+
+.forms form .form-group input::placeholder {
+  color: #3d4044;
+}
+
+.forms form .already-user {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 28px;
+}
+
+.forms form .already-user p,
+.forms form .already-user button {
+  width: 50%;
+  margin: 0;
+}
+
+.forms form .already-user p {
+  font-weight: 500;
+}
+
+@media (min-width: 1200px) {
+  .forms h1 {
+    margin-top: 120px;
+  }
+
+  .forms form,
+  .forms-control .forms-control-body {
+    margin-bottom: 120px;
+  }
+}
+.devise-forms-title-h2 {
+  text-transform: uppercase;
+}
+.fa-icon-container {
+  display: flex;
+  align-items: center;
+  /* Center vertically */
+  justify-content: center;
+  /* Center horizontally */
+  width: 60px;
+  /* Set the width of your container */
+  height: 60px;
+  /* Set the height of your container */
+  border: 2px solid #333;
+  /* Border styling */
+  border-radius: 50%;
+}
+.main-form-btn:link,
+.main-form-btn:visited,
+.main-form-btn:hover,
+.main-form-btn:active {
+  text-decoration: none;
+  color: white;
+}
+.form-group-input {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  padding: 22px 0;
+  border-left: 0;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-color: rgb(0 0 0 / 50%);
+}
+.field_with_errors {
+  padding: 1 1 1 0;
+  background-color: red;
+  display: table;
+  width: 100%;
+}
+.new_user {
+  margin-bottom: 20px !important;
+}
