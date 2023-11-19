@@ -253,9 +253,11 @@
 										</a>
 									</li>
 
-									<li class="menu-item noo-menu-item-cart minicart fly-right" id="cart-line">
-										<%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
-									</li>
+                  <% if browser.device.mobile? %>
+                    <li class="menu-item noo-menu-item-cart minicart fly-right" id="cart-line">
+                      <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
+                    </li>
+                  <% end %>
 
 									<% if Ecommerce.enable_language_selector %>
 									<li class="menu-item-has-children">

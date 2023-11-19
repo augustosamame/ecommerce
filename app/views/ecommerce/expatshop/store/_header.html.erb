@@ -1,4 +1,4 @@
-    <nav class="desktops hidden-xs">
+    <nav class="desktops hidden-xs sticky-header">
       <div id="js_now_flash">
         <% if notice.present? %>
           <%= render partial: "ecommerce/application/js_now_flash" %>
@@ -86,9 +86,11 @@
               </select>
             </form>
           </div>
-          <li style="list-style-type: none;" id="cart-line">
-            <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
-          </li>
+          <% unless browser.device.mobile? %>
+            <li style="list-style-type: none;" id="cart-line">
+              <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
+            </li>
+          <% end %>
         </div>
       </div>
     </nav>
@@ -113,19 +115,17 @@
 
 
     <!-- navbar for mobiles -->
-    <nav class="mobiles visible-xs">
+    <nav class="mobiles visible-xs sticky-header">
       <div class="container-fluid">
         <div class="row mobile-header-row">
           <div class="col-xs-4 d-flex flex-center">
-            <div class="cart position-relative">
-              <a href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
-                <p class="text-uppercase d-flex">
-                  Checkout
-                  <%= fa_icon 'shopping-cart' %>
-                  (<%= @cart.get_totals(@current_user)[:tot_qty] %>)
-                </p>
-              </a>
-            </div>
+
+            <% if browser.device.mobile? %>
+              <div class="cart position-relative" id="cart-line">
+                <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
+              </div>
+            <% end %>
+
           </div>
 
           <div class="col-xs-4 d-flex flex-center">
@@ -204,7 +204,6 @@
 
 <script>
   function redirectToCart() {
-    console.log('cart clicked')
     window.location.href = "<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>";
   }
 

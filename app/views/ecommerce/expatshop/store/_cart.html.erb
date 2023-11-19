@@ -1,67 +1,77 @@
 <% if @cart && @cart.id %>
-<div class="cart position-relative">
-  <div class="dropdown">
-    <button
-      id="dLabel"
-      type="button"
-      data-toggle="dropdown"
-      aria-haspopup="true"
-      aria-expanded="false"
-      class="dropdown-toggle"
-      onclick="redirectToCart()"
-    >
-      <%= fa_icon('shopping-cart 3x', style: 'color: #67696C;', class: 'icon-color cursor-pointer') %>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dLabel">
-      <div class="container-fluid">   
-        <div class="item">
+  <% if browser.device.mobile? %>
+    <a href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
+      <p class="text-uppercase d-flex">
+        Checkout
+        <%= fa_icon 'shopping-cart' %>
+        (<%= @cart.get_totals(@current_user)[:tot_qty] %>)
+      </p>
+    </a>
+  <% else %>
+    <div class="cart position-relative">
+      <div class="dropdown">
+        <button
+          id="dLabel"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          class="dropdown-toggle"
+          onclick="redirectToCart()"
+        >
+          <%= fa_icon('shopping-cart 3x', style: 'color: #67696C;', class: 'icon-color cursor-pointer') %>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dLabel">
+          <div class="container-fluid">   
+            <div class="item">
 
-          <% @cart.cart_items.each do |item| %>
+              <% @cart.cart_items.each do |item| %>
 
-            <div class="row d-flex flex-center">
-              <div class="col-md-3">
-                <img
-                  src="<%= item.product.image.thumb_100.url %>"
-                  class="img-responsive"
-                  alt=""
-                />
+                <div class="row d-flex flex-center">
+                  <div class="col-md-3">
+                    <img
+                      src="<%= item.product.image.thumb_100.url %>"
+                      class="img-responsive"
+                      alt=""
+                    />
+                  </div>
+                  <div class="col-md-7">
+                    <p><%= item.product.name %></p>
+                    <span><%= friendly_cart_weight(item.product.weight) %></span>
+                    <p><%= session_price(item.product, "current_price") %><span> (x<%= item.quantity %>)</span></p>
+                  </div>
+                  <div class="col-md-2">
+                    <%= link_to cart_item_path(item.id), method: :delete, remote: true, class: "remove" do %>
+                      <%= fa_icon('trash 2x', style: 'color: #67696C;', class: 'icon-color cursor-pointer') %>
+                    <% end %>
+                  </div>
+                </div>
+
+              <% end %>
+
+              <div class="subtotal d-flex space-between">
+                <p>SUBTOTAL</p>
+                <p><%= session_price(@cart.get_totals(@current_user)[:tot_acum]) %></p>
               </div>
-              <div class="col-md-7">
-                <p><%= item.product.name %></p>
-                <span><%= friendly_cart_weight(item.product.weight) %></span>
-                <p><%= session_price(item.product, "current_price") %><span> (x<%= item.quantity %>)</span></p>
-              </div>
-              <div class="col-md-2">
-                <%= link_to cart_item_path(item.id), method: :delete, remote: true, class: "remove" do %>
-                  <%= fa_icon('trash 2x', style: 'color: #67696C;', class: 'icon-color cursor-pointer') %>
-                <% end %>
+              <% if session[:currency] != "xxx" %>
+                <div class="subtotal d-flex space-between" style="margin-top: -25px;">
+                  <p></p>
+                  <p>S/. <%= @cart.get_totals(@current_user)[:tot_acum] * @exchange_rate %></p>
+                </div>
+              <% end %>
+              <div class="cart-btn-group text-center">
+                <a href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
+                  <button class="secondary-btn"><%= t('.view_cart') %></button>
+                </a>
+                <a href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
+                  <button class="main-btn"><%= t('.checkout') %></button>
+                </a>
               </div>
             </div>
-
-          <% end %>
-
-          <div class="subtotal d-flex space-between">
-            <p>SUBTOTAL</p>
-            <p><%= session_price(@cart.get_totals(@current_user)[:tot_acum]) %></p>
           </div>
-          <% if session[:currency] != "xxx" %>
-            <div class="subtotal d-flex space-between" style="margin-top: -25px;">
-              <p></p>
-              <p>S/. <%= @cart.get_totals(@current_user)[:tot_acum] * @exchange_rate %></p>
-            </div>
-          <% end %>
-          <div class="cart-btn-group text-center">
-            <a href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
-              <button class="secondary-btn"><%= t('.view_cart') %></button>
-            </a>
-            <a href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
-              <button class="main-btn"><%= t('.checkout') %></button>
-            </a>
-          </div>
-        </div>
+        </ul>
       </div>
-    </ul>
-  </div>
-  <span class="cart-count d-flex flex-center cursor-pointer"><%= @cart.get_totals(@current_user)[:tot_qty] %></span>
-</div>
+      <span class="cart-count d-flex flex-center cursor-pointer"><%= @cart.get_totals(@current_user)[:tot_qty] %></span>
+    </div>
+  <% end %>
 <% end %>

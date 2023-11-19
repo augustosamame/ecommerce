@@ -98,6 +98,12 @@
     margin-left: 0px;
   }
 }
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: white;
+}
 .js_now_flash_class {
   margin-bottom: 0px !important;
 }
