@@ -20,12 +20,12 @@
           <h3><%= @product.name %></h3>
           <% if @product.price == @product.discounted_price %>
             <div class="price d-flex hidden-xs">
-              <p><%= product_session_price(@product, "current_price") %></p>
+              <p class="product-info-price single-30"><%= product_session_price(@product, "current_price") %></p>
             </div>
           <% else %>
             <div class="price d-flex hidden-xs">
-              <p><%= product_session_price(@product, "price") %></p>
-              <p><%= product_session_price(@product, "current_price") %></p>
+              <p class="product-info-price-regular single-30"><%= product_session_price(@product, "price") %></p>
+              <p class="product-info-price-discounted single-30"><%= product_session_price(@product, "current_price") %></p>
             </div>
           <% end %>
           <p>
@@ -44,14 +44,16 @@
           <% if @product.price == @product.discounted_price %>
             <div class="visible-xs">
               <div class="price d-flex">
-                <p><%= product_session_price(@product, "current_price") %></p>
+                <p class="product-info-price"><%= product_session_price(@product, "current_price") %></p>
               </div>
             </div>
           <% else %>
             <div class="visible-xs">
               <div class="price d-flex">
-                <p><%= product_session_price(@product, "price") %></p>
-                <p><%= product_session_price(@product, "current_price") %></p>
+                <div class="price-inner-wrapper">
+                  <p class="product-info-price-regular"><%= product_session_price(@product, "price") %></p>
+                  <p class="product-info-price-discounted"><%= product_session_price(@product, "current_price") %></p>
+                </div>
               </div>
             </div>
           <% end %>

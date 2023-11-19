@@ -52,10 +52,10 @@
                       <p><%= product.name %></p>
                       <div class="price d-flex flex-center">
                         <% if product.price == product.discounted_price %>
-                          <p class='featured-product-info-price-regular'><%= product_session_price(product, "current_price") %></p>
+                          <p class='featured-product-info-price'><%= product_session_price(product, "current_price") %></p>
                         <% else %>
-                          <p class='featured-product-info-price-discounted'><%= product_session_price(product, "current_price") %></p>
                           <p class='featured-product-info-price-regular'><%= product_session_price(product, "price") %></p>
+                          <p class='featured-product-info-price-discounted'><%= product_session_price(product, "current_price") %></p>
                         <% end %>
                       </div>
                     </div>

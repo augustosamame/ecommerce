@@ -10,12 +10,14 @@
           </p>
           <% if item && (item.price == item.discounted_price) %>
             <div class="price d-flex flex-center">
-              <p class='product-info-price-regular'  style="font-size: 24px;"><%= product_session_price(item, "current_price") %></p>
+              <p class='product-info-price'><%= product_session_price(item, "current_price") %></p>
             </div>
           <% else %>
-            <div class="price d-flex flex-center" style="width: 60%;">
-              <p class="product-info-price-discounted"><%= product_session_price(item, "price") %></p>
-              <p class="product-info-price-regular"><%= product_session_price(item, "current_price") %></p>
+            <div class="price d-flex flex-center">
+              <div class="price-inner-wrapper">
+                <p class="product-info-price-regular"><%= product_session_price(item, "price") %></p>
+                <p class="product-info-price-discounted"><%= product_session_price(item, "current_price") %></p>
+              </div>
             </div>
           <% end %>
         </div>
