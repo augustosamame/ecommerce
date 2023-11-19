@@ -1,0 +1,126 @@
+@media (max-width: 991px) {
+  body.fixed_top .noo-header.header-5.eff .noo-main-menu {
+    margin-top: 0;
+  }
+}
+
+body.fixed_top .noo-header.header-5.eff .navbar-wrapper {
+  position: fixed;
+  width: 100%;
+  background-color: #ffffff;
+  margin-top: -144px;
+}
+
+.search-header5 {
+  display: none;
+}
+
+.search-header5 .note-search {
+  font-size: 24px;
+  color: #000000;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+@media (max-width: 767px) {
+  .search-header5 .note-search {
+    font-size: 16px;
+  }
+}
+
+.search-header5 .remove-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: rgba(255, 255, 255, 0.925);
+}
+
+.search-header5 form {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  text-align: center;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 99999;
+}
+
+.search-header5 form .sr-only {
+  display: none;
+}
+
+.search-header5 form .form-control {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  color: #000000;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  -webkit-transition: all 0.8s ease 0.7s;
+  -o-transition: all 0.8s ease 0.7s;
+  transition: all 0.8s ease 0.7s;
+  font-size: 68px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.search-header5 form .form-control::-moz-placeholder {
+  color: #000000;
+  opacity: 1;
+}
+
+.search-header5 form .form-control:-ms-input-placeholder {
+  color: #000000;
+}
+
+.search-header5 form .form-control::-webkit-input-placeholder {
+  color: #000000;
+}
+
+.search-header5 form .form-control:focus,
+.search-header5 form .form-control:active {
+  outline-color: transparent;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+@media (max-width: 767px) {
+  .search-header5 form .form-control {
+    font-size: 38px;
+  }
+}
+
+.search-header5 form input[type='submit'] {
+  height: 50px;
+  background: #2b5c01;
+  color: #ffffff;
+  padding: 0 50px;
+  border: 0;
+  -webkit-transition: all 0.8s ease 0.7s;
+  -o-transition: all 0.8s ease 0.7s;
+  transition: all 0.8s ease 0.7s;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  -webkit-transform: translate(-100px, 0);
+  -ms-transform: translate(-100px, 0);
+  -o-transform: translate(-100px, 0);
+  transform: translate(-100px, 0);
+  opacity: 0;
+  filter: alpha(opacity=0);
+  display: none;
+}
+
+.search-header5.search-header-eff {
+  display: block;
+}
