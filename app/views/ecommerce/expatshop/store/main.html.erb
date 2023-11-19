@@ -42,27 +42,34 @@
             <% Ecommerce::Product.where(home_featured: true).order(:product_order).each do |product| %>
               <div>
                 <div class="featured-product position-relative d-flex">
-                  <div class="featured-product-body">
-                    <img
-                      src="<%= product.image.medium_400.url %>"
-                      alt=""
-                      class="img-responsive"
-                    />
-                    <div class="featured-product-info d-flex flex-center">
-                      <p><%= product.name %></p>
-                      <div class="price d-flex flex-center">
-                        <% if product.price == product.discounted_price %>
-                          <p class='featured-product-info-price'><%= product_session_price(product, "current_price") %></p>
-                        <% else %>
-                          <p class='featured-product-info-price-regular'><%= product_session_price(product, "price") %></p>
-                          <p class='featured-product-info-price-discounted'><%= product_session_price(product, "current_price") %></p>
-                        <% end %>
+                  <%= link_to product_path(product) do %>
+                    <div class="featured-product-body">
+                      <img
+                        src="<%= product.image.medium_400.url %>"
+                        alt=""
+                        class="img-responsive"
+                      />
+                      <div class="featured-product-info d-flex flex-center">
+                        <p><%= product.name %></p>
+                        <div class="price d-flex flex-center">
+                          <% if product.price == product.discounted_price %>
+                            <p class='featured-product-info-price'><%= product_session_price(product, "current_price") %></p>
+                          <% else %>
+                            <p class='featured-product-info-price-regular'><%= product_session_price(product, "price") %></p>
+                            <p class='featured-product-info-price-discounted'><%= product_session_price(product, "current_price") %></p>
+                          <% end %>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <button class="featured-add-to-cart-button">
-                    <i class="fa-solid fa-cart-shopping"></i><%= t('.add_to_cart') %>
-                  </button>
+                  <% end %>
+                  <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart-form", id: "new_cart_item_#{product.id}" } do |f| %>
+                    <%= button_tag class: "featured-add-to-cart-button" do %>
+                      <%= fa_icon 'shopping-cart' %>
+                      <%= t('.add_to_cart') %>
+                    <% end %>
+                    <%= f.hidden_field :product_id, value: product.id, id: "product_product_id_#{product.id}" %>
+                    <%= f.hidden_field :quantity, value: 1, id: "devtech_quantity_field_#{product.id}" %>
+                  <% end %>
                 </div>
               </div>
             <% end %>

@@ -3,6 +3,9 @@
   .main-section-title {
     font-size: 2rem;
   }
+  .featured-product {
+    margin: 0 2px;
+  }
   .featured-products {
     background-color: white;
   }
@@ -16,9 +19,11 @@
   .featured-product-info {
     padding-left: 0px;
     padding-right: 0px;
+    padding-top: 15px;
+    padding-bottom: 5px;
   }
   .featured-product-info .price {
-    width: 100%;
+    width: 80% !important;
   }
   .featured-product-info-price {
     font-size: 12px !important;
@@ -174,6 +179,9 @@
   letter-spacing: 1px;
   text-transform: uppercase;
 }
+.featured-product-info .price {
+  width: 100%;
+}
 .product-info-price {
   position: relative;
   font-weight: 400;
@@ -223,7 +231,6 @@
 .cart-form {
   width: 100%;
   margin-bottom: 0px;
-  height: 42px;
 }
 .add-to-cart-btn-container {
   display: flex;
@@ -319,4 +326,10 @@
     height: 500px;
     width: 500px;
   }
+}
+.bx-wrapper {
+  border: 0px;
+}
+.featured-add-to-cart-button {
+  width: 100%;
 }

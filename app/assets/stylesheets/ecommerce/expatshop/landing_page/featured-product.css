@@ -47,7 +47,7 @@
 }
 .featured-product button {
   background-color: var(--primary-btn-color);
-  padding: 10px 10px;
+  padding: 10px 5px;
   color: var(--white-color);
   border: none;
 }
