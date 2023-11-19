@@ -198,8 +198,19 @@
     </nav>
 
 
-<%= render 'ecommerce/expatshop/store/top_promo' %>
+  <%= render 'ecommerce/expatshop/store/top_promo' %>
 
+  <div class="search-header5">
+    <div class="remove-form"></div>
+    <div class="container">
+      <form action="<%= search_product_path %>" class="form-horizontal">
+        <label class="note-search"><%= t('.search_instructions') %></label>
+        <input type="search" name="search" class="form-control" value="" placeholder="Search..." autocomplete="off">
+        <input type="submit" value="Search">
+      </form>
+    </div>
+  </div>
+  
 </header>
 
 <script>

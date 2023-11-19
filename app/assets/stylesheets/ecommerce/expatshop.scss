@@ -20,10 +20,10 @@
 *= require bxslider
 *= require 'ecommerce/expatshop/jquery.mosaic.min'
 *= require 'ecommerce/expatshop/justifiedGallery.min'
-*= require 'ecommerce/expatshop/products-page/media'
 *= require 'ecommerce/expatshop/products-page/products'
-*= require 'ecommerce/expatshop/product-details-page/media'
+*=require 'ecommerce/expatshop/products-page/media'
 *= require 'ecommerce/expatshop/product-details-page/product-details'
+*=require 'ecommerce/expatshop/product-details-page/media'
 *= require 'ecommerce/expatshop/cart-page/cart'
 *= require 'ecommerce/expatshop/cart-page/media'
 *= require 'ecommerce/expatshop/checkout-page/checkout'
@@ -36,5 +36,6 @@
 *= require 'ecommerce/expatshop/program-page/media'
 *= require 'ecommerce/expatshop/order-status-page/order-status'
 *= require 'ecommerce/expatshop/order-status-page/media'
+*=require 'ecommerce/expatshop/mobile-search'
 *= require 'ecommerce/expatshop/custom'
 */

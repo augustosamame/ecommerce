@@ -7,7 +7,8 @@
 </section>
 <section class="order-status">
   <div class="container">
-    <div class="order-status-details">
+    <div class="order-status-details"> 
+      <p class="order-status-label"><%= t('.order_status') %></p>
       <p class="d-flex space-between">
         <%= t('.order_total') %>
         <span>
@@ -32,6 +33,14 @@
     <% if @order.payment_status == "unpaid" %>
       <form action="">
         <div class="order-status-payment d-flex">
+          <input type="radio" name="payment_curency" id="pay_in_dollars" />
+          <div class="order-status-payment-details">
+            <p class="d-flex space-between">
+              <%= t('.pay_in_dollars') %> <span>$ <%= @order.amount %></span>
+            </p>
+          </div>
+        </div>
+        <div class="order-status-payment d-flex">
           <input type="radio" name="payment_curency" id="pay_in_soles" />
           <div class="order-status-payment-details">
             <p class="d-flex space-between">
@@ -41,14 +50,6 @@
                 <span id="payment-amount-in-soles"><%= @order.amount * @exchange_rate %>
                 </span>
               </span>
-            </p>
-          </div>
-        </div>
-        <div class="order-status-payment d-flex">
-          <input type="radio" name="payment_curency" id="pay_in_dollars" />
-          <div class="order-status-payment-details">
-            <p class="d-flex space-between">
-              <%= t('.pay_in_dollars') %> <span>$ <%= @order.amount %></span>
             </p>
           </div>
         </div>
@@ -109,7 +110,10 @@
       </tbody>
     </table>
 
-    <%= button_to t('.my_orders'), orders_path, class: "main-btn order-status-order-details-button", method: :get %>
+    <%= button_to "", orders_path, class: "main-btn order-status-order-details-button", method: :get do %>
+      <%= fa_icon 'shopping-cart' %>
+      <%= t('.my_orders') %>
+    <% end %>
   </div>
 </section>
 </main>

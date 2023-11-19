@@ -347,16 +347,16 @@
 	<% end %>
 </div>
 -->
-<%= render 'ecommerce/organici/store/top_promo' %>
+  <%= render 'ecommerce/organici/store/top_promo' %>
 	<!-- TODO Search should have alternate functionality if header is being shown from blog or ecommerce -->
-	<div class="search-header5">
-		<div class="remove-form"></div>
-		<div class="container">
-			<form action="<%= search_product_path %>" class="form-horizontal">
-				<label class="note-search"><%= t('.search_instructions') %></label>
-				<input type="search" name="search" class="form-control" value="" placeholder="Search..." autocomplete="off">
-				<input type="submit" value="Search">
-			</form>
-		</div>
-	</div>
+  <div class="search-header5">
+    <div class="remove-form"></div>
+    <div class="container">
+      <form action="<%= search_product_path %>" class="form-horizontal">
+        <label class="note-search"><%= t('.search_instructions') %></label>
+        <input type="search" name="search" class="form-control" value="" placeholder="Search..." autocomplete="off">
+        <input type="submit" value="Search">
+      </form>
+    </div>
+  </div>
 </header>

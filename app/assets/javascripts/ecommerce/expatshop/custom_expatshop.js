@@ -204,6 +204,15 @@ $(document).ready(function () {
   //  randomize: false,
   // });
 
+  $(".noo-search").on("click", function () {
+    $(".search-header5").fadeIn(1).addClass("search-header-eff");
+    $(".search-header5").find('input[type="search"]').val("").attr("placeholder", "").select();
+    return false;
+  });
+  $(".remove-form").on("click", function () {
+    $(".search-header5").fadeOut(1).removeClass("search-header-eff");
+  });
+
 
   $('#currency').on('change', function () {
     var url = window.location.pathname + window.location.search
