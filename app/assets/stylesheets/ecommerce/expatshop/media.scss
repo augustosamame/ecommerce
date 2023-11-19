@@ -55,7 +55,7 @@
   }
   /* testimonial */
   .testimonial-body {
-    margin: 0 5px;
+    padding: 10 !important;
   }
   .testimonial-body video {
     height: 150px;
@@ -115,6 +115,6 @@
   footer .copyright .row .col-xs-12,
   footer .copyright .row .col-xs-12 ul {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
   }
 }

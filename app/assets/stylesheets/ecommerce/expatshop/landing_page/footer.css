@@ -35,7 +35,7 @@ footer .copyright {
 footer .copyright h5 {
   color: var(--white-color);
   font-weight: 100;
-  width: 50%;
+  width: 60%;
 }
 footer .copyright ul {
   justify-content: end;

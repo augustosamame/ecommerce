@@ -78,7 +78,7 @@
             <form action="" class="d-flex">
               <select id="currency" class="cursor-pointer">
                 <option <%= session[:currency] == 'usd' ? "selected" : "" %>value="usd">USD $</option>
-                <option <%= session[:currency] == 'pen' ? "selected" : "" %> value="pen">PEN S</option>
+                <option <%= session[:currency] == 'pen' ? "selected" : "" %> value="pen">PEN S/.</option>
               </select>
               <select id="lang" class="cursor-pointer">
                 <option <%= session[:locale] == 'en-PE' ? "selected" : "" %> value="english" data-imagesrc="./imgs/usa.png">English</option>
@@ -133,7 +133,7 @@
               <label class="text-uppercase"><%= t('.language') %></label>
               <select id="lang-mobile" class="cursor-pointer" name="language" >
                 <option <%= session[:currency] == 'usd' ? "selected" : "" %>value="usd">USD $</option>
-                <option <%= session[:currency] == 'pen' ? "selected" : "" %> value="pen">PEN S</option>
+                <option <%= session[:currency] == 'pen' ? "selected" : "" %> value="pen">PEN S/.</option>
               </select>
             </form>
           </div>
