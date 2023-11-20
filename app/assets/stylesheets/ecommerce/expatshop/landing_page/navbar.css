@@ -133,7 +133,7 @@ nav.desktops,
 }
 /* mobiles navbar */
 .mobiles {
-  padding: 10px 0;
+  padding: 10px 5px;
   border-bottom: 2px solid var(--form-border-color);
 }
 .mobiles p {
@@ -165,7 +165,7 @@ nav.desktops,
   margin: 0;
 }
 .mobiles-main-nav .row {
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 .mobiles-main-nav .user-icon {
   font-size: 2rem;

@@ -266,10 +266,8 @@ $(document).ready(function () {
         {
           breakpoint: 768,
           settings: {
-            slidesToShow: 2,
-            slidesToScroll: 4,
-            infinite: true,
-            dots: false,
+            slidesToShow: 1,
+            slidesToScroll: 1,
           },
         },
       ],

@@ -215,10 +215,19 @@
     height: auto !important;
     /* Maintain the aspect ratio */
   }
+  .related-products h3::before, .related-products h3::after {
+    height: 0px !important;
+  }
 }
 .sticky-header {
   position: sticky;
   top: 0;
+  z-index: 100;
+  background-color: white;
+}
+.sticky-header-2 {
+  position: sticky;
+  top: 46;
   z-index: 100;
   background-color: white;
 }
