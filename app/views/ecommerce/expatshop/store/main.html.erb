@@ -39,7 +39,7 @@
           <h2 class="main-section-title" style="font-weight: 300; font-size: 24px;"><%= t('.featured_products') %></h2>
           <div class="featured-product-slider" data-thumb="https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png">
 
-            <% Ecommerce::Product.where(home_featured: true).order(:product_order).each do |product| %>
+            <% @featured_products.each do |product| %>
               <div>
                 <div class="featured-product position-relative d-flex">
                   <%= link_to product_path(product) do %>

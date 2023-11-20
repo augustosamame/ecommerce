@@ -4,6 +4,10 @@ nav.desktops,
   padding: 15px 0;
   background-color: var(--white-color);
 }
+nav.desktops,
+.top-desktop-header {
+  padding: 5px 0 !important;
+}
 .desktops .container-fluid > div {
   align-items: center;
   justify-content: space-between;

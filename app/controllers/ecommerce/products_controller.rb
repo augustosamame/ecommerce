@@ -26,7 +26,10 @@ module Ecommerce
         @filter = params[:filter]
         case @filter
         when "new_products"
-          @products = Product.where('created_at > ?', 30.days.ago).includes(:translations).active.order(:product_order).page(params[:page])
+          #@products = Product.where('created_at > ?', 30.days.ago).includes(:translations).active.order(:product_order).page(params[:page])
+          new_products_category_id = Rails.env.production? ? 47 : 11
+          @category = Category.find(new_products_category_id)
+          @products = Product.includes(:translations).tagged_with(@category.name).active.order(:product_order).page(params[:page])
         when "discounted_products"
           @products = Product.where('ecommerce_products.price_cents != ecommerce_products.discounted_price_cents').includes(:translations).active.order(:product_order).page(params[:page])
         end

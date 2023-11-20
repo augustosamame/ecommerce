@@ -229,6 +229,9 @@
   .video-sizing {
     height: 150px !important;
   }
+  .checkout .mini-cart .mini-cart-items {
+    padding: 10px !important;
+  }
 }
 .sticky-header {
   position: sticky;
@@ -484,4 +487,7 @@
 }
 .video-sizing {
   height: 250px;
+}
+.checkout-weight-p {
+  margin-bottom: 0px !important;
 }

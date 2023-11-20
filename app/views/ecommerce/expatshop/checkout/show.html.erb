@@ -43,7 +43,7 @@
                   <% if item.product.weight == 0 %>
                     <p></p>
                   <% else %>
-                    <p><%= item.product.weight %>g</p>
+                    <p class="checkout-weight-p"><%= item.product.weight %>g</p>
                   <% end %>
                 </div>
                 <p><%= session_price(item.line_total(@current_user)) %></p>

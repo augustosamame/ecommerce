@@ -1,9 +1,4 @@
-    <nav class="desktops hidden-xs sticky-header">
-      <div id="js_now_flash">
-        <% if notice.present? %>
-          <%= render partial: "ecommerce/application/js_now_flash" %>
-        <% end %>
-      </div>
+    <nav class="desktops hidden-xs top-desktop-header sticky-header">
       <div class="container-fluid">
         <div class="d-flex">
           <div class="logo">
@@ -112,6 +107,11 @@
         </ul>
       </div>
     </nav>
+    <div id="js_now_flash">
+      <% if notice.present? %>
+        <%= render partial: "ecommerce/application/js_now_flash" %>
+      <% end %>
+    </div>
 
 
     <!-- navbar for mobiles -->
