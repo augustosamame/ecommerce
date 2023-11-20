@@ -73,11 +73,11 @@
             <form action="" class="d-flex">
               <select id="currency" class="cursor-pointer">
                 <option <%= session[:currency] == 'usd' ? "selected" : "" %>value="usd">USD $</option>
-                <option <%= session[:currency] == 'pen' ? "selected" : "" %> value="pen">PEN S/.</option>
+                <option <%= session[:currency] == 'usd' ? "" : "selected" %> value="pen">PEN S/.</option>
               </select>
               <select id="lang" class="cursor-pointer">
+                <option <%= session[:locale] == 'en-PE' ? "" : "selected" %> value="spanish" data-imagesrc="./imgs/peru.png">Español</option>
                 <option <%= session[:locale] == 'en-PE' ? "selected" : "" %> value="english" data-imagesrc="./imgs/usa.png">English</option>
-                <option <%= session[:locale] == 'es-PE' ? "selected" : "" %> value="spanish" data-imagesrc="./imgs/peru.png">Español</option>
               </select>
             </form>
           </div>
@@ -139,8 +139,8 @@
           <div class="col-xs-4 d-flex flex-center">
             <form action="" class="d-flex" style="margin-bottom: 0px;">
               <select id="langMobile" class="cursor-pointer">
+                <option <%= session[:locale] == 'en-PE' ? "" : "selected" %> value="1" data-imagesrc="<%= image_url("ecommerce/img/expatshop/peru-flag.png") %>">ES</option>
                 <option <%= session[:locale] == 'en-PE' ? "selected" : "" %> value="0" data-imagesrc="<%= image_url("ecommerce/img/expatshop/us-flag.png") %>">EN</option>
-                <option <%= session[:locale] == 'es-PE' ? "selected" : "" %> value="1" data-imagesrc="<%= image_url("ecommerce/img/expatshop/peru-flag.png") %>">ES</option>
               </select>
             </form>
           </div>
