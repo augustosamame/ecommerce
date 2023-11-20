@@ -4,7 +4,9 @@
       <div class="featured-product-body">
         <%= image_tag item.image.medium_260.url, class: "img-responsive" %>
         <div class="featured-product-info d-flex flex-center">
-          <p><%= item.name %></p>
+          <p class="product-title">
+            <%= item.name %>
+          </p>
           <p class="product-info">
             <%= item.short_description.gsub("**","<br>").html_safe if item.short_description %>
           </p>

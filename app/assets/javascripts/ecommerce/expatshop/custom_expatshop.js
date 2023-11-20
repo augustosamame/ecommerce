@@ -99,6 +99,62 @@ $.fn.bounce = function (settings) {
 
   $(this).animate({ top: 0 }, settings.interval, settings.complete);
 };
+var _ddlLangLoaded = false;
+$("#langMobile").ddslick({
+  width: "100%",
+  imagePosition: "left",
+  // defaultSelectedIndex: 2,
+  onSelected: function (data) {
+    console.log(data.selectedData.value);
+    var url = window.location.pathname + window.location.search
+    if (_ddlLangLoaded === false) {
+      _ddlLangLoaded = true;
+    }
+    else {
+      if (data.selectedData.value == 0) {
+        if (url.indexOf('?') == -1) {
+          window.location.href = url + "?lang=en-PE"
+        } else {
+          window.location.href = url + "&lang=en-PE"
+        }
+      } else {
+        if (url.indexOf('?') == -1) {
+          window.location.href = url + "?lang=es-PE"
+        } else {
+          window.location.href = url + "&lang=es-PE"
+        }
+      }
+    }
+  }
+});
+
+var _ddlCurrencyLoaded = false;
+$("#currencyMobile").ddslick({
+  width: "100%",
+  // defaultSelectedIndex: 'pen',
+  onSelected: function (data) {
+    console.log(data.selectedData.value);
+    var url = window.location.pathname + window.location.search
+    if (_ddlCurrencyLoaded === false) {
+      _ddlCurrencyLoaded = true;
+    }
+    else {
+      if (data.selectedData.value == 'usd') {
+        if (url.indexOf('?') == -1) {
+          window.location.href = url + "?currency=usd"
+        } else {
+          window.location.href = url + "&currency=usd"
+        }
+      } else {
+        if (url.indexOf('?') == -1) {
+          window.location.href = url + "?currency=pen"
+        } else {
+          window.location.href = url + "&currency=pen"
+        }
+      }
+    }  
+  }
+});
 
 // brand slider
 $(function () {

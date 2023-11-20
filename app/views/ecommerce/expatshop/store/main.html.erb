@@ -50,7 +50,7 @@
                         class="img-responsive"
                       />
                       <div class="featured-product-info d-flex flex-center">
-                        <p><%= product.name %></p>
+                        <p class="product-title"><%= product.name %></p>
                         <div class="price d-flex flex-center">
                           <% if product.price == product.discounted_price %>
                             <p class='featured-product-info-price'><%= product_session_price(product, "current_price") %></p>
@@ -128,8 +128,8 @@
                     />
                   </video>
                   <div class="testimonial-info d-flex flex-center">
-                    <p><%= testimonial.user_fullname %> - <%= testimonial.user_title %></p>
-                    <p>
+                    <p class="testimonial-user-name"><%= testimonial.user_fullname %> - <%= testimonial.user_title %></p>
+                    <p class="testimonial-product-info">
                       <%= testimonial.product_name %>
                     </p>
                   </div>

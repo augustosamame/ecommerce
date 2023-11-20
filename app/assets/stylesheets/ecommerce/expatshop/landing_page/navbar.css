@@ -64,9 +64,11 @@ nav.desktops,
 #currency {
   margin-right: 30px;
 }
+#currencyMobile {
+  height: 20px;
+}
 .dd-select {
   border: none !important;
-  background: var(--form-color) !important;
   border-radius: 8px !important;
   margin-right: 30px;
   outline: 0 !important;

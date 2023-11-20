@@ -117,31 +117,30 @@
     <!-- navbar for mobiles -->
     <nav class="mobiles visible-xs sticky-header">
       <div class="container-fluid">
-        <div class="row mobile-header-row">
+        <div class="row mobile-header-row" style="align-items: center;">
           <div class="col-xs-4 d-flex flex-center">
 
             <% if browser.device.mobile? %>
-              <div class="cart position-relative" id="cart-line">
+              <div class="cart position-relative" id="cart-line" style="padding-left: 25px;">
                 <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/store/cart", locals: {cart: @cart} %>
               </div>
             <% end %>
 
           </div>
 
-          <div class="col-xs-4 d-flex flex-center">
-            <form action="" class="d-flex" style="align-items: center;">
-              <label class="text-uppercase"><%= t('.language') %></label>
-              <select id="lang-mobile" class="cursor-pointer" name="language" >
+          <div class="col-xs-4 d-flex flex-center" style="padding-right: 0px; margin-left: 50px;">
+            <form action="" class="d-flex" style="margin-bottom: 0px;">
+              <select id="currencyMobile" class="cursor-pointer" >
                 <option <%= session[:currency] == 'usd' ? "selected" : "" %>value="usd">USD $</option>
                 <option <%= session[:currency] == 'pen' ? "selected" : "" %> value="pen">PEN S/.</option>
               </select>
             </form>
           </div>
           <div class="col-xs-4 d-flex flex-center">
-            <form action="">
-              <select id="currency-mobile" class="cursor-pointer" name="currency" >
-                <option <%= session[:locale] == 'en-PE' ? "selected" : "" %> value="english" data-imagesrc="./imgs/usa.png">English</option>
-                <option <%= session[:locale] == 'es-PE' ? "selected" : "" %> value="spanish" data-imagesrc="./imgs/peru.png">Español</option>
+            <form action="" class="d-flex" style="margin-bottom: 0px;">
+              <select id="langMobile" class="cursor-pointer">
+                <option <%= session[:locale] == 'en-PE' ? "selected" : "" %> value="0" data-imagesrc="<%= image_url("ecommerce/img/expatshop/us-flag") %>">EN</option>
+                <option <%= session[:locale] == 'es-PE' ? "selected" : "" %> value="1" data-imagesrc="<%= image_url("ecommerce/img/expatshop/peru-flag") %>">ES</option>
               </select>
             </form>
           </div>

@@ -50,6 +50,8 @@
   .testimonial-info {
     padding-right: 0px;
     padding-left: 0px;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
   }
   .testimonial-body {
     margin: 0 10 0 0 !important;
@@ -218,6 +220,12 @@
   .related-products h3::before, .related-products h3::after {
     height: 0px !important;
   }
+  #langMobile, .dd-options {
+    z-index: 200;
+  }
+  .products .featured-product .featured-product-body .featured-product-info p:first-of-type {
+    margin-bottom: 8px !important;
+  }
 }
 .sticky-header {
   position: sticky;
@@ -228,7 +236,7 @@
 .sticky-header-2 {
   position: sticky;
   top: 46;
-  z-index: 100;
+  z-index: 1;
   background-color: white;
 }
 .js_now_flash_class {
@@ -321,7 +329,7 @@
 }
 .price-inner-wrapper {
   display: flex;
-  width: 80%;
+  width: 90%;
   margin-bottom: 10px;
 }
 .stock_alert {
@@ -392,7 +400,7 @@
   width: calc(100% - 126px);
   background-color: var(--primary-btn-color);
   color: white;
-  font-size: 16px;
+  font-size: 14px;
 }
 .cart_item_quantity {
   width: 100%;
@@ -450,4 +458,20 @@
 }
 .slick-arrow {
   z-index: 100;
+}
+.product-title {
+  height: 50px;
+  overflow: hidden;
+}
+.product-info {
+  height: 60px;
+  overflow: hidden;
+}
+.testimonial-user-name {
+  height: 40px;
+  overflow: hidden;
+}
+.testimonial-product-info {
+  height: 60px;
+  overflow: hidden;
 }

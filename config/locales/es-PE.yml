@@ -125,7 +125,7 @@ es-PE:
     expatshop:
       product:
         show:
-          add_to_cart: "Agregar al Carrito"
+          add_to_cart: "Agr al Carrito"
           alert_me: "Alertarme cuando haya Stock"
           categories: "Categorías: "
           out_of_stock: "Fuera de Stock"
@@ -137,7 +137,7 @@ es-PE:
         product:
           out_of_stock: "Fuera de Stock"
           alert_me: "Alertarme cuando haya Stock"
-          add_to_cart: "Agregar al Carrito"
+          add_to_cart: "Agr al Carrito"
           no_more_stock_available: "No hay más unidades disponibles"
       checkout:
         pre_checkout:
@@ -364,7 +364,7 @@ es-PE:
           submit: "Enviar"
           by_country: "Productos Por País"
           by_product: "Por Producto"
-          add_to_cart: "Agregar al Carrito"
+          add_to_cart: "Agr al Carrito"
           featured_products: "PRODUCTOS DESTACADOS"
           customer_testimonials: "TESTIMONIOS"
           press: "Prensa"
@@ -440,7 +440,7 @@ es-PE:
           additional_information: "Información Adicional"
           reviews: "Comentarios"
         index:
-          add_to_cart: "Agregar al Carrito"
+          add_to_cart: "Agr al Carrito"
           quick_view: "Ver Detalles"
       cart:
         show:
