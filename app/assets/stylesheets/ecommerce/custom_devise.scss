@@ -386,6 +386,11 @@ a:hover {
   border-radius: 8px;
 }
 
+.menu_active {
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
 .sale,
 .best-seller::after {
   position: absolute;

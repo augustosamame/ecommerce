@@ -7,13 +7,7 @@
   margin-left: 0;
   margin-right: 0;
 }
-.categories-principles img {
-  background: var(--white-color);
-  border-radius: 50%;
-  padding: 10px;
-  height: 100px;
-  width: 100px;
-}
+
 .categories-principles p {
   font-weight: 700;
   margin: 15px 0 25px;

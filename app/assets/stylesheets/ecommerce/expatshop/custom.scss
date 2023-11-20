@@ -186,6 +186,35 @@
     padding-left: 5px;
     padding-right: 5px;
   }
+  .sub-links {
+    padding-top: 0px;
+    padding-bottom: 20px;
+  }
+  .categories-principles {
+    padding-top: 20px;
+    padding-bottom: 0px;
+  }
+  .cat-img-wrapper {
+    width: 100px !important;
+    /* Set the width of the container */
+    height: 100px !important;
+    /* Set the height of the container */
+    border-radius: 50% !important;
+    /* Create a circular shape */
+    background-color: white !important;
+    /* Set the background color to white */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow: hidden !important;
+    /* Ensure content doesn't overflow */
+  }
+  .cat-image {
+    width: 55% !important;
+    /* Adjust the width of the square image */
+    height: auto !important;
+    /* Maintain the aspect ratio */
+  }
 }
 .sticky-header {
   position: sticky;
