@@ -43,7 +43,7 @@
                   </th>
                   <th class="cart-desktop-table-other-row">
                     <div>
-                      <!-- <p><%= session_price(item.product, "current_price") %></p> -->
+                      <p><%= number_to_currency(([item.product.price, item.product.discounted_price].min * @exchange_rate), unit: "S/.") %></p>
                       <p><%= session_price(item.product, "current_price") %></p>
                     </div>
                   </th>
@@ -64,7 +64,7 @@
                     </div>
                   </th>
                   <th class="cart-desktop-table-other-row">
-                    <!-- <p><%= session_price(item.line_total(@current_user)) %></p> -->
+                    <p><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/.") %></p>
                     <p><%= session_price(item.line_total(@current_user)) %></p>
                   </th>
                   <th class="cart-desktop-table-delete-row">
