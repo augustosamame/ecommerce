@@ -90,7 +90,7 @@ module Ecommerce
               @cart.cart_items.includes(:product).each do |cart_item|
                 found_cross_sell = true unless cart_item.product.cross_sell_products.blank?
               end
-              redirect_to pre_checkout_path and return unless found_cross_sell
+              redirect_to pre_checkout_path and return if found_cross_sell
             else
               redirect_to pre_checkout_path and return
             end
