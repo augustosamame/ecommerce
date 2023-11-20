@@ -17,8 +17,8 @@
 }
 .featured-product-info p {
   color: var(--black-color);
-  font-weight: 600;
-  font-size: 1.7rem;
+  font-weight: 400;
+  font-size: 14px;
   text-align: center;
 }
 .featured-product-info .price {

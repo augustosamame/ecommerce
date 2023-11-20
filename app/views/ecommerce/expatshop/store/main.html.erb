@@ -121,7 +121,7 @@
             <% Ecommerce::Testimonial.where(status: "active").order(:priority).each do |testimonial| %>
               <div>
                 <div class="testimonial-body">
-                  <video controls="controls" poster="<%= testimonial.thumbnail.medium_400.url %>">
+                  <video class="video-sizing" controls="controls" poster="<%= testimonial.thumbnail.medium_400.url %>">
                     <source
                       src="<%= testimonial.video.url %>"
                       type="video/mp4"
@@ -236,7 +236,7 @@ categorías.
         //autoControls: true,
         //captions: true,
         //stopAutoOnClick: true,
-        slideWidth: 1280,
+        slideWidth: 2560,
         video: true,
         infiniteLoop: true,
         adaptiveheight: true,

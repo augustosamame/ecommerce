@@ -21,7 +21,7 @@ header .header-slider div {
 }
 .slick-prev:before,
 .slick-next:before {
-  font-family: "Font Awesome 5 Free";
+  font-family: "FontAwesome";
   font-weight: 900;
   content: "\f0da";
   color: var(--black-color);

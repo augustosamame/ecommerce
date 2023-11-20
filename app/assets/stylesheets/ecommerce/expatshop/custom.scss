@@ -226,6 +226,9 @@
   .products .featured-product .featured-product-body .featured-product-info p:first-of-type {
     margin-bottom: 8px !important;
   }
+  .video-sizing {
+    height: 150px !important;
+  }
 }
 .sticky-header {
   position: sticky;
@@ -462,10 +465,14 @@
 .product-title {
   height: 50px;
   overflow: hidden;
+  font-weight: 600 !important;
+  font-size: 18px !important;
 }
 .product-info {
   height: 60px;
   overflow: hidden;
+  margin: 0;
+  font-size: 14px;
 }
 .testimonial-user-name {
   height: 40px;
@@ -474,4 +481,7 @@
 .testimonial-product-info {
   height: 65px;
   overflow: hidden;
+}
+.video-sizing {
+  height: 250px;
 }

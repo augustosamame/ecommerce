@@ -37,7 +37,7 @@
               </a>
             </li>
             <% if current_user %>
-              <% if !current_user.admin? %>
+              <% if current_user.admin? %>
                 <li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
               <% end %>
               <li class="dropdown dropdown-hover d-flex flex-center">
@@ -69,7 +69,7 @@
                   <%= t('.my_account') %>
                 </a>
                 <a href="<%= main_app.new_user_registration_path(sign_up_type: 'non-guest') %>"
-                  ><i class="fa-regular fa-user icon-color d-flex flex-center"></i
+                  ><%= fa_icon('user', style: 'color: #67696C;') %></i
                 ></a>
               </li>
             <% end %>
@@ -100,12 +100,12 @@
         <ul class="d-flex flex-center">
           <li><a style='font-size: 18px;' href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>" class="<%= active_all_products_category() == 'active' ? 'active' : '' %>"><%= t('.all_products') %></a></li>
           <% if current_user %>
-            <li>| <a style='color:red; font-size: 18px;' href="<%= Ecommerce::Engine.routes.url_helpers.favorites_path %>"><%= t('.favorite_products') %></a></li>
+            <li>| <a style='color:red; font-size: 17px;' href="<%= Ecommerce::Engine.routes.url_helpers.favorites_path %>"><%= t('.favorite_products') %></a></li>
           <% end %>
 
           <% @primary_menu_categories.each do |category| %>
             <% unless category.id == 30 && !@banana_permission %>
-              <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: match_active_category(category), style: 'margin-left: 10px; font-size: 18px;' %></li>
+              <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: match_active_category(category), style: 'margin-left: 8px; font-size: 17px;' %></li>
             <% end %>
           <% end %>
           

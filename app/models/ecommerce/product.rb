@@ -37,7 +37,7 @@ module Ecommerce
     scope :active, -> { where(status: "active") }
     scope :active_not_banana, -> { where(status: "active").tagged_with("Alcoholic Drinks", :exclude => true) }
 
-    paginates_per 8
+    paginates_per 9
 
     enum status: {active: 0, inactive: 1}
 

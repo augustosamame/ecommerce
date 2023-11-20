@@ -35,8 +35,9 @@
                 <p><%= "#{address.street}, #{address.district}" %></p>
               </th>
               <th>
-                <%= button_to "", address_path(address), method: :delete, data: { confirm: t('.are_you_sure') }, :class => 'address-delete-button' do %>
-                  <%= fa_icon 'trash lg'%>
+                <% delete_post_data = { controller: 'addresses', action: 'destroy', id: address.id } %>
+                <%= link_to delete_post_data, class: 'address-delete-button', method: :delete, data: { confirm: t('.are_you_sure') } do %>
+                  <%= fa_icon 'trash lg' %>
                 <% end %>      
               </th>
             </tr>
