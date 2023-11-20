@@ -232,6 +232,25 @@
   .checkout .mini-cart .mini-cart-items {
     padding: 10px !important;
   }
+  .checkout-p-text-mobile {
+    font-size: 18px !important;
+  }
+  .over-700-text {
+    font-size: 16px !important;
+  }
+  .checkout-pay-in-soles-p,
+  .checkout-pay-in-points-p {
+    font-size: 16px !important;
+  }
+  .checkout .pay-in-soles p,
+  .checkout .coupon p,
+  .checkout .coupon label,
+  .checkout .receipt p {
+    font-size: 16px !important;
+  }
+  .checkout-receipt-div {
+    font-size: 16px !important;
+  }
 }
 .sticky-header {
   position: sticky;
@@ -490,4 +509,14 @@
 }
 .checkout-weight-p {
   margin-bottom: 0px !important;
+}
+.width-80 {
+  width: 80% !important;
+}
+.cart-price-p {
+  width: 20% !important;
+  text-align: right;
+}
+.over-700-text {
+  font-size: 20px;
 }

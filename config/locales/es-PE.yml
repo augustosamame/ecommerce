@@ -174,7 +174,7 @@ es-PE:
           coupon_line: "Cupón Aplicado"
           coupon_error: "Cupón Inválido"
           address: "Dirección"
-          click_here_to_setup_factura_info: "Haga Click Aqui para Ingresar Datos de Factura"
+          click_here_to_setup_factura_info: "Ingresar Datos de Factura"
           accept_marketing: "Acepto recibir comunicaciones de marketing por correo y SMS"
           bank_deposit: "Depósito Bancario"
           manual_payment: "PROCESO INTERNO"

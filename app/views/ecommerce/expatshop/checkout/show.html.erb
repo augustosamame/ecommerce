@@ -38,7 +38,7 @@
           <div class="mini-car-items-container">
             <% @cart.cart_items.each do |item| %>
               <div class="mini-cart-items d-flex space-between">
-                <div class="mini-cart-item">
+                <div class="mini-cart-item width-80">
                   <p><%= item.product.name %> <span> (x<%= item.quantity %>) </span></p>
                   <% if item.product.weight == 0 %>
                     <p></p>
@@ -46,12 +46,12 @@
                     <p class="checkout-weight-p"><%= item.product.weight %>g</p>
                   <% end %>
                 </div>
-                <p><%= session_price(item.line_total(@current_user)) %></p>
+                <p class="cart-price-p"><%= session_price(item.line_total(@current_user)) %></p>
               </div>
             <% end %>
           </div>
 
-          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border">
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border checkout-p-text-mobile">
             <%= t('.subtotal_dollars') %>
             <div>
               <span style="display: inline;">
@@ -68,7 +68,7 @@
           </p>
           -->
 
-          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border">
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border checkout-p-text-mobile">
             <%= t('.shipping') %>
             <span id="free-shipping-text" class="amount" style="color: red; font-size: 24px; display: none;"><%= t('.free_shipping') %></span>
             <div>
@@ -81,7 +81,7 @@
             </div>
           </div>
 
-          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border coupon-subtotal-hidden" id="coupon-subtotal-id">
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border coupon-subtotal-hidden" id="coupon-subtotal-id checkout-p-text-mobile">
             <%= t('.coupon_line') %>
             <div>
               <span style="display: inline;">
@@ -93,7 +93,7 @@
             </div>
           </div>
 
-          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border">
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border checkout-p-text-mobile">
             <%= t('.total_dollars') %>
             <div>
               <span style="display: inline;">
@@ -110,10 +110,10 @@
             <div class="d-flex space-between" style="margin-top: 20px;">
               <div class="checkout-pay-in-points-p">
                 <%= check_box_tag("pay_in_points", "0", false, class: "pay_in_points_checkbox") %>
-                <label for="pay_in_points" style="font-size: 20px; margin-left: 20px; margin-bottom: 0px;">
+                <label for="pay_in_points" style="font-size: 18px; margin-left: 20px; margin-bottom: 0px;">
                 <%= t('.pay_in_points') %>
                 
-                <label style="font-size: 20px; color: #333">( <span id="points-amount"><%= current_user.try(:points) %></span> pts )</label>
+                <label style="font-size: 18px; color: #333">( <span id="points-amount"><%= current_user.try(:points) %></span> pts )</label>
               </label>
               </div>
 
@@ -123,7 +123,7 @@
 
         </div>
 
-        <div class="pay-in-soles d-flex space-between" style="padding-bottom: 30px;">
+        <div class="pay-in-soles d-flex space-between checkout-p-text-mobile" style="padding-bottom: 30px;">
           <div class="checkout-pay-in-soles-p d-flex" style="align-items: center;">
             <%= check_box_tag("pay_in_soles", "0", false, class: "pay_in_soles_checkbox") %>
             <%= t('.pay_in_soles') %>
@@ -143,7 +143,7 @@
             <ul class="payment_methods">
 
               <li class="wc_payment_method payment_method_card" style="margin-left: 10px;">
-                <p style="font-size: 20px;"> <%= t('.text_over_700') %> </p>
+                <p class="over-700-text"> <%= t('.text_over_700') %> </p>
 
                 <div class="payment_box payment_method_cheque">
 
@@ -162,7 +162,7 @@
         <% if @coupons_active %>
           <% unless @always_on_coupon %>
 
-            <div class="coupon">
+            <div class="coupon checkout-p-text-mobile">
               <p><%= fa_icon "tags" %><%= t('.enter_coupon_1') %></p>
               <form action="">
                 <label for="coupon-code"><%= t('.enter_coupon_2') %></label>
@@ -175,7 +175,7 @@
           <% end %>  
         <% end %>
 
-         <div class="pay-in-soles d-flex space-between" style="padding-bottom: 20px;">
+         <div class="pay-in-soles d-flex space-between checkout-p-text-mobile" style="padding-bottom: 20px;">
           <div class="checkout-receipt-div">
             <div class="checkout-receipt-div-inner">
               <%= check_box_tag("pay_in_soles", "0", false, class: "factura_checkbox", id: "factura-checkbox") %>
