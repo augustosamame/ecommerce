@@ -301,7 +301,7 @@
 .sticky-header-2 {
   position: sticky;
   top: 46;
-  z-index: 1;
+  z-index: 100;
   background-color: white;
 }
 .js_now_flash_class {
@@ -524,7 +524,7 @@
   margin-bottom: 10px !important;
 }
 .slick-arrow {
-  z-index: 100;
+  z-index: 2;
 }
 .product-title {
   height: 50px;
