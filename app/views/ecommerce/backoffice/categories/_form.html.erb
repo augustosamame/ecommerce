@@ -24,6 +24,10 @@
     <%= f.input :image_popular_homepage_overlay_text, label: t('.text_for_image_overlay') %>
     <%= f.input :category_order, label: t('.category_order') %>
 
+    <%= f.input :mosaic_show, as: :boolean, label: 'Show In Country Mosaic' %>
+    <%= f.input :mosaic_label_en, label: 'Country Mosaic Text (English)' %>
+    <%= f.input :mosaic_label_es, label: 'Country Mosaic Text (Spanish)' %>
+
     <%= f.label t('.homepage_category_image') %>
     <div class="form-group">
       <% if f.object.image_popular_homepage? %>

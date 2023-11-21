@@ -267,7 +267,7 @@
     padding: 10px 10px 20px;
   }
   .mobile-cart-product-name {
-    padding: 0px 0px 0px 10px;
+    padding: 0px 10px 0px 10px;
   }
   .mobile-cart-product-totals {
     font-weight: 400;
@@ -333,6 +333,8 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
 }
 .country-div p {
   position: absolute;

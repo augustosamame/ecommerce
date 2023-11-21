@@ -146,50 +146,17 @@
           <h2 style="font-size: 2.5rem;"><%= t('.products_from_the_world') %></h2>
           <!-- countries for desktop -->
           <div id="country-mosaic">
-              
-                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/1-country-france.png') %>)">
-                <p><%= t('.france') %></p>
-              </div>
 
-              
-                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/2-country-peru.png') %>)">
-                <p><%= t('.peru') %></p>
+            <% Ecommerce::Category.where(mosaic_show: true).active.order(:category_order).each do |category| %>
+              <div>
+              <a href="<%= products_path(category_id: category.id) %>" >
+                <div class="country-div" style="background-image: url(<%= category.image_popular_homepage.homepage.url %>)">
+                <p><%= category.mosaic_label_en %></p>
+                </div>
+              </a>
               </div>
+            <% end %>
            
-
-                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/3-country-italy.png') %>)">
-                <p><%= t('.italy') %></p>
-              </div>
-            
-              <div class="country-div" style="background-image: url(<%= image_url('ecommerce/img/expatshop/4-country-england.png') %>)">
-              <p><%= t('.england') %></p>
-                
-               </div>
-               
-                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/5-country-india.png') %>)">
-                <p><%= t('.india') %></p>
-              </div>
-              
-                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/6-country-germany.png') %>)">
-                <p><%= t('.germany') %></p>
-              </div>
-              
-                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/7-country-croatia.png') %>)">
-                <p><%= t('.croatia') %></p>
-              </div>
-              
-                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/8-country-belgium.png') %>)">
-                <p><%= t('.belgium') %></p>
-              </div>
-              
-                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/9-country-finland.png') %>)">
-                <p><%= t('.finland') %></p>
-              </div>
-              
-                
-                <div class="country-div" style="background-image: url(<%= image_url( 'ecommerce/img/expatshop/10-country-thailand.png') %>)">
-                <p><%= t('.thailand') %></p>
-               </div>
           </div>
         </div>
       </section>

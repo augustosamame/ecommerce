@@ -579,7 +579,7 @@ en-PE:
           include_in_popular_homepage_categories: 'Include in Popular Homepage Categories'
           text_for_image_overlay: 'Text for Image Overlay in Popular Homepage Categories'
           category_order: 'Category Order (0 Appears first)'
-          homepage_category_image: 'Homepage Category Image'
+          homepage_category_image: 'Mosaic Country Image (665px x 445px)'
           translations: 'Translations'
           name_in_spanish: 'Name (In Spanish)'
           name_in_spanish_text_overlay: "Text for Image Overlay in Popular HomePage Categories (in Spanish)"

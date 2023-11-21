@@ -41,7 +41,7 @@ class Ecommerce::CategoryHomeImageUploader < CarrierWave::Uploader::Base
   # end
 
   version :homepage do
-    process resize_to_limit: [400, 400]
+    process resize_to_limit: [600, 600]
     process :store_dimensions
   end
 

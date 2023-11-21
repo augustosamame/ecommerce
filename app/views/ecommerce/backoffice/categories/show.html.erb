@@ -29,7 +29,16 @@
   <dt>Category Order:</dt>
   <dd><%= @backoffice_category.category_order %></dd>
 
-  <dt>HomePage Popular Image:</dt>
+  <dt>Show In Country Mosaic:</dt>
+  <dd><%= @backoffice_category.mosaic_show %></dd>
+
+  <dt>Country Mosaic Text (English):</dt>
+  <dd><%= @backoffice_category.mosaic_label_en %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @backoffice_category.mosaic_label_es %></dd>
+
+  <dt><%= t('.homepage_category_image') %>:</dt>
   <dd><%= image_tag @backoffice_category.image_popular_homepage_url(:homepage) %></dd>
 
   <dt>Status:</dt>

@@ -651,7 +651,7 @@ es-PE:
           include_in_popular_homepage_categories: 'Incluir en Categorías Populares en Página de Inicio'
           text_for_image_overlay: 'Texto para Imagen Flotante en Categorías Populares en Página de Inicio'
           category_order: 'Orden de Categoría (0 Aparece Primero)'
-          homepage_category_image: 'Página de Inicio Categoría Imágen'
+          homepage_category_image: 'Imagen Mosaico País (665px x 445px)'
           translations: 'Traducciones'
           name_in_spanish: 'Nombre (en Español)'
           name_in_spanish_text_overlay: "Texto para Imagen Flotante en Categorías Populares en Página de Inicio (en Español)"
