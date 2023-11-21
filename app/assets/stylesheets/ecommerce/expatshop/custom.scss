@@ -252,9 +252,29 @@
     font-size: 16px !important;
   }
   .products .continue-checkout-button {
-    font-size: 14px !important;
+    font-size: 18px !important;
     margin-top: 30px !important;
     margin-bottom: 30px !important;
+  }
+  .mobile-cart-row {
+  }
+  .mobile-cart-separator {
+    width: 90%;
+    border: none;
+    border-top: 1px solid lightgray;
+  }
+  .cart-info {
+    padding: 10px 10px 20px;
+  }
+  .mobile-cart-product-name {
+    padding: 0px 0px 0px 10px;
+  }
+  .mobile-cart-product-totals {
+    font-weight: 400;
+    font-size: 16px !important;
+  }
+  .mobile-cart-product-delete {
+    padding: 0px 0px 0px 0px;
   }
 }
 .sticky-header {

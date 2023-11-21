@@ -1,0 +1,249 @@
+<main>
+  <!-- cart label -->
+  <section class="recommendation-label">
+    <div>
+      <h3 style="text-decoration: uppercase;"><%= t('.cart_title') %></h3>
+    </div>
+  </section>
+  <!-- cart -->
+  <section class="cart-page">
+    <div class="container-fluid">
+      <!-- cart table for desktops -->
+      <table class="hidden-xs">
+        <thead>
+          <tr>
+            <th><%= t('.product_column_title') %></th>
+            <th><%= t('.price_column_title') %></th>
+            <th><%= t('.qty_column_title') %></th>
+            <th><%= t('.total_column_title') %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @cart.cart_items.count == 0 %>
+
+          <% else %>
+            <% @cart.cart_items.each do |item| %>
+              <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
+                <tr>
+                  <th class="cart-desktop-table-product-row">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <%= image_tag item.product.image.thumb_100.url, alt: "", class: "img-responsive" %>
+                      </div>
+                      <div class="col-md-8">
+                        <p><%= item.product.name %></p>
+                        <% if item.product.weight == 0 %>
+                          <span></span>
+                        <% else %>
+                          <span><%= number_with_precision(item.product.weight, precision: 0) %> gr</span>
+                        <% end %>
+                      </div>
+                    </div>
+                  </th>
+                  <th class="cart-desktop-table-other-row">
+                    <div>
+                      <p><%= number_to_currency(([item.product.price, item.product.discounted_price].min * @exchange_rate), unit: "S/.") %></p>
+                      <p><%= session_price(item.product, "current_price") %></p>
+                    </div>
+                  </th>
+                  <th class="cart-desktop-table-other-row">
+                    <div class="quantity-btn d-flex flex-center">
+                      
+                      <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %>>
+                        <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.quantity}" %>>-</a>
+                      </div>
+                      <div class="quantity container-qty" id="devtech_quantity">
+                        <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();' } %>
+                      </div>
+
+                      <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %>>
+                        <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.quantity}" %>>+</a>
+                      </div>
+                      
+                    </div>
+                  </th>
+                  <th class="cart-desktop-table-other-row">
+                    <p><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/.") %></p>
+                    <p><%= session_price(item.line_total(@current_user)) %></p>
+                  </th>
+                  <th class="cart-desktop-table-delete-row">
+                    <%= link_to "&times;".html_safe, cart_item_path(item.id), method: :delete, class: "remove" do %>
+                      <i class="fa-solid fa-trash-can cursor-pointer remove"></i>
+                    <% end %>
+                  </th>
+                </tr>
+              <% end %>
+            <% end %>
+          <% end %>
+
+        </tbody>
+      </table>
+      <!-- cart table for mobiles -->
+      <div class="cart-desktop visible-xs">
+        <div class="row">
+          <div class="col-xs-4">
+            <img
+              src="../imgs/featured-product-1.png"
+              class="img-responsive"
+              alt=""
+            />
+          </div>
+          <div class="col-xs-6">
+            <p>Chiavalon Romano Aceite de oliva 0.5L</p>
+            <span>500g</span>
+          </div>
+          <div class="col-xs-2">
+            <i class="fa-solid fa-trash-can cursor-pointer fa-2x"></i>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 col-xs-offset-4">
+              <div class="quantity-btn d-flex flex-center">
+                <button>-</button>
+                <span>1</span>
+                <button>+</button>
+              </div>
+              <p>Total: <span>S/ 15.60</span> <span>$3.90</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4">
+            <img
+              src="../imgs/featured-product-1.png"
+              class="img-responsive"
+              alt=""
+            />
+          </div>
+          <div class="col-xs-6">
+            <p>Chiavalon Romano Aceite de oliva 0.5L</p>
+            <span>500g</span>
+          </div>
+          <div class="col-xs-2">
+            <i class="fa-solid fa-trash-can cursor-pointer fa-2x"></i>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 col-xs-offset-4">
+              <div class="quantity-btn d-flex flex-center">
+                <button>-</button>
+                <span>1</span>
+                <button>+</button>
+              </div>
+              <p>Total: <span>S/ 15.60</span> <span>$3.90</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4">
+            <img
+              src="../imgs/featured-product-1.png"
+              class="img-responsive"
+              alt=""
+            />
+          </div>
+          <div class="col-xs-6">
+            <p>Chiavalon Romano Aceite de oliva 0.5L</p>
+            <span>500g</span>
+          </div>
+          <div class="col-xs-2">
+            <i class="fa-solid fa-trash-can cursor-pointer fa-2x"></i>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 col-xs-offset-4">
+              <div class="quantity-btn d-flex flex-center">
+                <button>-</button>
+                <span>1</span>
+                <button>+</button>
+              </div>
+              <p>Total: <span>S/ 15.60</span> <span>$3.90</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="cart-info-container">
+        <div class="cart-info-btn hidden-xs">
+          <button><%= fa_icon('arrow-left') %><%= t('.continue_shopping') %></button
+          ><button>
+            <%= fa_icon('shopping-cart') %><%= t('.my_orders') %></button
+          ><button><%= fa_icon('user') %><%= t('.my_account') %></button>
+        </div>
+        <div>
+          <div class="cart-info">
+            <div class="cart-num">
+              <p><%= t('.total_items') %></p>
+              <p><%= @cart_qty_subtotal %></p>
+            </div>
+            <div class="cart-subtotal">
+              <p><span>SUBTOTAL IN DOLLARS</span><span><%= session_price(@cart_subtotal) %></span></p>
+              <p><span>SUBTOTAL IN SOLES</span> <span>S/. <%= @cart_subtotal * @exchange_rate %></span></p>
+            </div>
+            <div class="shipping-cost">
+              <p><%= t('.shipping') %></p>
+              <p>
+                <%= t('.shipping_costs_text') %>
+              </p>
+            </div>
+            <div class="cart-total">
+              <p><span>SUBTOTAL IN DOLLARS</span><span><%= session_price(@cart_subtotal) %></span></p>
+              <p><span>SUBTOTAL IN SOLES</span> <span>S/. <%= @cart_subtotal * @exchange_rate %></span></p>
+            </div>
+          </div>
+          <%= button_to t('.proceed_to_checkout'), checkout_path, method: :get, class: "checkout-btn main-btn" %>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  $(document).ready(function(){
+    bindPlusMinusButtons();
+  });
+
+  function extractStringAfter(originalString, searchString) {
+    var startIndex = originalString.indexOf(searchString);
+    if (startIndex !== -1) {
+      return originalString.substring(startIndex + searchString.length);
+    }
+    return "";
+  }
+
+  function bindPlusMinusButtons() {
+
+    $('body').on('click', ".devtech_plus_class", function(e) {
+      var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
+      var inStockValueElement = $(e.currentTarget).parent().children(".devtech_plus_class").children(".devtech_plus_a_class").attr('id');
+      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
+      var inStockValue = parseInt(inStockValueElement.substr(inStockValueElement.indexOf('_qty') + 4));
+      var id_of_clicked_element = $(e.currentTarget).attr('id')
+      var numeric_id_of_element = extractStringAfter(id_of_clicked_element, 'devtech_plus_');
+      var parentForm = $(`#edit_cart_item_${numeric_id_of_element}`);
+
+      //if (parseInt(quantityElement.val()) < inStockValue ) {
+        quantityElement.val(parseInt(quantityElement.val()) + 1);
+        parentForm.submit();
+        outOfStockTextElement.hide();
+      //} else {
+      //  outOfStockTextElement.show();
+      //}
+      e.preventDefault();
+    });
+
+    $('body').on('click', ".devtech_minus_class", function(e) {
+      var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
+      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
+      var id_of_clicked_element = $(e.currentTarget).attr('id')
+      var numeric_id_of_element = extractStringAfter(id_of_clicked_element, 'devtech_minus_');
+      var parentForm = $(`#edit_cart_item_${numeric_id_of_element}`);
+      outOfStockTextElement.hide();
+      if (parseInt(quantityElement.val()) > 1) {
+        quantityElement.val(parseInt(quantityElement.val()) - 1);
+        console.log(parentForm)
+        parentForm.submit();
+      }
+      e.preventDefault();
+    });
+  }
+</script>

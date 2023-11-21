@@ -1,6 +1,6 @@
 <% if @cart && @cart.id %>
   <% if browser.device.mobile? %>
-    <a href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
+    <a href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
       <p class="text-uppercase d-flex">
         Checkout
         <%= fa_icon 'shopping-cart' %>

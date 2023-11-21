@@ -143,7 +143,7 @@ es-PE:
         pre_checkout:
           you_might_also_like: 'También te podría gustar'
           you_might_also_like_reccomendations: 'Basado en el contenido de su carrito, les recomendamos los siguientes productos:'
-          not_interested_proceed_to_checkout: "No estoy interesado, proceder al Checkout"
+          not_interested_proceed_to_checkout: "CONTINUAR CON CHECKOUT"
         show:
           shipping_address: "Dirección de Envío"
           pick_address: "Seleccionar Dirección"
@@ -297,7 +297,7 @@ es-PE:
       store:
         header:
           all_products: "Todos los Productos"
-          favorite_products: 'Mis Productos Favoritos'
+          favorite_products: 'Mis Compras Frecuentes'
           home_menu: "Inicio"
           blog_menu: "Blog"
           about_us_menu: "Nosotros"
@@ -353,7 +353,7 @@ es-PE:
         main:
           testimonials: "Testimoniales"
           all_products: "Todos los Productos"
-          favorite_products: 'Mis Productos Favoritos'
+          favorite_products: 'Mis Compras Frecuentes'
           new_products: "Productos Destacados"
           new_products_subtitle: "Los mejores productos del mundo a Perú"
           free_shipping: "Envío gratis en pedidos superiores a $30"

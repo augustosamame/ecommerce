@@ -132,7 +132,7 @@ en-PE:
       store:
         header:
           all_products: "All Products"
-          favorite_products: "My Favorite Products"
+          favorite_products: "My Frequent Purchases"
           home_menu: "Home"
           blog_menu: "Blog"
           about_us_menu: "About Us"
@@ -184,7 +184,7 @@ en-PE:
         main:
           testimonials: "Testimonials"
           all_products: "All Products"
-          favorite_products: "My Favorite Products"
+          favorite_products: "My Frequent Purchases"
           new_products: "Featured Products"
           new_products_subtitle: "From all over the world the best products money can buy"
           free_shipping: "Free Shipping on Orders over $ 30"
@@ -254,7 +254,7 @@ en-PE:
         pre_checkout:
           you_might_also_like: 'You Might Also Like'
           you_might_also_like_reccomendations: 'Based on your cart contents, we would like to suggest the following products'
-          not_interested_proceed_to_checkout: "I'm not interested, proceed to Checkout"
+          not_interested_proceed_to_checkout: "PROCEED TO CHECKOUT"
         show:
           shipping_address: "Shipping Address"
           pick_address: "Pick an Address"

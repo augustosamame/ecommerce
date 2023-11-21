@@ -9,156 +9,136 @@
   <section class="cart-page">
     <div class="container-fluid">
       <!-- cart table for desktops -->
-      <table class="hidden-xs">
-        <thead>
-          <tr>
-            <th><%= t('.product_column_title') %></th>
-            <th><%= t('.price_column_title') %></th>
-            <th><%= t('.qty_column_title') %></th>
-            <th><%= t('.total_column_title') %></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
+      <% unless browser.device.mobile? %>
+        <table class="hidden-xs">
+          <thead>
+            <tr>
+              <th><%= t('.product_column_title') %></th>
+              <th><%= t('.price_column_title') %></th>
+              <th><%= t('.qty_column_title') %></th>
+              <th><%= t('.total_column_title') %></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @cart.cart_items.count == 0 %>
+
+            <% else %>
+              <% @cart.cart_items.each do |item| %>
+                <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
+                  <tr>
+                    <th class="cart-desktop-table-product-row">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <%= image_tag item.product.image.thumb_100.url, alt: "", class: "img-responsive" %>
+                        </div>
+                        <div class="col-md-8">
+                          <p><%= item.product.name %></p>
+                          <% if item.product.weight == 0 %>
+                            <span></span>
+                          <% else %>
+                            <span><%= number_with_precision(item.product.weight, precision: 0) %> gr</span>
+                          <% end %>
+                        </div>
+                      </div>
+                    </th>
+                    <th class="cart-desktop-table-other-row">
+                      <div>
+                        <p><%= number_to_currency(([item.product.price, item.product.discounted_price].min * @exchange_rate), unit: "S/.") %></p>
+                        <p><%= session_price(item.product, "current_price") %></p>
+                      </div>
+                    </th>
+                    <th class="cart-desktop-table-other-row">
+                      <div class="quantity-btn d-flex flex-center">
+                        
+                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %>>
+                          <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.quantity}" %>>-</a>
+                        </div>
+                        <div class="quantity container-qty" id="devtech_quantity">
+                          <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();' } %>
+                        </div>
+
+                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %>>
+                          <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.quantity}" %>>+</a>
+                        </div>
+                        
+                      </div>
+                    </th>
+                    <th class="cart-desktop-table-other-row">
+                      <p><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/.") %></p>
+                      <p><%= session_price(item.line_total(@current_user)) %></p>
+                    </th>
+
+                    <th class="cart-desktop-table-delete-row">
+                      <% delete_cart_item_data = { controller: 'cart_items', action: 'destroy', id: item.id } %>
+                      <%= link_to delete_cart_item_data, method: :delete, class: "remove" do %>
+                        <%= fa_icon 'trash', class: 'cursor-pointer remove' %>
+                      <% end %>
+                    </th>
+                    
+                  </tr>
+                <% end %>
+              <% end %>
+            <% end %>
+
+          </tbody>
+        </table>
+      <% end %>
+      <!-- cart table for mobiles -->
+      <div class="cart-desktop visible-xs">
+        <% if browser.device.mobile? %>
+
           <% if @cart.cart_items.count == 0 %>
 
           <% else %>
             <% @cart.cart_items.each do |item| %>
+
               <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
-                <tr>
-                  <th class="cart-desktop-table-product-row">
-                    <div class="row">
-                      <div class="col-md-3">
-                        <%= image_tag item.product.image.thumb_100.url, alt: "", class: "img-responsive" %>
-                      </div>
-                      <div class="col-md-8">
-                        <p><%= item.product.name %></p>
-                        <% if item.product.weight == 0 %>
-                          <span></span>
-                        <% else %>
-                          <span><%= number_with_precision(item.product.weight, precision: 0) %> gr</span>
-                        <% end %>
-                      </div>
-                    </div>
-                  </th>
-                  <th class="cart-desktop-table-other-row">
-                    <div>
-                      <p><%= number_to_currency(([item.product.price, item.product.discounted_price].min * @exchange_rate), unit: "S/.") %></p>
-                      <p><%= session_price(item.product, "current_price") %></p>
-                    </div>
-                  </th>
-                  <th class="cart-desktop-table-other-row">
-                    <div class="quantity-btn d-flex flex-center">
+                <div class="row mobile-cart-row">
+                  <div class="col-xs-3">
+                    <%= image_tag item.product.image.medium_400.url, alt: "", class: "img-responsive" %>
+                  </div>
+                  <div class="col-xs-8 mobile-cart-product-name">
+                    <p><%= item.product.name %></p>
+                  </div>
+
+                  
+
+                  <div class="cart-mobile-table-delete-row">
+                    <% delete_cart_item_data = { controller: 'cart_items', action: 'destroy', id: item.id } %>
+                    <%= link_to delete_cart_item_data, method: :delete, class: "remove" do %>
+                      <%= fa_icon 'trash 2x', class: 'cursor-pointer remove' %>
+                    <% end %>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-xs-8 col-xs-offset-3">
+                      <div class="quantity-btn d-flex flex-center">
                       
-                      <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %>>
-                        <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.quantity}" %>>-</a>
-                      </div>
-                      <div class="quantity container-qty" id="devtech_quantity">
-                        <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();' } %>
+                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %>>
+                          <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.quantity}" %>>-</a>
+                        </div>
+                        <div class="quantity container-qty" id="devtech_quantity">
+                          <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();' } %>
+                        </div>
+
+                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %>>
+                          <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.quantity}" %>>+</a>
+                        </div>
+                        
                       </div>
 
-                      <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %>>
-                        <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.quantity}" %>>+</a>
-                      </div>
-                      
+                      <p class="mobile-cart-product-totals"><span style="font-weight: 600;">Total: </span><span><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/.") %></span> <span><%= session_price(item.line_total(@current_user)) %></span></p>
                     </div>
-                  </th>
-                  <th class="cart-desktop-table-other-row">
-                    <p><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/.") %></p>
-                    <p><%= session_price(item.line_total(@current_user)) %></p>
-                  </th>
-                  <th class="cart-desktop-table-delete-row">
-                    <%= link_to "&times;".html_safe, cart_item_path(item.id), method: :delete, class: "remove" do %>
-                      <i class="fa-solid fa-trash-can cursor-pointer remove"></i>
-                    <% end %>
-                  </th>
-                </tr>
+                  </div>
+                  <hr class="mobile-cart-separator"></hr>
+                </div>
               <% end %>
+
             <% end %>
           <% end %>
+        <% end %>
 
-        </tbody>
-      </table>
-      <!-- cart table for mobiles -->
-      <div class="cart-desktop visible-xs">
-        <div class="row">
-          <div class="col-xs-4">
-            <img
-              src="../imgs/featured-product-1.png"
-              class="img-responsive"
-              alt=""
-            />
-          </div>
-          <div class="col-xs-6">
-            <p>Chiavalon Romano Aceite de oliva 0.5L</p>
-            <span>500g</span>
-          </div>
-          <div class="col-xs-2">
-            <i class="fa-solid fa-trash-can cursor-pointer fa-2x"></i>
-          </div>
-          <div class="row">
-            <div class="col-xs-6 col-xs-offset-4">
-              <div class="quantity-btn d-flex flex-center">
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
-              </div>
-              <p>Total: <span>S/ 15.60</span> <span>$3.90</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-4">
-            <img
-              src="../imgs/featured-product-1.png"
-              class="img-responsive"
-              alt=""
-            />
-          </div>
-          <div class="col-xs-6">
-            <p>Chiavalon Romano Aceite de oliva 0.5L</p>
-            <span>500g</span>
-          </div>
-          <div class="col-xs-2">
-            <i class="fa-solid fa-trash-can cursor-pointer fa-2x"></i>
-          </div>
-          <div class="row">
-            <div class="col-xs-6 col-xs-offset-4">
-              <div class="quantity-btn d-flex flex-center">
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
-              </div>
-              <p>Total: <span>S/ 15.60</span> <span>$3.90</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-4">
-            <img
-              src="../imgs/featured-product-1.png"
-              class="img-responsive"
-              alt=""
-            />
-          </div>
-          <div class="col-xs-6">
-            <p>Chiavalon Romano Aceite de oliva 0.5L</p>
-            <span>500g</span>
-          </div>
-          <div class="col-xs-2">
-            <i class="fa-solid fa-trash-can cursor-pointer fa-2x"></i>
-          </div>
-          <div class="row">
-            <div class="col-xs-6 col-xs-offset-4">
-              <div class="quantity-btn d-flex flex-center">
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
-              </div>
-              <p>Total: <span>S/ 15.60</span> <span>$3.90</span></p>
-            </div>
-          </div>
-        </div>
       </div>
 
 
