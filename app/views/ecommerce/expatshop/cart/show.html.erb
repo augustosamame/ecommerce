@@ -128,7 +128,7 @@
                         
                       </div>
 
-                      <p class="mobile-cart-product-totals"><span style="font-weight: 600;">Total: </span><span><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/.") %></span> <span><%= session_price(item.line_total(@current_user)) %></span></p>
+                      <p class="mobile-cart-product-totals"><span style="font-weight: 600;">Total: </span><span><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/. ") %></span> <span style="margin-left: 20px;"><%= session_price(item.line_total(@current_user)) %></span></p>
                     </div>
                   </div>
                   <hr class="mobile-cart-separator"></hr>
