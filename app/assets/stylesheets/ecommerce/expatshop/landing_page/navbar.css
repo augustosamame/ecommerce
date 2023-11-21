@@ -193,4 +193,5 @@ nav.desktops,
 }
 .navbar-toggle {
   border: none;
+  float: left;
 }

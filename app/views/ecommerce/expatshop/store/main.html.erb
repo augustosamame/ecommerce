@@ -83,8 +83,8 @@
           <ul class="d-flex flex-center">
             <a href="<%= products_path %>"><li><%= t('.all_the_products') %></li></a>
             <a href="<%= favorites_path %>"><li><%= t('.my_frequent_purchases') %></li></a>
-            <a href="<%= products_path(filter: 'new_products') %>"><li><%= t('.new_products') %></li></a>
-            <a href="<%= products_path(filter: 'discounted_products') %>"><li><%= t('.offers_and_discounts') %></li></a>
+            <a href="<%= Ecommerce::Engine.routes.url_helpers.products_path(filter: 'new_products') %>"><li><%= t('.new_products') %></li></a>
+            <a href="<%= Ecommerce::Engine.routes.url_helpers.products_path(filter: 'discounted_products') %>"><li><%= t('.offers_and_discounts') %></li></a>
           </ul>
         </div>
       </section>
