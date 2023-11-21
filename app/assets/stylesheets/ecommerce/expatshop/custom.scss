@@ -277,8 +277,12 @@
     padding: 0px 0px 0px 0px;
   }
   .brand-slide-div {
-    width: 100px;
-    margin: 0px 5px 0px 5px;
+    width: 80px;
+    margin: 0px 15px 0px 15px;
+  }
+  .slick-track {
+    display: flex !important;
+    align-items: center !important;
   }
 }
 .sticky-header {
