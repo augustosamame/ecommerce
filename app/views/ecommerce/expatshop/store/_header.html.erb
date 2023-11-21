@@ -99,8 +99,12 @@
           <% end %>
 
           <% @primary_menu_categories.each do |category| %>
-            <% unless category.id == 30 && !@banana_permission %>
-              <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: match_active_category(category), style: 'margin-left: 8px; font-size: 17px;' %></li>
+            <% if category.id == 47 %>
+              <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(filter: 'new_products'), class: match_active_category(category), style: 'margin-left: 8px; font-size: 17px;' %></li>
+            <% else %>
+              <% unless category.id == 30 && !@banana_permission %>
+                <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: match_active_category(category), style: 'margin-left: 8px; font-size: 17px;' %></li>
+              <% end %>
             <% end %>
           <% end %>
           

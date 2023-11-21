@@ -574,7 +574,7 @@ en-PE:
           parent_categories: 'Parent Categories (you can choose more than one)'
           category_image: 'Category Image'
           status: 'Status'
-          include_as_a_menu_item: 'nclude as a Menu Item (Primary or Secondary)'
+          include_as_a_menu_item: 'Include as a Menu Item (Primary or Secondary)'
           category_type: 'Category Type (primary: main menu, secondary: secondary menu)'
           include_in_popular_homepage_categories: 'Include in Popular Homepage Categories'
           text_for_image_overlay: 'Text for Image Overlay in Popular Homepage Categories'

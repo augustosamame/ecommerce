@@ -7,9 +7,13 @@
           <p class="product-title">
             <%= item.name %>
           </p>
-          <p class="product-info">
-            <%= item.short_description.gsub("**","<br>").html_safe if item.short_description %>
-          </p>
+          <% if item.in_stock? %>
+            <p class="product-info">
+              <%= item.short_description.gsub("**","<br>").html_safe if item.short_description %>
+            </p>
+          <% else %>
+            <p class="out_of_stock_p"><span class=""><%= t('.out_of_stock') %></span></p>
+          <% end %>
           <% if item && (item.price == item.discounted_price) %>
             <div class="price d-flex flex-center">
               <p class='product-info-price'><%= product_session_price(item, "current_price") %></p>
