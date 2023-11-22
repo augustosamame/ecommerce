@@ -498,6 +498,9 @@
 }
 .out_of_stock {
   display: none;
+  margin-bottom: 30px;
+  color: red;
+  font-size: 24px;
 }
 .max-360 {
   max-width: 360px;
@@ -569,4 +572,14 @@
 .out_of_stock_p {
   font-size: 20px !important;
   color: red !important;
+}
+#dLabel+.dropdown-menu>.container-fluid {
+  overflow-x: scroll;
+  max-height: 700px;
+  padding-bottom: 15px;
+}
+.cart {
+  padding: 0 15px;
+  padding-bottom: 20px;
+  margin-bottom: -20px;
 }

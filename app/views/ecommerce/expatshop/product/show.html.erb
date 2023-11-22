@@ -119,7 +119,8 @@
     if ($("#devtech_quantity_field").val() < <%= @product.total_quantity %>) {
       $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) + 1);
     } else {
-      $("#out_of_stock_text").show();
+      $(".out_of_stock").show();
+      console.log("out of stock");
     }
     e.preventDefault();
   });
@@ -127,7 +128,8 @@
     if (parseInt($("#devtech_quantity_field").val()) > 1) {
       $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) - 1);
     }
-    $("#out_of_stock_text").hide();
+    $(".out_of_stock").hide();
+    console.log("in stock");
     e.preventDefault();
   });
 
