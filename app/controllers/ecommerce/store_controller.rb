@@ -14,8 +14,9 @@ module Ecommerce
       #Featured products are available site wide so will be a default instance variable
       featured_products_category_id = Rails.env.production? ? 64 : 11
       featured_produts_category = Category.find(featured_products_category_id)
-      @featured_products = Product.includes(:translations).tagged_with(featured_produts_category.name).active.order(:product_order).page(params[:page])
-
+      Globalize.with_locale('en-PE') do
+        @featured_products = Product.includes(:translations).tagged_with(featured_produts_category.name).active.order(:product_order).page(params[:page])
+      end
       if params[:search]
         @products = Product.search_by_name(params[:search]).active.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
