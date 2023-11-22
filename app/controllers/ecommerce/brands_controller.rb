@@ -11,7 +11,7 @@ module Ecommerce
     def show
 
       if params[:id]
-        @products = Product.includes(:translations).where(brand: params[:id]).order(:product_order).page(params[:page])
+        @products = Ecommerce::Product.includes(:translations).where(brand: params[:id]).active.order(:product_order).page(params[:page])
         @all_products = @products
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
