@@ -3,7 +3,7 @@
         <div class="d-flex">
           <div class="logo">
             <a href="<%= root_path %>">
-              <% if current_page?(root_path) %>  
+              <% if params[:action] == "main" %>  
                 <%= image_tag Ecommerce.header_logo, alt: "expatshop.pe Logo" %>
               <% else %>
                 <%= image_tag "ecommerce/img/expatshop/back_logo.png", alt: "expatshop.pe Logo" %>
@@ -160,7 +160,7 @@
         <div class="row d-flex flex-center">
           <div class="col-xs-7">
             <a class="" href="<%= root_path %>">
-              <% if current_page?(root_path) %>  
+              <% if params[:action] == "main" %>  
                 <%= image_tag Ecommerce.header_logo, alt: "expatshop.pe Logo", class: "img-responsive" %>
               <% else %>
                 <%= image_tag "ecommerce/img/expatshop/back_logo_mobile_3.png", alt: "expatshop.pe Logo", class: "img-responsive" %>
