@@ -278,10 +278,6 @@
     width: 80px;
     margin: 0px 15px 0px 15px;
   }
-  .slick-track {
-    display: flex !important;
-    align-items: center !important;
-  }
   #bs-example-navbar-collapse-2 {
     padding-left: 30px !important;
     overflow-y: clip !important;
@@ -580,4 +576,8 @@
   padding: 0 15px;
   padding-bottom: 20px;
   margin-bottom: -20px;
+}
+.slick-track {
+  display: flex !important;
+  align-items: center !important;
 }
