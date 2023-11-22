@@ -30,7 +30,7 @@ module Ecommerce
           new_products_category_id = Rails.env.production? ? 47 : 11
           @category = Category.find(new_products_category_id)
           prev_locale = I18n.locale
-          I18n.locale = 'es-PE'
+          I18n.locale = 'en-PE'
           @products = Product.includes(:translations).tagged_with(@category.name).active.order(:product_order).page(params[:page])
           I18n.locale = prev_locale
         when "discounted_products"
