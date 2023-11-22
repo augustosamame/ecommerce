@@ -29,7 +29,10 @@ module Ecommerce
           #@products = Product.where('created_at > ?', 30.days.ago).includes(:translations).active.order(:product_order).page(params[:page])
           new_products_category_id = Rails.env.production? ? 47 : 11
           @category = Category.find(new_products_category_id)
+          prev_locale = I18n.locale
+          I18n.locale = 'es-PE'
           @products = Product.includes(:translations).tagged_with(@category.name).active.order(:product_order).page(params[:page])
+          I18n.locale = prev_locale
         when "discounted_products"
           @products = Product.where('ecommerce_products.price_cents != ecommerce_products.discounted_price_cents').includes(:translations).active.order(:product_order).page(params[:page])
         end
