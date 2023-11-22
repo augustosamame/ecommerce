@@ -58,6 +58,18 @@
   <dt><%= t('.weight') %>:</dt>
   <dd><%= @backoffice_product.weight %></dd>
 
+  <dt>Show Callout:</dt>
+  <dd><%= @backoffice_product.show_callout %></dd>
+
+  <dt>English Callout:</dt>
+  <dd><%= @backoffice_product.callout_label_en %></dd>
+
+  <dt>Spanish Callout:</dt>
+  <dd><%= @backoffice_product.callout_label_es %></dd>
+
+  <dt>Callout Discount:</dt>
+  <dd><%= @backoffice_product.callout_discount %></dd>
+
   <dt style="margin-top: 20px;"><%= t('.image') %>:</dt>
   <dd><%= image_tag @backoffice_product.image_url(:medium_400), style: "margin-top: 20px;" %></dd>
 

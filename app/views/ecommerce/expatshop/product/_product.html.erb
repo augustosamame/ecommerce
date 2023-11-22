@@ -2,6 +2,14 @@
   <div class="featured-product position-relative d-flex">
     <%= link_to product_path(item) do %>
       <div class="featured-product-body">
+        <% if item.show_callout %>
+          <div class="callout-label">
+          <p class="callout-label-text"><%= session[:locale] == 'en-PE'? item.callout_label_en : item.callout_label_es %></p>
+          </div>
+          <div class="callout-discount">
+            <p class="callout-discount-text">-<%= item.callout_discount %>%</p>
+          </div>
+        <% end %>
         <%= image_tag item.image.medium_260.url, class: "img-responsive" %>
         <div class="featured-product-info d-flex flex-center">
           <p class="product-title">
@@ -12,7 +20,7 @@
               <%= item.short_description.gsub("**","<br>").html_safe if item.short_description %>
             </p>
           <% else %>
-            <p class="out_of_stock_p"><span class=""><%= t('.out_of_stock') %></span></p>
+            <p class="out_of_stock_p product-info"><span class=""><%= t('.out_of_stock') %></span></p>
           <% end %>
           <% if item && (item.price == item.discounted_price) %>
             <div class="price d-flex flex-center">
