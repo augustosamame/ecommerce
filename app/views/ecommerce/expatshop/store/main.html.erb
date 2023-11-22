@@ -233,8 +233,12 @@ categorías.
         //  bx.stopAuto;
         //  console.log('Stop Auto')
         //}
+
+        
+
         onSlideAfter: function ($slideElement, oldIndex, newIndex) {
           if ($slideElement.hasClass('video-slide')) {
+            var currentSlideId = $slideElement.attr('id');
             var video = $slideElement.find('video').get(0);
             video.addEventListener('ended', function () {
               slider.goToNextSlide();
@@ -245,11 +249,16 @@ categorías.
       }
     );
 
-    $('.clickable-slide').on('mousedown', function () {
-      console.log("redirect to slider_link here using array: <%= @slider_array.to_json %>");
-    })
+    $('.video-slider').on('click', function() {
+      var currentSlideIndex = bx.getCurrentSlide();
+      var string_array = "<%= browser.device.mobile? ? @mobile_slider_array : @desktop_slider_array %>".replace(/&quot;/g,'"')
+      var parsed_array = JSON.parse(string_array)
+      redirect_string = parsed_array[currentSlideIndex]
+      if (redirect_string != null && redirect_string != undefined && redirect_string != "" && redirect_string != "null" && redirect_string != "undefined" && redirect_string != "NULL" && redirect_string != "UNDEFINED") {
+        window.location.href = redirect_string;
+      }
+    });
 
   })
 
 </script>
-

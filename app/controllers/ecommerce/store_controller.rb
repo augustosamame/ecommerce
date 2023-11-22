@@ -24,7 +24,8 @@ module Ecommerce
       @home_brands = Brand.where(featured: true)
       @featured_homepage_products = Ecommerce::Product.where(home_featured: true).order(:id).active
       @homepage_categories = Ecommerce::Category.where(popular_homepage: true, status: "active").order(:category_order)
-      @slider_array = [[1, "google.com"], [2, "yahoo.com"], [3, "bing.com"]]
+      @mobile_slider_array = Ecommerce::Slider.where(slider_view: "MOBILE").order(:slider_order).pluck(:slider_link).to_json
+      @desktop_slider_array = Ecommerce::Slider.where(slider_view: "DESKTOP").order(:slider_order).pluck(:slider_link).to_json
       add_body_css_class('stretched')
       render "ecommerce/#{Ecommerce.ecommerce_layout}/store/main"
     end

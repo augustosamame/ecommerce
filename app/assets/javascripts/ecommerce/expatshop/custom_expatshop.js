@@ -105,7 +105,7 @@ $("#langMobile").ddslick({
   imagePosition: "left",
   // defaultSelectedIndex: 2,
   onSelected: function (data) {
-    console.log(data.selectedData.value);
+    // console.log(data.selectedData.value);
     var url = window.location.pathname + window.location.search
     if (_ddlLangLoaded === false) {
       _ddlLangLoaded = true;
@@ -133,7 +133,7 @@ $("#currencyMobile").ddslick({
   width: "100%",
   // defaultSelectedIndex: 'pen',
   onSelected: function (data) {
-    console.log(data.selectedData.value);
+    // console.log(data.selectedData.value);
     var url = window.location.pathname + window.location.search
     if (_ddlCurrencyLoaded === false) {
       _ddlCurrencyLoaded = true;
@@ -194,7 +194,7 @@ $(function () {
     nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
     customPaging: function (slider, i) {
       var thumb = $(slider.$slides[i]).data('thumb');
-      console.log('thumb', thumb)
+      // console.log('thumb', thumb)
       return "<button><img src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'></button>";
     },
     responsive: [
@@ -273,7 +273,7 @@ $(document).ready(function () {
   $('#currency').on('change', function () {
     var url = window.location.pathname + window.location.search
     var selectedValue = $(this).val();
-    console.log('Selected value:', selectedValue);
+    // console.log('Selected value:', selectedValue);
     if (selectedValue == 'usd') {
       if (url.indexOf('?') == -1) {
         window.location.href = url + "?currency=usd"
@@ -292,7 +292,7 @@ $(document).ready(function () {
   $('#lang').on('change', function () {
     var url = window.location.pathname + window.location.search
     var selectedValue = $(this).val();
-    console.log('Selected value:', selectedValue);
+    // console.log('Selected value:', selectedValue);
     if (selectedValue == 'english') {
       if (url.indexOf('?') == -1) {
         window.location.href = url + "?lang=en-PE"
