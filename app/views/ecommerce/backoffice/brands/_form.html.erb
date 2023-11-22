@@ -6,7 +6,7 @@
     <%= f.label t('.brand_logo') %>
     <div class="form-group">
       <% if f.object.logo? %>
-        <%= image_tag f.object.logo, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
+        <%= image_tag f.object.logo.url, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
       <% end %>
       <img alt="your image" class="img-thumbnail hidden" height="200" id="img_prev" src="#" width="200"/>
       <br/>
@@ -16,6 +16,7 @@
       <%= f.hidden_field :logo_cache %>
     </div>
     <%= f.input :featured, label: t('.brand_logo_will_appear_in_home') %>
+    <%= f.input :display_order, label: "Display Order (0 first)" %>
   </div>
 
   <div class="form-actions">

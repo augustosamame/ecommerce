@@ -16,7 +16,7 @@
         <div class="container-fluid">
           <div class="brand-slider">
           
-            <% Ecommerce::Brand.where(featured: true).order(id: :desc).each do |brand_logo| %>
+            <% Ecommerce::Brand.where(featured: true).order(:display_order).each do |brand_logo| %>
               <div class="brand-slide-div">
                 <%= link_to brand_url(brand_logo.id) do %>
                 <img

@@ -13,6 +13,7 @@
         <th><%= t('.name') %></th>
         <th><%= t('.logo') %></th>
         <th><%= t('.featured') %></th>
+        <th><%= t('.display_order') %></th>
         <th><%= t('common.show') %></th>
         <th><%= t('common.edit') %></th>
         <th><%= t('common.destroy') %></th>
@@ -24,6 +25,7 @@
             <td><%= backoffice_brand.name %></td>
             <td><%= image_tag backoffice_brand.logo.medium_200.url, height: 80 %></td>
             <td><%= backoffice_brand.featured %></td>
+            <td><%= backoffice_brand.display_order %></td>
             <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_brand_path(backoffice_brand) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_brand_path(backoffice_brand) %></td>
         <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_brand_path(backoffice_brand), method: :delete, data: { confirm: 'Are you sure?' } %></td>
