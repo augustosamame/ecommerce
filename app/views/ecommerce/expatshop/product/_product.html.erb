@@ -4,7 +4,7 @@
       <div class="featured-product-body">
         <% if item.show_callout %>
           <div class="callout-label">
-          <p class="callout-label-text"><%= session[:locale] == 'en-PE'? item.callout_label_en : item.callout_label_es %></p>
+          <p class="callout-label-text"><%= session[:locale] == 'en-PE'? item.callout_label_en : item.collout_label_es %></p>
           </div>
           <div class="callout-discount">
             <p class="callout-discount-text">-<%= item.callout_discount %>%</p>
