@@ -31,9 +31,9 @@ module Ecommerce
 
     def culqi_webhook
       if params[:object] == "event" && params[:type] == "order.status.changed"
-        Rollbar.info("Webhook Received",
-          :request_data => params
-        )
+        #Rollbar.info("Webhook Received",
+        #  :request_data => params
+        #)
         culqi_data = JSON.parse(params[:data])
         if culqi_data["state"] == 'paid'
           found_culqi_payment = Payment.find_by(processor_transaction_id: culqi_data["id"])
