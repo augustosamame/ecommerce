@@ -50,7 +50,7 @@ class Ecommerce::SliderImageUploader < CarrierWave::Uploader::Base
   end
 
 def is_image? picture
-  if content_type
+  if picture.content_type
     return picture.content_type.include? 'image' 
   else
     return false
