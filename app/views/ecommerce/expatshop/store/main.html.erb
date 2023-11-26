@@ -49,7 +49,7 @@
                         <p class="callout-label-text-feat"><%= session[:locale] == 'en-PE'? product.callout_label_en : product.collout_label_es %></p>
                         </div>
                         <div class="callout-discount-feat">
-                          <p class="callout-discount-text-feat">-<%= product.callout_discount %>%</p>
+                          <p class="callout-discount-text-feat"><%= session[:locale] == 'en-PE'? product.callout_discount_label_en : product.callout_discount_label_es %></p>
                         </div>
                       <% end %>
                       <img

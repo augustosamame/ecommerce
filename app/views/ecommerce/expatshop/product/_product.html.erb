@@ -7,7 +7,7 @@
           <p class="callout-label-text"><%= session[:locale] == 'en-PE'? item.callout_label_en : item.collout_label_es %></p>
           </div>
           <div class="callout-discount">
-            <p class="callout-discount-text">-<%= item.callout_discount %>%</p>
+            <p class="callout-discount-text"><%= session[:locale] == 'en-PE'? item.callout_discount_label_en : item.callout_discount_label_es %></p>
           </div>
         <% end %>
         <%= image_tag item.image.medium_260.url, class: "img-responsive" %>

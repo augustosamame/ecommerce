@@ -169,7 +169,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_params
-        params.require(:product).permit(:weight, :coupon, :coupons, :coupon_id, :tax_1_check, :tax_1_amount, :tax_2_check, :tax_2_amount, :tax_3_check, :tax_3_amount, :status, :brand_id, :supplier_id, :name, :short_description, :description, :description2, :price_cents, :discounted_price_cents, :total_quantity, :stockable, :home_featured, :product_order, :image, :image_cache, Product.globalize_attribute_names, :show_callout, :callout_label_en, :collout_label_es, :callout_discount, :cross_sell_default, cross_sell_product_ids: [], cross_parent_ids: [], category_id: [], category_list: [], coupon_ids: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
+        params.require(:product).permit(:weight, :coupon, :coupons, :coupon_id, :tax_1_check, :tax_1_amount, :tax_2_check, :tax_2_amount, :tax_3_check, :tax_3_amount, :status, :brand_id, :supplier_id, :name, :short_description, :description, :description2, :price_cents, :discounted_price_cents, :total_quantity, :stockable, :home_featured, :product_order, :image, :image_cache, Product.globalize_attribute_names, :show_callout, :callout_label_en, :collout_label_es, :callout_discount, :callout_discount_label_en, :callout_discount_label_es, :cross_sell_default, cross_sell_product_ids: [], cross_parent_ids: [], category_id: [], category_list: [], coupon_ids: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
       end
   end
 end
