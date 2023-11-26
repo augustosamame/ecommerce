@@ -31,6 +31,7 @@ module Ecommerce
         redirect_to backoffice_slider_path(@backoffice_slider), notice: 'Slider was successfully created.'
       else
         render :new, notice: "Slider was not successfully created: Errors: #{@backoffice_slider.errors.inspect}"
+        Rails.logger.error "Slider was not successfully created: Errors: #{@backoffice_slider.errors.inspect}"
       end
     end
 
