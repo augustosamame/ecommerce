@@ -15,7 +15,7 @@ module Ecommerce
       featured_products_category_id = Rails.env.production? ? 64 : 11
       featured_produts_category = Category.find(featured_products_category_id)
       Globalize.with_locale('en-PE') do
-        @featured_products = Product.includes(:translations).tagged_with(featured_produts_category.name).active.order(:product_order).page(params[:page])
+        @featured_products = Product.includes(:translations).tagged_with(featured_produts_category.name).active.order(:product_order)
       end
       if params[:search]
         @products = Product.search_by_name(params[:search]).active.page(params[:page])
