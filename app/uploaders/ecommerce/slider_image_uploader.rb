@@ -40,20 +40,34 @@ class Ecommerce::SliderImageUploader < CarrierWave::Uploader::Base
   #   process resize_to_fit: [50, 50]
   # end
 
-  version :large_1200, :if => :is_image? do
-    process resize_to_limit: [1200, 1200]
-    ##process :store_dimensions
-  end
+  #version :thumb_120, :if => :is_image?, from_version: :large_1200 do
+    #if image.content_type == "image/gif"
+   #   gif_safe_transform! do |image|
+   #     image.resize "#{120}x#{120}" # Perform any transformations here.
+   #   end
+    #else
+    #  process resize_to_limit: [120, 120]
+    #end
 
-  version :thumb_120, :if => :is_image?, from_version: :large_1200 do
-    process resize_to_limit: [120, 120]
-  end
+  #end
 
 def is_image? picture
   if picture.content_type
     return picture.content_type.include? 'image' 
   else
     return false
+  end
+end
+
+def gif_safe_transform!
+  MiniMagick::Tool::Convert.new do |image|
+    image << @file.path
+    image.coalesce # Remove optimizations so each layer shows the full image.
+
+    yield image
+
+    image.layers "Optimize" # Re-optimize the image.
+    image << @file.path
   end
 end
 
