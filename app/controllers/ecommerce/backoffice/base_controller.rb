@@ -44,7 +44,7 @@ module Ecommerce
     end
 
     def set_product_dashboard_searches
-      @products_array = Product.all.map{|f| {label: "#{f.name}", value: f.name, id: f.id}}
+      @products_array = Ecommerce::Product.all.includes([:translations]).includes([:taggings]).map{|f| {label: "#{f.name}", value: f.name, id: f.id}}
       @category_products_array = Product.all.map{|f| {label: "#{f.name} - #{f.category_list.to_csv}", value: f.name, id: f.id}}
       @redis.setex("all_products", 600, @products_array.to_json)
       @redis.setex("all_category_products", 600, @category_products_array.to_json)

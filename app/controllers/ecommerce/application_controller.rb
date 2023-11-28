@@ -9,7 +9,7 @@ module Ecommerce
     before_action :merge_abilities
     before_action :add_stretched_to_body_tag
     before_action :set_cart
-    before_action :set_wishlist
+    # before_action :set_wishlist
     before_action :set_header_menu_items
     before_action :set_always_on_coupon
     #before_render :set_controller_meta_tags
