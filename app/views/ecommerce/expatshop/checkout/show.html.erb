@@ -62,11 +62,6 @@
               </span>
             </div>
           </div>
-          <!--
-          <p class="d-flex space-between">
-            <%= t('.subtotal_soles') %> <span><%= session_currency_symbol %><%= @cart_subtotal %></span>
-          </p>
-          -->
 
           <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border checkout-p-text-mobile">
             <%= t('.shipping') %>
@@ -81,7 +76,19 @@
             </div>
           </div>
 
-          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border coupon-subtotal-hidden" id="coupon-subtotal-id checkout-p-text-mobile">
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border checkout-p-text-mobile <%= (@combo_total_discount_usd && @combo_total_discount_usd > 0) ? '' : 'combo-subtotal-hidden' %>  >" id="combo-discount-subtotal-id">
+            <%= t('.combo_discount_line') %>
+            <div>
+              <span style="display: inline;">
+                <%= session_currency_symbol %>
+              </span>
+              <span id="combo-discount-amount" style="display: inline;">
+                -<%= sprintf('%.2f', @combo_total_discount_usd) || 0.00 %>
+              </span>
+            </div>
+          </div>
+
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border coupon-subtotal-hidden checkout-p-text-mobile" id="coupon-subtotal-id">
             <%= t('.coupon_line') %>
             <div>
               <span style="display: inline;">
@@ -100,7 +107,7 @@
                 <%= session_currency_symbol %>
               </span>
               <span id="payment-amount" style="display: inline;">
-                <%= @cart_subtotal %>
+                <%= @cart_subtotal_after_discount %>
               </span>
             </div>
           </div>
@@ -132,7 +139,7 @@
             <div class="checkout-pay-in-soles-p">
               <span>S/.</span>
               <span id="payment-amount-in-soles">
-                <%= @cart_subtotal * @exchange_rate %>
+                <%= @cart_subtotal_after_discount * @exchange_rate %>
               </span>
             </div>
           </div>
@@ -260,6 +267,7 @@
 <script src="https://checkout.culqi.com/js/v4"></script>
 
 <script>
+
 $( document ).ready(function() {
   var applied_coupon = '';
   <% if @always_on_coupon %>
@@ -298,19 +306,18 @@ $( document ).ready(function() {
   }
 
   var address_option_length = $('#address_id > option').length;
-  // console.log('length of address options: ', address_option_length)
-  // if (address_option_length == 2) {
   $("#address_id").get(0).selectedIndex = address_option_length - 1;
-  var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
-  calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
-  //}
+  if ($("#address_id option:selected").text().split(',')[2]) {
+    var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+    calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
+  }
+
 });
 
 
 
 </script>
 
-<!-- Configurando el checkout-->
 <script>
 
   var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
@@ -320,7 +327,7 @@ $( document ).ready(function() {
   var info_factura_blank = <%= @info_factura_available.blank? %>
   var address_saved_flag = false
   var culqi_order_id = ''
-  var applied_coupon = '';
+  var applied_coupon = ''
 
   // calculate and update shipping html tag when shipping address is created
   $("#save-address-button").click(function() {
@@ -395,8 +402,10 @@ $( document ).ready(function() {
             $("#shipping-amount").html(0)
             $("#free-shipping-text").hide()
           } else {
-            var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
-            calculate_shipping($("#address_street").val(), district_from_dropdown, 'coupon');
+            if ($("#address_id option:selected").text().split(',')[2]) {
+              var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+              calculate_shipping($("#address_street").val(), district_from_dropdown, 'coupon');
+            }
           }
           recalculate_checkout_totals();
         }
@@ -415,7 +424,8 @@ $( document ).ready(function() {
     var total_amount = (
       Number($("#coupon-amount").html()) +
       Number($("#shipping-amount").html()) +
-      Number($("#subtotal").html())
+      Number($("#subtotal").html()) +
+      Number($("#combo-discount-amount").html())
     ).toFixed(2);
 
     $('#payment-amount').html(total_amount)
@@ -595,7 +605,7 @@ $( document ).ready(function() {
         var picked_shipping_address_id = $('#address_id').val();
         var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
         var culqi_payment_amount = Number(($('#pay_in_soles').prop('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
-        var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
+        var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2) - ($('#combo-discount-amount').html() * 100).toFixed(2);
         //var payment_amount = $('#payment_amount').html() * 100;
         var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
         $.post(
@@ -632,7 +642,7 @@ $( document ).ready(function() {
             var picked_shipping_address_id = $('#address_id').val();
             var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
             var culqi_payment_amount = Number(($('#pay_in_soles').prop('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
-            var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
+            var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2) - ($('#combo-discount-amount').html() * 100).toFixed(2);
             var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
             console.log('Order exists but no Token = Pagoefectivo');
             console.log(Culqi.order)
@@ -678,7 +688,7 @@ $( document ).ready(function() {
 
     var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
-    var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2);
+    var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2) - ($('#combo-discount-amount').html() * 100).toFixed(2);
     var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
 
     //var payment_amount = $('#payment_amount').html() * 100;

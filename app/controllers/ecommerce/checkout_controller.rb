@@ -107,6 +107,11 @@ module Ecommerce
       @cart.cart_items.includes(:product).each do |cart_item|
         @cart_subtotal += cart_item.line_total(current_user)
       end
+      @cart_subtotal_after_discount = @cart_subtotal
+      if @combo_total_discount_usd && @combo_total_discount_usd > 0
+        money_object_discount = Money.new(@combo_total_discount_usd * 100, 'PEN')
+        @cart_subtotal_after_discount = @cart_subtotal - money_object_discount
+      end
       #active payment methods in view
       @payment_bank_deposit = PaymentMethod.is_active.find_by(name: "Bank Deposit")
       @payment_manual = PaymentMethod.is_active.find_by(name: "Manual")

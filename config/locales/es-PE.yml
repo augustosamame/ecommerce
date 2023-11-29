@@ -172,6 +172,7 @@ es-PE:
           new_address: "Nueva Dirección"
           delete_address: "Eliminar Dirección"
           coupon_line: "Cupón Aplicado"
+          combo_discount_line: "Descuento Combos"
           coupon_error: "Cupón Inválido"
           address: "Dirección"
           click_here_to_setup_factura_info: "Ingresar Datos de Factura"

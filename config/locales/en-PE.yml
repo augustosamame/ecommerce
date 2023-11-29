@@ -284,6 +284,7 @@ en-PE:
           new_address: "New Address"
           delete_address: "Delete Address"
           coupon_line: "Applied Coupon"
+          combo_discount_line: "Combo Products Discount"
           coupon_error: "Invalid Coupon"
           address: "Address"
           click_here_to_setup_factura_info: "Click Here to Setup Factura Info"
