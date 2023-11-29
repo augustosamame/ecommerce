@@ -83,7 +83,7 @@
                 <%= session_currency_symbol %>
               </span>
               <span id="combo-discount-amount" style="display: inline;">
-                -<%= sprintf('%.2f', @combo_total_discount_usd) || 0.00 %>
+                -<%= @combo_total_discount_usd ? sprintf('%.2f', @combo_total_discount_usd) : 0.00 %>
               </span>
             </div>
           </div>
