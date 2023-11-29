@@ -278,6 +278,15 @@ $( document ).ready(function() {
     var applied_coupon = '';
   <% end %>
 
+
+  $('#accept_marketing').change(function(event) {
+    if (!this.checked) {
+      $('#accept_marketing').prop('checked', true);
+      event.preventDefault();
+    }
+  });
+
+
   $('#new-address-button').click(function(){
     $('#new-address-container').show();
     // $(this).parent.hide();
