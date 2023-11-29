@@ -10,7 +10,7 @@
     <%= f.input :product_id_2, label: "Combo Product 2 (optional)" %>
     <%= f.input :qty_product_2, label: "Qty Product 2" %>
     <%= f.input :discount_type, label: 'Combo Discount Type', collection: Ecommerce::ComboDiscount.discount_types.keys %>
-    <%= f.input :discount_amount, label: "% or Fixed Amount" %>
+    <%= f.input :discount_amount, label: "% or Fixed Amount (in USD)" %>
     <%= f.input :status, label: 'Status', collection: Ecommerce::ComboDiscount.statuses.keys %>
   </div>
 
