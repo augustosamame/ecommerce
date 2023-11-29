@@ -399,11 +399,14 @@ en-PE:
           update_cart: "Update Cart"
           coupon_active_message: "Coupon %{coupon_code} is active for this order. The discount will be applied at checkout."
           proceed_to_checkout: "Proceed to Checkout"
+          subtotal_in_dollars: "SUBTOTAL IN DOLLARS"
+          subtotal_in_soles: "SUBTOTAL IN SOLES"
           cart_totals: "Cart Totals"
           total_items: "Number of Items"
           subtotal: "Subtotal"
           shipping: "Shipping"
           shipping_costs_text: "Shipping costs will be calculated once you have provided your address."
+          combo_discount: "Discount for Combo Products"
           coupon: "Coupon"
           my_orders: "My Orders"
           my_account: "My Account"
@@ -442,6 +445,7 @@ en-PE:
         registered_users: 'Registered Users'
         coupons: 'Coupons'
         dynamic_coupons: 'Dynamic Coupons'
+        combo_discounts: 'Combo Discounts'
         campaigns: 'Campaigns'
         stock_alerts: 'Stock Alerts'
         translations: 'Translations'
@@ -621,6 +625,9 @@ en-PE:
           user_name: 'User Name'
           document: 'Document'
           update_user: 'Update User'
+      combo_discounts:
+        form:
+          submit: 'Submit'
       coupons:
         index:
           new_coupon: 'New Coupon'

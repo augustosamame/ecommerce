@@ -1,0 +1,45 @@
+<div class="page-header">
+  <%= link_to backoffice_combo_discounts_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_combo_discount_path(@combo_discount), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show Combo Discount</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Combo Discount Name:</dt>
+  <dd><%= @combo_discount.name %></dd>
+
+  <dt>Description (English):</dt>
+  <dd><%= @combo_discount.description_en %></dd>
+
+  <dt>Description (Spanish):</dt>
+  <dd><%= @combo_discount.description_es %></dd>
+
+  <dt>Combo Product 1:</dt>
+  <dd><%= @combo_discount.product_1 %></dd>
+
+  <dt>Qty Product 1:</dt>
+  <dd><%= @combo_discount.qty_product_1 %></dd>
+
+  <dt>Combo Product 2:</dt>
+  <dd><%= @combo_discount.product_2 %></dd>
+
+  <dt>Qty Product 2:</dt>
+  <dd><%= @combo_discount.qty_product_2 %></dd>
+
+  <dt>Discount Type:</dt>
+  <dd><%= @combo_discount.discount_type %></dd>
+
+  <dt>Discount Amount (% or $):</dt>
+  <dd><%= @combo_discount.discount_amount %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @combo_discount.status %></dd>
+
+</dl>
+

@@ -1,0 +1,12 @@
+<div>
+
+Cart Items: <%= @cart.cart_items.inspect %>
+<%= @cart.cart_items.pluck(:product_id) %>
+
+</div>
+<br>
+Combo Discount Array: <%= @combo_discount_array %>
+<br>
+Friendly Combo Discount Array: <%= @friendly_combo_discount_array %>
+<br>
+Combo Total Discount USD = <%= @combo_total_discount_usd %>

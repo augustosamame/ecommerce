@@ -285,6 +285,9 @@
   .mobile-signout-a {
     padding-left: 10px !important;
   }
+  .top_promo {
+    padding: 10px 0px !important;
+  }
 }
 .sticky-header {
   position: sticky;
@@ -623,7 +626,7 @@
 .callout-label-feat {
   position: absolute;
   right: 0;
-  padding: 4px 10px;
+  padding: 5px 5px;
   font-weight: 400;
   top: 25px;
   background: var(--best-seller-color);
@@ -633,5 +636,28 @@
 .callout-label-text-feat {
   margin: 0;
   font-size: 12px;
+}
+
+.top_promo {
+  top: 0;
+  left: 0;
+  background-color: gold;
+  color: black;
+  text-align: center;
+  padding: 15px 0px;
+  margin: 0;
+  // z-index: 10000;
+  position: relative;
+}
+.combo-discount-cart-section {
+  flex-direction: column;
+  color: red;
+}
+.combo-discount-cart-section-table {
+  flex-direction: row;
+}
+.combo-discount-cart-section-p {
+  font-size: 18px !important;
+  color: red;
 }
 

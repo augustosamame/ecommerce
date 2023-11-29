@@ -41,6 +41,7 @@ Gem::Specification.new do |s|
   #s.add dependency 'rails-assets-sweetalert', source: 'https://rails-assets.org'
   s.add_dependency 'sweetify'
   s.add_dependency 'bxslider-rails'
+  s.add_dependency 'css-class-string'
 
   s.add_development_dependency "pg"
   s.add_development_dependency "jquery-rails"

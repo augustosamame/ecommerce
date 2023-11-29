@@ -14,6 +14,10 @@ module Ecommerce
       @cart.cart_items.includes(:product).each do |cart_item|
         @cart_subtotal += cart_item.line_total(current_user)
       end
+      if @combo_total_discount_usd && @combo_total_discount_usd > 0
+        money_object_discount = Money.new(@combo_total_discount_usd * 100, 'PEN')
+        @cart_subtotal_after_discount = @cart_subtotal - money_object_discount
+      end
       render "ecommerce/#{Ecommerce.ecommerce_layout}/cart/show"
     end
 

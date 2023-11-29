@@ -271,11 +271,14 @@ es-PE:
           update_cart: "Actualizar Carrito"
           coupon_active_message: "El cupón %{coupon_code} está activo para este pedido. El descuento se aplicará en el checkout."
           proceed_to_checkout: "Proceder a Checkout"
+          subtotal_in_dollars: "SUBTOTAL EN DÓLARES"
+          subtotal_in_soles: "SUBTOTAL EN SOLES"
           cart_totals: "Totales"
           total_items: "Cant de Items"
           subtotal: "Subtotal"
           shipping: "Costo de Envío"
           shipping_costs_text: "El costo de envío será calculado una vez proporcione su dirección."
+          combo_discount: "Descuentos por Combos"
           coupon: "Cupón"
           my_orders: "Mis Pedidos"
           my_account: "Mi Cuenta"
@@ -511,6 +514,7 @@ es-PE:
         registered_users: 'Usuarios Registrados'
         coupons: 'Cupones'
         dynamic_coupons: 'Cupones Dinámicos'
+        combo_discounts: 'Descuentos por Combo'
         campaigns: 'Campañas'
         stock_alerts: 'Alertas de Stock'
         translations: 'Traducciones'
@@ -693,6 +697,9 @@ es-PE:
           user_name: 'Nombre de Usuario'
           document: 'Documento'
           update_user: 'Actualizar Usuario'
+      combo_discounts:
+        form:
+          submit: 'Grabar'
       coupons:
         index:
           new_coupon: 'Nuevo Cupón'

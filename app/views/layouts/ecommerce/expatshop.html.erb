@@ -17,6 +17,10 @@
 
   <%= render 'ecommerce/expatshop/store/header' %>
 
+  <% if Rails.env == "development" %>
+    <%= render 'ecommerce/expatshop/store/debugging_data' %>
+  <% end %>
+
   <%= yield %>
 
   <%= render 'ecommerce/expatshop/store/footer' %>

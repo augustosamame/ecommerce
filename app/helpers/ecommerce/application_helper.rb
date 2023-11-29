@@ -83,11 +83,11 @@ module Ecommerce
     def session_currency(value)
       case session[:currency]
       when "pen"
-        return number_to_currency(value, locale: "en-PE")
+        return number_to_currency(value, locale: "en-PE", unit: "S/.")
       when "usd"
-        return number_to_currency(value, locale: "en-US")
+        return number_to_currency(value, locale: "en-US", unit: "$")
       else
-        return number_to_currency(value, locale: "en-PE")
+        return number_to_currency(value, locale: "en-PE", unit: "$")
       end
     end
 

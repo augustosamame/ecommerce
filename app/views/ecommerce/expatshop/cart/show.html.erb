@@ -24,7 +24,7 @@
             <% if @cart.cart_items.count == 0 %>
 
             <% else %>
-              <% @cart.cart_items.each do |item| %>
+              <% @cart.cart_items.order(:id).each do |item| %>
                 <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
                   <tr>
                     <th class="cart-desktop-table-product-row">
@@ -91,7 +91,7 @@
           <% if @cart.cart_items.count == 0 %>
 
           <% else %>
-            <% @cart.cart_items.each do |item| %>
+            <% @cart.cart_items.order(:id).each do |item| %>
 
               <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
                 <div class="row mobile-cart-row">
@@ -156,9 +156,20 @@
               <p><%= @cart_qty_subtotal %></p>
             </div>
             <div class="cart-subtotal">
-              <p><span>SUBTOTAL IN DOLLARS</span><span><%= session_price(@cart_subtotal) %></span></p>
-              <p><span>SUBTOTAL IN SOLES</span> <span>S/. <%= @cart_subtotal * @exchange_rate %></span></p>
+              <p><span><%= t('.subtotal_in_dollars') %></span><span><%= session_price(@cart_subtotal) %></span></p>
+              <p><span><%= t('.subtotal_in_soles') %></span> <span>S/. <%= @cart_subtotal * @exchange_rate %></span></p>
             </div>
+            <% unless @friendly_combo_discount_array.blank? %>
+              <div class="combo-discount-cart-section">
+                <p><%= t('.combo_discount') %></p>
+                <% @friendly_combo_discount_array.each do |combo_discount| %>
+                <div class="combo-discount-cart-section-table">
+                  <p class="combo-discount-cart-section-p"><%= combo_discount[:product_name] %></p>
+                  <p class="combo-discount-cart-section-p">- <%= session_currency(combo_discount[:discount_amount]) %></p>
+                </div>
+                <% end %>
+              </div>
+              <% end %>
             <div class="shipping-cost">
               <p><%= t('.shipping') %></p>
               <p>
@@ -166,8 +177,8 @@
               </p>
             </div>
             <div class="cart-total">
-              <p><span>SUBTOTAL IN DOLLARS</span><span><%= session_price(@cart_subtotal) %></span></p>
-              <p><span>SUBTOTAL IN SOLES</span> <span>S/. <%= @cart_subtotal * @exchange_rate %></span></p>
+              <p><span><%= t('.subtotal_in_dollars') %></span><span><%= session_price((@cart_subtotal_after_discount || @cart_subtotal)) %></span></p>
+              <p><span><%= t('.subtotal_in_soles') %></span> <span>S/. <%= (@cart_subtotal_after_discount || @cart_subtotal) * @exchange_rate %></span></p>
             </div>
           </div>
           <%= button_to t('.proceed_to_checkout'), checkout_path, method: :get, class: "checkout-btn main-btn" %>

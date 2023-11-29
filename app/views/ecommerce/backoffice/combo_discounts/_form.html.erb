@@ -1,0 +1,28 @@
+<%= simple_form_for([:backoffice, @combo_discount]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name, label: "Name" %>
+    <%= f.input :description_en, label: "Description (English)" %>
+    <%= f.input :description_es, label: "Description (Spanish)" %>
+    <%= f.input :product_id_1, label: "Combo Product 1" %>
+    <%= f.input :qty_product_1, label: "Qty Product 1" %>
+    <%= f.input :product_id_2, label: "Combo Product 2 (optional)" %>
+    <%= f.input :qty_product_2, label: "Qty Product 2" %>
+    <%= f.input :discount_type, label: 'Combo Discount Type', collection: Ecommerce::ComboDiscount.discount_types.keys %>
+    <%= f.input :discount_amount, label: "% or Fixed Amount" %>
+    <%= f.input :status, label: 'Status', collection: Ecommerce::ComboDiscount.statuses.keys %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, t('.submit'), class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<script>
+
+$(document).ready(function () {
+  
+});
+
+</script>
