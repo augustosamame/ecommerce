@@ -4,6 +4,9 @@ class SendAbandonedCartEmailWorker
   def perform(cart_id, coupon_id)
     cart = Ecommerce::Cart.find(cart_id)
     user = cart.user
+    Rollbar.info("Before Cart Update",
+        :request_data => cart_id
+      )
     cart.update(abandoned_email_sent: true)
     if Ecommerce::Control.find_by(name: 'send_abandoned_cart_coupon').boolean_value
       coupon = Ecommerce::Coupon.find(coupon_id)

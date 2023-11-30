@@ -26,6 +26,9 @@ module Ecommerce
       Ecommerce::Cart.where(status: 'active', abandoned_email_sent: false).where("ecommerce_carts.created_at < ? AND ecommerce_carts.created_at > ?", Time.now - 15.minutes, Time.now - 36.hours).where.not(user_id: nil).distinct.each do |cart|
         unless cart.cart_items.empty?
           if cart.user.id == 2
+            Rollbar.info("User and Cart Detected",
+              :request_data => cart.id
+            )
             coupon = Ecommerce::Coupon.one_time_coupon(cart.user.id)
             SendAbandonedCartEmailWorker.perform_async(cart.id, coupon.id) 
           end
