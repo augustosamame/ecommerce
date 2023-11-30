@@ -1,0 +1,62 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="well col-md-6">
+			<h2>
+				Business Intelligence
+			</h2>
+		</div>
+	</div>
+  <div class="row">
+    <div class="well col-md-6">
+      <h3>All Users who bought a specific product</h3>
+      <%= simple_form_for :report, url: backoffice_post_biz_specific_product_path, method: :post do |f| %>
+        <%= f.error_notification %>
+      
+        <div class="form-inputs">
+          <%= f.input :user, as: :select2, collection: User.all.order(:id), label: "User", label_method: :name %>
+        </div>
+    
+        <div class="form-actions">
+          <%= f.button :submit, 'Generar Reporte', class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="well col-md-6">
+      <h3>User Frequency of purchases for specific product</h3>
+      <%= simple_form_for :report, url: backoffice_post_biz_user_frequency_path, method: :post do |g| %>
+        <%= g.error_notification %>
+
+        <div class="form-inputs">
+          <%= g.input :user, as: :select2, collection: User.all.order(:id), label: "User", label_method: :name %>
+          <%= g.input :product, as: :select2, collection: Ecommerce::Product.all.order(:permalink), label: "Product", label_method: :permalink %>
+        </div>
+
+        <div class="form-actions">
+          <%= g.button :submit, 'Generar Reporte', class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="well col-md-6">
+      <h3>Cross selling: how many people who bought product A, bought product B as well</h3>
+      <%= simple_form_for :report, url: backoffice_post_biz_cross_selling_path, method: :post do |h| %>
+        <%= h.error_notification %>
+      
+        <div class="form-inputs">
+          <%= h.input :product_1, as: :select2, collection: Ecommerce::Product.all.order(:permalink), label: "Product 1", label_method: :permalink %>
+          <%= h.input :product_2, as: :select2, collection: Ecommerce::Product.all.order(:permalink), label: "Product 2", label_method: :permalink %>
+        </div>
+    
+        <div class="form-actions">
+          <%= h.button :submit, 'Generar Reporte', class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</div>
+
+

@@ -8,6 +8,24 @@ module Ecommerce
       @last_orders = Order.includes(:user).order(id: :desc).first(10)
     end
 
+    def business_intelligence
+
+    end
+
+    def biz_specific_product
+      @product = Ecommerce::Product.find(params[:report][:product])
+    end
+
+    def biz_user_frequency
+      @user = User.find(params[:report][:user])
+      @product = Ecommerce::Product.find(params[:report][:product])
+    end
+
+    def biz_cross_selling
+      @product_1 = Ecommerce::Product.find(params[:report][:product_1])
+      @product_2 = Ecommerce::Product.find(params[:report][:product_2])
+    end
+
     def export_products
       @products = Ecommerce::Product.all.order(id: :desc)
 

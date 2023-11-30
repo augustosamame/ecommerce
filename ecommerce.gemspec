@@ -42,6 +42,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'sweetify'
   s.add_dependency 'bxslider-rails'
   s.add_dependency 'css-class-string'
+  s.add_dependency 'select2-rails'
+  s.add_dependency 'select2_simple_form'
 
   s.add_development_dependency "pg"
   s.add_development_dependency "jquery-rails"

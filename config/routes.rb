@@ -36,7 +36,10 @@ Ecommerce::Engine.routes.draw do
     post 'send_recipients/:id', :to => "campaigns#post_send_recipients", as: 'post_send_recipients'
     get 'get_purchasers', :to => "campaigns#get_product_purchasers"
     get 'get_no_purchase_within_days', :to => "campaigns#get_no_purchase_within_days"
-
+    get 'business_intelligence', :to => "dashboard#business_intelligence"
+    post 'biz_specific_product', :to => "dashboard#biz_specific_product", as: 'post_biz_specific_product'
+    post 'biz_user_frequency', :to => "dashboard#biz_user_frequency", as: 'post_biz_user_frequency'
+    post 'biz_cross_selling', :to => "dashboard#biz_cross_selling", as: 'post_biz_cross_selling'
     resources :audiences
     get 'audience_create_recipients/:id', :to => "audiences#create_recipients", as: 'audience_create_recipients'
     post 'audience_create_recipients/:id', :to => "audiences#post_create_recipients", as: 'audience_post_create_recipients'

@@ -32,7 +32,7 @@ module Ecommerce
       )
     end
 
-    def clear_all_expired_dynamic_coupons
+    def self.clear_all_expired_dynamic_coupons
       Ecommerce::Coupon.where("end_date < ? AND dynamic = ?", Time.now, true).destroy_all
     end
 
