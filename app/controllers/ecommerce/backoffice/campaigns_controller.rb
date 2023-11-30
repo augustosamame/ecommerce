@@ -22,6 +22,7 @@ module Ecommerce
       user_array = params[:other][:user_list].split(',').map(&:to_i)
       coupon_id = params[:other][:coupon_id]
       unique_users_by_email = User.where(id: user_array).uniq{|p| p.email}
+      unique_users_by_email = User.all
       unique_users_by_email.each do |user|
         SendCampaignEmailWorker.perform_async(user.id, coupon_id, @campaign.id)
       end
@@ -93,7 +94,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def campaign_params
-        params.require(:campaign).permit(:email_subject, :email_subject_es, :email_coupon_description, :email_coupon_description_es, :image, :image_cache, :campaign_type, :coupon, :coupon_id, :name, :email_template_id, :status, :link)
+        params.require(:campaign).permit(:email_subject, :email_subject_es, :email_coupon_description, :email_coupon_description_es, :image, :image_cache, :campaign_type, :coupon, :coupon_id, :name, :email_template_id, :status, :link, :drip_base_coupon_id, :drip_days_after, :drip_product_id)
       end
   end
 end
