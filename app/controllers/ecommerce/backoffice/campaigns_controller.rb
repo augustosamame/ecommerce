@@ -22,7 +22,6 @@ module Ecommerce
       user_array = params[:other][:user_list].split(',').map(&:to_i)
       coupon_id = params[:other][:coupon_id]
       unique_users_by_email = User.where(id: user_array).uniq{|p| p.email}
-      unique_users_by_email = User.all
       unique_users_by_email.each do |user|
         SendCampaignEmailWorker.perform_async(user.id, coupon_id, @campaign.id)
       end
