@@ -47,6 +47,9 @@ module Ecommerce
     end
 
     def abandoned_cart_email(user, order, coupon)
+      Rollbar.info("Inside Abandoned Cart Email Mailer",
+        :request_data => coupon.inspect
+      )
       @user = user
       @order = order
       @coupon = coupon
