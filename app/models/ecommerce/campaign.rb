@@ -41,5 +41,58 @@ module Ecommerce
       end
     end
 
+    def self.send_drip_emails
+      drip_email_1_active = Ecommerce::Control.find_by(name: 'drip_email_1_active')
+      if drip_email_1_active.get_control_value == true
+        drip_email_1_event_type = Ecommerce::Control.find_by(name: 'drip_email_1_event_type').get_control_value
+        drip_email_1_days_after_event = Ecommerce::Control.find_by(name: 'drip_email_1_days_after_event').get_control_value
+        drip_email_1 = Ecommerce::Control.find_by(name: 'drip_email_1').get_control_value
+        #list of users who signed up 7 days ago
+        case drip_email_1_event_type
+        when 'user_signup'
+          target_date = Date.today - drip_email_1_days_after_event.to_i.days
+          user_ids = User.where('DATE(created_at) = ?', target_date ).pluck(:id).uniq
+        when 'user_purchase'
+        end
+        user_ids.each do |user_id|
+          SendDripEmailWorker.perform_async(user_id, drip_email_1)
+        end
+      end
+
+      drip_email_2_active = Ecommerce::Control.find_by(name: 'drip_email_2_active')
+      if drip_email_2_active.get_control_value == true
+        drip_email_2_event_type = Ecommerce::Control.find_by(name: 'drip_email_2_event_type').get_control_value
+        drip_email_2_days_after_event = Ecommerce::Control.find_by(name: 'drip_email_2_days_after_event').get_control_value
+        drip_email_2 = Ecommerce::Control.find_by(name: 'drip_email_2').get_control_value
+        #list of users who signed up 7 days ago
+        case drip_email_2_event_type
+        when 'user_signup'
+          target_date = Date.today - drip_email_2_days_after_event.to_i.days
+          user_ids = User.where('DATE(created_at) = ?', target_date ).pluck(:id).uniq
+        when 'user_purchase'
+        end
+        user_ids.each do |user_id|
+          SendDripEmailWorker.perform_async(user_id, drip_email_2)
+        end
+      end
+
+      drip_email_3_active = Ecommerce::Control.find_by(name: 'drip_email_3_active')
+      if drip_email_3_active.get_control_value == true
+        drip_email_3_event_type = Ecommerce::Control.find_by(name: 'drip_email_3_event_type').get_control_value
+        drip_email_3_days_after_event = Ecommerce::Control.find_by(name: 'drip_email_3_days_after_event').get_control_value
+        drip_email_3 = Ecommerce::Control.find_by(name: 'drip_email_3').get_control_value
+        #list of users who signed up 7 days ago
+        case drip_email_3_event_type
+        when 'user_signup'
+          target_date = Date.today - drip_email_3_days_after_event.to_i.days
+          user_ids = User.where('DATE(created_at) = ?', target_date ).pluck(:id).uniq
+        when 'user_purchase'
+        end
+        user_ids.each do |user_id|
+          SendDripEmailWorker.perform_async(user_id, drip_email_3)
+        end
+      end
+    end
+
   end
 end

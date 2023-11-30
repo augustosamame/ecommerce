@@ -29,6 +29,30 @@ Ecommerce::Control.create(name: 'flat_shipping_cutoff_amount', localized_name: '
 Ecommerce::Control.create(name: 'flat_shipping_under_cutoff_rate', localized_name: 'Flat Shipping Under Cutoff Rate', value_field_type: "float", float_value: 4 )
 Ecommerce::Control.create(name: 'flat_shipping_over_cutoff_rate', localized_name: 'Flat Shipping Over Cutoff Rate', value_field_type: "float", float_value: 1.50 )
 
+Ecommerce::Control.create(name: "drip_email_1_active", localized_name: "Drip Email 1 Active", value_field_type: "boolean", boolean_value: false, internal: false)
+
+Ecommerce::Control.create(name: "drip_email_1_event_type", localized_name: "Drip Email 1 Event Type", value_field_type: "text", text_value: "user_signup", internal: false)
+
+Ecommerce::Control.create(name: "drip_email_1_days_after_event", localized_name: "Drip Email 1 Days After Event", value_field_type: "integer", integer_value: 3, internal: false)
+
+Ecommerce::Control.create(name: "drip_email_1", localized_name: "Drip Email 1 Email Name", value_field_type: "text", text_value: "drip_email_1_signup", internal: false)
+
+Ecommerce::Control.create(name: "drip_email_2_active", localized_name: "Drip Email 2 Active", value_field_type: "boolean", boolean_value: false, internal: false)
+
+Ecommerce::Control.create(name: "drip_email_2_event_type", localized_name: "Drip Email 2 Event Type", value_field_type: "text", text_value: "user_signup", internal: false)
+
+Ecommerce::Control.create(name: "drip_email_2_days_after_event", localized_name: "Drip Email 2 Days After Event", value_field_type: "integer", integer_value: 15, internal: false)
+
+Ecommerce::Control.create(name: "drip_email_2", localized_name: "Drip Email 2 Email Name", value_field_type: "text", text_value: "drip_email_2_signup", internal: false)
+
+Ecommerce::Control.create(name: "drip_email_3_active", localized_name: "Drip Email 3 Active", value_field_type: "boolean", boolean_value: false, internal: false)
+
+Ecommerce::Control.create(name: "drip_email_3_event_type", localized_name: "Drip Email 3 Event Type", value_field_type: "text", text_value: "user_signup", internal: false)
+
+Ecommerce::Control.create(name: "drip_email_3_days_after_event", localized_name: "Drip Email 3 Days After Event", value_field_type: "integer", integer_value: 60, internal: false)
+
+Ecommerce::Control.create(name: "drip_email_3", localized_name: "Drip Email 3 Email Name", value_field_type: "text", text_value: "drip_email_3_signup", internal: false)
+
 Ecommerce::Tax.create(tax_name: "IGV", tax_friendly_name: "Impuesto General a las Ventas")
 Ecommerce::Tax.create(tax_name: "ISC", tax_friendly_name: "Impuesto Selectivo al Consumo")
 

@@ -31,6 +31,29 @@ module Ecommerce
 
     end
 
+    def get_control_value
+      found_control = self
+      if found_control
+        case found_control.value_field_type
+        when "text"
+          found_control.text_value
+        when "boolean"
+          found_control.boolean_value
+        when "integer"
+          found_control.integer_value
+        when "float"
+          found_control.float_value
+        when "date"
+          found_control.date_value
+        else
+          return nil
+        end
+      else
+        return nil
+      end
+
+    end
+
 
 
 
