@@ -13,17 +13,116 @@ module Ecommerce
     end
 
     def biz_specific_product
-      @product = Ecommerce::Product.find(params[:report][:product])
+      product = Ecommerce::Product.find(params[:report][:product])
+      œuser_ids = Ecommerce::Order.includes(:user).where("ecommerce_orders.payment_status = ?", 1).where("ecommerce_orders.id IN (?)", Ecommerce::OrderItem.where(product_id: product.id).pluck(:order_id)).pluck(:user_id).uniq
+      @users = User.where(id: œuser_ids)
+
+      respond_to do |format|
+
+        format.html {
+          p = Axlsx::Package.new
+          wb = p.workbook
+          wb.add_worksheet(:name => "Users Who Bought Product Id #{product.id}") do |sheet|
+            sheet.add_row ["product", "user_id", "email", "sign_in_count", "last_sign_in_at", "first_name", "last_name", "phone", "username", "doc_id", "created_at", "points"]
+            @users.each do |user|
+              sheet.add_row [
+                product.permalink,
+                user.id,
+                user.email,
+                user.sign_in_count,
+                user.last_sign_in_at - 5.hours,
+                user.first_name,
+                user.last_name,
+                user.phone,
+                user.username,
+                user.doc_id,
+                user.created_at - 5.hours,
+                user.points
+              ]
+            end
+          end
+          send_data p.to_stream.read, :filename => 'users.xlsx', :type => "application/vnd.openxmlformates-officedocument.spreadsheetml.sheet"
+        }
+
+      end
     end
 
     def biz_user_frequency
       @user = User.find(params[:report][:user])
       @product = Ecommerce::Product.find(params[:report][:product])
+
+      @orders = Ecommerce::Order.includes(:user).where("ecommerce_orders.payment_status = ?", 1).where("ecommerce_orders.id IN (?)", Ecommerce::OrderItem.where(product_id: @product.id).pluck(:order_id)).where(user_id: @user.id).order(id: :desc)
+
+      respond_to do |format|
+
+        format.html {
+          p = Axlsx::Package.new
+          wb = p.workbook
+          wb.add_worksheet(:name => "Order Frequency") do |sheet|
+            sheet.add_row ["id","date_time", "user","amount","stage","efact", "shipping address", "phone", "coupon", "payment_status", "payment_method", "special_instructions", "status"]
+            @orders.each do |order|
+              sheet.add_row [
+                order.id,
+                order.created_at - 5.hours,
+                order.user.name,
+                ActionController::Base.helpers.number_to_currency(order.amount),
+                order.friendly_stage,
+                order.efact_type,
+                order.friendly_shipping_address,
+                order.user.username.gsub('+51',''),
+                order.coupon.try(:coupon_code),
+                order.paid? ? 'Pagada' : 'NO PAGADA',
+                order.process_comments,
+                order.delivery_comments,
+                order.status
+              ]
+            end
+          end
+          send_data p.to_stream.read, :filename => 'orders.xlsx', :type => "application/vnd.openxmlformates-officedocument.spreadsheetml.sheet"
+        }
+
+      end
+
     end
 
     def biz_cross_selling
       @product_1 = Ecommerce::Product.find(params[:report][:product_1])
       @product_2 = Ecommerce::Product.find(params[:report][:product_2])
+
+      @orders = Ecommerce::Order.includes(:user).where("ecommerce_orders.payment_status = ?", 1).where("ecommerce_orders.id IN (?)", Ecommerce::OrderItem.where(product_id: @product_1.id).pluck(:order_id)).where("ecommerce_orders.id IN (?)", Ecommerce::OrderItem.where(product_id: @product_2.id).pluck(:order_id)).order(id: :desc)
+
+      @users = User.where(id: @orders.pluck(:user_id).uniq)
+
+      respond_to do |format|
+
+        format.html {
+          p = Axlsx::Package.new
+          wb = p.workbook
+          wb.add_worksheet(:name => "Users Bought Product Ids #{@product_1.id} and #{@product_2.id}") do |sheet|
+            sheet.add_row ["product 1", "product 2", "user_id", "email", "sign_in_count", "last_sign_in_at", "first_name", "last_name", "phone", "username", "doc_id", "created_at", "points"]
+            @users.each do |user|
+              sheet.add_row [
+                @product_1.permalink,
+                @product_2.permalink,
+                user.id,
+                user.email,
+                user.sign_in_count,
+                user.last_sign_in_at - 5.hours,
+                user.first_name,
+                user.last_name,
+                user.phone,
+                user.username,
+                user.doc_id,
+                user.created_at - 5.hours,
+                user.points
+              ]
+            end
+          end
+          send_data p.to_stream.read, :filename => 'users.xlsx', :type => "application/vnd.openxmlformates-officedocument.spreadsheetml.sheet"
+        }
+
+      end
+
     end
 
     def export_products

@@ -9,11 +9,11 @@
   <div class="row">
     <div class="well col-md-6">
       <h3>All Users who bought a specific product</h3>
-      <%= simple_form_for :report, url: backoffice_post_biz_specific_product_path, method: :post do |f| %>
+      <%= simple_form_for :report, url: backoffice_post_biz_specific_product_path, method: :post, input_html: {target: "blank"} do |f| %>
         <%= f.error_notification %>
       
         <div class="form-inputs">
-          <%= f.input :user, as: :select2, collection: User.all.order(:id), label: "User", label_method: :name %>
+          <%= f.input :product, as: :select2, collection: Ecommerce::Product.all.order(:permalink), label: "Product", label_method: :permalink %>
         </div>
     
         <div class="form-actions">

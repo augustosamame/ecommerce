@@ -17,7 +17,7 @@ module Ecommerce
       charset = %w{ 2 3 4 6 7 9 A C D E F G H J K M N P Q R T V W X Y Z}
       dynamic_coupon_code = (0...6).map{ charset.to_a[rand(charset.size)] }.join
       dynamic_coupon = Coupon.create(
-        coupon_code: "CART#{dynamic_coupon_code}",
+        coupon_code: "CT#{dynamic_coupon_code}",
         coupon_type: 'percentage_discount',
         discount_percentage_decimal: 5.0,
         start_date: Time.now,

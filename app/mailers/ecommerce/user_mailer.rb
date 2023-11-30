@@ -46,12 +46,9 @@ module Ecommerce
       mail(to: @user.email, subject: t('.subject'))
     end
 
-    def abandoned_cart_email(user, order, coupon)
-      Rollbar.info("Inside Abandoned Cart Email Mailer",
-        :request_data => coupon.inspect
-      )
+    def abandoned_cart_email(user, cart, coupon)
       @user = user
-      @order = order
+      @cart = cart
       @coupon = coupon
       mail(to: @user.email, subject: t('.subject'))
     end
