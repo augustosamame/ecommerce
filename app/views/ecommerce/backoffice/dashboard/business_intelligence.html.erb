@@ -30,7 +30,7 @@
 
         <div class="form-inputs">
           <%= g.input :user, as: :select2, collection: User.all.order(:id), label: "User", label_method: :name %>
-          <%= g.input :product, as: :select2, collection: Ecommerce::Product.all.order(:permalink), label: "Product", label_method: :permalink %>
+          <%= g.input :product, as: :select2, collection: Ecommerce::Product.all.order(:permalink), label: "Product", label_method: :permalink, input_html: { id: "report_product_second" } %>
         </div>
 
         <div class="form-actions">
@@ -63,7 +63,7 @@
 
 $(document).ready(function () {
   
-  $("#report_user, #report_product, #report_product_1, #report_product_2").select2({
+  $("#report_user, #report_product, #report_product_second, #report_product_1, #report_product_2").select2({
     width: '100%',
   });
 });
