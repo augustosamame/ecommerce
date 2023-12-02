@@ -63,7 +63,7 @@ module Ecommerce
           template: "new_placed_order",
           language_code: "es",
           header_values: [],
-          body_values: [self.user.name, csv_string],
+          body_values: [self.user.name, csv_string, "1"],
           button_values: {"0": ["#{self.id}"]}
         })            
       end
