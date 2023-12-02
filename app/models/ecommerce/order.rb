@@ -27,6 +27,23 @@ module Ecommerce
 
     def create_and_notify_interakt_order_event
       if self.user.id == 2 || self.user.id == 1 #only works for me and Hemant
+
+        require 'csv'
+
+        # Assuming you have an array of hashes called `array_of_hashes`
+        array_of_hashes = self.order_items.map{|oi| {product_name: oi.product.name, product_price: oi.price.to_f, product_quantity: oi.quantity, product_total: (oi.price * oi.quantity).to_f}}
+
+        # Get the headers from the first hash in the array
+        headers = array_of_hashes.first.keys
+
+        # Convert the array of hashes to a CSV string
+        csv_string = CSV.generate do |csv|
+          csv << headers
+          array_of_hashes.each do |hash|
+            csv << hash.values
+          end
+        end
+
         Interakt.new.create_event({
           user_id: self.user.id,
           event: "order_placed",
@@ -38,14 +55,15 @@ module Ecommerce
             order_shipping_amount: self.shipping_amount.to_f,
             order_discount_amount: self.discount_amount.to_f,
             order_created_at: self.created_at.to_s,
-            order_items: self.order_items.map{|oi| {product_id: oi.product.id, product_name: oi.product.name, product_price: oi.price.to_f, product_quantity: oi.quantity, product_total: (oi.price * oi.quantity).to_f, product_status: oi.status, product_created_at: oi.created_at.to_s, product_updated_at: oi.updated_at.to_s}}
+            order_items: csv_string
           }
         })
         Interakt.new.send_message({
           user_id: self.user.id,
           template: "new_placed_order",
           language_code: "es",
-          body_values: [self.user.name, self.order_items.map{|oi| { product_name: oi.product.name, product_price: oi.price.to_f, product_quantity: oi.quantity, product_total: (oi.price * oi.quantity).to_f }}],
+          header_values: [],
+          body_values: [self.user.name, csv_string],
           button_values: {"0": ["#{self.id}"]}
         })            
       end
