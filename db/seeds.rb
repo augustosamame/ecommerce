@@ -53,6 +53,8 @@ Ecommerce::Control.create(name: "drip_email_3_days_after_event", localized_name:
 
 Ecommerce::Control.create(name: "drip_email_3", localized_name: "Drip Email 3 Email Name", value_field_type: "text", text_value: "drip_email_3_signup", internal: false)
 
+Ecommerce::Control.create(name: "send_abandoned_cart_email_active", localized_name: "Abandoned Cart Emails Active", value_field_type: "boolean", boolean_value: false, internal: false)
+
 Ecommerce::Tax.create(tax_name: "IGV", tax_friendly_name: "Impuesto General a las Ventas")
 Ecommerce::Tax.create(tax_name: "ISC", tax_friendly_name: "Impuesto Selectivo al Consumo")
 

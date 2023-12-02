@@ -3,7 +3,9 @@
 
   <div class="form-inputs">
     <%= f.input :name, label: t('.name') %>
-    <%= f.input :coupon_id, as: :select2, label: t('.coupon_id'), collection: Ecommerce::Coupon.active, label_method: lambda { |obj| obj.coupon_code} %>
+    <div id="campaign-coupon-id-div" class="<%= @campaign.campaign_type != "product_drip_email" ? '' : 'drip-hidden' %>" id="drip-fields-div">
+      <%= f.input :coupon_id, as: :select2, label: t('.coupon_id'), collection: Ecommerce::Coupon.active.where(dynamic: false).order(:coupon_code), label_method: lambda { |obj| obj.coupon_code} %>
+    </div>
     <%= f.input :campaign_type, label: t('.campaign_type'), collection: Ecommerce::Campaign.campaign_types.keys %>
     <%= f.input :status, label: t('.status'), collection: Ecommerce::Campaign.statuses.keys %>
     <%= f.input :email_subject, label: t('.email_subject') %>
@@ -25,7 +27,7 @@
     </div>
     <div class="well <%= @campaign.campaign_type == "product_drip_email" ? '' : 'drip-hidden' %>" id="drip-fields-div">
       <%= f.input :drip_product_id, as: :select2, collection: Ecommerce::Product.all.order(:permalink), label: "Drip Product", label_method: :permalink %>
-      <%= f.input :drip_base_coupon_id, as: :select2, collection: Ecommerce::Coupon.active.order(:coupon_code), label: "Drip Base Coupon", label_method: :coupon_code %>
+      <%= f.input :drip_base_coupon_id, as: :select2, collection: Ecommerce::Coupon.active.where(dynamic: false).order(:coupon_code), label: "Drip Base Coupon", label_method: :coupon_code %>
       <%= f.input :drip_days_after, label: "Sent Days After Purchase" %>
     </div>
   </div>
@@ -60,8 +62,10 @@
       console.log('dropdown changed', $(this).val());
       if($(this).val() == "product_drip_email"){
         $("#drip-fields-div").removeClass("drip-hidden");
+        $("#campaign-coupon-id-div").addClass("drip-hidden");
       }else{
         $("#drip-fields-div").addClass("drip-hidden");
+        $("#campaign-coupon-id-div").removeClass("drip-hidden");
       }
     });
 

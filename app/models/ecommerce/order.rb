@@ -26,47 +26,50 @@ module Ecommerce
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
     def create_and_notify_interakt_order_event
-      if self.user.id == 2 || self.user.id == 1 #only works for me and Hemant
 
-        require 'csv'
+      require 'csv'
 
-        # Assuming you have an array of hashes called `array_of_hashes`
-        array_of_hashes = self.order_items.map{|oi| {product_name: oi.product.name, product_price: oi.price.to_f, product_quantity: oi.quantity, product_total: (oi.price * oi.quantity).to_f}}
+      # Assuming you have an array of hashes called `array_of_hashes`
+      array_of_hashes = self.order_items.map{|oi| {product_name: oi.product.name, product_price: oi.price.to_f, product_quantity: oi.quantity, product_total: (oi.price * oi.quantity).to_f}}
 
-        # Get the headers from the first hash in the array
-        headers = array_of_hashes.first.keys
+      # Get the headers from the first hash in the array
+      headers = array_of_hashes.first.keys
 
-        # Convert the array of hashes to a CSV string
-        csv_string = CSV.generate(quote_char: '', row_sep: '|') do |csv|
-          csv << headers
-          array_of_hashes.each do |hash|
-            csv << hash.values
-          end
+      # Convert the array of hashes to a CSV string
+      csv_string = CSV.generate(quote_char: '', row_sep: '|') do |csv|
+        csv << headers
+        array_of_hashes.each do |hash|
+          csv << hash.values
         end
-
-        Interakt.new.create_event({
-          user_id: self.user.id,
-          event: "order_placed",
-          traits: {
-            order_id: self.id,
-            order_amount: self.amount.to_f,
-            order_payment_status: self.payment_status,
-            order_shipping_address: self.friendly_shipping_address,
-            order_shipping_amount: self.shipping_amount.to_f,
-            order_discount_amount: self.discount_amount.to_f,
-            order_created_at: self.created_at.to_s,
-            order_items: csv_string
-          }
-        })
-        Interakt.new.send_message({
-          user_id: self.user.id,
-          template: "new_placed_order",
-          language_code: "es",
-          header_values: [],
-          body_values: [self.user.name, csv_string, "1"],
-          button_values: {"0": ["#{self.id}"]}
-        })            
       end
+
+      Interakt.new.create_event({
+        user_id: self.user.id,
+        event: "order_placed",
+        traits: {
+          order_id: self.id,
+          order_amount: self.amount.to_f,
+          order_payment_status: self.payment_status,
+          order_shipping_address: self.friendly_shipping_address,
+          order_shipping_amount: self.shipping_amount.to_f,
+          order_discount_amount: self.discount_amount.to_f,
+          order_created_at: self.created_at.to_s,
+          order_items: csv_string
+        }
+      })
+      Interakt.new.send_message({
+        user_id: self.user.id,
+        template: "new_placed_order",
+        language_code: "es",
+        header_values: [],
+        body_values: [self.user.name, self.id, "#{self.currency} #{self.amount.to_s}", self.friendly_shipping_address, "1"],
+        button_values: {"0": ["#{self.id}"]}
+      })
+       SendUnpaidToPaidInteraktWorker.perform_in(6.hours, self.id)            
+    end
+
+    def create_payment_event_notification
+
     end
 
     def notify_new_order

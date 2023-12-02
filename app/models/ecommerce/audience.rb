@@ -20,7 +20,7 @@ module Ecommerce
           discount_percentage_decimal: original_coupon.discount_percentage_decimal,
           discount_threshold: original_coupon.discount_threshold,
           start_date: original_coupon.start_date,
-          end_date: original_coupon.end_date,
+          end_date: Time.now + 14.days,
           max_uses_per_user: original_coupon.max_uses_per_user,
           max_uses: original_coupon.max_uses,
           current_uses: 0,
