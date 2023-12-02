@@ -17,12 +17,39 @@ module Ecommerce
     monetize :amount_cents, :shipping_amount_cents, :discount_amount_cents, with_model_currency: :currency
 
     after_commit :notify_new_order, on: :create
+    after_commit :create_and_notify_interakt_order_event, on: :create
     after_commit :blank_user_carts, on: :create
     after_commit :notify_unpaid_to_paid, on: :update, if: :saved_change_to_payment_status
     after_commit :fire_einvoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
     after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
 
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
+
+    def create_and_notify_interakt_order_event
+      if self.user.id == 2 || self.user.id == 1 #only works for me and Hemant
+        Interakt.new.create_event({
+          user_id: self.user.id,
+          event: "order_placed",
+          traits: {
+            order_id: self.id,
+            order_amount: self.amount.to_f,
+            order_payment_status: self.payment_status,
+            order_shipping_address: self.friendly_shipping_address,
+            order_shipping_amount: self.shipping_amount.to_f,
+            order_discount_amount: self.discount_amount.to_f,
+            order_created_at: self.created_at.to_s,
+            order_items: self.order_items.map{|oi| {product_id: oi.product.id, product_name: oi.product.name, product_price: oi.price.to_f, product_quantity: oi.quantity, product_total: (oi.price * oi.quantity).to_f, product_status: oi.status, product_created_at: oi.created_at.to_s, product_updated_at: oi.updated_at.to_s}}
+          }
+        })
+        Interakt.new.send_message({
+          user_id: self.user.id,
+          template: "new_placed_order",
+          language_code: "es",
+          body_values: [self.user.name, self.order_items.map{|oi| { product_name: oi.product.name, product_price: oi.price.to_f, product_quantity: oi.quantity, product_total: (oi.price * oi.quantity).to_f }}],
+          button_values: {"0": ["#{self.id}"]}
+        })            
+      end
+    end
 
     def notify_new_order
       SendOrderEmailsWorker.perform_in(30.seconds, self.id)

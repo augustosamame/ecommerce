@@ -69,7 +69,7 @@
       begin
         user = User.find(hash[:user_id])
         options = {
-          userId: user.id,
+          fullPhoneNumber: user.normalized_phone,
           event: hash[:event],
           traits: hash[:traits]
         }
