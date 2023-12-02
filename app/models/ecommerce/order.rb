@@ -37,7 +37,7 @@ module Ecommerce
         headers = array_of_hashes.first.keys
 
         # Convert the array of hashes to a CSV string
-        csv_string = CSV.generate do |csv|
+        csv_string = CSV.generate(quote_char: '', row_sep: '|') do |csv|
           csv << headers
           array_of_hashes.each do |hash|
             csv << hash.values
