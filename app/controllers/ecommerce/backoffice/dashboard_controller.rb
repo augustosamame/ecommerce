@@ -98,7 +98,7 @@ module Ecommerce
         format.html {
           p = Axlsx::Package.new
           wb = p.workbook
-          wb.add_worksheet(:name => "Users Bought Product Ids #{@product_1.id} and #{@product_2.id}") do |sheet|
+          wb.add_worksheet(:name => "Bought Ids #{@product_1.id} and #{@product_2.id}") do |sheet|
             sheet.add_row ["product 1", "product 2", "user_id", "email", "sign_in_count", "last_sign_in_at", "first_name", "last_name", "phone", "username", "doc_id", "created_at", "points"]
             @users.each do |user|
               sheet.add_row [
