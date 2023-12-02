@@ -29,7 +29,7 @@ module Ecommerce
           dynamic_coupon_code = (0...6).map{ charset.to_a[rand(charset.size)] }.join
           original_coupon = Ecommerce::Coupon.find(campaign.drip_base_coupon_id)
           dynamic_coupon = Ecommerce::Coupon.create(
-            coupon_code: dynamic_coupon_code,
+            coupon_code: "DR#{dynamic_coupon_code}",
             coupon_type: original_coupon.coupon_type,
             discount_fixed: original_coupon.discount_fixed,
             discount_percentage_decimal: original_coupon.discount_percentage_decimal,
