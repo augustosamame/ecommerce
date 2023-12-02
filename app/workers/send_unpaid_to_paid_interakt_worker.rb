@@ -10,8 +10,8 @@ class SendUnpaidToPaidInteraktWorker
         template: "unpaid_order_reminder_v2",
         language_code: "es",
         header_values: [],
-        body_values: [self.user.name, self.id, "#{self.currency} #{self.amount.to_s}", self.friendly_shipping_address, "1"],
-        button_values: {"0": ["#{self.id}"]}
+        body_values: [order.user.name, order.id, "#{order.currency} #{order.amount.to_s}", order.friendly_shipping_address, "1"],
+        button_values: {"0": ["#{order.id}"]}
       })
     end
   end
