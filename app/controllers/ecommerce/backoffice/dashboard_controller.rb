@@ -12,6 +12,48 @@ module Ecommerce
 
     end
 
+    def biz_top_buyers
+      #@user_orders = User.joins(:orders).where(ecommerce_orders: { payment_status: 1 }).where("ecommerce_orders.created_at >= ?", params[:report][:start_date].to_date).select('users.*, COUNT(ecommerce_orders.id) as total_orders').group('users.id').order('total_orders DESC')
+
+      @user_orders = User.joins(:orders)
+                   .where(ecommerce_orders: { payment_status: 1 })
+                   .where("ecommerce_orders.created_at >= ?", params[:report][:start_date].to_date)
+                   .select('users.*, COUNT(ecommerce_orders.id) as total_orders, SUM(ecommerce_orders.amount_cents) as total_amount, AVG(ecommerce_orders.amount_cents) as avg_amount')
+                   .group('users.id')
+                   .order('total_orders DESC')
+
+      respond_to do |format|
+
+        format.html {
+          p = Axlsx::Package.new
+          wb = p.workbook
+          wb.add_worksheet(:name => "Top Buyers since #{params[:report][:start_date].gsub("/", "-")}") do |sheet|
+            sheet.add_row ["user_id", "email", "total_orders", "total_orders_amount", "orders_average", "sign_in_count", "last_sign_in_at", "first_name", "last_name", "phone", "username", "doc_id", "created_at", "points"]
+            @user_orders.each do |user|
+              sheet.add_row [
+                user.id,
+                user.email,
+                user.total_orders,
+                (user.total_amount.to_f / 100),
+                (user.avg_amount.to_f / 100),
+                user.sign_in_count,
+                user.last_sign_in_at - 5.hours,
+                user.first_name,
+                user.last_name,
+                user.phone,
+                user.username,
+                user.doc_id,
+                user.created_at - 5.hours,
+                user.points
+              ]
+            end
+          end
+          send_data p.to_stream.read, :filename => 'users.xlsx', :type => "application/vnd.openxmlformates-officedocument.spreadsheetml.sheet"
+        }
+
+      end
+    end
+
     def biz_specific_product
       product = Ecommerce::Product.find(params[:report][:product])
       œuser_ids = Ecommerce::Order.includes(:user).where("ecommerce_orders.payment_status = ?", 1).where("ecommerce_orders.id IN (?)", Ecommerce::OrderItem.where(product_id: product.id).pluck(:order_id)).pluck(:user_id).uniq
@@ -89,9 +131,14 @@ module Ecommerce
       @product_1 = Ecommerce::Product.find(params[:report][:product_1])
       @product_2 = Ecommerce::Product.find(params[:report][:product_2])
 
-      @orders = Ecommerce::Order.includes(:user).where("ecommerce_orders.payment_status = ?", 1).where("ecommerce_orders.id IN (?)", Ecommerce::OrderItem.where(product_id: @product_1.id).pluck(:order_id)).where("ecommerce_orders.id IN (?)", Ecommerce::OrderItem.where(product_id: @product_2.id).pluck(:order_id)).order(id: :desc)
+      @orders = Ecommerce::Order.includes(:user).where("ecommerce_orders.payment_status = ?", 1).where("ecommerce_orders.id IN (?)", Ecommerce::OrderItem.where(product_id: @product_1.id).pluck(:order_id)).where("ecommerce_orders.id IN (?)", Ecommerce::OrderItem.where(product_id: @product_2.id).pluck(:order_id))
 
-      @users = User.where(id: @orders.pluck(:user_id).uniq)
+      @user_orders = User.joins(:orders)
+                   .where(ecommerce_orders: { id: @orders })
+                   .select('users.*, COUNT(ecommerce_orders.id) as total_orders')
+                   .group('users.id')
+
+      #@users = User.where(id: @orders.pluck(:user_id).uniq)
 
       respond_to do |format|
 
@@ -99,11 +146,12 @@ module Ecommerce
           p = Axlsx::Package.new
           wb = p.workbook
           wb.add_worksheet(:name => "Bought Ids #{@product_1.id} and #{@product_2.id}") do |sheet|
-            sheet.add_row ["product 1", "product 2", "user_id", "email", "sign_in_count", "last_sign_in_at", "first_name", "last_name", "phone", "username", "doc_id", "created_at", "points"]
-            @users.each do |user|
+            sheet.add_row ["product 1", "product 2", "total_orders", "user_id", "email", "sign_in_count", "last_sign_in_at", "first_name", "last_name", "phone", "username", "doc_id", "created_at", "points"]
+            @user_orders.each do |user|
               sheet.add_row [
                 @product_1.permalink,
                 @product_2.permalink,
+                user.total_orders,
                 user.id,
                 user.email,
                 user.sign_in_count,

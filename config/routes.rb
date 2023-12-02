@@ -37,6 +37,7 @@ Ecommerce::Engine.routes.draw do
     get 'get_purchasers', :to => "campaigns#get_product_purchasers"
     get 'get_no_purchase_within_days', :to => "campaigns#get_no_purchase_within_days"
     get 'business_intelligence', :to => "dashboard#business_intelligence"
+    post 'biz_top_buyers', :to => "dashboard#biz_top_buyers", as: 'post_biz_top_buyers'
     post 'biz_specific_product', :to => "dashboard#biz_specific_product", as: 'post_biz_specific_product'
     post 'biz_user_frequency', :to => "dashboard#biz_user_frequency", as: 'post_biz_user_frequency'
     post 'biz_cross_selling', :to => "dashboard#biz_cross_selling", as: 'post_biz_cross_selling'

@@ -8,6 +8,22 @@
 	</div>
   <div class="row">
     <div class="well col-md-6">
+      <h3>Top Buyers</h3>
+      <%= simple_form_for :report, url: backoffice_post_biz_top_buyers_path, method: :post, input_html: {target: "blank"} do |f| %>
+        <%= f.error_notification %>
+      
+        <div class="form-inputs">
+          <%= f.input :start_date, as: :date_time_picker, label: "Start Date" %>
+        </div>
+    
+        <div class="form-actions">
+          <%= f.button :submit, 'Generar Reporte', class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="well col-md-6">
       <h3>All Users who bought a specific product</h3>
       <%= simple_form_for :report, url: backoffice_post_biz_specific_product_path, method: :post, input_html: {target: "blank"} do |f| %>
         <%= f.error_notification %>
@@ -66,8 +82,13 @@ $(document).ready(function () {
   $("#report_user, #report_product, #report_product_second, #report_product_1, #report_product_2").select2({
     width: '100%',
   });
+
+  $('#report_start_date').datetimepicker({
+    locale: 'en',
+    format: 'DD-MM-YYYY'
+  });
+
 });
 
 </script>
-
 
