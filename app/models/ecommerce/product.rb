@@ -72,7 +72,8 @@ module Ecommerce
 
     def send_notifications_stock_alert_users
       Ecommerce::StockAlert.where(product_id: self.id, status: 'active').each do |stock_alert|
-        TwilioIntegration.new.send_sms_to_user("The product #{self.name} is back in stock at Expatshop.pe. https://expatshop.pe/store/products/#{self.id}", stock_alert.user_id)
+        #TwilioIntegration.new.send_sms_to_user("The product #{self.name} is back in stock at Expatshop.pe. https://expatshop.pe/store/products/#{self.id}", stock_alert.user_id)
+        SendBackInStockWorker.perform_async(self.name, self.id, stock_alert.user_id)
         stock_alert.destroy
       end
     end
