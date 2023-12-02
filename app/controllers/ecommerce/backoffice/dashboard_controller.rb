@@ -127,6 +127,62 @@ module Ecommerce
 
     end
 
+    def biz_product_frequency
+
+      ActiveRecord::Base.connection.execute("DROP TABLE IF EXISTS temp_subquery")
+      @product = Ecommerce::Product.find(params[:report][:product])
+
+      @orders = Ecommerce::Order.includes(:user).where("ecommerce_orders.payment_status = ?", 1).where("ecommerce_orders.id IN (?)", Ecommerce::OrderItem.where(product_id: @product.id).pluck(:order_id)).order(:user_id)
+
+      user_ids_with_single_order = @orders.group(:user_id).having('COUNT(ecommerce_orders.id) = 1').pluck(:user_id)
+
+      subset_of_orders = @orders.where.not(user_id: user_ids_with_single_order)
+
+      temp_table_sql = subset_of_orders.select(:user_id, :created_at, 'LAG(ecommerce_orders.created_at) OVER (PARTITION BY user_id ORDER BY ecommerce_orders.created_at) AS lag_created_at' ).joins(:user).to_sql
+      
+      ActiveRecord::Base.connection.execute("CREATE TEMPORARY TABLE temp_subquery AS #{temp_table_sql}")
+      
+      average_time_query = ActiveRecord::Base.connection.execute("SELECT user_id, AVG(EXTRACT(EPOCH FROM (created_at - lag_created_at))) / 86400 AS avg_time_in_days FROM temp_subquery GROUP BY user_id")
+
+      result = ActiveRecord::Base.connection.execute("SELECT SUM(avg_time * order_count) / SUM(order_count) AS weighted_average FROM (SELECT user_id, AVG(EXTRACT(EPOCH FROM (created_at - lag_created_at))) / 86400 AS avg_time, COUNT(*) AS order_count FROM temp_subquery GROUP BY user_id) AS subquery")
+      weighted_average = result[0]["weighted_average"].to_f
+      ActiveRecord::Base.connection.execute("DROP TABLE IF EXISTS temp_subquery")
+
+      
+      respond_to do |format|
+
+        format.html {
+          p = Axlsx::Package.new
+          wb = p.workbook
+          wb.add_worksheet(:name => "Exported Orders") do |sheet|
+            sheet.add_row ["Product Frequency", "#{weighted_average.round(2)} days"]
+            sheet.add_row []
+            sheet.add_row ["Order id","date_time", "user","amount","stage","efact", "shipping address", "phone", "coupon", "payment_status", "payment_method", "special_instructions", "status"]
+            subset_of_orders.each do |order|
+              sheet.add_row [
+                order.id,
+                order.created_at - 5.hours,
+                order.user.name,
+                ActionController::Base.helpers.number_to_currency(order.amount),
+                order.friendly_stage,
+                order.efact_type,
+                order.friendly_shipping_address,
+                order.user.username.gsub('+51',''),
+                order.coupon.try(:coupon_code),
+                order.paid? ? 'Pagada' : 'NO PAGADA',
+                order.process_comments,
+                order.delivery_comments,
+                order.status
+              ]
+            end
+          end
+          send_data p.to_stream.read, :filename => 'orders.xlsx', :type => "application/vnd.openxmlformates-officedocument.spreadsheetml.sheet"
+        }
+
+      end
+
+    end
+
     def biz_cross_selling
       @product_1 = Ecommerce::Product.find(params[:report][:product_1])
       @product_2 = Ecommerce::Product.find(params[:report][:product_2])

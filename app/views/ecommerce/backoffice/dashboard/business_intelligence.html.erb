@@ -17,7 +17,7 @@
         </div>
     
         <div class="form-actions">
-          <%= f.button :submit, 'Generar Reporte', class: "btn btn-primary" %>
+          <%= f.button :submit, 'Generate Report', class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>
@@ -33,7 +33,7 @@
         </div>
     
         <div class="form-actions">
-          <%= f.button :submit, 'Generar Reporte', class: "btn btn-primary" %>
+          <%= f.button :submit, 'Generate Report', class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>
@@ -50,7 +50,23 @@
         </div>
 
         <div class="form-actions">
-          <%= g.button :submit, 'Generar Reporte', class: "btn btn-primary" %>
+          <%= g.button :submit, 'Generate Report', class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="well col-md-6">
+      <h3>Average Frequency In Days of All Time Purchases per Product</h3>
+      <%= simple_form_for :report, url: backoffice_post_biz_product_frequency_path, method: :post do |g| %>
+        <%= g.error_notification %>
+
+        <div class="form-inputs">
+          <%= g.input :product, as: :select2, collection: Ecommerce::Product.all.order(:permalink), label: "Product", label_method: :permalink, input_html: { id: "report_product_third" } %>
+        </div>
+
+        <div class="form-actions">
+          <%= g.button :submit, 'Generate Report', class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>
@@ -67,7 +83,7 @@
         </div>
     
         <div class="form-actions">
-          <%= h.button :submit, 'Generar Reporte', class: "btn btn-primary" %>
+          <%= h.button :submit, 'Generate Report', class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>
@@ -79,7 +95,7 @@
 
 $(document).ready(function () {
   
-  $("#report_user, #report_product, #report_product_second, #report_product_1, #report_product_2").select2({
+  $("#report_user, #report_product, #report_product_second, #report_product_third, #report_product_1, #report_product_2").select2({
     width: '100%',
   });
 

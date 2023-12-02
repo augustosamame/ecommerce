@@ -217,7 +217,6 @@ categorías.
         video: true,
         infiniteLoop: true,
         adaptiveheight: true,
-        pager: buttons_visible,
         // startSlide: 0,
         // speed: 5000,
         // useCSS: false,
@@ -249,7 +248,7 @@ categorías.
       }
     );
 
-    $('.video-slider').on('click', function() {
+    $('.video-slider').on('mouseup', function() {
       console.log('clicked on slider')
       var currentSlideIndex = bx.getCurrentSlide();
       var string_array = "<%= browser.device.mobile? ? @mobile_slider_array : @desktop_slider_array %>".replace(/&quot;/g,'"')
