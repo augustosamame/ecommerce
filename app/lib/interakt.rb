@@ -1,5 +1,3 @@
-module Ecommerce
-    
   class Interakt
     include HTTParty
     base_uri (ENV["RUNTIME_ENV"] == 'production' ? 'https://api.interakt.ai/v1/public' : 'https://api.interakt.ai/v1/public')
@@ -122,4 +120,3 @@ module Ecommerce
 
   end
 
-end
