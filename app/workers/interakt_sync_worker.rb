@@ -1,4 +1,4 @@
-class SendBackInStockWorker
+class InteraktSyncWorker
   include Sidekiq::Worker
 
   def perform(user_id)
