@@ -12,6 +12,7 @@ module Ecommerce
     def index
 
       set_index_meta_tags
+      @hidden_footer = true
 
       if params[:search]
         if @banana_permission
