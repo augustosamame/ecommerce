@@ -34,32 +34,38 @@
       end
     end
 
-    def calculate_tags(user)
+    def calculate_tags(user) #tags cannot be temporary as they cannot be deleted
       tags = Array.new
 
       tags << "user.new"
       tags << "user.test" if user.interakt_test
       
       at_least_one_order_last_2_years = user.orders.paid.where("created_at > ?", 2.years.ago).count > 0
+      more_than_1_orders = user.orders.paid.count > 1
       more_than_3_orders = user.orders.paid.count > 3
+      more_than_10_orders = user.orders.paid.count > 10
       more_than_100_usd_total_last_2_years = user.orders.paid.where("created_at > ?", 2.years.ago).sum(:amount_cents) > 10000
       registeredMoreThan7DaysAgo = user.created_at < 7.days.ago
+      any_order_over_100_usd = user.orders.paid.where("amount_cents > ?", 10000).count > 0
 
       tags << "user.registeredMoreThan7DaysAgo" if registeredMoreThan7DaysAgo
       tags << "orders.atLeastOneOrderLast2Years" if at_least_one_order_last_2_years
-      tags << "orders.moreThan3orders" if more_than_3_orders
+      tags << "orders.moreThan_1_orders" if more_than_1_orders
+      tags << "orders.moreThan_3_orders" if more_than_3_orders
+      tags << "orders.moreThan_10_orders" if more_than_10_orders
       tags << "orders.moreThan100UsdTotalLast2Years" if more_than_100_usd_total_last_2_years
+      tags << "user.highValueAnyOrderOver100Usd" if any_order_over_100_usd
       return tags
     end
 
-    def calculate_traits(user)
+    def calculate_traits(user) #traits can be temporary as they can be updated, but string only
       traits = Hash.new
       traits["email"] = user.email
       traits["name"] = user.name
-      traits["total_orders"] = user.orders.paid.count
-      traits["total_amount_orders"] = "USD #{user.orders.paid.sum(:amount_cents) / 100}"
-      traits["average_order"] = "USD #{user.orders.paid.average(:amount_cents) / 100}"
-
+      traits["total_orders"] = user.orders.paid.count.to_s
+      traits["total_amount_orders_USD"] = user.orders.paid.sum(:amount_cents) / 100
+      traits["average_order_USD"] = user.orders.paid.average(:amount_cents) ?  (user.orders.paid.average(:amount_cents) / 100) : 0
+      traits["last_order_year"] = user.orders.paid.last.try(:created_at).try(:year).try(:to_s)
       return traits
     end
 

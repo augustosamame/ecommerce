@@ -32,6 +32,7 @@ module Ecommerce
           Interakt.new.track_user({
             user_id: user.id
           })
+          sleep 5
         end
       end
     end
