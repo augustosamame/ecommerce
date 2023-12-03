@@ -27,18 +27,16 @@ module Ecommerce
 
     def self.interakt_create_users_with_tags
       User.each do |user|
-        if user.id == 1
-
-          Interakt.new.track_user({
-            user_id: user.id
-          })
-          sleep 5
-        end
+        InteraktSyncWorker.perform_async(user.id)
+        sleep 5
       end
     end
 
     def create_and_notify_interakt_order_event
       unless Rails.env == "development"
+
+        InteraktSyncWorker.perform_async(self.user.id)
+
         require 'csv'
 
         # Assuming you have an array of hashes called `array_of_hashes`
