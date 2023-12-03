@@ -1,6 +1,6 @@
 <!-- hero -->
     <header>
-      <div class="header-hero">
+      <div class="header-hero" style="cursor: pointer">
         <ul class="video-slider">
           <% Ecommerce::Slider.where(slider_view: (browser.device.mobile? ? 'MOBILE' : 'DESKTOP')).order(:slider_order).each do |slider| %>
             <% if slider.slider_image.url[-3..-1] != 'mp4' %>
