@@ -25,10 +25,15 @@ module Ecommerce
 
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
-    def self.apply_tags_to_users
+    def self.interakt_create_users_with_tags
+      User.each do |user|
+        if user.id == 1
 
-      
-
+          Interakt.new.track_user({
+            user_id: user.id
+          })
+        end
+      end
     end
 
     def create_and_notify_interakt_order_event

@@ -10,20 +10,14 @@
       }
     end
 
-    def create_user(hash) #hash with key: user_id
+    def track_user(hash) #hash with key: user_id
       begin
         user = User.find(hash[:user_id])
-        tags = Array.new
-        tags << "user.new"
-        tags << "user.test" if user.interakt_test
         options = {
           userId: user.id,
           fullPhoneNumber: user.normalized_phone,
-          traits: {
-            name: user.name,
-            email: user.email
-          },
-          tags: tags
+          traits: calculate_traits(user),
+          tags: calculate_tags(user)
         }
         call_options = {
           headers: @headers,
@@ -40,29 +34,33 @@
       end
     end
 
-    def update_user(hash) #hash with (optional) keys: user_id, traits hash, tags hash
-      begin
-        user = User.find(hash[:user_id])
-        tags = Array.new
-        tags << "user.registeredMoreThan7DaysAgo" if user.created_at < 7.days.ago
-        options = {
-          fullPhoneNumber: user.normalized_phone,
-          traits: hash[:traits],
-          tags: hash[:tags]
-        }
-        call_options = {
-          headers: @headers,
-          body: options.to_json,
-        }
-        response = self.class.post("/track/users/", call_options)
-        if response.code == 200 || response.code == 202
-          return response.parsed_response
-        else
-          return {error: "Code: #{response.code.to_s} - #{response.try(:to_s)}"}
-        end
-      rescue => exception
-        return {error: exception.to_s}
-      end
+    def calculate_tags(user)
+      tags = Array.new
+
+      tags << "user.new"
+      tags << "user.test" if user.interakt_test
+      
+      at_least_one_order_last_2_years = user.orders.paid.where("created_at > ?", 2.years.ago).count > 0
+      more_than_3_orders = user.orders.paid.count > 3
+      more_than_100_usd_total_last_2_years = user.orders.paid.where("created_at > ?", 2.years.ago).sum(:amount_cents) > 10000
+      registeredMoreThan7DaysAgo = user.created_at < 7.days.ago
+
+      tags << "user.registeredMoreThan7DaysAgo" if registeredMoreThan7DaysAgo
+      tags << "orders.atLeastOneOrderLast2Years" if at_least_one_order_last_2_years
+      tags << "orders.moreThan3orders" if more_than_3_orders
+      tags << "orders.moreThan100UsdTotalLast2Years" if more_than_100_usd_total_last_2_years
+      return tags
+    end
+
+    def calculate_traits(user)
+      traits = Hash.new
+      traits["email"] = user.email
+      traits["name"] = user.name
+      traits["total_orders"] = user.orders.paid.count
+      traits["total_amount_orders"] = "USD #{user.orders.paid.sum(:amount_cents) / 100}"
+      traits["average_order"] = "USD #{user.orders.paid.average(:amount_cents) / 100}"
+
+      return traits
     end
 
     def create_event(hash) #hash with keys: user_id, event, traits hash
