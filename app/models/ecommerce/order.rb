@@ -25,6 +25,12 @@ module Ecommerce
 
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
+    def self.apply_tags_to_users
+
+      
+
+    end
+
     def create_and_notify_interakt_order_event
       unless Rails.env == "development"
         require 'csv'
