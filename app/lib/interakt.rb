@@ -59,13 +59,29 @@
     end
 
     def calculate_traits(user) #traits can be temporary as they can be updated, but string only
+
+      #we must consolidate the traits to avoid duplicates due to guest checkouts
+      user_total_orders = 0
+      total_amount_orders_USD = 0
+      average_order_USD = 0
+      last_order_year = nil
+
+      consolidated_users = User.where("LEFT(username, 9) = ?", user.username[0..8])
+      
+      consolidated_users.each do |consolidated_user|
+        user_total_orders += consolidated_user.orders.paid.count
+        total_amount_orders_USD += consolidated_user.orders.paid.sum(:amount_cents) / 100
+        average_order_USD += consolidated_user.orders.paid.average(:amount_cents) ? (consolidated_user.orders.paid.average(:amount_cents) / 100) : 0
+        last_order_year = consolidated_user.orders.paid.last.try(:created_at).try(:year).try(:to_s) if consolidated_user.orders.paid.last.try(:created_at).try(:year).try(:to_s) > last_order_year.to_i
+      end
+
       traits = Hash.new
       traits["email"] = user.email
       traits["name"] = user.name
-      traits["total_orders"] = user.orders.paid.count.to_s
-      traits["total_amount_orders_USD"] = user.orders.paid.sum(:amount_cents) / 100
-      traits["average_order_USD"] = user.orders.paid.average(:amount_cents) ?  (user.orders.paid.average(:amount_cents) / 100) : 0
-      traits["last_order_year"] = user.orders.paid.last.try(:created_at).try(:year).try(:to_s)
+      traits["total_orders"] = user_total_orders.to_s
+      traits["total_amount_orders_USD"] = total_amount_orders_USD.to_s
+      traits["average_order_USD"] = average_order_USD.to_s
+      traits["last_order_year"] = last_order_year.try(:to_s)
       return traits
     end
 

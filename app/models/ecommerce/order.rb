@@ -26,9 +26,12 @@ module Ecommerce
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
     def self.interakt_create_users_with_tags
-      User.each do |user|
-        InteraktSyncWorker.perform_async(user.id)
-        sleep 5
+      #User.where('id <= ?', 7020).order(id: :desc).each do |user|
+      User.all.order(id: :desc).each do |user|
+        puts "user #{user.id} sent to interakt"
+        b = InteraktSyncWorker.perform_async(user.id)
+        puts b
+        sleep 2
       end
     end
 
