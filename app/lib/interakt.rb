@@ -67,12 +67,12 @@
       last_order_year = nil
 
       consolidated_users = User.where("LEFT(username, 9) = ?", user.username[0..8])
-      
+
       consolidated_users.each do |consolidated_user|
         user_total_orders += consolidated_user.orders.paid.count
         total_amount_orders_USD += consolidated_user.orders.paid.sum(:amount_cents) / 100
         average_order_USD += consolidated_user.orders.paid.average(:amount_cents) ? (consolidated_user.orders.paid.average(:amount_cents) / 100) : 0
-        last_order_year = consolidated_user.orders.paid.last.try(:created_at).try(:year).try(:to_s) if consolidated_user.orders.paid.last.try(:created_at).try(:year).try(:to_s) > last_order_year.to_i
+        last_order_year = consolidated_user.orders.paid.last.try(:created_at).try(:year) if consolidated_user.orders.paid.last.try(:created_at).try(:year) > last_order_year.to_i
       end
 
       traits = Hash.new
