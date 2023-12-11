@@ -317,7 +317,7 @@ $( document ).ready(function() {
   var address_option_length = $('#address_id > option').length;
   $("#address_id").get(0).selectedIndex = address_option_length - 1;
   if ($("#address_id option:selected").text().split(',')[2]) {
-    var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+    var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
     calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
   }
 
@@ -350,7 +350,7 @@ $( document ).ready(function() {
   // calculate and update shipping html tag when shipping address is picked
   $('#address_id').on('change', function() {
     if ( this.value ) {
-      var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+      var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
       calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
     } else {
       var my_zero = 0
@@ -412,7 +412,7 @@ $( document ).ready(function() {
             $("#free-shipping-text").hide()
           } else {
             if ($("#address_id option:selected").text().split(',')[2]) {
-              var district_from_dropdown = $("#address_id option:selected").text().split(',')[2].trim()
+              var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
               calculate_shipping($("#address_street").val(), district_from_dropdown, 'coupon');
             }
           }
