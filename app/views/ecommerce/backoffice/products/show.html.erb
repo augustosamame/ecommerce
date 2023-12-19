@@ -21,6 +21,9 @@
   <dt><%= t('.category') %>:</dt>
   <dd><%= @backoffice_product.category_list.to_s %></dd>
 
+  <dt><%= t('.permalink') %>:</dt>
+  <dd><%= @backoffice_product.permalink %></dd>
+
   <dt><%= t('.associated_coupons') %>:</dt>
   <dd><%= @backoffice_product.coupons.pluck(:coupon_code).to_s %></dd>
 
