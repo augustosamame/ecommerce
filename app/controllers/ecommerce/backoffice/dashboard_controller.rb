@@ -229,6 +229,40 @@ module Ecommerce
 
     end
 
+    def biz_cross_selling_open
+      @product_1_open = Ecommerce::Product.find(params[:report][:product_1_open])
+      product_id = @product_1_open.id
+
+      user_ids = Ecommerce::OrderItem.joins(:order).where(product_id: product_id).pluck('distinct ecommerce_orders.user_id')
+
+      order_ids = Ecommerce::Order.where(user_id: user_ids).pluck(:id)
+
+      other_order_item_ids = Ecommerce::OrderItem.where(order_id: order_ids).where.not(product_id: product_id).pluck(:id)
+
+      popular_products = Ecommerce::OrderItem.where(id: other_order_item_ids).group(:product_id).order('count_product_id DESC').count(:product_id)
+
+      respond_to do |format|
+
+        format.html {
+          p = Axlsx::Package.new
+          wb = p.workbook
+          wb.add_worksheet(:name => "Bought Ids #{@product_1_open.id}") do |sheet|
+            sheet.add_row ["id", "product 1", "total_ordered"]
+            popular_products.each do |product|
+              sheet.add_row [
+                product[0],
+                Product.find(product[0]).try(:permalink),
+                product[1]
+              ]
+            end
+          end
+          send_data p.to_stream.read, :filename => 'users.xlsx', :type => "application/vnd.openxmlformates-officedocument.spreadsheetml.sheet"
+        }
+
+      end
+
+    end
+
     def export_products
       @products = Ecommerce::Product.all.order(id: :desc)
 

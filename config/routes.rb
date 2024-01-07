@@ -42,6 +42,7 @@ Ecommerce::Engine.routes.draw do
     post 'biz_user_frequency', :to => "dashboard#biz_user_frequency", as: 'post_biz_user_frequency'
     post 'biz_product_frequency', :to => "dashboard#biz_product_frequency", as: 'post_biz_product_frequency'
     post 'biz_cross_selling', :to => "dashboard#biz_cross_selling", as: 'post_biz_cross_selling'
+    post 'biz_cross_selling_open', :to => "dashboard#biz_cross_selling_open", as: 'post_biz_cross_selling_open'
     resources :audiences
     get 'audience_create_recipients/:id', :to => "audiences#create_recipients", as: 'audience_create_recipients'
     post 'audience_create_recipients/:id', :to => "audiences#post_create_recipients", as: 'audience_post_create_recipients'
