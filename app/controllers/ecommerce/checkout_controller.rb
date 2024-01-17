@@ -177,7 +177,10 @@ module Ecommerce
                           discount_amount: Money.new((params[:discount_amount].to_i), 'usd'),
                           points_redeemed_amount: points_redeemed_amount,
                           status: "active",
-                          process_comments: params[:pagoefectivo_payment_code].blank? ? "" : "Pagoefectivo CIP #{params[:pagoefectivo_payment_code]}"
+                          process_comments: params[:pagoefectivo_payment_code].blank? ? "" : "Pagoefectivo CIP #{params[:pagoefectivo_payment_code]}",
+                          pagoefectivo_cip: params[:pagoefectivo_payment_code],
+                          pagoefectivo_exp_date: params[:pagoefectivo_exp_date],
+                          pagoefectivo_qr_code: params[:pagoefectivo_qr_code]
                           )
             if used_coupon
               current_uses = used_coupon.current_uses || 0
@@ -284,7 +287,7 @@ module Ecommerce
       end
 
       payment_created = Payment.new.new_pagoefectrivo_payment(current_user, params[:culqi_order_id], params[:culqi_payment_amount], params[:currency], "Order", @order.id, params[:payment_request_id])
-      flash[:notice] = t('.your_order_was_successfully_placed_pagoefectivo')
+      flash[:notice] = t('.your_order_was_successfully_placed_pagoefectivo', pagoefectivo_cip: params[:pagoefectivo_payment_code])
       flash.keep(:notice)
       render js: "window.location = '#{order_path(@order.id, :notice => t('.your_order_was_successfully_placed'))}'"
     end

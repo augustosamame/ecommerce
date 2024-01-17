@@ -102,7 +102,7 @@ en-PE:
         error_when_processing_payment: 'Error when processing payment'
         error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
       pay_order_pagoefectivo_checkout:
-        your_order_was_successfully_placed_pagoefectivo: 'Your Order was successfully placed using PagoEfectivo. You will receive an email with instructions on how to pay for your order'
+        your_order_was_successfully_placed_pagoefectivo: 'Your Order was successfully placed using PagoEfectivo. Your Pagoefectivo CIP (payment code) is: %{pagoefectivo_cip}. You will also receive an email with detailed instructions on how to pay for your order'
         error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
         your_order_was_successfully_placed: 'Your Order was successfully placed'
       pay_order_bank:
@@ -364,6 +364,7 @@ en-PE:
           points_won: "Points Won"
           not_yet_shipped: "Not Yet Shipped"
           see_invoice: "See Invoice"
+          payment_method: "Payment Method"
         index:
           title: "My Orders"
           date: "Date"

@@ -18,6 +18,18 @@
       </p>
       <p class="d-flex space-between"><%= t('.points_won') %><span><%= PointsTransaction.find_by(tx_type: 'purchase', tx_id: @order.id).try(:points) || 0 %></span></p>
       <p class="d-flex space-between"><%= t('.payment') %><span><%= friendly_payment_stage(@order.payment_status) %></span></p>
+
+      <% if @order.process_comments == "PagoEfectivo" %>
+
+        <p class="d-flex space-between">
+          <%= t('.payment_method') %>
+          <span>
+            PagoEfectivo
+          </span>
+        </p>
+
+        <% end %>
+
       <p class="d-flex space-between">
         <%= t('.shipping') %> <span><%= t('.not_yet_shipped') %></span>
       </p>
@@ -31,30 +43,63 @@
     </div>
 
     <% if @order.payment_status == "unpaid" %>
-      <form action="">
-        <div class="order-status-payment d-flex">
-          <input type="radio" name="payment_curency" id="pay_in_dollars" />
-          <div class="order-status-payment-details">
-            <p class="d-flex space-between">
-              <%= t('.pay_in_dollars') %> <span>$ <%= @order.amount %></span>
-            </p>
+
+      <% if @order.process_comments == "PagoEfectivo" %>
+
+        <div class="order-status-payment d-flex well" style="flex-direction: column;">
+          <p style="font-weight: bold; font-size: 22px; align-self: center;">Instrucciones para pagar con PagoEfectivo</p>
+          <p style="font-weight: bold; font-size: 22px; align-self: center;">Fecha límite de pago: <%= Time.at(@order.pagoefectivo_exp_date.to_i).strftime("%d %b %H:%M") %></p>
+          <p style="font-weight: bold; font-size: 22px; align-self: center; color: red;">Código CIP: <%= @order.pagoefectivo_cip %></p>
+          <p>Realiza tu pago desde:</p>
+          <p style="font-weight: bold; margin-top: 20px;">Desde tu app de pagos utilizando este QR:</p>
+          <div style="text-align: center;">
+            <%= image_tag @order.pagoefectivo_qr_code, height: 200, width: 200 %>
           </div>
+          <p style="font-weight: bold; margin-top: 20px;">Banca móvil o por Internet:</p>
+          <p>1. Ingresa a tu banca desde web o móvil dentro de la fecha límite de pago.</p>
+          <p>2. Selecciona pago de servicio, elige PagoEfectivo e ingresa número CIP.</p>
+          <p>3. Antes de pagar, verifica que los datos coincidan con los de esta orden de pago.</p>
+          <p>4. Realiza el pago de servicio por el monto total.</p>
+          <p>5. Conserva el comprobante de pago para cualquier aclaración.</p>
+          <%= image_tag "ecommerce/img/expatshop/logos_pagoefectivo.png" %>
+          <p style="font-weight: bold; margin-top: 20px;">Agentes y Bodegas:</p>
+          <p>1. Acércate al agente o agencia autorizada dentro de la fecha límite de pago</p>
+          <p>2. Indica a la persona de caja que realizarás un pago de servicio a PagoEfectivo (moneda), indica el código CIP y el importe a pagar.</p>
+          <p>3. Antes de pagar, verifica que los datos coincidan con los de esta orden de pago.</p>
+          <p>4. Realiza el pago en efectivo por el total a pagar.</p>
+          <p>5. Conserva el comprobante de pago para cualquier aclaración.</p>
+          <%= image_tag "ecommerce/img/expatshop/logos_pagoefectivo_agentes.png" %>
         </div>
-        <div class="order-status-payment d-flex">
-          <input type="radio" name="payment_curency" id="pay_in_soles" />
-          <div class="order-status-payment-details">
-            <p class="d-flex space-between">
-              <%= t('.pay_in_soles') %>
-              <span>
-                <span>S/. </span>
-                <span id="payment-amount-in-soles"><%= @order.amount * @exchange_rate %>
+
+
+      <% else %>
+
+        <form action="">
+          <div class="order-status-payment d-flex">
+            <input type="radio" name="payment_curency" id="pay_in_dollars" />
+            <div class="order-status-payment-details">
+              <p class="d-flex space-between">
+                <%= t('.pay_in_dollars') %> <span>$ <%= @order.amount %></span>
+              </p>
+            </div>
+          </div>
+          <div class="order-status-payment d-flex">
+            <input type="radio" name="payment_curency" id="pay_in_soles" />
+            <div class="order-status-payment-details">
+              <p class="d-flex space-between">
+                <%= t('.pay_in_soles') %>
+                <span>
+                  <span>S/. </span>
+                  <span id="payment-amount-in-soles"><%= @order.amount * @exchange_rate %>
+                  </span>
                 </span>
-              </span>
-            </p>
+              </p>
+            </div>
           </div>
-        </div>
-        <button id="retry-pay-now-button"><%= t('.try_to_pay_now') %></button>
-      </form>
+          <button id="retry-pay-now-button"><%= t('.try_to_pay_now') %></button>
+        </form>
+      
+      <% end %>
     <% end %>
 
 

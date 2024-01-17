@@ -680,7 +680,9 @@ $( document ).ready(function() {
               discount_amount: discount_amount,
               points_redeemed_amount: points_to_redeem,
               currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
-              pagoefectivo_payment_code: Culqi.order.payment_code
+              pagoefectivo_payment_code: Culqi.order.payment_code,
+              pagoefectivo_exp_date: Culqi.order.expiration_date,
+              pagoefectivo_qr_code: Culqi.order.qr
               },
               function(data) {
               })

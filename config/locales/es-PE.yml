@@ -107,7 +107,7 @@ es-PE:
         error_when_processing_payment: 'Error al procesar el pago'
         error_cart_already_placed: 'Ha intentado colocar un pedido que ya había sido creado. Favor revisar sus pedidos de la lista'
       pay_order_pagoefectivo_checkout:
-        your_order_was_successfully_placed_pagoefectivo: 'El pedido fue creado satisfactoriamente con medio de pago Pagoefectivo. En unos minutos recibirá un correo con las instrucciones para el pago.'
+        your_order_was_successfully_placed_pagoefectivo: 'El pedido fue creado satisfactoriamente con medio de pago Pagoefectivo. El CIP (código de pago) de Pagoefectivo es: %{pagoefectivo_cip}. En unos minutos recibirá un correo con las instrucciones detalladas para el pago.'
         error_cart_already_placed: 'Ha intentado colocar un pedido que ya había sido creado. Favor revisar sus pedidos de la lista'
         your_order_was_successfully_placed: 'El pedido fue creado satisfactoriamente'
       pay_order_bank:
@@ -251,6 +251,7 @@ es-PE:
           points_won: "Puntos Ganados"
           not_yet_shipped: "Aún no ha sido enviado"
           see_invoice: "Ver Comprobante"
+          payment_method: "Método de Pago"
         index:
           title: "Mis Pedidos"
           date: "Fecha"
