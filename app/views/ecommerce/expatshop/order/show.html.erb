@@ -51,10 +51,12 @@
           <p style="font-weight: bold; font-size: 22px; align-self: center;">Fecha límite de pago: <%= Time.at(@order.pagoefectivo_exp_date.to_i).strftime("%d %b %H:%M") %></p>
           <p style="font-weight: bold; font-size: 22px; align-self: center; color: red;">Código CIP: <%= @order.pagoefectivo_cip %></p>
           <p>Realiza tu pago desde:</p>
-          <p style="font-weight: bold; margin-top: 20px;">Desde tu app de pagos utilizando este QR:</p>
-          <div style="text-align: center;">
-            <%= image_tag @order.pagoefectivo_qr_code, height: 200, width: 200 %>
-          </div>
+          <% if @order.pagoefectivo_qr_code.present? %>
+            <p style="font-weight: bold; margin-top: 20px;">Desde tu app de pagos utilizando este QR:</p>
+            <div style="text-align: center;">
+              <%= image_tag @order.pagoefectivo_qr_code, height: 200, width: 200 %>
+            </div>
+          <% end %>
           <p style="font-weight: bold; margin-top: 20px;">Banca móvil o por Internet:</p>
           <p>1. Ingresa a tu banca desde web o móvil dentro de la fecha límite de pago.</p>
           <p>2. Selecciona pago de servicio, elige PagoEfectivo e ingresa número CIP.</p>
