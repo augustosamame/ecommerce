@@ -21,7 +21,7 @@ module Ecommerce
         coupon_type: 'percentage_discount',
         discount_percentage_decimal: 5.0,
         start_date: Time.now,
-        end_date: Time.now + 3.days,
+        end_date: Time.now + 6.months,
         max_uses_per_user: 1,
         max_uses: 1,
         current_uses: 0,
