@@ -47,84 +47,42 @@
       </table>
       <!-- order table for mobile -->
       <div class="mobile-table visible-xs order-slider">
+
+        <%= content_tag_for(:tr, @orders) do |order| %>
+
         <div>
           <table>
             <tr>
               <th>ID</th>
-              <td><p>11694</p></td>
-              <td><p>11694</p></td>
+              <td><p><%= order.id %></p></td>
             </tr>
             <tr>
-              <th>DATE</th>
-              <td><p>17 - Sep - 2023</p></td>
-              <td><p>17 - Sep - 2023</p></td>
+              <th><%= t('.date') %></th>
+              <td><p><%= order.created_at.localtime.strftime("%d-%b-%y") %></p></td>
             </tr>
             <tr>
-              <th>STATE OF PAYMENT</th>
-              <td><p>Paid</p></td>
-              <td><p>Paid</p></td>
+              <th><%= t('.status') %></th>
+              <td><p><%= friendly_payment_stage(order.payment_status) %></p></td>
             </tr>
             <tr>
-              <th>TOTAL</th>
+              <th><%= t('.total') %></th>
               <td>
-                <p>S/ 15.60</p>
-                <p>$ 3.90</p>
-              </td>
-              <td>
-                <p>S/ 15.60</p>
-                <p>$ 3.90</p>
+                <p><%= number_to_currency((order.amount * @exchange_rate), unit: "S/. " )%></p>
+                <p><%= number_to_currency(order.amount) %></p>
               </td>
             </tr>
             <tr>
-              <th>VER</th>
+              <th><%= t('.show') %></th>
               <td>
-                <p><a href="">My orders</a></p>
-              </td>
-              <td>
-                <p><a href="">My orders</a></p>
+                <p><a href=""><%= link_to t('.my_order'), order_path(order) %></a></p>
               </td>
             </tr>
           </table>
         </div>
-        <div>
-          <table>
-            <tr>
-              <th>ID</th>
-              <td><p>11694</p></td>
-              <td><p>11694</p></td>
-            </tr>
-            <tr>
-              <th>DATE</th>
-              <td><p>17 - Sep - 2023</p></td>
-              <td><p>17 - Sep - 2023</p></td>
-            </tr>
-            <tr>
-              <th>STATE OF PAYMENT</th>
-              <td><p>Paid</p></td>
-              <td><p>Paid</p></td>
-            </tr>
-            <tr>
-              <th>TOTAL</th>
-              <td>
-                <p>S/ 15.60</p>
-                <p>$ 3.90</p>
-              </td>
-              <td>
-                <p>S/ 15.60</p>
-                <p>$ 3.90</p>
-              </td>
-            </tr>
-            <tr>
-              <th>VER</th>
-              <td>
-                <p><a href="">My orders</a></p>
-              </td>
-              <td>
-                <p><a href="">My orders</a></p>
-              </td>
-            </tr>
-          </table>
-        </div>
+
+        <% end %>
+
+
       </div>
     </div>
   </section>
