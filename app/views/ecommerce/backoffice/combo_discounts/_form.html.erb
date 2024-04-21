@@ -9,6 +9,7 @@
     <%= f.input :qty_product_1, label: "Qty Product 1" %>
     <%= f.input :product_id_2, as: :select2, collection: Ecommerce::Product.active.order(:permalink), label_method: :permalink, label: "Combo Product 2 (optional)" %>
     <%= f.input :qty_product_2, label: "Qty Product 2" %>
+    <%= f.input :inject_product_two, as: :boolean, label: "Force Add Product 2 To Cart" %>
     <%= f.input :discount_type, label: 'Combo Discount Type', collection: Ecommerce::ComboDiscount.discount_types.keys %>
     <%= f.input :discount_amount, label: "% or Fixed Amount (in USD)" %>
     <%= f.input :status, label: 'Status', collection: Ecommerce::ComboDiscount.statuses.keys %>

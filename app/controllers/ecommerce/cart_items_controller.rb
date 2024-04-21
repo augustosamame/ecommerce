@@ -23,6 +23,12 @@ module Ecommerce
           new_quantity = @product.total_quantity if new_quantity > @product.total_quantity
           found_same_product.update(quantity: new_quantity)
         else
+          #check if added item is a combo discount with force add and if so, add the second product to the cart
+          @combo_discount_exists = ComboDiscount.where(product_id_1: @product.id, inject_product_two: true).try(:first)
+          if @combo_discount_exists.present?
+            @cart_item_two = CartItem.new(cart_id: @cart.id, product_id: @combo_discount_exists.product_id_2, quantity: @combo_discount_exists.qty_product_2)
+            @cart_item_two.save
+          end
           @cart_item.save
         end
         #refresh with latest cart so it will be repainted properly

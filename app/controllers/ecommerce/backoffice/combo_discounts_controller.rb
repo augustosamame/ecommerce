@@ -59,7 +59,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def combo_discount_params
-        params.require(:combo_discount).permit(:name, :description_en, :description_es, :product_id_1, :qty_product_1, :discount_type, :discount_amount, :status, :product_id_2, :qty_product_2)
+        params.require(:combo_discount).permit(:name, :description_en, :description_es, :product_id_1, :qty_product_1, :discount_type, :discount_amount, :status, :product_id_2, :qty_product_2, :inject_product_two)
       end
   end
 end
