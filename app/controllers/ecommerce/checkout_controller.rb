@@ -246,7 +246,8 @@ module Ecommerce
           params[:currency],
           "Order",
           @order.id,
-          params[:payment_request_id]
+          params[:payment_request_id],
+          params[:device_finger_print_id]
         )
 
       end
@@ -257,6 +258,12 @@ module Ecommerce
         render js: "window.location = '#{root_path}'"
         #redirect_to root_path, notice: 'Pago exitoso'
       else
+        if payment_created[1] == "3DS_FLOW_REQUIRED"
+          Rails.logger.info("3DS_FLOW_REQUIRED")
+          render json: { result: "3ds_required" } and return
+        end
+
+
         flash[:error] = payment_created[1] || t('.error_when_processing_payment')
         Rollbar.error(payment_created[1])
         Rails.logger.error payment_created[1]
