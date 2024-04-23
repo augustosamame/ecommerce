@@ -223,7 +223,7 @@
               </div>
 
               <div class="payment-method">
-                <input type="radio" name="payment_method" value="card" id="payment_method_card" />
+                <input type="radio" name="payment_method" value="mobile_banking" id="payment_method_card" />
                 <label for="credit"><%= t('.mobile_banking') %></label>
                 <div class="payment-img">
                   <%= image_tag "ecommerce/img/expatshop/bancos.png", class: "img-responsive" %>
@@ -475,6 +475,15 @@ $( document ).ready(function() {
   function process_payment(e) {
     var errors_present = false
     // Abre el formulario con las opciones de Culqi.settings
+    if (!$('input[name=payment_method]:checked').val()) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_select_payment_method') %>"
+        });
+    }
+
     var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
     if ((payment_amount * exchange_rate) >= 700 && !$('#factura-checkbox').is(':checked') && typeof $('#dni-required').val() != "undefined" && !$.isNumeric( $('#dni-required').val() ) ) {
       errors_present = true ;
@@ -519,7 +528,7 @@ $( document ).ready(function() {
       }
 
     if (!errors_present) {
-      if (($('input[name=payment_method]:checked').val() == "card") || ($('input[name=payment_method]:checked').val() == "yape")) {
+      if (($('input[name=payment_method]:checked').val() == "card") || ($('input[name=payment_method]:checked').val() == "yape") || ($('input[name=payment_method]:checked').val() == "mobile_banking")) {
 
         var myDate = new Date().getTime()/1000;
         var futureDate = myDate + ( 72 * 60 * 60 );
@@ -565,16 +574,19 @@ $( document ).ready(function() {
               lang: "auto",
               installments: false, // Habilitar o deshabilitar el campo de cuotas
               paymentMethods: {
-                tarjeta: true,
-                yape: true, 
-                bancaMovil: true,
-                agente: true,
-                billetera: true,
-                cuotealo: true,
+                tarjeta: $('input[name=payment_method]:checked').val() === 'card',
+                yape: $('input[name=payment_method]:checked').val() === 'yape', 
+                bancaMovil: $('input[name=payment_method]:checked').val() === 'mobile_banking',
+                agente: $('input[name=payment_method]:checked').val() === 'mobile_banking',
+                billetera: $('input[name=payment_method]:checked').val() === 'mobile_banking',
+                // cuotealo: true,
               },
               style: {
                 logo: 'https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
               },
+              appearance: {
+                menuType: 'sliderTop'
+              }
             });
 
             Culqi.open();
