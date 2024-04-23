@@ -5,6 +5,7 @@ es-PE:
     show: 'Ver'
     save: 'Grabar'
     destroy: 'Borrar'
+    payment_error: "Error durante el proceso de pago. Por favor revise su pedido e intente de nuevo."
   number:
     currency:
       format:
@@ -106,6 +107,10 @@ es-PE:
         your_order_was_successfully_placed: 'El pedido fue creado satisfactoriamente'
         error_when_processing_payment: 'Error al procesar el pago'
         error_cart_already_placed: 'Ha intentado colocar un pedido que ya había sido creado. Favor revisar sus pedidos de la lista'
+      pay_order_culqi_checkout_3ds_step:
+        your_order_was_successfully_placed: 'El pedido fue creado satisfactoriamente'
+        error_when_processing_payment: 'Error al procesar el pago'
+        error_cart_already_placed: 'Ha intentado colocar un pedido que ya había sido creado. Favor revisar sus pedidos de la lista'
       pay_order_pagoefectivo_checkout:
         your_order_was_successfully_placed_pagoefectivo: 'El pedido fue creado satisfactoriamente con medio de pago Pagoefectivo. El CIP (código de pago) de Pagoefectivo es: %{pagoefectivo_cip}. En unos minutos recibirá un correo con las instrucciones detalladas para el pago.'
         error_cart_already_placed: 'Ha intentado colocar un pedido que ya había sido creado. Favor revisar sus pedidos de la lista'
@@ -187,6 +192,7 @@ es-PE:
           mobile_banking: "BANCA MÓVIL"
           place_order: "FINALIZAR PEDIDO"
           order_not_placed: "ERROR: El Pedido no fue creado"
+          payment_error: "Error durante el proceso de pago. Por favor revise su pedido e intente de nuevo."
           token_not_returned: "Error al procesar el pago de su pedido"
           you_must_pick_or_save_an_address: "Debe seleccionar o crear una dirección"
           you_must_enter_factura_info: "Debe ingresar los datos para su factura"

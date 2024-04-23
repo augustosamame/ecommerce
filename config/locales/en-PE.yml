@@ -5,6 +5,7 @@ en-PE:
     show: 'Show'
     save: 'Save'
     destroy: 'Delete'
+    payment_error: "Error durante el proceso de pago. Por favor revise su pedido e intente de nuevo."
   activerecord:
     errors:
       models:
@@ -98,6 +99,10 @@ en-PE:
         item_deleted: "Item Deleted"
     checkout:
       pay_order_culqi_checkout:
+        your_order_was_successfully_placed: 'Your Order was successfully placed'
+        error_when_processing_payment: 'Error when processing payment'
+        error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
+      pay_order_culqi_checkout_3ds_step:
         your_order_was_successfully_placed: 'Your Order was successfully placed'
         error_when_processing_payment: 'Error when processing payment'
         error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
@@ -234,6 +239,8 @@ en-PE:
           shipping_rates_p_html: "$3 Flat Shipping </br>$1.5 Shipping on orders over $30"
           shipping_times: "Shipping Times"
           shipping_times_p_html: "All Orders will be delivered next business day (Tuesday to Friday)"
+        orders:
+          payment_error: "Error during payment processing. Please review your order and try again."
       product:
         show:
           add_to_cart: "Add To Cart"
@@ -298,6 +305,7 @@ en-PE:
           mobile_banking: "MOBILE BANKING"
           place_order: "PLACE ORDER"
           order_not_placed: "ERROR: Order Not Placed"
+          payment_error: "Error during payment processing. Please review your order and try again."
           token_not_returned: "Error during payment processing"
           you_must_pick_or_save_an_address: "You must pick or create an address"
           you_must_enter_factura_info: "You must enter factura information"

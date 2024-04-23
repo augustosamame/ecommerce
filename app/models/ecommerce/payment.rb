@@ -47,7 +47,7 @@ module Ecommerce
       end
     end
 
-    def new_culqi_payment(current_user, card_token_data, payment_amount, currency, payment_type, order_id = nil, payment_request_id = nil, device_finger_print_id = nil)
+    def new_culqi_payment(current_user, card_token_data, payment_amount, currency, payment_type, order_id = nil, payment_request_id = nil, device_finger_print_id = nil, authentication_3DS = nil)
       Rails.logger.debug "Received Order: #{order_id}"
       Rails.logger.debug "Card Token Data:"
       Rails.logger.debug card_token_data
@@ -91,7 +91,8 @@ module Ecommerce
           :orden => culqi_order,
           :solicitud_de_pago => culqi_request
       }),
-      :source_id => card_token_data.processor_token
+      :source_id => card_token_data.processor_token,
+      :authentication_3DS => authentication_3DS
       )
       Rails.logger.debug ('charge response from Culqi::Charge Create: ' + charge.inspect)
       Rails.logger.debug ('statusCode response from Culqi::Charge Create: ' + statusCode.inspect)
@@ -105,9 +106,6 @@ module Ecommerce
         return success, "3DS_FLOW_REQUIRED"
 
       else
-
-        
-        
 
         if response["outcome"] && response["outcome"]["type"] == "venta_exitosa"
           success = false
