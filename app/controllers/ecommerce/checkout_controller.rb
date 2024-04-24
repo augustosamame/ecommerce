@@ -246,10 +246,55 @@ module Ecommerce
           params[:currency],
           "Order",
           @order.id,
-          params[:payment_request_id]
+          params[:payment_request_id],
+          params[:device_finger_print_id]
         )
 
       end
+      if payment_created[0]
+        flash[:notice] = t('.your_order_was_successfully_placed')
+        Rails.logger.info payment_created[0]
+        flash.keep(:notice)
+        render js: "window.location = '#{root_path}'"
+        #redirect_to root_path, notice: 'Pago exitoso'
+      else
+        if payment_created[1] == "3DS_FLOW_REQUIRED"
+          Rails.logger.info("3DS_FLOW_REQUIRED")
+          render json: { result: "3ds_required" } and return
+        end
+
+
+        flash[:error] = payment_created[1] || t('.error_when_processing_payment')
+        Rollbar.error(payment_created[1])
+        Rails.logger.error payment_created[1]
+        flash.keep(:error)
+        render js: "window.location = '#{order_path(@order.id, :error => t('.error_when_processing_payment'))}'"
+        #redirect_to "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show", error: 'Error al realizar el Pago'
+      end
+    end
+
+    def pay_order_culqi_checkout_3ds_step
+      Rails.logger.info params
+      card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
+      if card_token_created
+        @order = Ecommerce::Order.where(cart_id: params[:cart_id]).last
+
+        #card payment
+        payment_created = Payment.new.new_culqi_payment(
+          current_user,
+          card_token_created,
+          params[:culqi_payment_amount],
+          params[:currency],
+          "Order",
+          @order.id,
+          params[:payment_request_id],
+          params[:device_finger_print_id],
+          params[:authentication_3DS]
+        )
+
+      end
+      
+
       if payment_created[0]
         flash[:notice] = t('.your_order_was_successfully_placed')
         Rails.logger.info payment_created[0]

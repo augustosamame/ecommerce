@@ -47,7 +47,7 @@ module Ecommerce
       end
     end
 
-    def new_culqi_payment(current_user, card_token_data, payment_amount, currency, payment_type, order_id = nil, payment_request_id = nil)
+    def new_culqi_payment(current_user, card_token_data, payment_amount, currency, payment_type, order_id = nil, payment_request_id = nil, device_finger_print_id = nil, authentication_3DS = nil)
       Rails.logger.debug "Received Order: #{order_id}"
       Rails.logger.debug "Card Token Data:"
       Rails.logger.debug card_token_data
@@ -72,10 +72,11 @@ module Ecommerce
           :address => culqi_address,
           :address_city => "LIMA",
           :country_code => "PE",
-          :phone_number => plain_mobile.blank? ? "986976377" : plain_mobile
+          :phone_number => plain_mobile.blank? ? "986976377" : plain_mobile,
+          :device_finger_print_id => device_finger_print_id
       }
       Rails.logger.debug "Antifraud Hash: #{antifraud_hash}"
-      charge = Culqi::Charge.create(
+      charge, statusCode = Culqi::Charge.create(
       :first_name => current_user.first_name,
       :last_name => current_user.last_name,
       :phone_number => current_user.phone || "986976377",
@@ -90,41 +91,53 @@ module Ecommerce
           :orden => culqi_order,
           :solicitud_de_pago => culqi_request
       }),
-      :source_id => card_token_data.processor_token
+      :source_id => card_token_data.processor_token,
+      :authentication_3DS => authentication_3DS
       )
-      Rails.logger.debug charge
+      Rails.logger.debug ('charge response from Culqi::Charge Create: ' + charge.inspect)
+      Rails.logger.debug ('statusCode response from Culqi::Charge Create: ' + statusCode.inspect)
+      
       response = JSON.parse(charge)
+      
+      if statusCode == 200 && response["action_code"] == "REVIEW"
 
-      if response["outcome"] && response["outcome"]["type"] == "venta_exitosa"
+        #send back response so 3DS library will show 3DS flow and payment resent
         success = false
-        Payment.transaction do
-          new_payment = Payment.new
-          new_payment.user_id = current_user.id
-          new_payment.payment_method_id = PaymentMethod.find_by!(name: "Card").id
-          new_payment.processor_transaction_id = response["id"]
-          new_payment.processor_token = response["reference_code"]
-          new_payment.amount_cents = response["amount"]
-          new_payment.date = Time.now
-          new_payment.status = "active"
-          new_payment.order_id = order_id
-          new_payment.payment_request_id = payment_request_id
+        return success, "3DS_FLOW_REQUIRED"
 
-          success = new_payment.save
-          puts new_payment.errors.inspect unless success
-          #if recharging
-          #old_saldo = current_user.saldo_cents
-          #current_user.update(saldo_cents: old_saldo + amount.to_i)
-        end
-        #TODO notify admin when response from Culqi was successful but transaction failed
-        #TODO in this case user is charged but platform will not reflect it
-        return success, "Error al guardar el pago"
       else
-        success = false
-        if response["object"] == "error"
-          error_message = "#{response['user_message']} #{response['merchant_message']}" || "Error al intentar realizar el pago"
-          return success, error_message
+
+        if response["outcome"] && response["outcome"]["type"] == "venta_exitosa"
+          success = false
+          Payment.transaction do
+            new_payment = Payment.new
+            new_payment.user_id = current_user.id
+            new_payment.payment_method_id = PaymentMethod.find_by!(name: "Card").id
+            new_payment.processor_transaction_id = response["id"]
+            new_payment.processor_token = response["reference_code"]
+            new_payment.amount_cents = response["amount"]
+            new_payment.date = Time.now
+            new_payment.status = "active"
+            new_payment.order_id = order_id
+            new_payment.payment_request_id = payment_request_id
+
+            success = new_payment.save
+            puts new_payment.errors.inspect unless success
+            #if recharging
+            #old_saldo = current_user.saldo_cents
+            #current_user.update(saldo_cents: old_saldo + amount.to_i)
+          end
+          #TODO notify admin when response from Culqi was successful but transaction failed
+          #TODO in this case user is charged but platform will not reflect it
+          return success, "Error al guardar el pago"
         else
-          return success, "Error interno al procesar el pago"
+          success = false
+          if response["object"] == "error"
+            error_message = "#{response['user_message']} #{response['merchant_message']}" || "Error al intentar realizar el pago"
+            return success, error_message
+          else
+            return success, "Error interno al procesar el pago"
+          end
         end
       end
 

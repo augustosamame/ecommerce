@@ -13,6 +13,7 @@ module Ecommerce
 
     def index
       @orders = Order.where(user_id: current_user.id).order(id: :desc)
+      flash.now[:error] = I18n.t('common.payment_error') if params[:error]
       render "ecommerce/#{Ecommerce.ecommerce_layout}/order/index"
     end
 

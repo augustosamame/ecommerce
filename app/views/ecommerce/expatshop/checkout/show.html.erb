@@ -264,11 +264,20 @@
 <!-- Incluyendo .js de Culqi Checkout-->
 <!--<script src="https://checkout.culqi.com/v2"></script> -->
 <!--<script src="https://checkout.culqi.com/js/v3"></script> -->
+<script src="https://3ds.culqi.com"></script>
+
 <script src="https://checkout.culqi.com/js/v4"></script>
+
+<script>
+  Culqi3DS.publicKey = "<%= Culqi.public_key %>";
+</script>
 
 <script>
 
 $( document ).ready(function() {
+
+  Culqi3DS.reset();
+
   var applied_coupon = '';
   <% if @always_on_coupon %>
     var applied_coupon = "<%= @always_on_coupon.coupon_code %>";
@@ -570,6 +579,16 @@ $( document ).ready(function() {
               order: data.id
             });
 
+            Culqi3DS.settings = {
+              charge: {
+                  totalAmount: Number(culqi_payment_amount),
+                  returnUrl: "http://localhost:3000/store/checkout",
+                },
+                card: {
+                  email: "<%= @current_user_email %>",
+                },
+            };
+
             Culqi.options({
               lang: "auto",
               installments: false, // Habilitar o deshabilitar el campo de cuotas
@@ -615,14 +634,16 @@ $( document ).ready(function() {
     }
   };
 
-  function culqi() {
+  window.culqi = async function () {
 
     // console.log('function Culqi just ran')
 
     if(Culqi.token) { // ¡Token creado exitosamente!
         // Get the token ID:
         // console.log('token created!');
+        Culqi.close();
         var token = Culqi.token;
+        window.token = token
         var picked_shipping_address_id = $('#address_id').val();
         var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
         var culqi_payment_amount = Number(($('#pay_in_soles').prop('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
@@ -633,6 +654,26 @@ $( document ).ready(function() {
 
         //var payment_amount = $('#payment_amount').html() * 100;
         var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
+
+        Culqi3DS.settings = {
+          charge: {
+              totalAmount: Number(culqi_payment_amount),
+              returnUrl: "http://localhost:3000/store/checkout",
+            },
+            card: {
+              email: "<%= @current_user_email %>",
+            },
+        };
+
+        const deviceFingerPrintId = await Culqi3DS.generateDevice();
+        window.deviceFingerPrintId = deviceFingerPrintId
+
+        if (deviceFingerPrintId) {
+            // console.log('Fingerpint Id Generated', deviceFingerPrintId)
+        } else {
+            console.log('Error generating deviceFingerPrintId')
+        }
+
         $.post(
           "checkout/pay_order_culqi_checkout",
           {
@@ -648,17 +689,28 @@ $( document ).ready(function() {
           applied_coupon: applied_coupon,
           discount_amount: discount_amount,
           points_redeemed_amount: points_to_redeem,
-          currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD"
+          currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+          device_finger_print_id: deviceFingerPrintId
           },
           function(data) {
+            // console.log('data response from checkout/pay_order_culqi_checkout: ', data)
+            if (data.result && data.result == "3ds_required") {
+              Culqi3DS.initAuthentication(token.id);
+
+            } else {
+              Culqi3DS.reset();
+              window.deviceFingerPrintId = null
+              window.token = null
+            }
+            
           }
        );
        //alert('Se ha creado un token:' + token);
 
     }else{ // ¡Hubo algún problema!
       // Here is Pagoefectivo
-      console.log('token NOT created! Pagoefectivo?');
-      console.log(Culqi.orderKey);
+      // console.log('token NOT created! Pagoefectivo?');
+      // console.log(Culqi.orderKey);
         // Mostramos JSON de objeto error en consola
         if (Culqi.orderKey !== null && Culqi.orderKey !== '')
         {
@@ -674,8 +726,8 @@ $( document ).ready(function() {
 
 
             var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
-            console.log('Order exists but no Token = Pagoefectivo');
-            console.log(Culqi.order)
+            // console.log('Order exists but no Token = Pagoefectivo');
+            // console.log(Culqi.order)
             $.post(
               "checkout/pay_order_pagoefectivo_checkout",
               {
@@ -753,4 +805,54 @@ $( document ).ready(function() {
 <!-- Event snippet for Purchase conversion page In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
 <script>
   function gtag_report_conversion(url) { var callback = function () { if (typeof(url) != 'undefined') { window.location = url; } }; gtag('event', 'conversion', { 'send_to': 'AW-670036400/O8dpCK38rPYBELDjv78C', 'transaction_id': '<%= "#{@cart.id}" if @cart %>', 'value': payment_amount, 'currency': ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD", 'event_callback': callback }); return false; }
+</script>
+
+<script>
+  window.addEventListener("message", function(event) {
+    if (event.origin === window.location.origin) {
+      const response = event.data;
+
+      if (response.loading) {
+        // Show custom loading
+        // console.log("Loading..."); // Replace this with your actual loading logic
+      } else {
+        // Hide custom loading
+        // console.log("Loading done."); // Replace this with your actual logic to stop loading indication
+      }
+
+      if (response.parameters3DS) {
+        // 3DS authentication completed successfully
+        // console.log("3DS Auth Success:", response.parameters3DS);
+        $.post(
+          "checkout/pay_order_culqi_checkout_3ds_step",
+          {
+          culqi_token: window.token,
+          amount: ($('#payment-amount').html() * 100).toFixed(2),
+          culqi_payment_amount: Number(($('#pay_in_soles').prop('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)),
+          shipping_amount: ($('#shipping-amount').html() * 100).toFixed(2),
+          picked_shipping_address_id: $('#address_id').val(),
+          cart_id: '<%= "#{@cart.id}" if @cart %>',
+          want_factura: $('#factura-checkbox').is(":checked"),
+          required_doc: $('#dni-required').val(),
+          delivery_instructions: $('#delivery-instructions').val(),
+          applied_coupon: applied_coupon,
+          discount_amount: (Number($('#coupon-amount').html()) * 100 + Number($('#combo-discount-amount').html()) * 100).toFixed(2),
+          points_redeemed_amount: ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0,
+          currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+          device_finger_print_id: window.deviceFingerPrintId,
+          authentication_3DS: response.parameters3DS
+          },
+          function(data) {
+            // console.log('data response from checkout/pay_order_culqi_checkout_3ds_step: ', data)
+          }
+        );
+      }
+
+      if (response.error) {
+        // There was an error with the 3DS authentication
+        console.log("3DS Auth Error:", response.error);
+        window.location.replace("<%= orders_path %>?error=payment");
+      }
+    }
+  }, false);
 </script>
