@@ -277,7 +277,11 @@ module Ecommerce
       Rails.logger.info params
       card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
       if card_token_created
-        @order = Ecommerce::Order.where(cart_id: params[:cart_id]).last
+        if params[:order_id].present?
+          @order = Order.find(params[:order_id])
+        else
+          @order = Ecommerce::Order.where(cart_id: params[:cart_id]).last
+        end
 
         #card payment
         payment_created = Payment.new.new_culqi_payment(

@@ -1,6 +1,6 @@
   class Interakt
     include HTTParty
-    base_uri (ENV["RUNTIME_ENV"] == 'production' ? 'https://api.interakt.ai/v1/public' : 'https://api.interakt.ai/v1/public')
+    base_uri (ENV["ROLLBAR_ENV"] == 'production' ? 'https://api.interakt.ai/v1/public' : 'https://api.interakt.ai/v1/public')
 
     def initialize
       api_key = ENV['INTERAKT_API_KEY']

@@ -582,7 +582,7 @@ $( document ).ready(function() {
             Culqi3DS.settings = {
               charge: {
                   totalAmount: Number(culqi_payment_amount),
-                  returnUrl: "http://localhost:3000/store/checkout",
+                  returnUrl: "<%= ENV["ROLLBAR_ENV"] == 'production' ? 'https://expatshop.pe/store/checkout' : 'http://localhost:3000/store/checkout' %>",
                 },
                 card: {
                   email: "<%= @current_user_email %>",
@@ -658,7 +658,7 @@ $( document ).ready(function() {
         Culqi3DS.settings = {
           charge: {
               totalAmount: Number(culqi_payment_amount),
-              returnUrl: "http://localhost:3000/store/checkout",
+              returnUrl: "<%= ENV["ROLLBAR_ENV"] == 'production' ? 'https://expatshop.pe/store/checkout' : 'http://localhost:3000/store/checkout' %>",
             },
             card: {
               email: "<%= @current_user_email %>",
