@@ -71,6 +71,10 @@ def gif_safe_transform!
   end
 end
 
+  def fog_attributes
+    {'Cache-Control' => "public, max-age=#{365.days.to_i}"}
+  end
+
 #  def store_dimensions
 #    if file && model
 #      #will store image_dimensions in new model fields

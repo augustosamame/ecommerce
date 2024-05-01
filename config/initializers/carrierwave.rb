@@ -14,5 +14,6 @@ CarrierWave.configure do |config|
   :aws_secret_access_key  => ENV["S3_AWS_SECRET_ACCESS_KEY"] || "A12345"
   }
   config.fog_directory  = ENV["CARRIERWAVE_CONFIG_FOG_DIRECTORY"]
+  config.fog_attributes = { 'Cache-Control' => "public, max-age=#{1.year.to_i}" }
   config.storage = :fog
 end
