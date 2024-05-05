@@ -11,6 +11,8 @@
     <%= f.input :phone, label: t('.phone') %>
     <%= f.input :username, label: t('.user_name') %>
     <%= f.input :doc_id, label: t('.document') %>
+    <%= f.input :email_suppressed, as: :boolean, label: t('Email Suppressed') %>
+    <%= f.input :suppression_reason, collection: User.suppression_reasons.keys, label: t('Suppression Reason') %>
   </div>
 
   <div class="form-actions">
