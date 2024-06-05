@@ -80,11 +80,11 @@ module Ecommerce
                     min_qty = combo_discount.qty_product_1 + combo_discount.qty_product_2
                     if actual_qty_in_cart >= min_qty
                       if matching_product_2 && combo_discount.qty_product_2 <= item[:quantity]
-                        new_number_of_combos = (item[:quantity] / combo_discount.qty_product_2).floor
+                        new_number_of_combos = (item[:quantity] / (combo_discount.qty_product_2 + combo_discount.qty_product_1)).floor
                         #check that the number of combos for product 2 is less or equal than the number of combos for product 1
-                        if new_number_of_combos <= number_of_combos
-                          number_of_combos = new_number_of_combos
-                        end
+                        
+                        number_of_combos = new_number_of_combos
+                        
                         cart_item_that_matches_combo_discount_product_2 = item
                         @combo_discount_array << combo_discount
                         combo_added = true
