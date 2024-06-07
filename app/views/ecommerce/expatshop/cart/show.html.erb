@@ -188,6 +188,18 @@
   </section>
 </main>
 
+<% if @friendly_combo_discount_array.present? %>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      Swal.fire({
+        icon: 'success',
+        title: "<%= j t('combo_discounts.combo_discount_applied') %>",
+        text: "<%= j t('combo_discounts.combo_discount_message') %>"
+      });
+    });
+  </script>
+<% end %>
+
 <script>
   $(document).ready(function(){
     bindPlusMinusButtons();

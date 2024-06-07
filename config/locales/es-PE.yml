@@ -6,6 +6,9 @@ es-PE:
     save: 'Grabar'
     destroy: 'Borrar'
     payment_error: "Error durante el proceso de pago. Por favor revise su pedido e intente de nuevo."
+  combo_discounts:
+    combo_discount_applied: "Un Descuento por Combo ha sido Aplicado al Carrito"
+    combo_discount_message: "El combo del producto ha sido agregado. Usted verá una línea adicional y un descuento equivalente en la parte inferior."
   number:
     currency:
       format:

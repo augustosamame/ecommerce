@@ -13,6 +13,7 @@ module Ecommerce
     respond_to :html, :js
 
     def create
+      @combo_discount_applied = false
       @cart_item = CartItem.new(cart_item_params)
       @product = Product.find(@cart_item.product_id)
       if @product.in_stock?
@@ -26,16 +27,21 @@ module Ecommerce
           #check if added item is a combo discount with force add and if so, add the second product to the cart
           @combo_discount_exists = ComboDiscount.where(product_id_1: @product.id, inject_product_two: true).try(:first)
           if @combo_discount_exists.present?
-            number_of_combos = (@cart_item.quantity / @combo_discount_exists.qty_product_1).floor
-            @cart_item_two = CartItem.new(cart_id: @cart.id, product_id: @combo_discount_exists.product_id_2, quantity: @combo_discount_exists.qty_product_2 * number_of_combos)
+            @number_of_combos = (@cart_item.quantity / @combo_discount_exists.qty_product_1).floor
+            @cart_item_two = CartItem.new(cart_id: @cart.id, product_id: @combo_discount_exists.product_id_2, quantity: @combo_discount_exists.qty_product_2 * @number_of_combos)
             @cart_item_two.save
+            @combo_discount_applied = true
           end
           @cart_item.save
         end
         #refresh with latest cart so it will be repainted properly
         set_cart
         respond_to do |format|
-          format.js { flash.now[:notice] = "NOW_FLASH_#{t('.qty')}: #{@cart_item.quantity} #{@product.name} #{t('.added_to_cart')}"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show"  }
+          
+          format.js {
+            flash.now[:notice] = "NOW_FLASH_#{t('.qty')}: #{@cart_item.quantity} #{@product.name} #{t('.added_to_cart')}";
+            render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show"  
+          }
 
           format.html {redirect_to cart_path(@cart) }
         end
