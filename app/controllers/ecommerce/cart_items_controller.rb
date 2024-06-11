@@ -90,7 +90,7 @@ module Ecommerce
       end
 
       def cart_item_params
-        params.require(:cart_item).permit(:cart_id, :product_id, :quantity, :status)
+        params.require(:cart_item).permit(:cart_id, :product_id, :quantity, :status, :pre_checkout)
       end
 
   end

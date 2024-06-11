@@ -201,6 +201,7 @@ module Ecommerce
                     price: item.product.current_price(current_user),
                     quantity: item.quantity,
                     status: "active"
+                    pre_checkout: item.pre_checkout
                   )
                 end
                 close_cart_and_create_new

@@ -15,7 +15,7 @@
       </div>
       <div class="row products product-index-container">
 
-        <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item %>
+        <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item, locals: { pre_checkout: true } %>
 
       </div>
     </div>
