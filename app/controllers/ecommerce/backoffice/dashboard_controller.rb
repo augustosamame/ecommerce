@@ -13,18 +13,19 @@ module Ecommerce
     end
 
     def complete_sale_data
-      #params sent will be params[:report][:start_date] . Using this date, generate a sales report for all orders since that date. Orders should include buyer data, product data, and order data. Generate one line per product in the order.
-
-      @orders = Ecommerce::Order.includes(:user, :order_items).where("ecommerce_orders.payment_status = ?", 1).where("ecommerce_orders.created_at >= ?", params[:report][:start_date].to_date).order(id: :desc)
+      @orders = Ecommerce::Order.includes(:user, :order_items => :product)
+                                .where(payment_status: 1)
+                                .where("ecommerce_orders.created_at >= ?", params[:report][:start_date].to_date)
+                                .order(id: :desc)
 
       respond_to do |format|
-
         format.html {
           p = Axlsx::Package.new
           wb = p.workbook
           wb.add_worksheet(:name => "Exported Orders") do |sheet|
-            sheet.add_row ["Order Id","date_time", "user", "user email", "user phone", "Order Amount", "total_discount", "district", "efact", "coupon", "payment_status", "payment_method", "special_instructions", "status", "product_id", "product_name", "product_price", "product_quantity", "products_total", "cross_selling_item?"]
-            @orders.each do |order|
+            sheet.add_row ["Order Id", "date_time", "user", "user email", "user phone", "Order Amount", "total_discount", "district", "efact", "coupon", "payment_status", "payment_method", "special_instructions", "status", "product_id", "product_name", "product_price", "product_quantity", "products_total", "cross_selling_item?"]
+
+            @orders.find_each(batch_size: 1000) do |order|
               total_order_items_amount = order.order_items.sum { |item| item.price * item.quantity }
               order.order_items.each do |order_item|
                 sheet.add_row [
@@ -32,7 +33,7 @@ module Ecommerce
                   order.created_at - 5.hours,
                   order.user.name,
                   order.user.email,
-                  order.user.username.gsub('+51',''),
+                  order.user.username.gsub('+51', ''),
                   ActionController::Base.helpers.number_to_currency(order.amount),
                   total_order_items_amount.to_f - order.amount.to_f,
                   order.shipping_address.try(:district),
@@ -52,11 +53,12 @@ module Ecommerce
               end
             end
           end
-          send_data p.to_stream.read, :filename => 'orders.xlsx', :type => "application/vnd.openxmlformates-officedocument.spreadsheetml.sheet"
-        }
 
+          send_data p.to_stream.read, filename: 'orders.xlsx', type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
       end
     end
+
 
 
     def biz_top_buyers
