@@ -15,6 +15,10 @@
         <div class="form-inputs">
           <%= f.input :start_date, as: :date_time_picker, label: "Start Date" %>
         </div>
+
+        <div class="form-inputs">
+          <%= f.input :email, label: "Email to Send Report to" %>
+        </div>
     
         <div class="form-actions">
           <%= f.button :submit, 'Generate Report', class: "btn btn-primary" %>
