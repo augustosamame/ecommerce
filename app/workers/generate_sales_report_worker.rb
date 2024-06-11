@@ -3,6 +3,10 @@ class GenerateSalesReportWorker
   include Sidekiq::Worker
 
   def perform(start_date, email)
+
+    Money.add_rate("USD", "PEN", 3.8)
+    Money.add_rate("PEN", "USD", 1 / 3.8)
+
     @orders = Ecommerce::Order.includes(:user, :order_items)
                               .where(payment_status: 1)
                               .where("ecommerce_orders.created_at >= ?", start_date.to_date)
