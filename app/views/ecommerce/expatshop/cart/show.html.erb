@@ -194,7 +194,7 @@
       Swal.fire({
         icon: 'success',
         title: "<%= j t('combo_discounts.combo_discount_applied') %>",
-        text: "<%= j t('combo_discounts.combo_discount_message') %>"
+        html: "<span style='color: red; font-size: 16px;'><%= j t('combo_discounts.combo_discount_message') %></span>"
       });
     });
   </script>

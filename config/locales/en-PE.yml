@@ -8,7 +8,7 @@ en-PE:
     payment_error: "Error during payment process. Please review your order and try again."
   combo_discounts:
     combo_discount_applied: "A Combo Discount Has been Applied to This Cart"
-    combo_discount_message: "The combo of the product has been added. You will see an additional line item and an equal discount below."
+    combo_discount_message: "⚠️ The combo of the product has been added. You will see an additional line item and an equal discount below."
   activerecord:
     errors:
       models:
