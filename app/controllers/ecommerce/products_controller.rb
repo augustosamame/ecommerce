@@ -22,12 +22,12 @@ module Ecommerce
         end
 
         #FB Conversions API
-        FacebookConversionsWorker.perform_async('Search', {
+        Ecommerce::FacebookConversionsWorker.perform_async('Search', {
           email: current_user.try(:email) || "guest@expatshop.pe",
           user_id: current_user.try(:id) || "guest",
           search_string: params[:search],
           event_source_url: "https://expatshop.pe/store/products"
-        }) if Rails.env == "production"
+      }) if Rails.env == "production"
 
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
       end
@@ -67,7 +67,7 @@ module Ecommerce
             end
           end
           #FB Conversions API
-          FacebookConversionsWorker.perform_async('ViewContent', {
+          Ecommerce::FacebookConversionsWorker.perform_async('ViewContent', {
             email: current_user.try(:email) || "guest@expatshop.pe",
             user_id: current_user.try(:id) || "guest",
             event_source_url: "https://expatshop.pe/store/products?category=#{params[:category_id]}"
@@ -96,7 +96,7 @@ module Ecommerce
 
       set_show_meta_tags
 
-      FacebookConversionsWorker.perform_async('ViewContent', {
+      Ecommerce::FacebookConversionsWorker.perform_async('ViewContent', {
         email: current_user.try(:email) || "guest@expatshop.pe",
         user_id: current_user.try(:id) || "guest",
         event_source_url: "https://expatshop.pe/store/products/#{@product.try(:permalink)}"
