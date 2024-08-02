@@ -20,6 +20,15 @@ module Ecommerce
         else
           @products = Product.search_by_name(params[:search]).active_not_banana.page(params[:page])
         end
+
+        #FB Conversions API
+        FacebookConversionsWorker.perform_async('Search', {
+          email: current_user.try(:email) || "guest@expatshop.pe",
+          user_id: current_user.try(:id) || "guest",
+          search_string: params[:search],
+          event_source_url: "https://expatshop.pe/store/products"
+        }) if Rails.env == "production"
+
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
       end
 
@@ -57,6 +66,12 @@ module Ecommerce
               @products = Product.includes(:translations).tagged_with(@category.name).active_not_banana.order(:product_order).page(params[:page])
             end
           end
+          #FB Conversions API
+          FacebookConversionsWorker.perform_async('ViewContent', {
+            email: current_user.try(:email) || "guest@expatshop.pe",
+            user_id: current_user.try(:id) || "guest",
+            event_source_url: "https://expatshop.pe/store/products?category=#{params[:category_id]}"
+          }) if Rails.env == "production"
           render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
         end
       else
@@ -80,6 +95,12 @@ module Ecommerce
       @related_products = Ecommerce::Product.where(category_id: @product.category_id).active.order(:product_order).limit(20)
 
       set_show_meta_tags
+
+      FacebookConversionsWorker.perform_async('ViewContent', {
+        email: current_user.try(:email) || "guest@expatshop.pe",
+        user_id: current_user.try(:id) || "guest",
+        event_source_url: "https://expatshop.pe/store/products/#{@product.try(:permalink)}"
+      }) if Rails.env == "production"
 
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
     end

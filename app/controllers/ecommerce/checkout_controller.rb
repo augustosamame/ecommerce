@@ -139,6 +139,11 @@ module Ecommerce
         @factura_city = @info_factura.city
       end
 
+      FacebookConversionsWorker.perform_async('ViewContent', {
+        email: current_user.try(:email) || "guest@expatshop.pe",
+        user_id: current_user.try(:id) || "guest",
+        event_source_url: "https://expatshop.pe/store/checkout/show"
+      }) if Rails.env == "production"
       render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show"
     end
 

@@ -18,6 +18,13 @@ module Ecommerce
         money_object_discount = Money.new(@combo_total_discount_usd * 100, 'PEN')
         @cart_subtotal_after_discount = @cart_subtotal - money_object_discount
       end
+
+      FacebookConversionsWorker.perform_async('ViewContent', {
+        email: current_user.try(:email) || "guest@expatshop.pe",
+        user_id: current_user.try(:id) || "guest",
+        event_source_url: "https://expatshop.pe/store/cart"
+      }) if Rails.env == "production"
+
       render "ecommerce/#{Ecommerce.ecommerce_layout}/cart/show"
     end
 

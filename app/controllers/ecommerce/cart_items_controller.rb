@@ -33,6 +33,14 @@ module Ecommerce
             @combo_discount_applied = true
           end
           @cart_item.save
+          #will only save to facebook the first unique cart item
+          FacebookConversionsWorker.perform_async('AddToCart', {
+            email: current_user.try(:email) || "guest@expatshop.pe",
+            user_id: current_user.try(:id) || "guest",
+            content_type: 'product',
+            content_ids: [@product.id],
+            event_source_url: "https://expatshop.pe/store/cart"
+          }) if Rails.env == "production"
         end
         #refresh with latest cart so it will be repainted properly
         set_cart
