@@ -28,7 +28,7 @@ module Ecommerce
       @desktop_slider_array = Ecommerce::Slider.where(slider_view: "DESKTOP").order(:slider_order).pluck(:slider_link).to_json
       add_body_css_class('stretched')
 
-      Ecommerce::FacebookConversionsWorker.perform_async('ViewContent', {
+      FacebookConversionsWorker.perform_async('ViewContent', {
         email: current_user.try(:email) || "guest@expatshop.pe",
         user_id: current_user.try(:id) || "guest",
         event_source_url: "https://expatshop.pe/store/main"

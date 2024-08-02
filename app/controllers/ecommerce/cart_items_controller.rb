@@ -34,7 +34,7 @@ module Ecommerce
           end
           @cart_item.save
           #will only save to facebook the first unique cart item
-          Ecommerce::FacebookConversionsWorker.perform_async('AddToCart', {
+          FacebookConversionsWorker.perform_async('AddToCart', {
             email: current_user.try(:email) || "guest@expatshop.pe",
             user_id: current_user.try(:id) || "guest",
             content_type: 'product',

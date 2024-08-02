@@ -87,7 +87,7 @@ module Ecommerce
       #TwilioIntegration.new.send_sms_to_number("A new Order ##{self.id} has been placed", '51989080023') if Rails.env == "production"
       SlackIntegration.new.send_slack_to_channel("A new Order ##{self.id} has been placed: https://expatshop.pe/store/backoffice/orders/#{self.id}", "#store-orders")
       #FB Conversions API
-      Ecommerce::FacebookConversionsWorker.perform_async('Purchase', {
+      FacebookConversionsWorker.perform_async('Purchase', {
         email: self.user.email,
         user_id: self.user.id,
         value: self.amount.to_f,
