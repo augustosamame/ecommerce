@@ -1,0 +1,20 @@
+<div class="nested-fields">
+  <div class="form-group lista1" style="margin-top: 0px; margin-bottom: 0px;">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="lavaggio_grid col-xs-4 t_o1">
+          <%= f.association :product, collection: Ecommerce::Product.all.order(:name), input_html: { class: "product_picker"}, label: "Product", required: true %>
+        </div>
+        <div class="lavaggio_grid col-xs-2 t_o1">
+          <%= f.input :start_time, label: "Start Time (second)" %>
+        </div>
+        <div class="lavaggio_grid col-xs-2 t_o1">
+          <%= f.input :end_time, label: "End Time (second)" %>
+        </div>
+        <div class="lavaggio_grid col-xs-1 t_o1">
+          <%= link_to_remove_association "Remove Product Overlay", f, class: 'btn btn-default remove-nested-item', style: "margin-top: 25px;" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

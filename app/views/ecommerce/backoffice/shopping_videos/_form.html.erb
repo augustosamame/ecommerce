@@ -1,0 +1,74 @@
+<%= simple_form_for [:backoffice, @shopping_video] do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :title %>
+    <%= f.input :description %>
+    <%= f.input :priority %>
+    <%= f.label "Video" %>
+    <div class="form-group">
+      <br/>
+      <span class="btn btn-default btn-file">
+        <%= f.file_field :video %>
+        <%= f.label :video, f.object.video.url %>
+      </span>
+      <%= f.hidden_field :video_cache %>
+    </div>
+
+    <%= f.label "Video Thumbnail Image" %>
+    <div class="form-group">
+      <% if f.object.thumbnail? %>
+        <%= image_tag f.object.thumbnail.medium_400.url, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
+      <% end %>
+      <img alt="your image" class="img-thumbnail hidden" height="200" id="img_prev" src="#" width="200"/>
+      <br/>
+      <span class="btn btn-default btn-file">
+        <%= f.file_field :thumbnail, id: "file-image-upload" %>
+      </span>
+      <%= f.hidden_field :thumbnail_cache %>
+    </div>
+    <%= f.input :status, collection: Ecommerce::ShoppingVideo.statuses.keys, label: t('.status') %>
+
+    <h3>Product Overlays</h3>
+    <div id="shopping_video_overlays">
+      <%= f.simple_fields_for :shopping_video_overlays do |overlay| %>
+        <%= render 'shopping_video_overlay_fields', f: overlay %>
+      <% end %>
+      <div class="links">
+        <%= link_to_add_association 'Add ProductOverlay', f, :shopping_video_overlays, class: 'btn btn-primary', style: "margin-left: 15px;" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<script>
+
+  $(document).ready(function(){
+
+   {
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          $('#img_prev').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $("#file-image-upload").change(function(){
+      $('#img_prev').removeClass('hidden');
+      $('#img_actual').addClass('hidden');
+      readURL(this);
+    });
+
+  };
+  });
+
+
+</script>

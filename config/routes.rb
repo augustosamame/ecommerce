@@ -63,6 +63,7 @@ Ecommerce::Engine.routes.draw do
     get 'cross_selling' => "products#cross_selling"
     resources :stock_alerts
     resources :testimonials
+    resources :shopping_videos
   end
 
   post 'locale', :to => 'application#locale'

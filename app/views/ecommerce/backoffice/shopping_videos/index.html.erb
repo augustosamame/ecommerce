@@ -1,0 +1,48 @@
+<div class="page-header">
+  <%= link_to new_backoffice_shopping_video_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Shopping Video
+  <% end %>
+  <h1>Shopping Videos</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Video URL</th>
+        <th>Video Thumbnail</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th>Show</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @shopping_videos.each do |shopping_video| %>
+        <tr>
+          <td><%= shopping_video.id %></td>
+          <td><%= shopping_video.title %></td>
+          <td><%= shopping_video.description %></td>
+          <td><%= shopping_video.video %></td>
+          <td><%= image_tag shopping_video.thumbnail_url(:medium_400), width: 100 %></td>
+          <td><%= shopping_video.priority %></td>
+          <td><%= shopping_video.status %></td>
+          <td>
+            <%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_shopping_video_path(shopping_video) %>
+          </td>
+          <td>
+            <%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_shopping_video_path(shopping_video) %>
+          </td>
+          <td>
+            <%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_shopping_video_path(shopping_video), method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

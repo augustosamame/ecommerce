@@ -1,0 +1,13 @@
+<div class="page-header">
+  <%= link_to backoffice_shopping_videos_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    <%= t('common.back') %>
+  <% end %>
+  <%= link_to backoffice_shopping_video_path(@shopping_video), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-info-sign"></span>
+    <%= t('common.show') %>
+  <% end %>
+  <h1><%= t('.editing_shopping_video') %></h1>
+</div>
+
+<%= render 'form' %>
