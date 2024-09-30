@@ -5,6 +5,15 @@ module Ecommerce
     include ActionView::Helpers::NumberHelper
     include Ecommerce::ApplicationHelper
 
+    def show
+      @shopping_video = Ecommerce::ShoppingVideo.find(params[:id])
+      render json: {
+        title: @shopping_video.title,
+        description: @shopping_video.description,
+        video_url: @shopping_video.video_url
+      }
+    end
+
     def overlays
       shopping_video = Ecommerce::ShoppingVideo.find(params[:id])
       overlays = shopping_video.shopping_video_overlays.active.map do |overlay|

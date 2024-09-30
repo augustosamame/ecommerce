@@ -119,6 +119,7 @@ Ecommerce::Engine.routes.draw do
   get '/ecommerce_root', to: 'store#main'
 
   get 'shopping_videos/:id/overlays', to: 'shopping_videos#overlays'
+  get 'shopping_videos/:id', to: 'shopping_videos#show'
 
   root to: 'store#main'
 

@@ -293,6 +293,23 @@
         .overlay-product-add-to-cart-button i {
           font-size: 14px;
         }
+        .vjs-title-overlay {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          right: 10px;
+          padding: 10px;
+          background-color: transparent;
+          color: white;
+          font-size: 18px;
+          text-align: left; /* Change this to left for normal mode */
+          z-index: 3;
+        }
+        .video-js.vjs-fullscreen .vjs-title-overlay {
+          font-size: 24px;
+          padding: 15px;
+          text-align: center; /* Center text in fullscreen mode */
+        }
       </style>
 
       <script>
@@ -355,7 +372,26 @@
             players.push(player);
 
             player.ready(function() {
+              // Add title overlay
+              fetch(`/store/shopping_videos/${shoppingVideoId}`)
+                .then(response => response.json())
+                .then(videoData => {
+                  var titleOverlayContent = `
+                    <div class="vjs-title-overlay">
+                      ${videoData.title}
+                    </div>
+                  `;
 
+                  var titleOverlay = player.addChild('component', {
+                    el: player.addChild('component').el()
+                  });
+                  titleOverlay.el().innerHTML = titleOverlayContent;
+                })
+                .catch(error => {
+                  console.error('Error fetching video title:', shoppingVideoId, error);
+                });
+
+              // Existing product overlay code
               fetch(`/store/shopping_videos/${shoppingVideoId}/overlays`)
                 .then(response => response.json())
                 .then(overlays => {
