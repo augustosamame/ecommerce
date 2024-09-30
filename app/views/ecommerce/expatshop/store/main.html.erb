@@ -159,12 +159,277 @@
           <div class="video-grid">
             <% Ecommerce::ShoppingVideo.where(status: "active").order(:priority).each do |shopping_video| %>
               <div class="video-item">
-                <%= render partial: 'ecommerce/shared/shopping_videos/video_shopping_element', locals: { shopping_video: shopping_video } %>
+                <div class="video-container">
+                  <video
+                    id="video-<%= shopping_video.id %>"
+                    class="video-js vjs-fill shopping-video"
+                    controls
+                    preload="auto"
+                    poster="<%= shopping_video.thumbnail %>"
+                    data-shopping-video-id="<%= shopping_video.id %>"
+                  >
+                    <source src="<%= shopping_video.video %>" type="video/mp4" />
+                    <p class="vjs-no-js">
+                      To view this video please enable JavaScript, and consider upgrading to a
+                      web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                    </p>
+                  </video>
+                </div>
               </div>
             <% end %>
           </div>
         </div>
       </section>
+
+      <style>
+        .video-grid {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 20px;
+        }
+        .video-item {
+          flex: 0 0 auto;
+          width: 338px; /* Set fixed width */
+        }
+        .video-container {
+          position: relative;
+          width: 100%;
+        }
+        .video-js {
+          width: 100% !important; /* Force full width */
+          height: 600px !important;
+          padding-top: 56.25% !important; /* 16:9 Aspect Ratio (100 / 16 * 9 = 56.25) */
+        }
+        .video-js .vjs-tech {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+        .video-js video {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+        .video-js .vjs-overlay {
+          position: absolute;
+          bottom: 30px;
+          left: 0;
+          right: 0;
+          height: 100px;
+          background-color: transparent;
+          overflow-x: auto;
+          padding: 0 10px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          z-index: 2;
+        }
+        .video-js.vjs-fullscreen .vjs-overlay {
+          bottom: 60px;
+        }
+        .overlay-product-overlay {
+          display: none;
+          padding: 0 5px;
+        }
+        .overlay-product-card {
+          width: 160px;
+          height: 90px;
+          background-color: white;
+          border-radius: 5px;
+          display: flex;
+          overflow: hidden;
+        }
+        .overlay-product-image {
+          width: 33.33%;
+          height: 100%;
+          object-fit: contain;
+          padding-left: 2px;
+        }
+        .overlay-product-info {
+          width: 66.67%;
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+        .overlay-product-title {
+          font-size: 13px;
+          color: #333;
+          margin: 0;
+          font-weight: bold;
+        }
+        .overlay-product-price {
+          font-size: 13px;
+          color: #666;
+          margin: 0;
+        }
+        .overlay-product-add-to-cart-button {
+          font-size: 13px;
+          color: red;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          width: 100%;
+        }
+        .overlay-product-add-to-cart-button i {
+          font-size: 14px;
+        }
+      </style>
+
+      <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var players = [];
+
+        function setupOverlayInteractions(overlay, player) {
+          overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+            productOverlay.addEventListener('click', function(e) {
+              e.preventDefault();
+              var productId = this.dataset.productId;
+              
+              fetch('/store/cart_items', {
+                method: 'POST',
+                body: JSON.stringify({
+                  cart_item: {
+                    product_id: productId,
+                    quantity: 1
+                  }
+                }),
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest',
+                  'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                },
+                credentials: 'same-origin'
+              })
+              .then(response => response.text())
+              .then(responseText => {
+                console.log('Server response:', responseText);
+                
+                // Execute the jQuery code returned by the server
+                eval(responseText);
+                
+                console.log('Product added to cart');
+              })
+              .catch(error => {
+                console.error('Error adding product to cart:', error);
+              });
+            });
+          });
+        }
+
+        function initializeVideoPlayers() {
+          var videoElements = document.querySelectorAll('.shopping-video');
+          videoElements.forEach(function(videoElement, index) {
+            var shoppingVideoId = videoElement.dataset.shoppingVideoId;
+            console.log('Initializing video player:', shoppingVideoId);
+
+            var playerOptions = {
+              muted: true // Mute all videos to allow autoplay
+            };
+
+            // Set autoplay for the first video
+            if (index === 0) {
+              playerOptions.autoplay = true;
+            }
+
+            var player = videojs('video-' + shoppingVideoId, playerOptions);
+
+            players.push(player);
+
+            player.ready(function() {
+              console.log('Player ready:', shoppingVideoId);
+
+              player.on('play', function() {
+                console.log('Play event triggered for video:', shoppingVideoId);
+              });
+
+              player.on('playing', function() {
+                console.log('Video started playing:', shoppingVideoId);
+              });
+
+              player.on('pause', function() {
+                console.log('Video paused:', shoppingVideoId);
+              });
+
+              player.on('error', function(error) {
+                console.error('Video error for', shoppingVideoId, ':', error);
+              });
+
+              fetch(`/store/shopping_videos/${shoppingVideoId}/overlays`)
+                .then(response => response.json())
+                .then(overlays => {
+                  console.log('Overlays fetched for video:', shoppingVideoId);
+                  var overlayContent = `
+                    <div class="vjs-overlay">
+                      ${overlays.map(overlay => `
+                        <div class="overlay-product-overlay mx-2" data-product-id="${overlay.product_id}" data-start-time="${overlay.start_time}" data-end-time="${overlay.end_time}">
+                          <div class="overlay-product-card">
+                            <img src="${overlay.product_image_url}" class="overlay-product-image" alt="${overlay.product_name}">
+                            <div class="overlay-product-info">
+                              <p class="overlay-product-title">${overlay.product_name.substring(0, 20)}</p>
+                              <p class="overlay-product-price">${overlay.product_price}</p>
+                              <p class="overlay-product-add-to-cart-button">Add to Cart</p>
+                            </div>
+                          </div>
+                        </div>
+                      `).join('')}
+                    </div>
+                  `;
+
+                  var overlay = player.addChild('component', {
+                    el: player.addChild('component').el()
+                  });
+                  overlay.el().innerHTML = overlayContent;
+
+                  setupOverlayInteractions(overlay, player);
+
+                  player.on('timeupdate', function() {
+                    var currentTime = player.currentTime();
+                    overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+                      var startTime = parseFloat(productOverlay.dataset.startTime);
+                      var endTime = parseFloat(productOverlay.dataset.endTime);
+                      if (currentTime >= startTime && currentTime <= endTime) {
+                        productOverlay.style.display = 'block';
+                      } else {
+                        productOverlay.style.display = 'none';
+                      }
+                    });
+                  });
+                })
+                .catch(error => {
+                  console.error('Error fetching overlays for video:', shoppingVideoId, error);
+                });
+
+              // Ensure the first video starts playing
+              if (index === 0) {
+                player.play().then(function() {
+                  console.log('Autoplay started for first video:', shoppingVideoId);
+                }).catch(function(error) {
+                  console.error('Autoplay prevented for first video:', shoppingVideoId, error);
+                  // If autoplay is prevented, try to play muted
+                  player.muted(true);
+                  player.play().then(function() {
+                    console.log('Muted autoplay started for first video:', shoppingVideoId);
+                  }).catch(function(error) {
+                    console.error('Muted autoplay also prevented for first video:', shoppingVideoId, error);
+                  });
+                });
+              }
+            });
+          });
+        }
+
+        initializeVideoPlayers();
+      });
+      </script>
 
       <!-- country mosaic -->
       <section class="global-products">
@@ -283,133 +548,3 @@ categorías.
   })
 
 </script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  function initializeVideoPlayers() {
-    var videoElements = document.querySelectorAll('.shopping-video');
-    videoElements.forEach(function(videoElement, index) {
-      var shoppingVideoId = videoElement.dataset.shoppingVideoId;
-      var player = videojs('video-' + shoppingVideoId, {
-        autoplay: index === 0,
-        muted: true
-      });
-
-      player.ready(function() {
-        var overlay = videoElement.closest('.video-container').querySelector('.vjs-overlay');
-        
-        if (!overlay) {
-          console.error('Overlay not found for video:', shoppingVideoId);
-          return;
-        }
-
-        player.on('timeupdate', function() {
-          var currentTime = player.currentTime();
-          overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
-            var startTime = parseFloat(productOverlay.dataset.startTime);
-            var endTime = parseFloat(productOverlay.dataset.endTime);
-            if (currentTime >= startTime && currentTime <= endTime) {
-              productOverlay.style.display = 'block';
-            } else {
-              productOverlay.style.display = 'none';
-            }
-          });
-        });
-
-        overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
-          productOverlay.addEventListener('click', function(e) {
-            e.preventDefault();
-            var form = productOverlay.querySelector('.overlay-cart-form');
-            var formData = new FormData(form);
-            fetch(form.action, {
-              method: 'POST',
-              body: formData,
-              headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-              },
-              credentials: 'same-origin'
-            })
-            .then(response => response.text())
-            .then(html => {
-              console.log('Product added to cart');
-              // Execute the JavaScript returned in the response
-              var scriptContent = html.match(/\$\((.*?)\);/g);
-              if (scriptContent) {
-                scriptContent.forEach(function(script) {
-                  eval(script);
-                });
-              }
-              if (typeof fly_to_cart === 'function') {
-                fly_to_cart();
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
-          });
-        });
-
-        // Attempt to play the first video
-        if (index === 0) {
-          player.play().then(function() {
-            console.log('Autoplay started for first video');
-          }).catch(function(error) {
-            console.log('Autoplay was prevented for first video:', error);
-          });
-        }
-      });
-    });
-  }
-
-  initializeVideoPlayers();
-});
-</script>
-
-<style>
-  .video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-  }
-  .video-container {
-    position: relative;
-    height: 0;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  }
-  .video-item {
-    max-width: 338px;
-  }
-  .video-js {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .vjs-overlay {
-    position: absolute;
-    bottom: 40px;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background-color: transparent;
-    overflow-x: auto;
-    padding: 0 10px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    z-index: 1;
-  }
-  .add-to-cart {
-    font-size: 13px;
-    color: red;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .add-to-cart i {
-    font-size: 14px;
-  }
-</style>

@@ -46,7 +46,22 @@
 
     <!-- Right Column (Video Player) -->
     <div class="col-md-6">
-      <%= render partial: 'ecommerce/shared/shopping_videos/video_shopping_element', locals: { shopping_video: @shopping_video } %>
+      <div class="video-container" style="height: 600px; max-height: 600px; position: relative;">
+        <video
+          id="video-<%= @shopping_video.id %>"
+          class="video-js vjs-fill shopping-video"
+          controls
+          preload="auto"
+          poster="<%= @shopping_video.thumbnail %>"
+          data-shopping-video-id="<%= @shopping_video.id %>"
+        >
+          <source src="<%= @shopping_video.video %>" type="video/mp4" />
+          <p class="vjs-no-js">
+            To view this video please enable JavaScript, and consider upgrading to a
+            web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+          </p>
+        </video>
+      </div>
     </div>
   </div>
 </div>
@@ -55,10 +70,7 @@
 <script src="//vjs.zencdn.net/8.18.1/video.min.js"></script>
 
 <style>
-  .video-js .vjs-control-bar {
-    height: 40px;
-  }
-  .vjs-overlay {
+  .video-js .vjs-overlay {
     position: absolute;
     bottom: 30px;
     left: 0;
@@ -70,60 +82,62 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    z-index: 2;
   }
-  .product-overlay {
+  .video-js.vjs-fullscreen .vjs-overlay {
+    bottom: 60px;
+  }
+  .overlay-product-overlay {
     display: none;
     padding: 0 5px;
   }
-  .product-card {
+  .overlay-product-card {
     width: 160px;
-    height: 80px;
+    height: 90px;
     background-color: white;
     border-radius: 5px;
     display: flex;
     overflow: hidden;
   }
-  .product-image {
+  .overlay-product-image {
     width: 33.33%;
     height: 100%;
     object-fit: contain;
     padding-left: 2px;
   }
-  .product-info {
+  .overlay-product-info {
     width: 66.67%;
     padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
-  .product-title {
+  .overlay-product-title {
     font-size: 13px;
     color: #333;
     margin: 0;
     font-weight: bold;
   }
-  .product-price {
+  .overlay-product-price {
     font-size: 13px;
     color: #666;
     margin: 0;
   }
-  .add-to-cart {
+  .overlay-add-to-cart {
     font-size: 13px;
     color: red;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  .add-to-cart i {
-    font-size: 14px;
-  }
-  .video-js .vjs-unmute-button {
-    font-size: 1em;
-    line-height: 2;
-    height: 2em;
-    padding: 0 0.5em;
+    background: none;
+    border: none;
     cursor: pointer;
+    padding: 0;
+    width: 100%;
+  }
+  .overlay-add-to-cart i {
+    font-size: 14px;
   }
 </style>
 
@@ -137,16 +151,37 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   player.ready(function() {
-    var overlay = videoElement.closest('.video-container').querySelector('.vjs-overlay');
-    
-    if (!overlay) {
-      console.error('Overlay not found for video:', shoppingVideoId);
-      return;
-    }
+    var overlayContent = `
+      <div class="vjs-overlay">
+        <% @shopping_video.shopping_video_overlays.each do |overlay| %>
+          <div class="overlay-product-overlay mx-2" data-product-id="<%= overlay.product.id %>" data-start-time="<%= overlay.start_time %>" data-end-time="<%= overlay.end_time %>">
+            <div class="overlay-product-card">
+              <img src="<%= overlay.product.image_url %>" class="overlay-product-image" alt="<%= overlay.product.name %>">
+              <div class="overlay-product-info">
+                <p class="overlay-product-title"><%= overlay.product.name[0..20] %></p>
+                <p class="overlay-product-price"><%= number_to_currency(overlay.product.price) %></p>
+                <form class="overlay-cart-form" data-remote="true" action="/cart_items" method="post">
+                  <input type="hidden" name="cart_item[product_id]" value="<%= overlay.product.id %>">
+                  <input type="hidden" name="cart_item[quantity]" value="1">
+                  <button type="submit" class="overlay-add-to-cart">
+                    <span class="overlay-add-to-cart">Add to Cart</span> <i class="fas fa-arrow-right"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    `;
 
-    player.on('timeupdate', function() {
+    var overlay = player.addChild('component', {
+      el: player.addChild('component').el()
+    });
+    overlay.el().innerHTML = overlayContent;
+
+    function updateOverlayVisibility() {
       var currentTime = player.currentTime();
-      overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+      overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
         var startTime = parseFloat(productOverlay.dataset.startTime);
         var endTime = parseFloat(productOverlay.dataset.endTime);
         if (currentTime >= startTime && currentTime <= endTime) {
@@ -155,13 +190,49 @@ document.addEventListener('DOMContentLoaded', function() {
           productOverlay.style.display = 'none';
         }
       });
+    }
+
+    player.on('timeupdate', updateOverlayVisibility);
+
+    overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+      productOverlay.addEventListener('click', function(e) {
+        if (!e.target.closest('.overlay-add-to-cart')) {
+          var productId = this.dataset.productId;
+          console.log('Product clicked:', productId);
+          // You can add more functionality here, like opening a modal or redirecting to the product page
+        }
+      });
     });
 
-    overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
-      productOverlay.addEventListener('click', function() {
-        var productId = this.dataset.productId;
-        console.log('Product clicked:', productId);
-        // You can add more functionality here, like opening a modal or redirecting to the product page
+    overlay.el().querySelectorAll('.overlay-cart-form').forEach(function(form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(form);
+        fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          },
+          credentials: 'same-origin'
+        })
+        .then(response => response.text())
+        .then(html => {
+          console.log('Product added to cart');
+          var scriptContent = html.match(/\$\((.*?)\);/g);
+          if (scriptContent) {
+            scriptContent.forEach(function(script) {
+              eval(script);
+            });
+          }
+          if (typeof fly_to_cart === 'function') {
+            fly_to_cart();
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
       });
     });
 

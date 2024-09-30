@@ -117,6 +117,9 @@ Ecommerce::Engine.routes.draw do
   get '/wishlist_message', to: 'store#wishlist'
   post '/wishlist_message', to: 'store#post_wishlist'
   get '/ecommerce_root', to: 'store#main'
+
+  get 'shopping_videos/:id/overlays', to: 'shopping_videos#overlays'
+
   root to: 'store#main'
 
 end

@@ -26,7 +26,7 @@
               <%= f.hidden_field :product_id, value: overlay.product.id %>
               <%= f.hidden_field :quantity, value: 1 %>
               <%= button_tag type: 'submit', class: "overlay-add-to-cart" do %>
-                Add to Cart <i class="fas fa-arrow-right"></i>
+                <span class="overlay-add-to-cart">Add to Cart</span> <i class="fas fa-arrow-right"></i>
               <% end %>
             <% end %>
           </div>
@@ -52,6 +52,10 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    z-index: 1;
+  }
+  .video-js.vjs-fullscreen .vjs-overlay {
+    bottom: 60px; /* Adjust this value as needed */
   }
   .overlay-product-overlay {
     display: none;
