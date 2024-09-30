@@ -220,7 +220,8 @@
           right: 0;
           height: 100px;
           background-color: transparent;
-          overflow-x: auto;
+          overflow-x: hidden;
+          overflow-y: hidden;
           padding: 0 10px;
           display: flex;
           justify-content: flex-start;
@@ -311,12 +312,12 @@
               })
               .then(response => response.text())
               .then(responseText => {
-                console.log('Server response:', responseText);
+                // console.log('Server response:', responseText);
                 
                 // Execute the jQuery code returned by the server
                 eval(responseText);
                 
-                console.log('Product added to cart');
+                // console.log('Product added to cart');
               })
               .catch(error => {
                 console.error('Error adding product to cart:', error);
@@ -329,7 +330,7 @@
           var videoElements = document.querySelectorAll('.shopping-video');
           videoElements.forEach(function(videoElement, index) {
             var shoppingVideoId = videoElement.dataset.shoppingVideoId;
-            console.log('Initializing video player:', shoppingVideoId);
+            // console.log('Initializing video player:', shoppingVideoId);
 
             var playerOptions = {
               muted: true // Mute all videos to allow autoplay
@@ -344,28 +345,11 @@
             players.push(player);
 
             player.ready(function() {
-              console.log('Player ready:', shoppingVideoId);
-
-              player.on('play', function() {
-                console.log('Play event triggered for video:', shoppingVideoId);
-              });
-
-              player.on('playing', function() {
-                console.log('Video started playing:', shoppingVideoId);
-              });
-
-              player.on('pause', function() {
-                console.log('Video paused:', shoppingVideoId);
-              });
-
-              player.on('error', function(error) {
-                console.error('Video error for', shoppingVideoId, ':', error);
-              });
 
               fetch(`/store/shopping_videos/${shoppingVideoId}/overlays`)
                 .then(response => response.json())
                 .then(overlays => {
-                  console.log('Overlays fetched for video:', shoppingVideoId);
+                  // console.log('Overlays fetched for video:', shoppingVideoId);
                   var overlayContent = `
                     <div class="vjs-overlay">
                       ${overlays.map(overlay => `
@@ -408,7 +392,7 @@
                 });
 
               // Ensure the first video starts playing
-              if (index === 0) {
+              if (shoppingVideoId === '1') {
                 player.play().then(function() {
                   console.log('Autoplay started for first video:', shoppingVideoId);
                 }).catch(function(error) {
