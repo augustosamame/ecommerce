@@ -348,11 +348,197 @@
           width: 80%;
           max-width: 177.78vh; /* 16:9 aspect ratio */
         }
+        .custom-pip-container {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          width: 200px;
+          height: 313px;
+          z-index: 9999;
+          display: none;
+          box-shadow: 0 0 10px rgba(0,0,0,0.3);
+          border-radius: 4px;
+          overflow: hidden;
+        }
+
+        .custom-pip-container .video-js {
+          width: 100% !important;
+          height: 100% !important;
+          padding-top: 0 !important;
+        }
+
+        /* Scale down overlays for PIP */
+        .custom-pip-container .vjs-overlay {
+          transform: scale(0.5);
+          transform-origin: bottom left;
+          bottom: 10px !important; /* Adjust this value to position the overlay 20px from the bottom in the PIP view */
+        }
+
+        .custom-pip-container .overlay-product-card {
+          width: 80px; /* Half of the original width */
+          height: 45px; /* Half of the original height */
+        }
+
+        .custom-pip-container .overlay-product-image {
+          width: 33.33%;
+          height: 100%;
+        }
+
+        .custom-pip-container .overlay-product-info {
+          width: 66.67%;
+          padding: 5px;
+        }
+
+        .custom-pip-container .overlay-product-title,
+        .custom-pip-container .overlay-product-price,
+        .custom-pip-container .overlay-add-to-cart,
+        .custom-pip-container .overlay-category-link {
+          font-size: 6.5px; /* Half of the original font size */
+        }
+        .custom-pip-close,
+        .custom-pip-fullscreen {
+          position: absolute;
+          background: rgba(0,0,0,0.5);
+          color: white;
+          border: none;
+          border-radius: 50%;
+          cursor: pointer;
+          z-index: 10000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .custom-pip-close {
+          top: 5px;
+          right: 5px;
+          width: 24px;
+          height: 24px;
+          font-size: 18px;
+        }
+        .custom-pip-fullscreen {
+          top: 35px !important;
+          right: 8px !important; /* Position it to the left of the close button */
+          width: 24px !important; /* Make it larger */
+          height: 24px !important; /* Make it larger */
+          font-size: 28px !important; /* Increase font size */
+        }
+        .custom-pip-fullscreen:before {
+          content: '⤢';
+        }
+        .vjs-pip-button {
+            cursor: pointer;
+            color: white;
+          }
+        .vjs-pip-button:before {
+          content: "PIP";
+          font-family: Arial, sans-serif;
+          font-weight: bold;
+        }
       </style>
 
       <script>
       document.addEventListener('DOMContentLoaded', function() {
         var players = [];
+        var customPipContainer = document.createElement('div');
+        customPipContainer.className = 'custom-pip-container';
+        var closeButton = document.createElement('button');
+        closeButton.className = 'custom-pip-close';
+        closeButton.innerHTML = '×';
+        customPipContainer.appendChild(closeButton);
+        document.body.appendChild(customPipContainer);
+
+        function setupCustomPipFunctionality(player) {
+          var pipButton = player.controlBar.addChild('button', {
+            clickHandler: function(event) {
+              if (customPipContainer.style.display === 'block') {
+                exitCustomPip();
+              } else {
+                enterCustomPip(player);
+              }
+            }
+          });
+
+          var pipButtonDom = pipButton.el();
+          pipButtonDom.classList.add('vjs-pip-button');
+          pipButtonDom.title = 'Picture in Picture';
+        }
+
+        function enterCustomPip(player) {
+          customPipContainer.style.display = 'block';
+          
+          // Clone the player
+          var pipPlayer = player.el().cloneNode(true);
+          pipPlayer.id = 'pip-' + player.el().id;
+          customPipContainer.appendChild(pipPlayer);
+
+          // Initialize the cloned player
+          var pipPlayerInstance = videojs(pipPlayer.id, {
+            muted: player.muted(),
+            autoplay: true
+          });
+
+          // Sync the time of the PIP player with the main player
+          pipPlayerInstance.currentTime(player.currentTime());
+
+          // Always play the PIP video
+          pipPlayerInstance.play();
+
+          // Sync muted state
+          pipPlayerInstance.muted(player.muted());
+
+          // Sync volume
+          pipPlayerInstance.volume(player.volume());
+
+          // Scale down overlays for PIP
+          var pipOverlay = pipPlayerInstance.el().querySelector('.vjs-overlay');
+          if (pipOverlay) {
+            pipOverlay.style.transform = 'scale(0.5)';
+            pipOverlay.style.transformOrigin = 'bottom left';
+            pipOverlay.style.bottom = '10px';
+          }
+
+          // Add fullscreen button
+          var fullscreenButton = document.createElement('button');
+          fullscreenButton.className = 'custom-pip-fullscreen';
+          fullscreenButton.title = 'Switch to fullscreen';
+          fullscreenButton.addEventListener('click', function() {
+            var currentTime = pipPlayerInstance.currentTime();
+            var isPlaying = !pipPlayerInstance.paused();
+            exitCustomPip();
+            player.currentTime(currentTime);
+            if (isPlaying) {
+              player.play();
+            }
+            player.requestFullscreen();
+          });
+          pipPlayerInstance.el().appendChild(fullscreenButton);
+
+          // Store reference to original player
+          pipPlayerInstance.originalPlayer = player;
+        }
+
+        function exitCustomPip() {
+          var pipPlayer = customPipContainer.querySelector('.video-js');
+          if (pipPlayer) {
+            var pipPlayerInstance = videojs(pipPlayer.id);
+            var originalPlayer = pipPlayerInstance.originalPlayer;
+            
+            // Sync time back to the original player
+            originalPlayer.currentTime(pipPlayerInstance.currentTime());
+            
+            // Sync play/pause state
+            if (!pipPlayerInstance.paused()) {
+              originalPlayer.play();
+            }
+
+            pipPlayerInstance.dispose();
+          }
+          customPipContainer.style.display = 'none';
+          customPipContainer.innerHTML = '';
+          customPipContainer.appendChild(closeButton);
+        }
+
+        closeButton.addEventListener('click', exitCustomPip);
 
         function setupOverlayInteractions(overlay, player) {
           overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
@@ -409,6 +595,8 @@
             players.push(player);
 
             player.ready(function() {
+              setupCustomPipFunctionality(player);
+
               // Add title overlay
               fetch(`/store/shopping_videos/${shoppingVideoId}`)
                 .then(response => response.json())

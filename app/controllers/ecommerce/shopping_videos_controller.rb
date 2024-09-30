@@ -4,6 +4,7 @@ module Ecommerce
   class ShoppingVideosController < ApplicationController
     include ActionView::Helpers::NumberHelper
     include Ecommerce::ApplicationHelper
+    skip_before_action :authenticate_user!
 
     def show
       @shopping_video = Ecommerce::ShoppingVideo.find(params[:id])
