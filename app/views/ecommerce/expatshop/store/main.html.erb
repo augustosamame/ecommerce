@@ -188,9 +188,18 @@
           justify-content: center;
           gap: 20px;
         }
+        @media (max-width: 600px) {
+          .video-item {
+            width: 338px; /* Set fixed width */
+          }
+        }
+        @media (min-width: 600px) {
+          .video-item {
+            width: 338px !important; /* Set fixed width */
+          }
+        }
         .video-item {
           flex: 0 0 auto;
-          width: 338px; /* Set fixed width */
         }
         .video-container {
           position: relative;
@@ -200,6 +209,7 @@
           width: 100% !important; /* Force full width */
           height: 600px !important;
           padding-top: 56.25% !important; /* 16:9 Aspect Ratio (100 / 16 * 9 = 56.25) */
+          border-radius: 5px;
         }
         .video-js .vjs-tech {
           position: absolute;
@@ -359,7 +369,7 @@
                             <div class="overlay-product-info">
                               <p class="overlay-product-title">${overlay.product_name.substring(0, 20)}</p>
                               <p class="overlay-product-price">${overlay.product_price}</p>
-                              <p class="overlay-product-add-to-cart-button">Add to Cart</p>
+                              <p class="overlay-product-add-to-cart-button">${overlay.add_to_cart_label}</p>
                             </div>
                           </div>
                         </div>

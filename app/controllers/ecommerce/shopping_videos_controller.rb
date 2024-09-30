@@ -15,7 +15,8 @@ module Ecommerce
           product_price: product_session_price(overlay.product, "price"),
           product_image_url: overlay.product.image_url,
           start_time: overlay.start_time,
-          end_time: overlay.end_time
+          end_time: overlay.end_time,
+          add_to_cart_label: I18n.t("ecommerce.shopping_videos.add_to_cart_label")
         }
       end
       render json: overlays

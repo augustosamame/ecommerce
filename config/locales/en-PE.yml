@@ -91,6 +91,8 @@ en-PE:
       today_afternoon: "today afternoon (Tuesday to Friday)"
       tomorrow_afternoon: "next Business Day (Tuesday to Friday)"
   ecommerce:
+    shopping_videos:
+      add_to_cart_label: "Add to Cart"
     cart_items:
       create:
         product_out_of_stock: "Product Out of Stock"
@@ -206,6 +208,7 @@ en-PE:
           add_to_cart: "Add to Cart"
           featured_products: "FEATURED PRODUCTS"
           customer_testimonials: "CUSTOMER TESTIMONIALS"
+          shopping_videos: "SHOPPING VIDEOS"
           press: "Press"
           read_article: "Read Article"
           products_from_the_world: "PRODUCTS FROM THE WORLD"

@@ -85,6 +85,8 @@ es-PE:
       today_afternoon: "hoy en la tarde (martes a viernes)"
       tomorrow_afternoon: "el siguiente día útil (martes a viernes)"
   ecommerce:
+    shopping_videos:
+      add_to_cart_label: "Agr al Carrito"
     cart_items:
       create:
         product_out_of_stock: "Producto Fuera de Stock"
@@ -382,6 +384,7 @@ es-PE:
           add_to_cart: "Agr al Carrito"
           featured_products: "PRODUCTOS DESTACADOS"
           customer_testimonials: "TESTIMONIOS"
+          shopping_videos: "VIDEOS INTERACTIVOS"
           press: "Prensa"
           read_article: "Leer Artículo"
           products_from_the_world: "PRODUCTOS DEL MUNDO"
