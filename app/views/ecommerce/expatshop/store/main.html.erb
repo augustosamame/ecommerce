@@ -157,16 +157,18 @@
         <div class="container-fluid">
           <h2 class="main-section-title"><%= t('.shopping_videos') %></h2>
           <div class="shopping-videos-slider">
+          <% lowest_priority_video = Ecommerce::ShoppingVideo.active.order(:priority).first %>
             <% Ecommerce::ShoppingVideo.active.order(:priority).each do |shopping_video| %>
               <div class="video-item">
                 <div class="video-container">
                   <video
-                    id="video-<%= shopping_video.priority %>"
+                    id="video-<%= shopping_video.id %>"
                     class="video-js vjs-fill shopping-video"
                     controls
                     preload="auto"
                     poster="<%= shopping_video.thumbnail %>"
-                    data-shopping-video-id="<%= shopping_video.priority %>"
+                    data-shopping-video-id="<%= shopping_video.id %>"
+                    data-shopping-video-should-autoplay="<%= shopping_video == lowest_priority_video ? 'true' : 'false' %>"
                   >
                     <source src="<%= shopping_video.video %>" type="video/mp4" />
                     <p class="vjs-no-js">
@@ -383,7 +385,7 @@
               muted: true // Mute all videos to allow autoplay
             };
 
-            if (shoppingVideoId === '1') {
+            if (videoElement.dataset.shoppingVideoShouldAutoplay === 'true') {
               playerOptions.autoplay = true;
             }
 
@@ -455,23 +457,7 @@
                 })
                 .catch(error => {
                   console.error('Error fetching overlays for video:', shoppingVideoId, error);
-                });
-
-              // Ensure the first video starts playing
-              if (shoppingVideoId === '1') {
-                player.play().then(function() {
-                  console.log('Autoplay started for first video:', shoppingVideoId);
-                }).catch(function(error) {
-                  console.error('Autoplay prevented for first video:', shoppingVideoId, error);
-                  // If autoplay is prevented, try to play muted
-                  player.muted(true);
-                  player.play().then(function() {
-                    console.log('Muted autoplay started for first video:', shoppingVideoId);
-                  }).catch(function(error) {
-                    console.error('Muted autoplay also prevented for first video:', shoppingVideoId, error);
-                  });
-                });
-              }
+                });              
             });
           });
         }

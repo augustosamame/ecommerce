@@ -1,5 +1,4 @@
 class Ecommerce::ShoppingVideoUploader < CarrierWave::Uploader::Base
-  include CarrierWave::MiniMagick
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -58,7 +57,7 @@ class Ecommerce::ShoppingVideoUploader < CarrierWave::Uploader::Base
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_whitelist
-    %w(mp4)
+    %w(mp4 mov)
   end
 
   # Override the filename of the uploaded files:
@@ -66,5 +65,27 @@ class Ecommerce::ShoppingVideoUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
+
+  def filename
+    "#{secure_token}.#{file.extension}" if original_filename.present?
+  end
+
+  def process_uri(uri)
+    nil
+  end
+
+  private
+
+    def timestamp
+      var = :"@#{mounted_as}_timestamp"
+      model.instance_variable_get(var) or model.instance_variable_set(var, Time.now.to_i)
+    end
+
+    protected
+
+    def secure_token
+      var = :"@#{mounted_as}_secure_token"
+      model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
+    end
 
 end

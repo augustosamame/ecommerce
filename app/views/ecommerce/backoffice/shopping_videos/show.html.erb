@@ -15,6 +15,7 @@
           <h5 class="card-title">Video Details</h5>
           <p class="card-text"><strong>Video URL:</strong> <%= @shopping_video.video %></p>
           <p class="card-text"><strong>Priority:</strong> <%= @shopping_video.priority %></p>
+          <p class="card-text"><strong>Processing Status:</strong> <%= @shopping_video.processing_status %></p>
           <p class="card-text"><strong>Status:</strong> <span class="badge badge-<%= @shopping_video.status == 'active' ? 'success' : 'secondary' %>"><%= @shopping_video.status %></span></p>
         </div>
       </div>

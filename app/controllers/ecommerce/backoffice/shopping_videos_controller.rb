@@ -21,7 +21,8 @@ module Ecommerce
     def create
       @shopping_video = Ecommerce::ShoppingVideo.new(shopping_video_params)
       if @shopping_video.save
-        redirect_to backoffice_shopping_video_path(@shopping_video), notice: 'Shopping video was successfully created.'
+        flash[:notice] = "Video uploaded successfully. It will be processed shortly."
+        redirect_to backoffice_shopping_video_path(@shopping_video)
       else
         render :new
       end
@@ -32,7 +33,12 @@ module Ecommerce
 
     def update
       if @shopping_video.update(shopping_video_params)
-        redirect_to backoffice_shopping_video_path(@shopping_video), notice: 'Shopping video was successfully updated.'
+        flash[:notice] = if @shopping_video.video_changed?
+                           'Shopping video was successfully updated and will be reprocessed shortly.'
+                         else
+                           'Shopping video was successfully updated.'
+                         end
+        redirect_to backoffice_shopping_video_path(@shopping_video)
       else
         render :edit
       end
@@ -50,7 +56,7 @@ module Ecommerce
     end
 
     def shopping_video_params
-      params.require(:shopping_video).permit(:title, :description, :priority, :video, :video_cache, :thumbnail, :thumbnail_cache, :status,
+      params.require(:shopping_video).permit(:title, :description, :priority, :video, :video_cache, :thumbnail, :thumbnail_cache, :status, :processing_status,
         shopping_video_overlays_attributes: [:id, :product_id, :start_time, :end_time, :status,:_destroy])
     end
   
