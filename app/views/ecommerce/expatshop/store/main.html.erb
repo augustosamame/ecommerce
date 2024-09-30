@@ -156,17 +156,17 @@
       <section class="shopping-videos">
         <div class="container-fluid">
           <h2 class="main-section-title"><%= t('.shopping_videos') %></h2>
-          <div class="video-grid">
+          <div class="shopping-videos-slider">
             <% Ecommerce::ShoppingVideo.where(status: "active").order(:priority).each do |shopping_video| %>
               <div class="video-item">
                 <div class="video-container">
                   <video
-                    id="video-<%= shopping_video.id %>"
+                    id="video-<%= shopping_video.priority %>"
                     class="video-js vjs-fill shopping-video"
                     controls
                     preload="auto"
                     poster="<%= shopping_video.thumbnail %>"
-                    data-shopping-video-id="<%= shopping_video.id %>"
+                    data-shopping-video-id="<%= shopping_video.priority %>"
                   >
                     <source src="<%= shopping_video.video %>" type="video/mp4" />
                     <p class="vjs-no-js">
@@ -335,8 +335,7 @@
               muted: true // Mute all videos to allow autoplay
             };
 
-            // Set autoplay for the first video
-            if (index === 0) {
+            if (shoppingVideoId === '1') {
               playerOptions.autoplay = true;
             }
 

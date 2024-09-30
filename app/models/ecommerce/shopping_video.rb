@@ -12,5 +12,7 @@ module Ecommerce
     validates :video, presence: true
     validates :thumbnail, presence: true
 
+    validates :priority, uniqueness: true
+
   end
 end

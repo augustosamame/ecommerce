@@ -358,5 +358,43 @@ $(document).ready(function () {
     });
   });
 
+  $(function () {
+    $(".shopping-videos-slider").slick({
+      dots: false,
+      infinite: true,
+      speed: 300,
+      slidesToShow: 4,
+      slidesToScroll: 4,
+      // infinite: true,
+      // centerMode: true,
+      prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+      nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+      responsive: [
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: false,
+            pager: false,
+            centerMode: true,
+          },
+        },
+      ],
+    });
+
+    // Add margin to slides
+    $(".shopping-videos-slider").slick('slickSetOption', 'margin', 20, true);
+
+    // Adjust slide width to account for margin
+    $(".shopping-videos-slider .slick-slide").css({
+      'margin-right': '10px',
+      'margin-left': '10px'
+    });
+
+
+  });
+
 
 });
