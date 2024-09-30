@@ -1,0 +1,104 @@
+<div class="video-container" style="height: 600px; max-height: 600px; position: relative;">
+  <video
+    id="video-<%= shopping_video.id %>"
+    class="video-js vjs-fill shopping-video"
+    controls
+    muted
+    preload="auto"
+    poster="<%= shopping_video.thumbnail %>"
+    data-shopping-video-id="<%= shopping_video.id %>"
+  >
+    <source src="<%= shopping_video.video %>" type="video/mp4" />
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a
+      web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+  </video>
+  <div class="vjs-overlay">
+    <% shopping_video.shopping_video_overlays.each do |overlay| %>
+      <div class="overlay-product-overlay mx-2" data-product-id="<%= overlay.product.id %>" data-start-time="<%= overlay.start_time %>" data-end-time="<%= overlay.end_time %>">
+        <div class="overlay-product-card">
+          <img src="<%= overlay.product.image_url %>" class="overlay-product-image" alt="<%= overlay.product.name %>">
+          <div class="overlay-product-info">
+            <p class="overlay-product-title"><%= overlay.product.name[0..20] %></p>
+            <p class="overlay-product-price"><%= number_to_currency(overlay.product.price) %></p>
+            <p class="overlay-add-to-cart">Add to Cart <i class="fas fa-arrow-right"></i></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+  .video-js .vjs-control-bar {
+    height: 40px;
+  }
+  .vjs-overlay {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-color: transparent;
+    overflow-x: auto;
+    padding: 0 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .overlay-product-overlay {
+    display: none;
+    padding: 0 5px;
+  }
+  .overlay-product-card {
+    width: 160px;
+    height: 90px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    overflow: hidden;
+  }
+  .overlay-product-image {
+    width: 33.33%;
+    height: 100%;
+    object-fit: contain;
+    padding-left: 2px;
+  }
+  .overlay-product-info {
+    width: 66.67%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .overlay-product-title {
+    font-size: 13px;
+    color: #333;
+    margin: 0;
+    font-weight: bold;
+  }
+  .overlay-product-price {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+  }
+  .overlay-add-to-cart {
+    font-size: 13px;
+    color: red;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .overlay-add-to-cart i {
+    font-size: 14px;
+  }
+  .video-js .vjs-unmute-button {
+    font-size: 1em;
+    line-height: 2;
+    height: 2em;
+    padding: 0 0.5em;
+    cursor: pointer;
+  }
+</style>

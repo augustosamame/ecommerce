@@ -151,6 +151,21 @@
           </div>
         </div>
       </section>
+
+    <!-- shopping videos -->
+      <section class="shopping-videos">
+        <div class="container-fluid">
+          <h2 class="main-section-title"><%= t('.shopping_videos') %></h2>
+          <div class="video-grid">
+            <% Ecommerce::ShoppingVideo.where(status: "active").order(:priority).each do |shopping_video| %>
+              <div class="video-item">
+                <%= render partial: 'ecommerce/shared/shopping_videos/video_shopping_element', locals: { shopping_video: shopping_video } %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </section>
+
       <!-- country mosaic -->
       <section class="global-products">
         <div class="container-fluid">
@@ -268,3 +283,107 @@ categorías.
   })
 
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function initializeVideoPlayers() {
+    var videoElements = document.querySelectorAll('.shopping-video');
+    videoElements.forEach(function(videoElement, index) {
+      var shoppingVideoId = videoElement.dataset.shoppingVideoId;
+      var player = videojs('video-' + shoppingVideoId, {
+        autoplay: index === 0,
+        muted: true
+      });
+
+      player.ready(function() {
+        var overlay = videoElement.closest('.video-container').querySelector('.vjs-overlay');
+        
+        if (!overlay) {
+          console.error('Overlay not found for video:', shoppingVideoId);
+          return;
+        }
+
+        player.on('timeupdate', function() {
+          var currentTime = player.currentTime();
+          overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+            var startTime = parseFloat(productOverlay.dataset.startTime);
+            var endTime = parseFloat(productOverlay.dataset.endTime);
+            if (currentTime >= startTime && currentTime <= endTime) {
+              productOverlay.style.display = 'block';
+            } else {
+              productOverlay.style.display = 'none';
+            }
+          });
+        });
+
+        overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+          productOverlay.addEventListener('click', function() {
+            var productId = this.dataset.productId;
+            console.log('Product clicked:', productId);
+            // Add your product click functionality here
+          });
+        });
+
+        // Attempt to play the first video
+        if (index === 0) {
+          player.play().then(function() {
+            console.log('Autoplay started for first video');
+          }).catch(function(error) {
+            console.log('Autoplay was prevented for first video:', error);
+          });
+        }
+      });
+    });
+  }
+
+  initializeVideoPlayers();
+});
+</script>
+
+<style>
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .video-container {
+    position: relative;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  }
+  .video-item {
+    max-width: 338px;
+  }
+  .video-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .vjs-overlay {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-color: transparent;
+    overflow-x: auto;
+    padding: 0 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 1;
+  }
+  .add-to-cart {
+    font-size: 13px;
+    color: red;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .add-to-cart i {
+    font-size: 14px;
+  }
+</style>

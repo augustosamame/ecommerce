@@ -46,22 +46,7 @@
 
     <!-- Right Column (Video Player) -->
     <div class="col-md-6">
-      <div class="video-container" style="height: 600px; max-height: 600px; position: relative;">
-        <video
-          id="my-video"
-          class="video-js vjs-fill"
-          controls
-          muted
-          preload="auto"
-          poster="<%= @shopping_video.thumbnail %>"
-        >
-          <source src="<%= @shopping_video.video %>" type="video/mp4" />
-          <p class="vjs-no-js">
-            To view this video please enable JavaScript, and consider upgrading to a
-            web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-          </p>
-        </video>
-      </div>
+      <%= render partial: 'ecommerce/shared/shopping_videos/video_shopping_element', locals: { shopping_video: @shopping_video } %>
     </div>
   </div>
 </div>
@@ -94,7 +79,7 @@
     width: 160px;
     height: 80px;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 5px;
     display: flex;
     overflow: hidden;
   }
@@ -144,37 +129,24 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  var player = videojs('my-video', {
-    autoplay: true,
+  var videoElement = document.querySelector('.shopping-video');
+  var shoppingVideoId = videoElement.dataset.shoppingVideoId;
+  var player = videojs('video-' + shoppingVideoId, {
+    autoplay: false,
     muted: true
   });
 
-  var overlayContent = `
-    <div class="vjs-overlay">
-      <% @shopping_video.shopping_video_overlays.each do |overlay| %>
-        <div class="product-overlay mx-2" data-product-id="<%= overlay.product.id %>" data-start-time="<%= overlay.start_time %>" data-end-time="<%= overlay.end_time %>">
-          <div class="product-card">
-            <img src="<%= overlay.product.image_url %>" class="product-image" alt="<%= overlay.product.name %>">
-            <div class="product-info">
-              <p class="product-title"><%= overlay.product.name %></p>
-              <p class="product-price"><%= number_to_currency(overlay.product.price) %></p>
-              <p class="add-to-cart">Add to Cart <i class="fas fa-arrow-right"></i></p>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  `;
-
   player.ready(function() {
-    var overlay = player.addChild('component', {
-      el: player.addChild('component').el()
-    });
-    overlay.el().innerHTML = overlayContent;
+    var overlay = videoElement.closest('.video-container').querySelector('.vjs-overlay');
+    
+    if (!overlay) {
+      console.error('Overlay not found for video:', shoppingVideoId);
+      return;
+    }
 
     player.on('timeupdate', function() {
       var currentTime = player.currentTime();
-      overlay.el().querySelectorAll('.product-overlay').forEach(function(productOverlay) {
+      overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
         var startTime = parseFloat(productOverlay.dataset.startTime);
         var endTime = parseFloat(productOverlay.dataset.endTime);
         if (currentTime >= startTime && currentTime <= endTime) {
@@ -185,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    overlay.el().querySelectorAll('.product-overlay').forEach(function(productOverlay) {
+    overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
       productOverlay.addEventListener('click', function() {
         var productId = this.dataset.productId;
         console.log('Product clicked:', productId);
@@ -195,9 +167,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Attempt to play the video
     player.play().then(function() {
-      console.log('Autoplay started!');
+      console.log('Autoplay started for video ' + shoppingVideoId);
     }).catch(function(error) {
-      console.log('Autoplay was prevented:', error);
+      console.log('Autoplay was prevented for video ' + shoppingVideoId + ':', error);
     });
   });
 });
