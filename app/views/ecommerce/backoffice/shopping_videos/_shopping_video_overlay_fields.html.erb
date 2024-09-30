@@ -2,8 +2,11 @@
   <div class="form-group lista1" style="margin-top: 0px; margin-bottom: 0px;">
     <div class="container-fluid">
       <div class="row">
-        <div class="lavaggio_grid col-xs-4 t_o1">
+        <div class="lavaggio_grid col-xs-2 t_o1">
           <%= f.input :product_id, as: :select2, collection: Ecommerce::Product.active.order(:permalink), label_method: :permalink, input_html: { class: "product_picker" }, label: "Product", required: true %>
+        </div>
+        <div class="lavaggio_grid col-xs-2 t_o1">
+          <%= f.input :category_id, as: :select2, collection: Ecommerce::Category.active.order(:name), label_method: :name, input_html: { class: "category_picker" }, label: "Category", required: true %>
         </div>
         <div class="lavaggio_grid col-xs-2 t_o1">
           <%= f.input :start_time, label: "Start Time (second)" %>
@@ -32,7 +35,7 @@
 
 $(document).ready(function () {
   
-  $(".product_picker").select2({
+  $(".product_picker, .category_picker").select2({
     width: '100%',
     dropdownAutoWidth: true,
     dropdownParent: $('.nested-fields')

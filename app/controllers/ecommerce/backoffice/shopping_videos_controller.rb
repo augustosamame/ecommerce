@@ -57,7 +57,7 @@ module Ecommerce
 
     def shopping_video_params
       params.require(:shopping_video).permit(:title, :description, :priority, :video, :video_cache, :thumbnail, :thumbnail_cache, :status, :processing_status,
-        shopping_video_overlays_attributes: [:id, :product_id, :start_time, :end_time, :status,:_destroy])
+        shopping_video_overlays_attributes: [:id, :product_id, :category_id, :overlay_type, :start_time, :end_time, :status,:_destroy])
     end
   
   end
