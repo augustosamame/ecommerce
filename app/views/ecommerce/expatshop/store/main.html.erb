@@ -240,11 +240,27 @@
         }
         .video-js.vjs-fullscreen .vjs-overlay {
           bottom: 60px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: auto;
+          max-width: 80%;
+          justify-content: center;
         }
+        .video-js.vjs-fullscreen .vjs-overlay > div {
+          display: flex;
+          justify-content: center;
+          flex-wrap: nowrap;
+          gap: 10px;
+        }
+
         .overlay-product-overlay {
           display: none;
           padding: 0 5px;
         }
+        .video-js.vjs-fullscreen .overlay-product-overlay {
+          flex: 0 0 auto;
+        }
+
         .overlay-product-card {
           width: 160px;
           height: 90px;
@@ -309,6 +325,10 @@
           font-size: 24px;
           padding: 15px;
           text-align: center; /* Center text in fullscreen mode */
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80%;
+          max-width: 177.78vh; /* 16:9 aspect ratio */
         }
       </style>
 
