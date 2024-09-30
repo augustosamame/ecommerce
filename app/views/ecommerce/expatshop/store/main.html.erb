@@ -157,7 +157,7 @@
         <div class="container-fluid">
           <h2 class="main-section-title"><%= t('.shopping_videos') %></h2>
           <div class="shopping-videos-slider">
-            <% Ecommerce::ShoppingVideo.where(status: "active").order(:priority).each do |shopping_video| %>
+            <% Ecommerce::ShoppingVideo.active.order(:priority).each do |shopping_video| %>
               <div class="video-item">
                 <div class="video-container">
                   <video

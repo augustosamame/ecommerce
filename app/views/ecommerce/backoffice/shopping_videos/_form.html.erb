@@ -4,7 +4,7 @@
   <div class="form-inputs">
     <%= f.input :title %>
     <%= f.input :description %>
-    <%= f.input :priority %>
+    <%= f.input :priority, label: "Priority. Lower is better. Must be unique. Current max is #{Ecommerce::ShoppingVideo.maximum(:priority)}" %>
     <%= f.label "Video" %>
     <div class="form-group">
       <br/>
