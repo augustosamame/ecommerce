@@ -347,8 +347,11 @@ $(document).ready(function () {
         {
           breakpoint: 768,
           settings: {
+            infinite: true,
             slidesToShow: 1,
             slidesToScroll: 1,
+            speed: 300,
+            centerMode: true,
           },
         },
       ],
