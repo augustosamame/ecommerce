@@ -12,6 +12,37 @@
         </ul>
       </div>
 
+          <!-- shopping videos -->
+      <section class="shopping-videos">
+        <div class="container-fluid">
+          <h2 class="main-section-title"><%= t('.shopping_videos') %></h2>
+          <div class="shopping-videos-slider">
+          <% lowest_priority_video = Ecommerce::ShoppingVideo.active.order(:priority).first %>
+            <% Ecommerce::ShoppingVideo.active.order(:priority).each do |shopping_video| %>
+              <div class="video-item">
+                <div class="video-container">
+                  <video
+                    id="video-<%= shopping_video.id %>"
+                    class="video-js vjs-fill shopping-video"
+                    controls
+                    preload="auto"
+                    poster="<%= shopping_video.thumbnail %>"
+                    data-shopping-video-id="<%= shopping_video.id %>"
+                    data-shopping-video-should-autoplay="<%= shopping_video == lowest_priority_video ? 'true' : 'false' %>"
+                  >
+                    <source src="<%= shopping_video.video %>" type="video/mp4" />
+                    <p class="vjs-no-js">
+                      To view this video please enable JavaScript, and consider upgrading to a
+                      web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                    </p>
+                  </video>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </section>
+
       <div class="header-slider">
         <div class="container-fluid">
           <div class="brand-slider">
@@ -148,37 +179,6 @@
               </div>
             <% end %>
 
-          </div>
-        </div>
-      </section>
-
-    <!-- shopping videos -->
-      <section class="shopping-videos">
-        <div class="container-fluid">
-          <h2 class="main-section-title"><%= t('.shopping_videos') %></h2>
-          <div class="shopping-videos-slider">
-          <% lowest_priority_video = Ecommerce::ShoppingVideo.active.order(:priority).first %>
-            <% Ecommerce::ShoppingVideo.active.order(:priority).each do |shopping_video| %>
-              <div class="video-item">
-                <div class="video-container">
-                  <video
-                    id="video-<%= shopping_video.id %>"
-                    class="video-js vjs-fill shopping-video"
-                    controls
-                    preload="auto"
-                    poster="<%= shopping_video.thumbnail %>"
-                    data-shopping-video-id="<%= shopping_video.id %>"
-                    data-shopping-video-should-autoplay="<%= shopping_video == lowest_priority_video ? 'true' : 'false' %>"
-                  >
-                    <source src="<%= shopping_video.video %>" type="video/mp4" />
-                    <p class="vjs-no-js">
-                      To view this video please enable JavaScript, and consider upgrading to a
-                      web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                    </p>
-                  </video>
-                </div>
-              </div>
-            <% end %>
           </div>
         </div>
       </section>
