@@ -194,10 +194,16 @@
           .video-item {
             width: 338px; /* Set fixed width */
           }
+          .video-js {
+            height: 460px !important;
+          }
         }
         @media (min-width: 600px) {
           .video-item {
             width: 338px !important; /* Set fixed width */
+          }
+          .video-js {
+            height: 600px !important;
           }
         }
         .video-item {
@@ -209,7 +215,6 @@
         }
         .video-js {
           width: 100% !important; /* Force full width */
-          height: 600px !important;
           padding-top: 56.25% !important; /* 16:9 Aspect Ratio (100 / 16 * 9 = 56.25) */
           border-radius: 5px;
         }
@@ -352,7 +357,7 @@
           position: fixed;
           bottom: 20px;
           right: 20px;
-          width: 200px;
+          width: 178px;
           height: 313px;
           z-index: 9999;
           display: none;
@@ -414,6 +419,9 @@
           width: 24px;
           height: 24px;
           font-size: 18px;
+        }
+        .vjs-picture-in-picture-control {
+          display: none !important;
         }
         .custom-pip-fullscreen {
           top: 35px !important;
