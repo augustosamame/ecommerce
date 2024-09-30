@@ -93,6 +93,7 @@ en-PE:
   ecommerce:
     shopping_videos:
       add_to_cart_label: "Add to Cart"
+      view_products_label: "View Products"
     cart_items:
       create:
         product_out_of_stock: "Product Out of Stock"

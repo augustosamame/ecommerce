@@ -87,6 +87,7 @@ es-PE:
   ecommerce:
     shopping_videos:
       add_to_cart_label: "Agr al Carrito"
+      view_products_label: "Ver Productos"
     cart_items:
       create:
         product_out_of_stock: "Producto Fuera de Stock"

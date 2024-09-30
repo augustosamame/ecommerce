@@ -295,7 +295,7 @@
           color: #666;
           margin: 0;
         }
-        .overlay-product-add-to-cart-button {
+        .overlay-add-to-cart {
           font-size: 13px;
           color: red;
           margin: 0;
@@ -308,7 +308,23 @@
           padding: 0;
           width: 100%;
         }
-        .overlay-product-add-to-cart-button i {
+        .overlay-add-to-cart i {
+          font-size: 14px;
+        }
+        .overlay-category-link {
+          font-size: 13px;
+          color: red;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          width: 100%;
+        }
+        .overlay-category-link i {
           font-size: 14px;
         }
         .vjs-title-overlay {
@@ -341,36 +357,42 @@
         function setupOverlayInteractions(overlay, player) {
           overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
             productOverlay.addEventListener('click', function(e) {
+              // Prevent default action for "Add to Cart" button and category link
+              if (e.target.closest('.overlay-add-to-cart') || e.target.closest('.overlay-category-link')) {
+                return;
+              }
+
               e.preventDefault();
+              var overlayType = this.dataset.overlayType;
               var productId = this.dataset.productId;
-              
-              fetch('/store/cart_items', {
-                method: 'POST',
-                body: JSON.stringify({
-                  cart_item: {
-                    product_id: productId,
-                    quantity: 1
-                  }
-                }),
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-Requested-With': 'XMLHttpRequest',
-                  'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-                },
-                credentials: 'same-origin'
-              })
-              .then(response => response.text())
-              .then(responseText => {
-                // console.log('Server response:', responseText);
-                
-                // Execute the jQuery code returned by the server
-                eval(responseText);
-                
-                // console.log('Product added to cart');
-              })
-              .catch(error => {
-                console.error('Error adding product to cart:', error);
-              });
+              var categoryId = this.dataset.categoryId;
+
+              if (overlayType === 'product' && productId) {
+                fetch('/store/cart_items', {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    cart_item: {
+                      product_id: productId,
+                      quantity: 1
+                    }
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                  },
+                  credentials: 'same-origin'
+                })
+                .then(response => response.text())
+                .then(responseText => {
+                  eval(responseText);
+                })
+                .catch(error => {
+                  console.error('Error adding product to cart:', error);
+                });
+              } else if (overlayType === 'category' && categoryId) {
+                window.location.href = `/store/products?category_id=${categoryId}`;
+              }
             });
           });
         }
@@ -379,17 +401,10 @@
           var videoElements = document.querySelectorAll('.shopping-video');
           videoElements.forEach(function(videoElement, index) {
             var shoppingVideoId = videoElement.dataset.shoppingVideoId;
-            // console.log('Initializing video player:', shoppingVideoId);
-
-            var playerOptions = {
-              muted: true // Mute all videos to allow autoplay
-            };
-
-            if (videoElement.dataset.shoppingVideoShouldAutoplay === 'true') {
-              playerOptions.autoplay = true;
-            }
-
-            var player = videojs('video-' + shoppingVideoId, playerOptions);
+            var player = videojs('video-' + shoppingVideoId, {
+              muted: true,
+              autoplay: videoElement.dataset.shoppingVideoShouldAutoplay === 'true'
+            });
 
             players.push(player);
 
@@ -413,21 +428,36 @@
                   console.error('Error fetching video title:', shoppingVideoId, error);
                 });
 
-              // Existing product overlay code
+              // Product and category overlay code
               fetch(`/store/shopping_videos/${shoppingVideoId}/overlays`)
                 .then(response => response.json())
                 .then(overlays => {
-                  // console.log('Overlays fetched for video:', shoppingVideoId);
                   var overlayContent = `
                     <div class="vjs-overlay">
                       ${overlays.map(overlay => `
-                        <div class="overlay-product-overlay mx-2" data-product-id="${overlay.product_id}" data-start-time="${overlay.start_time}" data-end-time="${overlay.end_time}">
+                        <div class="overlay-product-overlay mx-2" 
+                             data-overlay-type="${overlay.overlay_type}"
+                             data-product-id="${overlay.overlay_type === 'product' ? overlay.product_id : ''}" 
+                             data-category-id="${overlay.overlay_type === 'category' ? overlay.category_id : ''}"
+                             data-start-time="${overlay.start_time}" 
+                             data-end-time="${overlay.end_time}">
                           <div class="overlay-product-card">
-                            <img src="${overlay.product_image_url}" class="overlay-product-image" alt="${overlay.product_name}">
+                            <img src="${overlay.overlay_type === 'product' ? overlay.product_image_url : overlay.category_image_url}" 
+                                 class="overlay-product-image" 
+                                 alt="${overlay.overlay_type === 'product' ? overlay.product_name : overlay.category_name}">
                             <div class="overlay-product-info">
-                              <p class="overlay-product-title">${overlay.product_name.substring(0, 20)}</p>
-                              <p class="overlay-product-price">${overlay.product_price}</p>
-                              <p class="overlay-product-add-to-cart-button">${overlay.add_to_cart_label}</p>
+                              <p class="overlay-product-title">
+                                ${(overlay.overlay_type === 'product' ? overlay.product_name : overlay.category_name).substring(0, 20)}
+                              </p>
+                              ${overlay.overlay_type === 'product' ?
+                                `<p class="overlay-product-price">${overlay.product_price}</p>
+                                 <button class="overlay-add-to-cart">
+                                   <span class="overlay-add-to-cart">${overlay.add_to_cart_label}</span> <i class="fas fa-arrow-right"></i>
+                                 </button>` :
+                                `<a href="/store/products?category_id=${overlay.category_id}" class="overlay-category-link">
+                                   ${overlay.view_products_label}
+                                 </a>`
+                              }
                             </div>
                           </div>
                         </div>
@@ -457,7 +487,7 @@
                 })
                 .catch(error => {
                   console.error('Error fetching overlays for video:', shoppingVideoId, error);
-                });              
+                });
             });
           });
         }
