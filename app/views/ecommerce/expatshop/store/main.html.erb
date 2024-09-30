@@ -317,10 +317,36 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
-          productOverlay.addEventListener('click', function() {
-            var productId = this.dataset.productId;
-            console.log('Product clicked:', productId);
-            // Add your product click functionality here
+          productOverlay.addEventListener('click', function(e) {
+            e.preventDefault();
+            var form = productOverlay.querySelector('.overlay-cart-form');
+            var formData = new FormData(form);
+            fetch(form.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+              },
+              credentials: 'same-origin'
+            })
+            .then(response => response.text())
+            .then(html => {
+              console.log('Product added to cart');
+              // Execute the JavaScript returned in the response
+              var scriptContent = html.match(/\$\((.*?)\);/g);
+              if (scriptContent) {
+                scriptContent.forEach(function(script) {
+                  eval(script);
+                });
+              }
+              if (typeof fly_to_cart === 'function') {
+                fly_to_cart();
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
           });
         });
 

@@ -22,7 +22,13 @@
           <div class="overlay-product-info">
             <p class="overlay-product-title"><%= overlay.product.name[0..20] %></p>
             <p class="overlay-product-price"><%= number_to_currency(overlay.product.price) %></p>
-            <p class="overlay-add-to-cart">Add to Cart <i class="fas fa-arrow-right"></i></p>
+            <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "overlay-cart-form", id: "new_cart_item_overlay_#{overlay.product.id}" } do |f| %>
+              <%= f.hidden_field :product_id, value: overlay.product.id %>
+              <%= f.hidden_field :quantity, value: 1 %>
+              <%= button_tag type: 'submit', class: "overlay-add-to-cart" do %>
+                Add to Cart <i class="fas fa-arrow-right"></i>
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -100,5 +106,24 @@
     height: 2em;
     padding: 0 0.5em;
     cursor: pointer;
+  },
+  .overlay-cart-form {
+    margin: 0;
+  }
+  .overlay-add-to-cart {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .overlay-add-to-cart i {
+    font-size: 14px;
   }
 </style>
