@@ -501,69 +501,98 @@
           customPipContainer.style.display = 'block';
           
           try {
-            // Clone the player
-            var pipPlayer = player.el().cloneNode(true);
-            pipPlayer.id = 'pip-' + player.el().id;
-            customPipContainer.appendChild(pipPlayer);
+            var pipVideoElement = document.createElement('video');
+            pipVideoElement.className = 'video-js vjs-fill shopping-video';
+            pipVideoElement.id = 'pip-' + player.el().id;
+            customPipContainer.appendChild(pipVideoElement);
 
-            // Initialize the cloned player
-            var pipPlayerInstance = videojs(pipPlayer.id, {
+            var originalSource = player.currentSource();
+
+            var pipPlayerInstance = videojs(pipVideoElement.id, {
               muted: player.muted(),
-              autoplay: true
+              autoplay: false,
+              controls: true,
+              playsinline: true,
+              sources: [{ type: originalSource.type, src: originalSource.src }]
             });
 
-            if (!pipPlayerInstance || typeof pipPlayerInstance.currentTime !== 'function') {
-              throw new Error('Failed to initialize PIP player');
-            }
+            pipPlayerInstance.ready(function() {
+              console.log('PIP player ready:', pipPlayerInstance.id());
 
-            // Sync the time of the PIP player with the main player
-            pipPlayerInstance.currentTime(player.currentTime());
+              pipPlayerInstance.load();
+              pipPlayerInstance.currentTime(player.currentTime());
+              pipPlayerInstance.muted(player.muted());
+              pipPlayerInstance.volume(player.volume());
 
-            // Always play the PIP video
-            pipPlayerInstance.play().catch(e => console.error('Failed to play PIP video:', e));
+              // Recreate overlays
+              var originalOverlay = player.el().querySelector('.vjs-overlay');
+              if (originalOverlay) {
+                var pipOverlay = originalOverlay.cloneNode(true);
+                pipOverlay.style.transform = 'scale(0.5)';
+                pipOverlay.style.transformOrigin = 'bottom left';
+                pipOverlay.style.bottom = '10px';
+                pipPlayerInstance.el().appendChild(pipOverlay);
 
-            // Sync muted state and volume
-            pipPlayerInstance.muted(player.muted());
-            pipPlayerInstance.volume(player.volume());
+                // Recreate overlay interactions
+                setupOverlayInteractions(pipPlayerInstance, pipOverlay);
 
-            // Scale down overlays for PIP
-            var pipOverlay = pipPlayerInstance.el().querySelector('.vjs-overlay');
-            if (pipOverlay) {
-              pipOverlay.style.transform = 'scale(0.5)';
-              pipOverlay.style.transformOrigin = 'bottom left';
-              pipOverlay.style.bottom = '10px';
-            }
-
-            // Add fullscreen button
-            var fullscreenButton = document.createElement('button');
-            fullscreenButton.className = 'custom-pip-fullscreen';
-            fullscreenButton.title = 'Switch to fullscreen';
-            fullscreenButton.addEventListener('click', function() {
-              var currentTime = pipPlayerInstance.currentTime();
-              var isPlaying = !pipPlayerInstance.paused();
-              exitCustomPip();
-              player.currentTime(currentTime);
-              if (isPlaying) {
-                player.play().catch(e => console.error('Failed to play main video:', e));
+                // Handle overlay visibility based on video time
+                pipPlayerInstance.on('timeupdate', function() {
+                  var currentTime = pipPlayerInstance.currentTime();
+                  pipOverlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+                    var startTime = parseFloat(productOverlay.dataset.startTime);
+                    var endTime = parseFloat(productOverlay.dataset.endTime);
+                    if (currentTime >= startTime && currentTime <= endTime) {
+                      productOverlay.style.display = 'block';
+                    } else {
+                      productOverlay.style.display = 'none';
+                    }
+                  });
+                });
               }
-              player.requestFullscreen();
-            });
-            pipPlayerInstance.el().appendChild(fullscreenButton);
 
-            // Add mute/unmute button
-            var muteButton = document.createElement('button');
-            muteButton.className = 'custom-pip-mute';
-            muteButton.title = 'Toggle mute';
-            muteButton.classList.toggle('muted', pipPlayerInstance.muted());
-            muteButton.addEventListener('click', function() {
-              pipPlayerInstance.muted(!pipPlayerInstance.muted());
+              // Recreate title overlay
+              var originalTitleOverlay = player.el().querySelector('.vjs-title-overlay');
+              if (originalTitleOverlay) {
+                var pipTitleOverlay = originalTitleOverlay.cloneNode(true);
+                pipTitleOverlay.style.fontSize = '12px'; // Adjust size for PIP view
+                pipPlayerInstance.el().appendChild(pipTitleOverlay);
+              }
+
+              // Add fullscreen button
+              var fullscreenButton = document.createElement('button');
+              fullscreenButton.className = 'custom-pip-fullscreen';
+              fullscreenButton.title = 'Switch to fullscreen';
+              fullscreenButton.addEventListener('click', function() {
+                var currentTime = pipPlayerInstance.currentTime();
+                var isPlaying = !pipPlayerInstance.paused();
+                exitCustomPip();
+                player.currentTime(currentTime);
+                if (isPlaying) {
+                  player.play().catch(e => console.error('Failed to play main video:', e));
+                }
+                player.requestFullscreen();
+              });
+              pipPlayerInstance.el().appendChild(fullscreenButton);
+
+              // Add mute/unmute button
+              var muteButton = document.createElement('button');
+              muteButton.className = 'custom-pip-mute';
+              muteButton.title = 'Toggle mute';
               muteButton.classList.toggle('muted', pipPlayerInstance.muted());
-              player.muted(pipPlayerInstance.muted()); // Sync mute state with original player
-            });
-            pipPlayerInstance.el().appendChild(muteButton);
+              muteButton.addEventListener('click', function() {
+                pipPlayerInstance.muted(!pipPlayerInstance.muted());
+                muteButton.classList.toggle('muted', pipPlayerInstance.muted());
+                player.muted(pipPlayerInstance.muted()); // Sync mute state with original player
+              });
+              pipPlayerInstance.el().appendChild(muteButton);
 
-            // Store reference to original player
-            pipPlayerInstance.originalPlayer = player;
+              pipPlayerInstance.originalPlayer = player;
+
+              if (!player.paused()) {
+                pipPlayerInstance.play().catch(e => console.error('Failed to play PIP video:', e));
+              }
+            });
 
             closeButton.addEventListener('click', function() {
               exitCustomPip();
@@ -609,27 +638,48 @@
           var rect = player.el().getBoundingClientRect();
           var windowHeight = window.innerHeight || document.documentElement.clientHeight;
           
-          var visiblePercentage = (Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0)) / rect.height;
+          // Calculate how much of the video is above the viewport
+          var visibleTop = Math.max(0, rect.top);
+          var hiddenTop = Math.max(0, -rect.top);
+          
+          // Calculate the percentage of the video that's above the viewport
+          var percentHidden = hiddenTop / rect.height;
 
-          if (visiblePercentage < 0.2 && !player.paused() && player !== activePlayer) {
+          // Only enter PIP mode if more than 80% of the video is above the viewport
+          // and the video is playing
+          if (percentHidden > 0.8 && !player.paused() && player !== activePlayer) {
+            console.log('Entering PIP mode for player:', player.id());
             enterCustomPip(player);
             activePlayer = player;
             isPipActive = true;
+          } else if (percentHidden <= 0.8 && isPipActive && player === activePlayer) {
+            console.log('Exiting PIP mode for player:', player.id());
+            exitCustomPip();
           }
         }
 
-        var scrollDebounceTimer;
-        window.addEventListener('scroll', function() {
-          clearTimeout(scrollDebounceTimer);
-          scrollDebounceTimer = setTimeout(function() {
-            players.forEach(checkPlayerVisibility);
-          }, 100);
-        });
+        // Debounce function to limit how often the scroll event fires
+        function debounce(func, wait) {
+          let timeout;
+          return function executedFunction(...args) {
+            const later = () => {
+              clearTimeout(timeout);
+              func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+          };
+        }
 
-        function setupOverlayInteractions(overlay, player) {
-          overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+        // Use the debounce function when adding the scroll event listener
+        window.addEventListener('scroll', debounce(function() {
+          players.forEach(checkPlayerVisibility);
+        }, 100));
+
+        // Helper function to setup overlay interactions
+        function setupOverlayInteractions(player, overlay) {
+          overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
             productOverlay.addEventListener('click', function(e) {
-              // Prevent default action for "Add to Cart" button and category link
               if (e.target.closest('.overlay-add-to-cart') || e.target.closest('.overlay-category-link')) {
                 return;
               }
@@ -669,15 +719,11 @@
           });
         }
 
-        window.videoPlayers = {};
-
-
         function initializeVideoPlayers() {
           var videoElements = document.querySelectorAll('.shopping-video');
           videoElements.forEach(function(videoElement, index) {
             var shoppingVideoId = videoElement.dataset.shoppingVideoId;
             var shouldAutoplay = videoElement.dataset.shoppingVideoShouldAutoplay === 'true';
-
             var player = videojs('video-' + shoppingVideoId, {
               muted: true,
               autoplay: false,
@@ -686,136 +732,118 @@
               nativeControlsForTouch: false
             });
 
-            window.videoPlayers[shoppingVideoId] = player;
+            players.push(player);
 
             player.on('loadedmetadata', function() {
-              console.log('Player is ready for video', shoppingVideoId);
-      
-              // Safely set attributes
-              if (player.tech_ && player.tech_.el_) {
-                console.log('setting playsinline')
-                player.tech_.el_.setAttribute('playsinline', '');
-                player.tech_.el_.setAttribute('webkit-playsinline', '');
-              }
+              setupCustomPipFunctionality(player);
 
-              // Disable full-screen button if it exists
-              if (player.controlBar && player.controlBar.fullscreenToggle) {
-                player.controlBar.fullscreenToggle.hide();
-              }
+              // Add title overlay
+              fetch(`/store/shopping_videos/${shoppingVideoId}`)
+                .then(response => response.json())
+                .then(videoData => {
+                  var titleOverlayContent = `
+                    <div class="vjs-title-overlay">
+                      ${videoData.title}
+                    </div>
+                  `;
 
-              // Attempt to play the video
+                  var titleOverlay = player.addChild('component', {
+                    el: player.addChild('component').el()
+                  });
+                  titleOverlay.el().innerHTML = titleOverlayContent;
+                })
+                .catch(error => {
+                  console.error('Error fetching video title:', shoppingVideoId, error);
+                });
+
+              // Product and category overlay code
+              fetch(`/store/shopping_videos/${shoppingVideoId}/overlays`)
+                .then(response => response.json())
+                .then(overlays => {
+                  var overlayContent = `
+                    <div class="vjs-overlay">
+                      ${overlays.map(overlay => `
+                        <div class="overlay-product-overlay mx-2" 
+                             data-overlay-type="${overlay.overlay_type}"
+                             data-product-id="${overlay.overlay_type === 'product' ? overlay.product_id : ''}" 
+                             data-category-id="${overlay.overlay_type === 'category' ? overlay.category_id : ''}"
+                             data-start-time="${overlay.start_time}" 
+                             data-end-time="${overlay.end_time}">
+                          <div class="overlay-product-card">
+                            <img src="${overlay.overlay_type === 'product' ? overlay.product_image_url : overlay.category_image_url}" 
+                                 class="overlay-product-image" 
+                                 alt="${overlay.overlay_type === 'product' ? overlay.product_name : overlay.category_name}">
+                            <div class="overlay-product-info">
+                              <p class="overlay-product-title">
+                                ${(overlay.overlay_type === 'product' ? overlay.product_name : overlay.category_name).substring(0, 20)}
+                              </p>
+                              ${overlay.overlay_type === 'product' ?
+                                `<p class="overlay-product-price">${overlay.product_price}</p>
+                                 <button class="overlay-add-to-cart">
+                                   <span class="overlay-add-to-cart">${overlay.add_to_cart_label}</span> <i class="fas fa-arrow-right"></i>
+                                 </button>` :
+                                `<a href="/store/products?category_id=${overlay.category_id}" class="overlay-category-link">
+                                   ${overlay.view_products_label}
+                                 </a>`
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      `).join('')}
+                    </div>
+                  `;
+
+                  var overlay = player.addChild('component', {
+                    el: player.addChild('component').el()
+                  });
+                  overlay.el().innerHTML = overlayContent;
+
+                  setupOverlayInteractions(player, overlay.el());
+
+                  player.on('timeupdate', function() {
+                    var currentTime = player.currentTime();
+                    overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+                      var startTime = parseFloat(productOverlay.dataset.startTime);
+                      var endTime = parseFloat(productOverlay.dataset.endTime);
+                      if (currentTime >= startTime && currentTime <= endTime) {
+                        productOverlay.style.display = 'block';
+                      } else {
+                        productOverlay.style.display = 'none';
+                      }
+                    });
+                  });
+                })
+                .catch(error => {
+                  console.error('Error fetching overlays for video:', shoppingVideoId, error);
+                });
+
               if (shouldAutoplay) {
-                console.log('Attempting shouldAutoplay for video', shouldAutoplay, shoppingVideoId);
-                player.muted(true);
+                console.log('Attempting autoplay for video', shoppingVideoId);
+                player.muted(true); // Ensure the video is muted for autoplay
                 var playPromise = player.play();
                 
-                console.log('player', player)
-                
                 if (playPromise !== undefined) {
-                  console.log('player is ready? 0 means no', player.readyState())
-                  console.log('player paused?', player.paused())
                   playPromise.then(() => {
-                      console.log('Autoplay started successfully for video', shoppingVideoId);
-                    })
-                    .catch((error) => {
-                      console.error('Autoplay prevented for video', shoppingVideoId, error);
-                      // Show a "Play" button or custom thumbnail
-                      if (player.posterImage) player.posterImage.show();
-                      if (player.bigPlayButton) player.bigPlayButton.show();
-                    });
+                    console.log('Autoplay started for video', shoppingVideoId);
+                  }).catch(error => {
+                    console.log('Autoplay prevented for video', shoppingVideoId, error);
+                    // Autoplay was prevented, show poster and play button
+                    if (player.posterImage) player.posterImage.show();
+                    if (player.bigPlayButton) player.bigPlayButton.show();
+                  });
                 } else {
                   console.log('Play promise is undefined for video', shoppingVideoId);
                 }
               } else {
                 console.log('Autoplay not attempted for video', shoppingVideoId);
+                // For non-autoplay videos, ensure the poster and play button are visible
+                if (player.posterImage) player.posterImage.show();
+                if (player.bigPlayButton) player.bigPlayButton.show();
               }
 
-              setupCustomPipFunctionality(player);
-              setupOverlays(player, shoppingVideoId);
+
             });
           });
-        }
-
-        function setupOverlays(player, shoppingVideoId) {
-          // Add title overlay
-          fetch(`/store/shopping_videos/${shoppingVideoId}`)
-            .then(response => response.json())
-            .then(videoData => {
-              var titleOverlayContent = `
-                <div class="vjs-title-overlay">
-                  ${videoData.title}
-                </div>
-              `;
-
-              var titleOverlay = player.addChild('component', {
-                el: player.addChild('component').el()
-              });
-              titleOverlay.el().innerHTML = titleOverlayContent;
-            })
-            .catch(error => {
-              console.error('Error fetching video title:', shoppingVideoId, error);
-            });
-
-          // Product and category overlay code
-          fetch(`/store/shopping_videos/${shoppingVideoId}/overlays`)
-            .then(response => response.json())
-            .then(overlays => {
-              var overlayContent = `
-                <div class="vjs-overlay">
-                  ${overlays.map(overlay => `
-                    <div class="overlay-product-overlay mx-2" 
-                         data-overlay-type="${overlay.overlay_type}"
-                         data-product-id="${overlay.overlay_type === 'product' ? overlay.product_id : ''}" 
-                         data-category-id="${overlay.overlay_type === 'category' ? overlay.category_id : ''}"
-                         data-start-time="${overlay.start_time}" 
-                         data-end-time="${overlay.end_time}">
-                      <div class="overlay-product-card">
-                        <img src="${overlay.overlay_type === 'product' ? overlay.product_image_url : overlay.category_image_url}" 
-                             class="overlay-product-image" 
-                             alt="${overlay.overlay_type === 'product' ? overlay.product_name : overlay.category_name}">
-                        <div class="overlay-product-info">
-                          <p class="overlay-product-title">
-                            ${(overlay.overlay_type === 'product' ? overlay.product_name : overlay.category_name).substring(0, 20)}
-                          </p>
-                          ${overlay.overlay_type === 'product' ?
-                            `<p class="overlay-product-price">${overlay.product_price}</p>
-                             <button class="overlay-add-to-cart">
-                               <span class="overlay-add-to-cart">${overlay.add_to_cart_label}</span> <i class="fas fa-arrow-right"></i>
-                             </button>` :
-                            `<a href="/store/products?category_id=${overlay.category_id}" class="overlay-category-link">
-                               ${overlay.view_products_label}
-                             </a>`
-                          }
-                        </div>
-                      </div>
-                    </div>
-                  `).join('')}
-                </div>
-              `;
-
-              var overlay = player.addChild('component', {
-                el: player.addChild('component').el()
-              });
-              overlay.el().innerHTML = overlayContent;
-
-              setupOverlayInteractions(overlay, player);
-
-              player.on('timeupdate', function() {
-                var currentTime = player.currentTime();
-                overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
-                  var startTime = parseFloat(productOverlay.dataset.startTime);
-                  var endTime = parseFloat(productOverlay.dataset.endTime);
-                  if (currentTime >= startTime && currentTime <= endTime) {
-                    productOverlay.style.display = 'block';
-                  } else {
-                    productOverlay.style.display = 'none';
-                  }
-                });
-              });
-            })
-            .catch(error => {
-              console.error('Error fetching overlays for video:', shoppingVideoId, error);
-            });
         }
 
         initializeVideoPlayers();
