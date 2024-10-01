@@ -471,6 +471,7 @@
         document.body.appendChild(customPipContainer);
         var activePlayer = null;
         var isPipActive = false;
+        var pipManuallyClosed = false;
 
         function setupCustomPipFunctionality(player) {
           var pipButton = player.controlBar.addChild('button', {
@@ -561,6 +562,11 @@
             // Store reference to original player
             pipPlayerInstance.originalPlayer = player;
 
+            closeButton.addEventListener('click', function() {
+              exitCustomPip();
+              pipManuallyClosed = true;
+            });
+
           } catch (error) {
             console.error('Error in enterCustomPip:', error);
             customPipContainer.style.display = 'none';
@@ -575,10 +581,8 @@
               var originalPlayer = pipPlayerInstance.originalPlayer;
               
               if (originalPlayer && typeof originalPlayer.currentTime === 'function') {
-                // Sync time back to the original player
                 originalPlayer.currentTime(pipPlayerInstance.currentTime());
                 
-                // Sync play/pause state
                 if (!pipPlayerInstance.paused()) {
                   originalPlayer.play().catch(e => console.error('Failed to play original video:', e));
                 }
@@ -596,7 +600,28 @@
           activePlayer = null;
         }
 
-        closeButton.addEventListener('click', exitCustomPip);
+        function checkPlayerVisibility(player) {
+          if (isPipActive || pipManuallyClosed) return;
+
+          var rect = player.el().getBoundingClientRect();
+          var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+          
+          var visiblePercentage = (Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0)) / rect.height;
+
+          if (visiblePercentage < 0.2 && !player.paused() && player !== activePlayer) {
+            enterCustomPip(player);
+            activePlayer = player;
+            isPipActive = true;
+          }
+        }
+
+        var scrollDebounceTimer;
+        window.addEventListener('scroll', function() {
+          clearTimeout(scrollDebounceTimer);
+          scrollDebounceTimer = setTimeout(function() {
+            players.forEach(checkPlayerVisibility);
+          }, 100);
+        });
 
         function setupOverlayInteractions(overlay, player) {
           overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
@@ -737,32 +762,6 @@
             });
           });
         }
-
-        function checkPlayerVisibility(player) {
-          if (isPipActive) return;
-
-          var rect = player.el().getBoundingClientRect();
-          var windowHeight = window.innerHeight || document.documentElement.clientHeight;
-          
-          // Calculate the percentage of the video that's still visible
-          var visiblePercentage = (Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0)) / rect.height;
-
-          // Check if less than 20% of the video is visible and it's playing
-          if (visiblePercentage < 0.2 && !player.paused() && player !== activePlayer) {
-            enterCustomPip(player);
-            activePlayer = player;
-            isPipActive = true;
-          }
-        }
-
-        // Add a debounced scroll listener
-        var scrollDebounceTimer;
-        window.addEventListener('scroll', function() {
-          clearTimeout(scrollDebounceTimer);
-          scrollDebounceTimer = setTimeout(function() {
-            players.forEach(checkPlayerVisibility);
-          }, 100); // Adjust this value as needed for performance
-        });
 
         initializeVideoPlayers();
       });
