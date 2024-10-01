@@ -401,7 +401,8 @@
           font-size: 6.5px; /* Half of the original font size */
         }
         .custom-pip-close,
-        .custom-pip-fullscreen {
+        .custom-pip-fullscreen,
+        .custom-pip-mute {
           position: absolute;
           background: rgba(0,0,0,0.5);
           color: white;
@@ -420,18 +421,32 @@
           height: 24px;
           font-size: 18px;
         }
-        .vjs-picture-in-picture-control {
-          display: none !important;
-        }
         .custom-pip-fullscreen {
           top: 35px !important;
-          right: 8px !important; /* Position it to the left of the close button */
-          width: 24px !important; /* Make it larger */
-          height: 24px !important; /* Make it larger */
-          font-size: 28px !important; /* Increase font size */
+          right: 8px !important;
+          width: 24px !important;
+          height: 24px !important;
+          font-size: 28px !important;
+        }
+        .custom-pip-mute {
+          top: 75px !important;
+          right: 8px !important;
+          width: 24px !important;
+          height: 24px !important;
+          font-size: 24px !important;
+        }
+        .custom-pip-mute:before {
+          content: '♪';  /* Unicode character for eighth note */
+        }
+
+        .custom-pip-mute.muted:before {
+          content: '♪̸';  /* Unicode character for eighth note with a slash */
         }
         .custom-pip-fullscreen:before {
           content: '⤢';
+        }
+        .vjs-picture-in-picture-control {
+          display: none !important;
         }
         .vjs-pip-button {
             cursor: pointer;
@@ -474,75 +489,105 @@
         }
 
         function enterCustomPip(player) {
-          customPipContainer.style.display = 'block';
-          
-          // Clone the player
-          var pipPlayer = player.el().cloneNode(true);
-          pipPlayer.id = 'pip-' + player.el().id;
-          customPipContainer.appendChild(pipPlayer);
-
-          // Initialize the cloned player
-          var pipPlayerInstance = videojs(pipPlayer.id, {
-            muted: player.muted(),
-            autoplay: true
-          });
-
-          // Sync the time of the PIP player with the main player
-          pipPlayerInstance.currentTime(player.currentTime());
-
-          // Always play the PIP video
-          pipPlayerInstance.play();
-
-          // Sync muted state
-          pipPlayerInstance.muted(player.muted());
-
-          // Sync volume
-          pipPlayerInstance.volume(player.volume());
-
-          // Scale down overlays for PIP
-          var pipOverlay = pipPlayerInstance.el().querySelector('.vjs-overlay');
-          if (pipOverlay) {
-            pipOverlay.style.transform = 'scale(0.5)';
-            pipOverlay.style.transformOrigin = 'bottom left';
-            pipOverlay.style.bottom = '10px';
+          if (!player || typeof player.el !== 'function') {
+            console.error('Invalid player object');
+            return;
           }
 
-          // Add fullscreen button
-          var fullscreenButton = document.createElement('button');
-          fullscreenButton.className = 'custom-pip-fullscreen';
-          fullscreenButton.title = 'Switch to fullscreen';
-          fullscreenButton.addEventListener('click', function() {
-            var currentTime = pipPlayerInstance.currentTime();
-            var isPlaying = !pipPlayerInstance.paused();
-            exitCustomPip();
-            player.currentTime(currentTime);
-            if (isPlaying) {
-              player.play();
-            }
-            player.requestFullscreen();
-          });
-          pipPlayerInstance.el().appendChild(fullscreenButton);
+          customPipContainer.style.display = 'block';
+          
+          try {
+            // Clone the player
+            var pipPlayer = player.el().cloneNode(true);
+            pipPlayer.id = 'pip-' + player.el().id;
+            customPipContainer.appendChild(pipPlayer);
 
-          // Store reference to original player
-          pipPlayerInstance.originalPlayer = player;
-          isPipActive = true;
+            // Initialize the cloned player
+            var pipPlayerInstance = videojs(pipPlayer.id, {
+              muted: player.muted(),
+              autoplay: true
+            });
+
+            if (!pipPlayerInstance || typeof pipPlayerInstance.currentTime !== 'function') {
+              throw new Error('Failed to initialize PIP player');
+            }
+
+            // Sync the time of the PIP player with the main player
+            pipPlayerInstance.currentTime(player.currentTime());
+
+            // Always play the PIP video
+            pipPlayerInstance.play().catch(e => console.error('Failed to play PIP video:', e));
+
+            // Sync muted state and volume
+            pipPlayerInstance.muted(player.muted());
+            pipPlayerInstance.volume(player.volume());
+
+            // Scale down overlays for PIP
+            var pipOverlay = pipPlayerInstance.el().querySelector('.vjs-overlay');
+            if (pipOverlay) {
+              pipOverlay.style.transform = 'scale(0.5)';
+              pipOverlay.style.transformOrigin = 'bottom left';
+              pipOverlay.style.bottom = '10px';
+            }
+
+            // Add fullscreen button
+            var fullscreenButton = document.createElement('button');
+            fullscreenButton.className = 'custom-pip-fullscreen';
+            fullscreenButton.title = 'Switch to fullscreen';
+            fullscreenButton.addEventListener('click', function() {
+              var currentTime = pipPlayerInstance.currentTime();
+              var isPlaying = !pipPlayerInstance.paused();
+              exitCustomPip();
+              player.currentTime(currentTime);
+              if (isPlaying) {
+                player.play().catch(e => console.error('Failed to play main video:', e));
+              }
+              player.requestFullscreen();
+            });
+            pipPlayerInstance.el().appendChild(fullscreenButton);
+
+            // Add mute/unmute button
+            var muteButton = document.createElement('button');
+            muteButton.className = 'custom-pip-mute';
+            muteButton.title = 'Toggle mute';
+            muteButton.classList.toggle('muted', pipPlayerInstance.muted());
+            muteButton.addEventListener('click', function() {
+              pipPlayerInstance.muted(!pipPlayerInstance.muted());
+              muteButton.classList.toggle('muted', pipPlayerInstance.muted());
+              player.muted(pipPlayerInstance.muted()); // Sync mute state with original player
+            });
+            pipPlayerInstance.el().appendChild(muteButton);
+
+            // Store reference to original player
+            pipPlayerInstance.originalPlayer = player;
+
+          } catch (error) {
+            console.error('Error in enterCustomPip:', error);
+            customPipContainer.style.display = 'none';
+          }
         }
 
         function exitCustomPip() {
           var pipPlayer = customPipContainer.querySelector('.video-js');
           if (pipPlayer) {
-            var pipPlayerInstance = videojs(pipPlayer.id);
-            var originalPlayer = pipPlayerInstance.originalPlayer;
-            
-            // Sync time back to the original player
-            originalPlayer.currentTime(pipPlayerInstance.currentTime());
-            
-            // Sync play/pause state
-            if (!pipPlayerInstance.paused()) {
-              originalPlayer.play();
-            }
+            try {
+              var pipPlayerInstance = videojs(pipPlayer.id);
+              var originalPlayer = pipPlayerInstance.originalPlayer;
+              
+              if (originalPlayer && typeof originalPlayer.currentTime === 'function') {
+                // Sync time back to the original player
+                originalPlayer.currentTime(pipPlayerInstance.currentTime());
+                
+                // Sync play/pause state
+                if (!pipPlayerInstance.paused()) {
+                  originalPlayer.play().catch(e => console.error('Failed to play original video:', e));
+                }
+              }
 
-            pipPlayerInstance.dispose();
+              pipPlayerInstance.dispose();
+            } catch (error) {
+              console.error('Error in exitCustomPip:', error);
+            }
           }
           customPipContainer.style.display = 'none';
           customPipContainer.innerHTML = '';

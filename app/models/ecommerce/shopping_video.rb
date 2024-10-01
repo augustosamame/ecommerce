@@ -18,7 +18,7 @@ module Ecommerce
     after_save :check_video_changed
 
     def queue_video_processing
-      Ecommerce::VideoProcessingWorker.perform_async(self.id)
+      VideoProcessingWorker.perform_in(5.seconds, self.id)
     end
 
     def check_video_changed
