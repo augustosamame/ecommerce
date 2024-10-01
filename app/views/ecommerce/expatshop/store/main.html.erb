@@ -454,6 +454,8 @@
         closeButton.innerHTML = '×';
         customPipContainer.appendChild(closeButton);
         document.body.appendChild(customPipContainer);
+        var activePlayer = null;
+        var isPipActive = false;
 
         function setupCustomPipFunctionality(player) {
           var pipButton = player.controlBar.addChild('button', {
@@ -523,6 +525,7 @@
 
           // Store reference to original player
           pipPlayerInstance.originalPlayer = player;
+          isPipActive = true;
         }
 
         function exitCustomPip() {
@@ -544,6 +547,8 @@
           customPipContainer.style.display = 'none';
           customPipContainer.innerHTML = '';
           customPipContainer.appendChild(closeButton);
+          isPipActive = false;
+          activePlayer = null;
         }
 
         closeButton.addEventListener('click', exitCustomPip);
@@ -687,6 +692,32 @@
             });
           });
         }
+
+        function checkPlayerVisibility(player) {
+          if (isPipActive) return;
+
+          var rect = player.el().getBoundingClientRect();
+          var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+          
+          // Calculate the percentage of the video that's still visible
+          var visiblePercentage = (Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0)) / rect.height;
+
+          // Check if less than 20% of the video is visible and it's playing
+          if (visiblePercentage < 0.2 && !player.paused() && player !== activePlayer) {
+            enterCustomPip(player);
+            activePlayer = player;
+            isPipActive = true;
+          }
+        }
+
+        // Add a debounced scroll listener
+        var scrollDebounceTimer;
+        window.addEventListener('scroll', function() {
+          clearTimeout(scrollDebounceTimer);
+          scrollDebounceTimer = setTimeout(function() {
+            players.forEach(checkPlayerVisibility);
+          }, 100); // Adjust this value as needed for performance
+        });
 
         initializeVideoPlayers();
       });
