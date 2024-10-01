@@ -7,7 +7,7 @@ class VideoProcessingWorker
 
   def perform(shopping_video_id)
     shopping_video = Ecommerce::ShoppingVideo.find(shopping_video_id)
-    shopping_video.update(processing_status: 'processing')
+    shopping_video.update_column(:processing_status, 'processing')
 
     begin
       # Download file from S3
@@ -25,18 +25,17 @@ class VideoProcessingWorker
 
       # Upload processed file back to S3
       File.open(output_path) do |file|
-        shopping_video.video = file
-        shopping_video.save!
+        shopping_video.update_column(:video, file)
       end
 
-      shopping_video.update(processing_status: 'completed')
+      shopping_video.update_column(:processing_status, 'completed')
 
       # Clean up temporary files
       File.delete(local_file_path) if File.exist?(local_file_path)
       File.delete(output_path) if File.exist?(output_path)
 
     rescue => e
-      shopping_video.update(processing_status: 'failed')
+      shopping_video.update_column(:processing_status, 'failed')
       Rails.logger.error "Video processing failed for ShoppingVideo #{shopping_video_id}: #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
     end
