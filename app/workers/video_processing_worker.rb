@@ -50,7 +50,7 @@ class VideoProcessingWorker
       custom: %w(
         -pix_fmt yuv420p
         -profile:v main
-        -level 3.1
+        -level 5.1
         -movflags +faststart
         -crf 23
         -preset medium
@@ -58,6 +58,7 @@ class VideoProcessingWorker
         -bufsize 10M
         -ar 44100
         -b:a 128k
+        -strict -2
       )
     }
   end

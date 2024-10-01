@@ -26,6 +26,7 @@
                     class="video-js vjs-fill shopping-video"
                     controls
                     preload="auto"
+                    playsinline
                     poster="<%= shopping_video.thumbnail %>"
                     data-shopping-video-id="<%= shopping_video.id %>"
                     data-shopping-video-should-autoplay="<%= shopping_video == lowest_priority_video ? 'true' : 'false' %>"
@@ -672,13 +673,34 @@
             var shoppingVideoId = videoElement.dataset.shoppingVideoId;
             var player = videojs('video-' + shoppingVideoId, {
               muted: true,
-              autoplay: videoElement.dataset.shoppingVideoShouldAutoplay === 'true'
+              autoplay: videoElement.dataset.shoppingVideoShouldAutoplay === 'true',
+              playsinline: true,
+              controls: true,
+              nativeControlsForTouch: false
             });
+
+            player.tech().el().setAttribute('playsinline', '');
+            player.tech().el().setAttribute('webkit-playsinline', '');
+
+            player.controlBar.fullscreenToggle.hide();
 
             players.push(player);
 
             player.ready(function() {
               setupCustomPipFunctionality(player);
+
+              var playPromise = player.play();
+      
+              if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                  // Autoplay started
+                }).catch(error => {
+                  // Autoplay was prevented
+                  // Show a "Play" button or custom thumbnail
+                  player.posterImage.show();
+                  player.bigPlayButton.show();
+                });
+              }
 
               // Add title overlay
               fetch(`/store/shopping_videos/${shoppingVideoId}`)
