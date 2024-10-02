@@ -23,7 +23,7 @@ module Ecommerce
             bucket = record['s3']['bucket']['name']
             key = record['s3']['object']['key']
             Rails.logger.info "Sending to transcoder, bucket: #{bucket}, key: #{key}"
-            MovToMp4TranscoderWorker.perform_async(bucket, key)
+            AwsTranscoderWorker.perform_async(bucket, key)
           end
         end
       end
