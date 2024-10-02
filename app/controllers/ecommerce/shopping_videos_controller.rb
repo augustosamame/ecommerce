@@ -11,15 +11,27 @@ module Ecommerce
     def mov_to_mp4_success
       Rails.logger.info("Mov to mp4 success")
       Rails.logger.info(params)
+      Rails.logger.info "SNS Raw Message: #{request.raw_post}"
+      sns_message = JSON.parse(request.raw_post)
+
+    # Log specific parts of the message
+      Rails.logger.info "SNS Message Type: #{sns_message['Type']}"
+      Rails.logger.info "SNS Topic ARN: #{sns_message['TopicArn']}"
       render json: {message: "Mov to mp4 success"}
     end
 
     def mov_to_mp4_error
       Rails.logger.info("Mov to mp4 error")
       Rails.logger.info(params)
+      Rails.logger.info "SNS Raw Message: #{request.raw_post}"
+      sns_message = JSON.parse(request.raw_post)
+
+    # Log specific parts of the message
+      Rails.logger.info "SNS Message Type: #{sns_message['Type']}"
+      Rails.logger.info "SNS Topic ARN: #{sns_message['TopicArn']}"
       render json: {message: "Mov to mp4 error"}
     end
-    
+
     def show
       @shopping_video = Ecommerce::ShoppingVideo.find(params[:id])
       render json: {
