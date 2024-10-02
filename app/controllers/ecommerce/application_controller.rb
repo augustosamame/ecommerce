@@ -4,8 +4,6 @@ module Ecommerce
 
   class ApplicationController < ::ApplicationController
     #include Ecommerce::BeforeRender
-    skip_before_action :verify_authenticity_token, only: [:mov_to_mp4_success, :mov_to_mp4_error]
-    skip_before_action :authenticate_user!, only: [:mov_to_mp4_success, :mov_to_mp4_error]
     
     before_action :merge_abilities
     before_action :add_stretched_to_body_tag
@@ -17,18 +15,6 @@ module Ecommerce
     #before_render :set_controller_meta_tags
 
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"
-
-    def mov_to_mp4_success
-      Rails.logger.info("Mov to mp4 success")
-      Rails.logger.info(params)
-      render json: {message: "Mov to mp4 success"}
-    end
-
-    def mov_to_mp4_error
-      Rails.logger.info("Mov to mp4 error")
-      Rails.logger.info(params)
-      render json: {message: "Mov to mp4 error"}
-    end
 
     def calculate_combo_discounts
       @exchange_rate = Ecommerce::Control.get_control_value("exchange_rate") || 3.8
