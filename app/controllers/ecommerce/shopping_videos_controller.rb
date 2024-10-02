@@ -5,6 +5,21 @@ module Ecommerce
     include ActionView::Helpers::NumberHelper
     include Ecommerce::ApplicationHelper
 
+    skip_before_action :verify_authenticity_token, only: [:mov_to_mp4_success, :mov_to_mp4_error]
+    skip_before_action :authenticate_user!, only: [:mov_to_mp4_success, :mov_to_mp4_error]
+
+    def mov_to_mp4_success
+      Rails.logger.info("Mov to mp4 success")
+      Rails.logger.info(params)
+      render json: {message: "Mov to mp4 success"}
+    end
+
+    def mov_to_mp4_error
+      Rails.logger.info("Mov to mp4 error")
+      Rails.logger.info(params)
+      render json: {message: "Mov to mp4 error"}
+    end
+    
     def show
       @shopping_video = Ecommerce::ShoppingVideo.find(params[:id])
       render json: {
