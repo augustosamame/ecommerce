@@ -556,6 +556,22 @@
               pipPlayerInstance.muted(player.muted());
               pipPlayerInstance.volume(player.volume());
 
+              pipPlayerInstance.on('play', function() {
+                player.pause();
+              });
+
+              player.on('play', function() {
+                pipPlayerInstance.pause();
+              });
+
+              // Start PIP player in the correct state
+              if (player.paused()) {
+                pipPlayerInstance.pause();
+              } else {
+                pipPlayerInstance.play().catch(e => console.error('Failed to play PIP video:', e));
+                player.pause();
+              }
+
               // Recreate overlays
               var originalOverlay = player.el().querySelector('.vjs-overlay');
               if (originalOverlay) {
@@ -621,9 +637,6 @@
 
               pipPlayerInstance.originalPlayer = player;
 
-              if (!player.paused()) {
-                pipPlayerInstance.play().catch(e => console.error('Failed to play PIP video:', e));
-              }
             });
 
             closeButton.addEventListener('click', function() {
