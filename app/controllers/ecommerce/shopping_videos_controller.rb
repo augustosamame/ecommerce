@@ -4,7 +4,6 @@ module Ecommerce
   class ShoppingVideosController < ApplicationController
     include ActionView::Helpers::NumberHelper
     include Ecommerce::ApplicationHelper
-    skip_before_action :authenticate_user!
 
     def show
       @shopping_video = Ecommerce::ShoppingVideo.find(params[:id])
@@ -34,18 +33,6 @@ module Ecommerce
         }
       end
       render json: overlays
-    end
-
-    def mov_to_mp4_success
-      Rails.logger.info("Mov to mp4 success")
-      Rails.logger.info(params)
-      render json: {message: "Mov to mp4 success"}
-    end
-
-    def mov_to_mp4_error
-      Rails.logger.info("Mov to mp4 error")
-      Rails.logger.info(params)
-      render json: {message: "Mov to mp4 error"}
     end
 
   end
