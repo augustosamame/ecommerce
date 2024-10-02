@@ -12,13 +12,17 @@ module Ecommerce
       Rails.logger.info("New mov in s3")
       Rails.logger.info "SNS Raw Message: #{request.raw_post}"
       Rails.logger.info(params)
-      message = JSON.parse(request.raw_post)
-    
-      if message['Records']
-        message['Records'].each do |record|
+
+      sns_message = JSON.parse(request.raw_post)
+      s3_message = JSON.parse(sns_message['Message'])
+      Rails.logger.info "S3 Message: #{s3_message}"
+
+      if s3_message['Records']
+        s3_message['Records'].each do |record|
           if record['eventName'].start_with?('ObjectCreated:')
             bucket = record['s3']['bucket']['name']
             key = record['s3']['object']['key']
+            Rails.logger.info "Sending to transcoder, bucket: #{bucket}, key: #{key}"
             MovToMp4TranscoderWorker.perform_async(bucket, key)
           end
         end
