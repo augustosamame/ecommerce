@@ -379,7 +379,7 @@
         .custom-pip-container .vjs-overlay {
           transform: scale(0.5);
           transform-origin: bottom left;
-          bottom: 10px !important; /* Adjust this value to position the overlay 20px from the bottom in the PIP view */
+          bottom: 25px !important; /* Adjust this value to position the overlay 20px from the bottom in the PIP view */
         }
 
         .custom-pip-container .overlay-product-card {
@@ -459,6 +459,37 @@
           content: "PIP";
           font-family: Arial, sans-serif;
           font-weight: bold;
+        }
+        .custom-mute-button {
+          position: absolute !important;
+          top: 40px;
+          right: -20px;
+          width: 40px;
+          height: 40px;
+          background-color: transparent;
+          border: none;
+          border-radius: 50%;
+          color: white;
+          font-size: 28px !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 2;
+        }
+
+        .custom-mute-button .vjs-icon-placeholder:before {
+          font-family: VideoJS;
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        .custom-mute-button .vjs-icon-placeholder:before {
+          content: "\f107";
+        }
+
+        .custom-mute-button.muted .vjs-icon-placeholder:before {
+          content: "\f104";
         }
       </style>
 
@@ -719,6 +750,14 @@
           });
         }
 
+        function updateMuteButtonState(player, buttonElement) {
+          if (player.muted() || player.volume() === 0) {
+            buttonElement.classList.add('muted');
+          } else {
+            buttonElement.classList.remove('muted');
+          }
+        }
+
         function initializeVideoPlayers() {
           var videoElements = document.querySelectorAll('.shopping-video');
           videoElements.forEach(function(videoElement, index) {
@@ -736,6 +775,25 @@
 
             player.on('loadedmetadata', function() {
               setupCustomPipFunctionality(player);
+
+              // Add custom mute button
+              var customMuteButton = player.addChild('button', {
+                clickHandler: function() {
+                  player.muted(!player.muted());
+                }
+              });
+
+              var customMuteButtonDom = customMuteButton.el();
+              customMuteButtonDom.classList.add('custom-mute-button');
+              customMuteButtonDom.innerHTML = '<span aria-hidden="true" class="vjs-icon-placeholder"></span>';
+              player.el().appendChild(customMuteButtonDom);
+
+              updateMuteButtonState(player, customMuteButtonDom);
+
+              // Update custom mute button state
+              player.on('volumechange', function() {
+                updateMuteButtonState(player, customMuteButtonDom);
+              });
 
               // Add title overlay
               fetch(`/store/shopping_videos/${shoppingVideoId}`)
