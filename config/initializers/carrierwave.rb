@@ -7,6 +7,7 @@ CarrierWave.configure do |config|
   Dotenv::Railtie.load
 
   config.fog_provider = 'fog/aws'
+  config.asset_host = "https://#{ENV['CLOUDFRONT_DOMAIN']}"
 
   config.fog_credentials = {
     :provider               => 'AWS',
