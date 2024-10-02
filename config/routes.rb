@@ -98,7 +98,7 @@ Ecommerce::Engine.routes.draw do
   post '/culqi_webhook', :to => 'orders#culqi_webhook'
   post '/mov_to_mp4_success', :to => 'shopping_videos#mov_to_mp4_success'
   post '/mov_to_mp4_error', :to => 'shopping_videos#mov_to_mp4_error'
-
+  post '/new_mov_in_s3', :to => 'shopping_videos#new_mov_in_s3'
   resources :testimonials, only: [:index]
   resources :carts, except: [:index, :new, :create]
   resources :cart_items

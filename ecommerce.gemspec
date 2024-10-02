@@ -50,4 +50,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pg"
   s.add_development_dependency "jquery-rails"
   s.add_development_dependency "jquery-ui-rails"
+  s.add_dependency 'aws-sdk-s3'
+  s.add_dependency 'aws-sdk-elastictranscoder'
 end
