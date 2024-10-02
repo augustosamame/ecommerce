@@ -35,5 +35,18 @@ module Ecommerce
       end
       render json: overlays
     end
+
+    def mov_to_mp4_success
+      Rails.logger.info("Mov to mp4 success")
+      Rails.logger.info(params)
+      render json: {message: "Mov to mp4 success"}
+    end
+
+    def mov_to_mp4_error
+      Rails.logger.info("Mov to mp4 error")
+      Rails.logger.info(params)
+      render json: {message: "Mov to mp4 error"}
+    end
+
   end
 end

@@ -4,8 +4,9 @@ module Ecommerce
 
   class ApplicationController < ::ApplicationController
     #include Ecommerce::BeforeRender
+    skip_before_action :authenticate_user!, only: [:mov_to_mp4_success, :mov_to_mp4_error]
 
-    protect_from_forgery with: :exception
+    protect_from_forgery with: :exception, except: [:mov_to_mp4_success, :mov_to_mp4_error]
     before_action :merge_abilities
     before_action :add_stretched_to_body_tag
     before_action :set_cart
