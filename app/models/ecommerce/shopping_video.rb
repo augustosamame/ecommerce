@@ -17,9 +17,9 @@ module Ecommerce
 
     validates :priority, uniqueness: true
 
-    after_commit :check_video_changed
+    after_commit :check_video_changed, unless: :skip_video_processing
 
-    def queue_video_processing, unless: :skip_video_processing
+    def queue_video_processing
 
 
       Rails.logger.info("Queueing video processing for URL #{self.id}")
