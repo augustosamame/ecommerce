@@ -20,8 +20,12 @@ module Ecommerce
     after_save :check_video_changed
 
     def queue_video_processing
-      Rails.logger.info("Queueing video processing for #{self.id}, #{self.video.path}")
+      Rails.logger.info("Queueing video processing for PATH #{self.id}, #{self.video.path}")
+      Rails.logger.info("Queueing video processing for URL #{self.id}, #{self.video_url}")
       MediaConvertWorker.perform_async('expatshop-prod', self.video.path)
+      #s3_key = self.video.path.sub(/^#{Regexp.escape('expatshop-prod-mov-in')}\//, '')
+      #MediaConvertWorker.perform_async(ENV['S3_MOV_IN_BUCKET_NAME'], s3_key)
+
       #VideoProcessingWorker.perform_in(5.seconds, self.id)
     end
 

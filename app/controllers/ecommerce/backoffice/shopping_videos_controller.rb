@@ -14,11 +14,13 @@ module Ecommerce
     end
 
     def new
+      Rails.logger.info "shopping_videos NEW action."
       @shopping_video = Ecommerce::ShoppingVideo.new
       @shopping_video.shopping_video_overlays.build
     end
 
     def create
+      Rails.logger.info "shopping_videos CREATE action. Params: #{shopping_video_params}"
       @shopping_video = Ecommerce::ShoppingVideo.new(shopping_video_params)
       @shopping_video.video_processing = true if @shopping_video.video.present?
 
