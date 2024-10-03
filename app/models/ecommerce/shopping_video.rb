@@ -6,7 +6,7 @@ module Ecommerce
     enum status: { active: 0, inactive: 1}
     enum processing_status: {pending: 0, processing: 1, completed: 2, failed: 3}
 
-    attr_accessor :video_processing
+    attr_accessor :video_processing, :skip_video_processing
 
     mount_uploader :video, Ecommerce::ShoppingVideoUploader
     mount_uploader :thumbnail, Ecommerce::ShoppingVideoImageUploader
@@ -19,7 +19,8 @@ module Ecommerce
 
     after_commit :check_video_changed
 
-    def queue_video_processing
+    def queue_video_processing, unless: :skip_video_processing
+
 
       Rails.logger.info("Queueing video processing for URL #{self.id}")
 
@@ -33,9 +34,12 @@ module Ecommerce
 
     def update_processed_video(new_video_url)
       Rails.logger.info("Updating processed video for URL #{self.id}, new_video_url: #{new_video_url}")
+      self.skip_video_processing = true
       self.remote_video_url = new_video_url.gsub('s3://expatshop-prod/', 'https://expatshop-prod.s3.amazonaws.com/')
       self.processing_status = :completed
       self.save(validate: false)
+    ensure
+      self.skip_video_processing = false
     end
 
     private
