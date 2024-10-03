@@ -23,7 +23,7 @@ module Ecommerce
             bucket = record['s3']['bucket']['name']
             key = record['s3']['object']['key']
             Rails.logger.info "Sending to transcoder, bucket: #{bucket}, key: #{key}"
-            AwsTranscoderWorker.perform_async(bucket, key)
+            MediaConvertWorker.perform_async(bucket, key)
           end
         end
       end
@@ -32,6 +32,28 @@ module Ecommerce
     end
 
     def mov_to_mp4_success
+      Rails.logger.info("Mov to mp4 success")
+      Rails.logger.info(params)
+      Rails.logger.info "SNS Raw Message: #{request.raw_post}"
+      
+      message = JSON.parse(request.raw_post)
+    
+      if message['Message']
+        job_details = JSON.parse(message['Message'])
+        if job_details['status'] == 'COMPLETE'
+          # Process the completed job
+          output_uri = job_details['outputGroupDetails'][0]['outputDetails'][0]['outputFilePaths'][0]
+          Rails.logger.info "MediaConvert job completed. Output file: #{output_uri}"
+          # Add any additional processing here
+        elsif job_details['status'] == 'ERROR'
+          Rails.logger.error "MediaConvert job failed: #{job_details['errorMessage']}"
+        end
+      end
+
+      head :ok
+    end
+
+    def mov_to_mp4_success_bak
       Rails.logger.info("Mov to mp4 success")
       Rails.logger.info(params)
       Rails.logger.info "SNS Raw Message: #{request.raw_post}"
