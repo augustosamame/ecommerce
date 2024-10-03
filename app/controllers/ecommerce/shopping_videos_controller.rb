@@ -33,21 +33,31 @@ module Ecommerce
 
     def mov_to_mp4_success
       Rails.logger.info("Mov to mp4 success")
-      Rails.logger.info(params)
       Rails.logger.info "SNS Raw Message: #{request.raw_post}"
       
-      message = JSON.parse(request.raw_post)
+      sns_message = JSON.parse(request.raw_post)
+      event_message = JSON.parse(sns_message['Message'])
     
-      if message['Message']
-        job_details = JSON.parse(message['Message'])
-        if job_details['status'] == 'COMPLETE'
-          # Process the completed job
-          output_uri = job_details['outputGroupDetails'][0]['outputDetails'][0]['outputFilePaths'][0]
-          Rails.logger.info "MediaConvert job completed. Output file: #{output_uri}"
-          # Add any additional processing here
-        elsif job_details['status'] == 'ERROR'
-          Rails.logger.error "MediaConvert job failed: #{job_details['errorMessage']}"
+      if event_message['detail']['status'] == 'COMPLETE'
+        output_file_path = event_message['detail']['outputGroupDetails'][0]['outputDetails'][0]['outputFilePaths'][0]
+        output_file_name = File.basename(output_file_path)
+
+        Rails.logger.info "Conversion completed. Output file: #{output_file_name}"
+
+        new_video_url = output_file_path
+
+        # Extract the original file name (without the extra .mp4 extension)
+        original_file_name = output_file_name.sub(/\.mp4$/, '')
+        shopping_video = Ecommerce::ShoppingVideo.find_by("video LIKE ?", "%#{original_file_name}%")
+
+        if shopping_video
+          shopping_video.update_processed_video(new_video_url)
+          Rails.logger.info "Updated ShoppingVideo record for #{original_file_name}"
+        else
+          Rails.logger.warn "No ShoppingVideo record found for #{original_file_name}"
         end
+      else
+        Rails.logger.info "Job status is not COMPLETE. Current status: #{event_message['detail']['status']}"
       end
 
       head :ok

@@ -6,6 +6,8 @@ module Ecommerce
     enum status: { active: 0, inactive: 1}
     enum processing_status: {pending: 0, processing: 1, completed: 2, failed: 3}
 
+    attr_accessor :video_processing
+
     mount_uploader :video, Ecommerce::ShoppingVideoUploader
     mount_uploader :thumbnail, Ecommerce::ShoppingVideoImageUploader
 
@@ -18,12 +20,22 @@ module Ecommerce
     after_save :check_video_changed
 
     def queue_video_processing
-      VideoProcessingWorker.perform_in(5.seconds, self.id)
+      Rails.logger.info("Queueing video processing for #{self.id}, #{self.video.path}")
+      MediaConvertWorker.perform_async('expatshop-prod', self.video.path)
+      #VideoProcessingWorker.perform_in(5.seconds, self.id)
     end
+
+    def update_processed_video(new_video_url)
+      self.remote_video_url = new_video_url
+      self.processing_status = :completed
+      self.save(validate: false)
+    end
+
+    private
 
     def check_video_changed
       if saved_change_to_video?
-        self.update_column(:processing_status, :pending)
+        self.update_column(:processing_status, :processing)
         queue_video_processing
       end
     end

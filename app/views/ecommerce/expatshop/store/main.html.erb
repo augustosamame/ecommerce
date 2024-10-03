@@ -17,9 +17,9 @@
         <div class="container-fluid">
           <h2 class="main-section-title"><%= t('.shopping_videos') %></h2>
           <div class="shopping-videos-slider">
-          <% lowest_priority_video = Ecommerce::ShoppingVideo.active.order(:priority).first %>
-          <% lowest_priority_video_id = lowest_priority_video.id %>
-            <% Ecommerce::ShoppingVideo.active.order(:priority).each do |shopping_video| %>
+          <% lowest_priority_video = Ecommerce::ShoppingVideo&.active&.completed&.order(:priority)&.first %>
+          <% lowest_priority_video_id = lowest_priority_video&.id %>
+            <% Ecommerce::ShoppingVideo.active.completed.order(:priority).each do |shopping_video| %>
               <div class="video-item">
                 <div class="video-container">
                   <video
