@@ -73,7 +73,8 @@ class Ecommerce::ShoppingVideoUploader < CarrierWave::Uploader::Base
 
   def filename
     if original_filename
-      @name ||= "#{model.id}_#{timestamp}_#{super}"
+      #@name ||= "#{model.id}_#{timestamp}_#{super}"
+      "#{model.id}_#{timestamp}_#{super}"
     end
   end
 

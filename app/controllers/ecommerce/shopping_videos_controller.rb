@@ -46,15 +46,15 @@ module Ecommerce
 
         new_video_url = output_file_path
 
-        # Extract the original file name (without the extra .mp4 extension)
-        original_file_name = output_file_name.sub(/\.mp4$/, '')
-        shopping_video = Ecommerce::ShoppingVideo.find_by("video LIKE ?", "%#{original_file_name}%")
+        # Extract the original file name from the output file name
+        shopping_video_id = output_file_name.split('_')[0]
+        shopping_video = Ecommerce::ShoppingVideo.find_by(id: shopping_video_id)
 
         if shopping_video
           shopping_video.update_processed_video(new_video_url)
-          Rails.logger.info "Updated ShoppingVideo record for #{original_file_name}"
+          Rails.logger.info "Updated ShoppingVideo record for #{output_file_name}"
         else
-          Rails.logger.warn "No ShoppingVideo record found for #{original_file_name}"
+          Rails.logger.warn "No ShoppingVideo record found for #{output_file_name}"
         end
       else
         Rails.logger.info "Job status is not COMPLETE. Current status: #{event_message['detail']['status']}"
