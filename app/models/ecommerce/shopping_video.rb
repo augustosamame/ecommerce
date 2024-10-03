@@ -32,7 +32,8 @@ module Ecommerce
     end
 
     def update_processed_video(new_video_url)
-      self.remote_video_url = new_video_url
+      Rails.logger.info("Updating processed video for URL #{self.id}, new_video_url: #{new_video_url}")
+      self.remote_video_url = new_video_url.gsub('s3://expatshop-prod/', 'https://expatshop-prod.s3.amazonaws.com/')
       self.processing_status = :completed
       self.save(validate: false)
     end

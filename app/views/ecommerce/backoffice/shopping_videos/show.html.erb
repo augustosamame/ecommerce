@@ -88,6 +88,17 @@
   .video-js.vjs-fullscreen .vjs-overlay {
     bottom: 60px;
   }
+  .video-js .vjs-tech {
+    object-fit: contain; /* Default to contain for poster */
+  }
+  .video-js.vjs-has-started .vjs-tech {
+    object-fit: cover !important; /* Apply cover only when video has started */
+  }
+
+  .vjs-poster {
+    object-fit: contain !important;
+    background-size: contain !important;
+  }
   .overlay-product-overlay {
     display: none;
     padding: 0 5px;
