@@ -22,6 +22,7 @@ module Ecommerce
     def create
       Rails.logger.info "shopping_videos CREATE action. Params: #{shopping_video_params}"
       @shopping_video = Ecommerce::ShoppingVideo.new(shopping_video_params)
+
       @shopping_video.video_processing = true if @shopping_video.video.present?
 
       if @shopping_video.save
@@ -63,8 +64,16 @@ module Ecommerce
     end
 
     def shopping_video_params
-      params.require(:shopping_video).permit(:title, :description, :priority, :video, :video_cache, :thumbnail, :thumbnail_cache, :status, :processing_status,
-        shopping_video_overlays_attributes: [:id, :product_id, :category_id, :overlay_type, :start_time, :end_time, :status,:_destroy])
+      video_params = params.require(:shopping_video).permit(:title, :description, :priority, :video, :video_cache, :thumbnail, :thumbnail_cache, :status, :processing_status,
+        shopping_video_overlays_attributes: [:id, :product_id, :category_id, :overlay_type, :start_time, :end_time, :status, :_destroy])
+      
+      if video_params[:video].present? && video_params[:video].respond_to?(:original_filename)
+        original_filename = video_params[:video].original_filename
+        new_filename = original_filename.gsub(' ', '_').downcase
+        video_params[:video].original_filename = new_filename
+      end
+
+      video_params
     end
   
   end
