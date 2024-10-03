@@ -47,7 +47,7 @@ module Ecommerce
         new_video_url = output_file_path
 
         # Extract the original file name from the output file name
-        shopping_video_id = output_file_name.split('_')[0]
+        shopping_video_id = output_file_path.split('/')[-2]
         shopping_video = Ecommerce::ShoppingVideo.find_by(id: shopping_video_id)
 
         if shopping_video
