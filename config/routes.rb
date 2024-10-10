@@ -118,10 +118,10 @@ Ecommerce::Engine.routes.draw do
   post '/contact_us', to: 'store#post_contact_us'
   get '/wishlist_message', to: 'store#wishlist'
   post '/wishlist_message', to: 'store#post_wishlist'
+  get '/shopping_videos/:id/overlays', to: 'shopping_videos#overlays'
+  get '/shopping_videos/:id', to: 'shopping_videos#show'
+  
   get '/ecommerce_root', to: 'store#main'
-
-  get 'shopping_videos/:id/overlays', to: 'shopping_videos#overlays'
-  get 'shopping_videos/:id', to: 'shopping_videos#show'
 
   root to: 'store#main'
 

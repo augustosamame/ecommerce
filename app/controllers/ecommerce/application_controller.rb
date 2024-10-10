@@ -16,6 +16,14 @@ module Ecommerce
 
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"
 
+    def store_location_for(resource_or_scope, location)
+      # Skip storing if the request is for a JSON response or other background request
+      return if request.path.start_with?('/store/shopping_videos')
+
+      # Store the location only if it's a valid HTML page
+      super
+    end
+
     def calculate_combo_discounts
       @exchange_rate = Ecommerce::Control.get_control_value("exchange_rate") || 3.8
       
