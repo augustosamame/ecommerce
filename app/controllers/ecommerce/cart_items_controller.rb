@@ -23,7 +23,6 @@ module Ecommerce
           new_quantity = found_same_product.quantity += @cart_item.quantity
           new_quantity = @product.total_quantity if new_quantity > @product.total_quantity
           found_same_product.update(quantity: new_quantity)
-          @combo_discount_exists = ComboDiscount.where(status: "active", product_id_1: @product.id, inject_product_two: true).try(:first)
         else
           #check if added item is a combo discount with force add and if so, add the second product to the cart
           @combo_discount_exists = ComboDiscount.where(status: "active", product_id_1: @product.id, inject_product_two: true).try(:first)
