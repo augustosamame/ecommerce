@@ -809,7 +809,7 @@ $( document ).ready(function() {
 
 <script>
   window.addEventListener("message", function(event) {
-    if (event.origin === window.location.origin) {
+    // if (event.origin === window.location.origin) {
       const response = event.data;
 
       if (response.loading) {
@@ -853,6 +853,6 @@ $( document ).ready(function() {
         console.log("3DS Auth Error:", response.error);
         window.location.replace("<%= orders_path %>?error=payment");
       }
-    }
+    // }
   }, false);
 </script>
