@@ -5,6 +5,7 @@ require 'json'
 
 module Ecommerce
   class Backoffice::OrdersController < Backoffice::BaseController
+    skip_before_action :authorize_role, only: [:create_culqi_order]
     before_action :set_backoffice_order, only: [:show, :edit, :update, :destroy]
     authorize_resource :class => "Ecommerce::Order"
 
@@ -59,6 +60,7 @@ module Ecommerce
     end
 
     def create_culqi_order
+      Rails.logger.info("Creating Culqi Order")
       data_to_send = {
         title: I18n.t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name),
         amount: params[:amount],
