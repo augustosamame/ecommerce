@@ -794,9 +794,9 @@ $( document ).ready(function() {
     const eventOriginUrl = new URL(event.origin);
     const windowOriginUrl = new URL(windowOrigin);
     
-    if (eventOriginUrl.hostname === windowOriginUrl.hostname || 
-        eventOriginUrl.hostname === windowOriginUrl.hostname.replace('www.', '') ||
-        eventOriginUrl.hostname === 'www.' + windowOriginUrl.hostname) {
+    // if (eventOriginUrl.hostname === windowOriginUrl.hostname || 
+    //     eventOriginUrl.hostname === windowOriginUrl.hostname.replace('www.', '') ||
+    //     eventOriginUrl.hostname === 'www.' + windowOriginUrl.hostname) {
       const response = event.data;
 
       if (response.loading) {
@@ -840,11 +840,11 @@ $( document ).ready(function() {
         console.log("3DS Auth Error:", response.error);
         window.location.replace("<%= orders_path %>?error=payment");
       }
-    } else {
-      console.log('Message received from unauthorized origin:', event.origin);
-      console.log('window.location.origin:', window.location.origin);
-      console.log('event.origin:', event.origin);
-      alert('Message received from unauthorized origin');
-    }
+    //} else {
+    //  console.log('Message received from unauthorized origin:', event.origin);
+    //  console.log('window.location.origin:', window.location.origin);
+    //  console.log('event.origin:', event.origin);
+    //  alert('Message received from unauthorized origin');
+    // }
   }, false);
 </script>
