@@ -1,4 +1,7 @@
 require_dependency "ecommerce/application_controller"
+require 'net/http'
+require 'uri'
+require 'json'
 
 module Ecommerce
   class Backoffice::OrdersController < Backoffice::BaseController
@@ -53,6 +56,39 @@ module Ecommerce
 
     # GET /backoffice/orders/1/edit
     def edit
+    end
+
+    def create_culqi_order
+      data_to_send = {
+        title: I18n.t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name),
+        amount: params[:amount],
+        currency_code: params[:currency_code],
+        description: I18n.t('ecommerce.processor.culqi.order_label') + ": #{params[:cart_id]}",
+        order_number: "#{params[:cart_id]}-cart-#{SecureRandom.random_number(10000)}",
+        expiration_date: Time.now.to_i + (72 * 60 * 60),
+        confirm: false,
+        client_details: {
+          first_name: params[:client_details][:first_name],
+          last_name: params[:client_details][:last_name],
+          email: params[:client_details][:email],
+          phone_number: params[:client_details][:phone_number]
+        }
+      }
+
+      url = URI('https://api.culqi.com/v2/orders')
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true
+
+      request = Net::HTTP::Post.new(url)
+      request["Content-Type"] = 'application/json'
+      request["Accept"] = 'application/json'
+      request["Authorization"] = "Bearer #{Culqi.secret_key}"
+      request.body = data_to_send.to_json
+
+      response = http.request(request)
+      render json: JSON.parse(response.body)
+    rescue => e
+      render json: { error: e.message }, status: :unprocessable_entity
     end
 
     # POST /backoffice/orders

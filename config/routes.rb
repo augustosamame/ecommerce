@@ -20,7 +20,9 @@ Ecommerce::Engine.routes.draw do
     resources :properties
     resources :addresses
     resources :provinces
-    resources :orders
+    resources :orders do
+      post :create_culqi_order, on: :collection
+    end
     post '/orders/einvoice'
     resources :payment_methods
     resources :payments, only: [:index]
