@@ -83,9 +83,13 @@ module Ecommerce
       request["Content-Type"] = 'application/json'
       request["Accept"] = 'application/json'
       request["Authorization"] = "Bearer #{Culqi.secret_key}"
+      Rails.logger.info("Culqi Order Secret Key: #{Culqi.secret_key}")
+      Rails.logger.info("Culqi Order URL: #{url.inspect}")
+      Rails.logger.info("Culqi Order Data: #{data_to_send.inspect}")
       request.body = data_to_send.to_json
 
       response = http.request(request)
+      Rails.logger.info("Culqi Order Response: #{response.body}")
       render json: JSON.parse(response.body)
     rescue => e
       render json: { error: e.message }, status: :unprocessable_entity
