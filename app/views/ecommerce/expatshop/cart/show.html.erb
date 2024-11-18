@@ -193,7 +193,7 @@
     document.addEventListener("DOMContentLoaded", function() {
       Swal.fire({
         icon: 'success',
-        title: "<%= j t('combo_discounts.combo_discount_applied') %>",
+        title: "<span style='background-color: red; color: black; font-size: 16px; padding: 5px;'><%= j t('combo_discounts.combo_discount_applied') %></span>",
         html: "<span style='color: red; font-size: 16px;'><%= j t('combo_discounts.combo_discount_message') %></span>"
       });
     });
