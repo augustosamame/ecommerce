@@ -67,8 +67,8 @@ module Ecommerce
       plain_mobile = current_user.username ? current_user.username.split(':')[0].gsub(/[^\d]/, '') : ( current_user.phone ? current_user.phone.split(':')[0].gsub(/[^\d]/, '') : "" )
       plain_mobile = plain_mobile[2..-1] if plain_mobile[0..1] == '51'
       antifraud_hash = no_antifraud_data ? nil : {
-          :first_name => current_user.first_name,
-          :last_name =>  current_user.last_name,
+          :first_name => current_user.first_name.gsub(/[^a-zA-Z\s]/, ''),
+          :last_name =>  current_user.last_name.gsub(/[^a-zA-Z\s]/, ''),
           :address => culqi_address,
           :address_city => "LIMA",
           :country_code => "PE",
@@ -77,8 +77,8 @@ module Ecommerce
       }
       Rails.logger.debug "Antifraud Hash: #{antifraud_hash}"
       charge, statusCode = Culqi::Charge.create(
-      :first_name => current_user.first_name,
-      :last_name => current_user.last_name,
+      :first_name => current_user.first_name.gsub(/[^a-zA-Z\s]/, ''),
+      :last_name => current_user.last_name.gsub(/[^a-zA-Z\s]/, ''),
       :phone_number => current_user.phone || "986976377",
       :amount => payment_amount.to_i,
       :capture => true,
