@@ -227,12 +227,14 @@ module Ecommerce
       Rails.logger.debug "Incoming params: #{params.inspect}"
       #Rails.logger.debug params
       points_payment_method = PaymentMethod.find_by(name: "Points")
+      Rails.logger.debug "Points payment method: #{points_payment_method.inspect}"
       card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
+      Rails.logger.debug "Card token created: #{card_token_created.inspect}"
       if card_token_created
 
         unless params[:points_redeemed_amount].blank?
           unless params[:points_redeemed_amount].to_i == 0
-
+            Rails.logger.debug "Points redeemed amount: #{params[:points_redeemed_amount]}"
             #points payment
             Payment.create(
               user_id: current_user.id,
@@ -256,10 +258,11 @@ module Ecommerce
           params[:payment_request_id],
           params[:device_finger_print_id]
         )
-
+        Rails.logger.debug "Card payment created: #{payment_created.inspect}"
       end
       if payment_created[0]
         flash[:notice] = t('.your_order_was_successfully_placed')
+        Rails.logger.debug "Payment successful"
         Rails.logger.info payment_created[0]
         flash.keep(:notice)
         render js: "window.location = '#{root_path}'"
