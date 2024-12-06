@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'record_tag_helper'#, '~> 1.0'
   s.add_dependency 'cocoon'
   s.add_dependency "font-awesome-rails"
-  s.add_dependency 'devtech-culqi-ruby', '1.0.1'
+  s.add_dependency 'devtech-culqi-ruby', '1.0.2'
   s.add_dependency 'geocoder'
   s.add_dependency "browser"
   s.add_dependency 'best_in_place'
