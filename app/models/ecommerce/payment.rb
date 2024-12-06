@@ -57,47 +57,54 @@ module Ecommerce
         culqi_orden = "Recarga Saldo"
         culqi_request = "Recarga Saldo"
       when "Order"
-        culqi_description = "Order # #{order_id}"
-        culqi_order = "Order # #{order_id}"
-        culqi_request = "Request # #{payment_request_id}"
+        culqi_description = "Order # #{order_id}".encode('UTF-8')
+        culqi_order = "Order # #{order_id}".encode('UTF-8')
+        culqi_request = "Request # #{payment_request_id}".encode('UTF-8')
       end
       first_address = Address.where(user_id: current_user.id).first
-      culqi_address = first_address.blank? ? "" : "#{first_address.street},#{first_address.street2.blank? ? "" : (first_address.street2 + ",")} #{first_address.district}"
+      culqi_address = if first_address.blank?
+        "".encode('UTF-8')
+      else
+        "#{first_address.street},#{first_address.street2.blank? ? "" : (first_address.street2 + ",")} #{first_address.district}".encode('UTF-8')
+      end
       no_antifraud_data = culqi_address.blank? || current_user.first_name.blank? || current_user.last_name.blank?
       plain_mobile = current_user.username ? current_user.username.split(':')[0].gsub(/[^\d]/, '') : ( current_user.phone ? current_user.phone.split(':')[0].gsub(/[^\d]/, '') : "" )
       plain_mobile = plain_mobile[2..-1] if plain_mobile[0..1] == '51'
+      
       antifraud_hash = no_antifraud_data ? nil : {
-          :first_name => current_user.first_name.gsub(/[^a-zA-Z\s]/, ''),
-          :last_name =>  current_user.last_name.gsub(/[^a-zA-Z\s]/, ''),
+          :first_name => current_user.first_name.gsub(/[^a-zA-Z\s]/, '').encode('UTF-8'),
+          :last_name =>  current_user.last_name.gsub(/[^a-zA-Z\s]/, '').encode('UTF-8'),
           :address => culqi_address,
-          :address_city => "LIMA",
-          :country_code => "PE",
-          :phone_number => plain_mobile.blank? ? "986976377" : plain_mobile,
-          :device_finger_print_id => device_finger_print_id
+          :address_city => "LIMA".encode('UTF-8'),
+          :country_code => "PE".encode('UTF-8'),
+          :phone_number => plain_mobile.blank? ? "986976377".encode('UTF-8') : plain_mobile.encode('UTF-8'),
+          :device_finger_print_id => device_finger_print_id.to_s.encode('UTF-8')
       }
       Rails.logger.debug "Antifraud Hash: #{antifraud_hash}"
       charge, statusCode = Culqi::Charge.create(
-      :first_name => current_user.first_name.gsub(/[^a-zA-Z\s]/, ''),
-      :last_name => current_user.last_name.gsub(/[^a-zA-Z\s]/, ''),
-      :phone_number => current_user.phone || "986976377",
+      :first_name => current_user.first_name.gsub(/[^a-zA-Z\s]/, '').encode('UTF-8'),
+      :last_name => current_user.last_name.gsub(/[^a-zA-Z\s]/, '').encode('UTF-8'),
+      :phone_number => current_user.phone || "986976377".encode('UTF-8'),
       :amount => payment_amount.to_i,
       :capture => true,
-      :currency_code => currency,
-      :description => culqi_description,
-      :email => card_token_data.payment_email,
+      :currency_code => currency.encode('UTF-8'),
+      :description => culqi_description.encode('UTF-8'),
+      :email => card_token_data.payment_email.encode('UTF-8'),
       :antifraud_details => (antifraud_hash),
       :metadata => ({
           :usuario => current_user.id,
           :orden => culqi_order,
           :solicitud_de_pago => culqi_request
       }),
-      :source_id => card_token_data.processor_token,
+      :source_id => card_token_data.processor_token.encode('UTF-8'),
       :authentication_3DS => authentication_3DS
       )
       Rails.logger.debug ('charge response from Culqi::Charge Create: ' + charge.inspect)
       Rails.logger.debug ('statusCode response from Culqi::Charge Create: ' + statusCode.inspect)
       
       response = JSON.parse(charge)
+
+      Rails.logger.debug "Response from Culqi::Charge Create: #{response.inspect}"
       
       if statusCode == 200 && response["action_code"] == "REVIEW"
 
@@ -109,6 +116,7 @@ module Ecommerce
 
         if response["outcome"] && response["outcome"]["type"] == "venta_exitosa"
           success = false
+          Rails.logger.debug "Payment successful. About to save payment"
           Payment.transaction do
             new_payment = Payment.new
             new_payment.user_id = current_user.id
@@ -122,7 +130,8 @@ module Ecommerce
             new_payment.payment_request_id = payment_request_id
 
             success = new_payment.save
-            puts new_payment.errors.inspect unless success
+            Rails.logger.debug "Payment saved: #{success}"
+            Rails.logger.debug new_payment.errors.inspect unless success
             #if recharging
             #old_saldo = current_user.saldo_cents
             #current_user.update(saldo_cents: old_saldo + amount.to_i)
@@ -132,6 +141,7 @@ module Ecommerce
           return success, "Error al guardar el pago"
         else
           success = false
+          Rails.logger.debug "Payment failed. Response from Culqi: #{response.inspect}"
           if response["object"] == "error"
             error_message = "#{response['user_message']} #{response['merchant_message']}" || "Error al intentar realizar el pago"
             return success, error_message
