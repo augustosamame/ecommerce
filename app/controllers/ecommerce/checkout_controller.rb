@@ -224,6 +224,7 @@ module Ecommerce
     end
 
     def pay_order_culqi_checkout
+      Rails.logger.debug "Incoming params: #{params.inspect}"
       #Rails.logger.debug params
       points_payment_method = PaymentMethod.find_by(name: "Points")
       card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
@@ -280,15 +281,16 @@ module Ecommerce
     end
 
     def pay_order_culqi_checkout_3ds_step
-      Rails.logger.info params
+      Rails.logger.debug "Incoming params: #{params.inspect}"
       card_token_created = Card.new.create_new_from_culqi(current_user, params[:culqi_token])
+      Rails.logger.debug "Card token created: #{card_token_created.inspect}"
       if card_token_created
         if params[:order_id].present?
           @order = Order.find(params[:order_id])
         else
           @order = Ecommerce::Order.where(cart_id: params[:cart_id]).last
         end
-
+        Rails.logger.debug "Order found: #{@order.inspect}"
         #card payment
         payment_created = Payment.new.new_culqi_payment(
           current_user,
@@ -301,7 +303,7 @@ module Ecommerce
           params[:device_finger_print_id],
           params[:authentication_3DS]
         )
-
+        Rails.logger.debug "Payment created: #{payment_created.inspect}"
       end
       
 
@@ -310,6 +312,8 @@ module Ecommerce
         Rails.logger.info payment_created[0]
         flash.keep(:notice)
         render js: "window.location = '#{root_path}'"
+
+        Rails.logger.debug "Payment created: #{payment_created.inspect}"
         #redirect_to root_path, notice: 'Pago exitoso'
       else
         flash[:error] = payment_created[1] || t('.error_when_processing_payment')
@@ -318,6 +322,7 @@ module Ecommerce
         flash.keep(:error)
         render js: "window.location = '#{order_path(@order.id, :error => t('.error_when_processing_payment'))}'"
         #redirect_to "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/show", error: 'Error al realizar el Pago'
+        Rails.logger.debug "Error: #{payment_created[1]}"
       end
     end
 
