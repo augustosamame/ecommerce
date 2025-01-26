@@ -285,7 +285,7 @@ en-PE:
           free_shipping: "(Free shipping on orders over $30)"
           i_need_a_factura: "I need a Factura"
           enter_invoice_data: "Click here to enter invoice data"
-          text_over_700: "Boleta orders over S/. 700 require DNI / CE / Passport"
+          text_over_700: "SUNAT requires DNI / CE / Passport"
           pay_in_soles: "PAY IN SOLES"
           pay_in_points: "Use My Points"
           points_total: "My Current Points Total"

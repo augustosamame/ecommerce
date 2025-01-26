@@ -170,7 +170,7 @@ es-PE:
           shipping: "Costo de Envío"
           i_need_a_factura: "Necesito Factura"
           enter_invoice_data: "Haga click para ingresar factura"
-          text_over_700: "Los pedidos con boleta sobre S/. 700 requieren DNI, CE o Pasaporte"
+          text_over_700: "SUNAT requiere DNI, CE o Pasaporte"
           pay_in_soles: "PAGAR EN SOLES"
           pay_in_points: "Usar Mis Puntos para Pagar"
           points_total: "Mi Total de Puntos Actual"
