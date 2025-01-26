@@ -202,7 +202,7 @@ es-PE:
           token_not_returned: "Error al procesar el pago de su pedido"
           you_must_pick_or_save_an_address: "Debe seleccionar o crear una dirección"
           you_must_enter_factura_info: "Debe ingresar los datos para su factura"
-          you_must_enter_doc: "Para pedidos con boleta sobre S/ 700, debe ingresar un DNI / CE o Pasaporte válido (max 12 dígitos numéricos)"
+          you_must_enter_doc: "SUNAT requiere DNI / CE o Pasaporte válido (max 12 dígitos numéricos)."
           you_must_select_payment_method: "Debe seleccionar un método de pago"
           you_must_check_marketing: "Debe aceptar recibir comunicaciones por correo y SMS"
         pick_address_form:

@@ -316,7 +316,7 @@ en-PE:
           token_not_returned: "Error during payment processing"
           you_must_pick_or_save_an_address: "You must pick or create an address"
           you_must_enter_factura_info: "You must enter factura information"
-          you_must_enter_doc: "You must enter a valid DNI / CE or Passport number (max 12 digits) for boleta orders over S/.700"
+          you_must_enter_doc: "SUNAT requires a valid DNI / CE or Passport number (max 12 digits) for orders"
           you_must_select_payment_method: "You must select a payment method"
           you_must_check_marketing: "You must accept email and SMS communications"
         pick_address_form:
