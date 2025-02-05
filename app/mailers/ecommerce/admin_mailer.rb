@@ -56,5 +56,13 @@ module Ecommerce
       mail(to: "gg@expatshop.pe", subject: 'You have received a new Wish via the Wishlist Message Form')
     end
 
+    def sales_report_email(email, file_path)
+      attachments['sales_report.xlsx'] = File.read(file_path)
+      mail(
+        to: email,
+        subject: 'ExpatShop.pe - Sales Report'
+      )
+    end
+
   end
 end
