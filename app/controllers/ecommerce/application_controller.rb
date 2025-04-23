@@ -260,14 +260,14 @@ module Ecommerce
                       description: "Lista de Productos #{Ecommerce.site_name}",
                       og: {
                         title:    :full_title,
-                        image:    'https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
+                        image:    'https://s3.amazonaws.com/v1-devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
                       }
       when "store:main"
         set_meta_tags title: "Expatshop.pe Home",
                       description: Ecommerce.meta_tags_store_main_description,
                       og: {
                         title:    :full_title,
-                        image:    'https://s3.amazonaws.com/devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
+                        image:    'https://s3.amazonaws.com/v1-devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
                       }
       else
         set_meta_tags description: "No match for meta_tags"

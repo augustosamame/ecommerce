@@ -165,8 +165,8 @@ $(function () {
     speed: 300,
     slidesToShow: 5,
     slidesToScroll: 5,
-    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
-    nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
     responsive: [
       {
         breakpoint: 768,
@@ -190,12 +190,12 @@ $(function () {
     speed: 300,
     slidesToShow: 4,
     slidesToScroll: 4,
-    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
-    nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
     customPaging: function (slider, i) {
       var thumb = $(slider.$slides[i]).data('thumb');
       // console.log('thumb', thumb)
-      return "<button><img src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'></button>";
+      return "<button><img src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'></button>";
     },
     responsive: [
       {
@@ -224,12 +224,12 @@ $(function () {
     slidesToShow: 1,
     slidesToScroll: 1,
     centerMode: true,
-    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
-    nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
     customPaging: function (slider, i) {
       var thumb = $(slider.$slides[i]).data('thumb');
       // console.log('thumb', thumb)
-      return "<button><img src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'></button>";
+      return "<button><img src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'></button>";
     },
   });
 });
@@ -242,8 +242,8 @@ $(function () {
     speed: 300,
     slidesToShow: 4,
     slidesToScroll: 4,
-    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
-    nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
     responsive: [
       {
         breakpoint: 768,
@@ -334,8 +334,8 @@ $(document).ready(function () {
       speed: 300,
       slidesToShow: 3,
       slidesToScroll: 3,
-      prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
-      nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+      prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+      nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
       responsive: [
         {
           breakpoint: 1200,
@@ -367,8 +367,8 @@ $(document).ready(function () {
       slidesToScroll: 3,
       // infinite: true,
       // centerMode: true,
-      prevArrow: "<img class='a-left control-c prev slick-prev' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
-      nextArrow: "<img class='a-right control-c next slick-next' src='https://devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+      prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+      nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
       responsive: [
         {
           breakpoint: 768,
