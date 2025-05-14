@@ -31,6 +31,8 @@ module Ecommerce
     end
 
     def culqi_webhook
+      Rails.logger.debug "Culqi Webhook Received"
+      Rails.logger.debug params
       if params[:object] == "event" && params[:type] == "order.status.changed"
         #Rollbar.info("Webhook Received",
         #  :request_data => params
