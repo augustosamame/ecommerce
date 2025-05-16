@@ -199,7 +199,7 @@ module Ecommerce
                 #client_name: "#{self.user.first_name} #{self.user.last_name} (#{self.user.username})",
                 company_id: Ecommerce.company_legal_name,
                 email: self.user.email,
-                vat: self.amount.to_i >= 210 ? self.required_doc : "",
+                vat: self.required_doc || "",
                 company_id_city: Ecommerce.company_city,
                 company_id_street: Ecommerce.company_street,
                 date_invoice: smart_date_invoice,
