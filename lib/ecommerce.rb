@@ -17,6 +17,8 @@ require "browser"
 require "best_in_place"
 
 module Ecommerce
+  mattr_accessor :user_class
+  self.user_class ||= "User"
 
   mattr_accessor :user_class #Can now reference this setting as Ecommerce.user_class
   mattr_accessor :ecommerce_layout
@@ -88,7 +90,7 @@ module Ecommerce
 
       #uncomment this next line if executing something in standalone engine folder
       #if Ecommerce.const_defined?(user_class) #required in dev mode when testing standalone engine
-        Ecommerce.user_class.class_eval do
+        Ecommerce.user_class.to_s.constantize.class_eval do
           #examples of extending or including functionality through local engine gems to user model
           #extend Ecommerce::Autocomplete
           #include Ecommerce::DefaultPermissions

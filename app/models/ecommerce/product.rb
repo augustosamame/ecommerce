@@ -30,7 +30,7 @@ module Ecommerce
     extend FriendlyId
     friendly_id :permalink_candidates, use: :slugged, slug_column: :permalink
 
-    include PgSearch
+    include PgSearch::Model
     pg_search_scope :search_by_name, associated_against: { translations: :name }, using: {tsearch: {prefix: true, any_word: true}}
 
     scope :in_stock, -> { where("stockable = ? or total_quantity != ?", false, 0) }

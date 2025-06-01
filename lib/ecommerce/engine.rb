@@ -6,6 +6,12 @@ module Ecommerce
     isolate_namespace Ecommerce
     engine_name 'ecommerce'
 
+    initializer 'ecommerce.helpers' do
+      ActiveSupport.on_load(:action_view) do
+        include Bh::Rails::Helpers
+      end
+    end
+
     config.before_initialize do
       config.i18n.load_path += Dir["#{Ecommerce::Engine.root}/config/locales/**/*.yml"]
     end

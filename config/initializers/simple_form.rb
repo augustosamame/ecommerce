@@ -1,4 +1,6 @@
-# Use this setup block to configure all options available in SimpleForm.
+require_relative '../../app/inputs/tags_input'
+SimpleForm::FormBuilder.map_type :tags, to: TagsInput
+
 SimpleForm.setup do |config|
   # Wrappers are used by the form builder to generate a
   # complete input. You can remove any component from the
@@ -6,7 +8,6 @@ SimpleForm.setup do |config|
   # stack. The options given below are used to wrap the
   # whole input.
 
-  SimpleForm::FormBuilder.map_type :tags, to: SimpleForm::Inputs::TagsInput
 
   config.wrappers :default, class: :input,
     hint_class: :field_with_hint, error_class: :field_with_errors do |b|

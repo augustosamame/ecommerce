@@ -1,4 +1,4 @@
-Ecommerce.user_class = "User"
+Ecommerce.user_class = User
 Ecommerce.ecommerce_layout = "organici"
 Ecommerce.use_main_app_header = true
 Ecommerce.use_main_app_footer = true

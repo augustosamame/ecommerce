@@ -12,7 +12,7 @@ module Ecommerce
     #
     def parent_layout(layout)
       @view_flow.set(:layout, output_buffer)
-      output = render(:file => "layouts/ecommerce/#{layout}")
+      output = render(template: "layouts/ecommerce/#{layout}")
       self.output_buffer = ActionView::OutputBuffer.new(output)
     end
   end
