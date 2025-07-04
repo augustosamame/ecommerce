@@ -15,6 +15,7 @@ require 'culqi-ruby'
 require 'geocoder'
 require "browser"
 require "best_in_place"
+require 'caxlsx'
 
 module Ecommerce
   mattr_accessor :user_class
