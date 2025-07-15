@@ -33,5 +33,23 @@ module Ecommerce
       end
     end
 
+    # Clean up carts older than 3 months
+    # Returns the number of carts deleted
+    # Usage: Ecommerce::Cart.clean_old_carts
+    def self.clean_old_carts
+      cutoff_date = 3.months.ago
+      
+      # Get count before deletion for logging
+      old_carts_count = Ecommerce::Cart.where("created_at < ?", cutoff_date).count
+      
+      # Delete old carts - this will also delete associated cart_items due to dependent: :destroy
+      deleted_count = Ecommerce::Cart.where("created_at < ?", cutoff_date).delete_all
+      
+      # Log the results
+      Rails.logger.info("Cart.clean_old_carts: Deleted #{deleted_count} carts older than #{cutoff_date}")
+      
+      # Return the count for reporting
+      deleted_count
+    end
   end
 end

@@ -233,13 +233,11 @@ module Ecommerce
           session[:wishlist_id] = @wishlist.id
         end
       else
-        #TODO when registering or logging_in, transfer wishlist ownership from session to db user record
-        #something like @wishlist.update(user_id: current_user.id)
+        # Only find an existing wishlist from session, but don't create a new one
+        # This prevents creating wishlists for every anonymous visitor
         @wishlist = Wishlist.find_by(id: session[:wishlist_id], status: "active")
-        unless @wishlist
-          @wishlist = Wishlist.create(status: "active")
-          session[:wishlist_id] = @wishlist.id
-        end
+        # We'll create a wishlist for anonymous users only when they actually add an item
+        # This will be handled in the wishlists_controller or wishlist_items_controller
       end
     end
 

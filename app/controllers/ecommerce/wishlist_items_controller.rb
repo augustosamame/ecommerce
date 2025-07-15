@@ -10,6 +10,12 @@ module Ecommerce
     authorize_resource
 
     def create
+      # Create a wishlist if the user doesn't have one yet
+      unless @wishlist
+        @wishlist = Wishlist.create(user_id: current_user&.id, status: "active")
+        session[:wishlist_id] = @wishlist.id
+      end
+      
       @wishlist_item = WishlistItem.new(wishlist_item_params)
       @wishlist_item.wishlist_id = @wishlist.id
       if @wishlist_item.save
