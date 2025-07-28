@@ -50,7 +50,11 @@ module Ecommerce
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_cart
-        @cart = Cart.find(params[:id])
+        @cart = Cart.find_by(id: params[:id])
+        unless @cart
+          render json: { error: 'Cart not found' }, status: :not_found
+          return
+        end
         @cart_item_qty_total = @cart.cart_items.sum(&:quantity)
       end
 
