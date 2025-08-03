@@ -8,12 +8,19 @@ module Ecommerce
 
     validates :link, format: URI::regexp(%w[http https]), :allow_blank => true
     validate :product_drip_email_fields_exist, if: :product_drip_email?
+    validate :next_purchase_email_fields_exist, if: :next_purchase_email?
 
     mount_uploader :image, Ecommerce::CampaignImageUploader
 
     def product_drip_email_fields_exist
       if self.drip_base_coupon_id.blank? || self.drip_product_id.blank? || self.drip_days_after.blank?
         errors.add(:product_drip_email_fields, "Drip email fields can't be blank for drip email campaigns")
+      end
+    end
+
+    def next_purchase_email_fields_exist
+      if self.coupon_id.blank?
+        errors.add(:coupon_id, "Next purchase email campaigns must have a coupon")
       end
     end
 

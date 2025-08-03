@@ -65,12 +65,45 @@ module Ecommerce
 
     # POST /campaigns
     def create
-      @campaign = Campaign.new(campaign_params)
-
-      if @campaign.save
-        redirect_to [:backoffice, @campaign], notice: 'Campaign was successfully created.'
-      else
-        render :new
+      Rails.logger.info "=== Campaign Creation Debug Start ==="
+      Rails.logger.info "Raw params: #{params[:campaign].inspect}"
+      
+      begin
+        Rails.logger.info "Getting campaign_params..."
+        filtered_params = campaign_params
+        Rails.logger.info "Campaign params: #{filtered_params.inspect}"
+        
+        Rails.logger.info "Creating new Campaign object..."
+        @campaign = Campaign.new(filtered_params)
+        Rails.logger.info "Campaign object created successfully"
+        Rails.logger.info "Campaign attributes: #{@campaign.attributes.inspect}"
+        
+        Rails.logger.info "Checking campaign validity before save..."
+        is_valid = @campaign.valid?
+        Rails.logger.info "Campaign valid?: #{is_valid}"
+        
+        if !is_valid
+          Rails.logger.error "Campaign validation errors before save: #{@campaign.errors.full_messages.join(', ')}"
+          Rails.logger.error "Detailed errors: #{@campaign.errors.inspect}"
+        end
+        
+        Rails.logger.info "Attempting to save campaign..."
+        if @campaign.save
+          Rails.logger.info "Campaign saved successfully with ID: #{@campaign.id}"
+          redirect_to [:backoffice, @campaign], notice: 'Campaign was successfully created.'
+        else
+          Rails.logger.error "Campaign save failed!"
+          Rails.logger.error "Campaign validation failed: #{@campaign.errors.full_messages.join(', ')}"
+          Rails.logger.error "Campaign errors: #{@campaign.errors.inspect}"
+          Rails.logger.error "Campaign attributes after failed save: #{@campaign.attributes.inspect}"
+          render :new
+        end
+      rescue => e
+        Rails.logger.error "Exception during campaign creation: #{e.class}: #{e.message}"
+        Rails.logger.error "Backtrace: #{e.backtrace.first(10).join("\n")}"
+        raise e
+      ensure
+        Rails.logger.info "=== Campaign Creation Debug End ==="
       end
     end
 
