@@ -103,10 +103,10 @@
 
           <% @primary_menu_categories.each do |category| %>
             <% if category.id == 47 %>
-              <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(filter: 'new_products'), class: match_active_category(category), style: 'margin-left: 8px; font-size: 17px;' %></li>
+              <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(filter: 'new_products'), class: "#{match_active_category(category)} #{category.highlighted? ? 'highlighted-category' : ''}", style: 'margin-left: 8px; font-size: 17px;' %></li>
             <% else %>
               <% unless category.id == 30 && !@banana_permission %>
-                <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: match_active_category(category), style: 'margin-left: 8px; font-size: 17px;' %></li>
+                <li>| <%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), class: "#{match_active_category(category)} #{category.highlighted? ? 'highlighted-category' : ''}", style: 'margin-left: 8px; font-size: 17px;' %></li>
               <% end %>
             <% end %>
           <% end %>
@@ -234,10 +234,10 @@
             
             <% @primary_menu_categories.each do |category| %>
               <% if category.id == 47 %>
-                <li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(filter: 'new_products'), style: "padding-top: 7px; padding-bottom: 7px;", class: match_active_category(category) %></li>
+                <li class="<%= category.highlighted? ? 'highlighted-category-mobile' : '' %>"><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(filter: 'new_products'), style: "padding-top: 7px; padding-bottom: 7px;", class: match_active_category(category) %></li>
               <% else %>
                 <% unless category.id == 30 && !@banana_permission %>
-                  <li><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), style: "padding-top: 7px; padding-bottom: 7px;", class: match_active_category(category) %></li>
+                  <li class="<%= category.highlighted? ? 'highlighted-category-mobile' : '' %>"><%= link_to category.name, Ecommerce::Engine.routes.url_helpers.products_path(category_id: category.id), style: "padding-top: 7px; padding-bottom: 7px;", class: match_active_category(category) %></li>
                 <% end %>
               <% end %>
             <% end %>

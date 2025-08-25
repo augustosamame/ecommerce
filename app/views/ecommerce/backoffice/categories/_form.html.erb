@@ -22,6 +22,7 @@
     <%= f.input :category_type, collection: Ecommerce::Category.category_types.keys, label: t('.category_type') %>
     <%= f.input :popular_homepage, label: t('.include_in_popular_homepage_categories') %>
     <%= f.input :image_popular_homepage_overlay_text, label: t('.text_for_image_overlay') %>
+    <%= f.input :highlighted, as: :boolean, label: 'Highlight this category (shows with red background in menu)' %>
     <%= f.input :category_order, label: t('.category_order') %>
 
     <%= f.input :mosaic_show, as: :boolean, label: 'Show In Country Mosaic' %>
