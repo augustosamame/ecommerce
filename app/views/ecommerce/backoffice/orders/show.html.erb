@@ -92,10 +92,10 @@
           <p><small>Subido por: <%= image.user.name %></small></p>
           <p><small><%= image.created_at.strftime("%d/%m/%Y %H:%M") %></small></p>
           <div class="text-center">
-            <a href="<%= image.proof_of_delivery.url %>" download="entrega_orden_<%= @backoffice_order.id %>_<%= image.id %>.jpg" class="btn btn-xs btn-primary">
+            <button onclick="downloadImage('<%= image.proof_of_delivery.url %>', 'entrega_orden_<%= @backoffice_order.id %>_<%= image.id %>.jpg')" class="btn btn-xs btn-primary">
               <span class="glyphicon glyphicon-download-alt"></span>
               Descargar
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -170,6 +170,33 @@ function previewImage(input) {
     preview.style.display = 'none';
     uploadBtn.disabled = true;
   }
+}
+
+// Force download of images from S3
+function downloadImage(url, filename) {
+  // Create a temporary anchor element
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.target = '_blank';
+  
+  // For S3 URLs, we need to fetch and create a blob
+  fetch(url)
+    .then(response => response.blob())
+    .then(blob => {
+      const blobUrl = window.URL.createObjectURL(blob);
+      link.href = blobUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      // Clean up the blob URL after a short delay
+      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 100);
+    })
+    .catch(error => {
+      console.error('Error downloading image:', error);
+      // Fallback: just open in new tab if fetch fails
+      window.open(url, '_blank');
+    });
 }
 
 // Manual modal control to avoid conflicts

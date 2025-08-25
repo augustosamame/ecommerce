@@ -14,11 +14,13 @@ class Ecommerce::ProofOfDeliveryImageUploader < CarrierWave::Uploader::Base
   end
 
   # Process files as they are uploaded:
-  process resize_to_fill: [800, 800]
+  # Resize to 800px width while maintaining aspect ratio
+  process resize_to_limit: [800, nil]
 
   # Create different versions of your uploaded files:
   version :large do
-    process resize_to_fill: [800, 800]
+    # Resize to 800px width, height adjusts automatically to maintain aspect ratio
+    process resize_to_limit: [800, nil]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
