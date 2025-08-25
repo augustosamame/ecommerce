@@ -87,10 +87,16 @@
   <% @backoffice_order.proof_of_delivery_images.recent.each do |image| %>
     <div class="col-md-3 col-sm-4 col-xs-6" style="margin-bottom: 20px;">
       <div class="thumbnail">
-        <%= image_tag image.proof_of_delivery.large.url, class: "img-responsive", style: "max-height: 200px; width: 100%; object-fit: cover;" %>
+        <%= image_tag image.proof_of_delivery.large.url, class: "img-responsive", style: "width: 100%; height: auto; max-width: 100%;" %>
         <div class="caption">
           <p><small>Subido por: <%= image.user.name %></small></p>
           <p><small><%= image.created_at.strftime("%d/%m/%Y %H:%M") %></small></p>
+          <div class="text-center">
+            <a href="<%= image.proof_of_delivery.url %>" download="entrega_orden_<%= @backoffice_order.id %>_<%= image.id %>.jpg" class="btn btn-xs btn-primary">
+              <span class="glyphicon glyphicon-download-alt"></span>
+              Descargar
+            </a>
+          </div>
         </div>
       </div>
     </div>
