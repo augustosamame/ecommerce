@@ -8,6 +8,7 @@ module Ecommerce
     has_many :order_items, inverse_of: :order, dependent: :destroy
     accepts_nested_attributes_for :order_items, reject_if: :all_blank, allow_destroy: true
     belongs_to :coupon, optional: true
+    has_many :proof_of_delivery_images, dependent: :destroy
 
     enum stage: {stage_new: 0, stage_paid: 1, stage_shipped: 2, stage_delivered: 3, stage_closed: 4, stage_void: 5, stage_pending: 6 }
     enum payment_status: {unpaid: 0, paid: 1, refunded: 2, payment_void: 3 }

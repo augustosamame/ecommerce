@@ -10,7 +10,7 @@ module Ecommerce
 
     def authorize_role
       #raise CanCan::AccessDenied unless current_or_guest_user.admin? || current_or_guest_user.auxiliary? || current_or_guest_user.transportista?
-      raise CanCan::AccessDenied unless current_user.admin? || current_user.auxiliary?
+      raise CanCan::AccessDenied unless current_user.admin? || current_user.auxiliary? || current_user.driver?
     end
 
     def set_dashboard_searches

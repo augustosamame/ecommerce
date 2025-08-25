@@ -124,7 +124,7 @@
 							<% if browser.device.mobile? %>
 
 								<ul class="nav-collapse navbar-nav">
-									<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
+									<% if !@hide_header_ecommerce_items && current_user && (current_user.admin? || current_user.driver?) %>
 										<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
 									<% end %>
 
@@ -202,7 +202,7 @@
 							<% else %>
 
 								<ul class="nav-collapse navbar-nav">
-									<% if !@hide_header_ecommerce_items && current_user && current_user.admin? %>
+									<% if !@hide_header_ecommerce_items && current_user && (current_user.admin? || current_user.driver?) %>
 										<li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
 									<% end %>
 									<% if current_user %>

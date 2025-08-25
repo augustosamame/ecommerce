@@ -1,17 +1,27 @@
 <div class="page-header">
-  <%= link_to backoffice_orders_path, class: 'btn btn-default' do %>
+  <%= link_to current_user.driver? ? backoffice_recent_orders_path : backoffice_orders_path, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
     Back
   <% end %>
-  <%= link_to edit_backoffice_order_path(@backoffice_order), class: 'btn btn-primary' do %>
-    <span class="glyphicon glyphicon-pencil"></span>
-    Edit
-  <% end %>
 
-  <%= link_to backoffice_order_path(@backoffice_order), class: 'btn btn-danger', style: 'margin-left: 40px;', method: :delete, data: { confirm: 'Are you sure?' } do %>
-    <span class="glyphicon glyphicon-trash"></span>
-    Delete
+  <!-- Image Upload Button for all users -->
+  <button type="button" class="btn btn-success" id="upload-modal-btn">
+    <span class="glyphicon glyphicon-camera"></span>
+    Subir Imagen
+  </button>
+
+  <% unless current_user.driver? %>
+    <%= link_to edit_backoffice_order_path(@backoffice_order), class: 'btn btn-primary' do %>
+      <span class="glyphicon glyphicon-pencil"></span>
+      Edit
+    <% end %>
+
+    <%= link_to backoffice_order_path(@backoffice_order), class: 'btn btn-danger', style: 'margin-left: 40px;', method: :delete, data: { confirm: 'Are you sure?' } do %>
+      <span class="glyphicon glyphicon-trash"></span>
+      Delete
+    <% end %>
   <% end %>
+  
   <h1><%= "Order ##{@backoffice_order.id}" %></h1>
 </div>
 
@@ -70,3 +80,126 @@
 <%= render "ecommerce/backoffice/addresses/index" %>
 
 <%= render 'einvoice' %>
+
+<!-- Proof of Delivery Images Gallery -->
+<h3 style='margin-top: 50px;'>Imágenes de Entrega</h3>
+<div class="row">
+  <% @backoffice_order.proof_of_delivery_images.recent.each do |image| %>
+    <div class="col-md-3 col-sm-4 col-xs-6" style="margin-bottom: 20px;">
+      <div class="thumbnail">
+        <%= image_tag image.proof_of_delivery.large.url, class: "img-responsive", style: "max-height: 200px; width: 100%; object-fit: cover;" %>
+        <div class="caption">
+          <p><small>Subido por: <%= image.user.name %></small></p>
+          <p><small><%= image.created_at.strftime("%d/%m/%Y %H:%M") %></small></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <% if @backoffice_order.proof_of_delivery_images.empty? %>
+    <div class="col-md-12">
+      <p class="text-muted">No hay imágenes de entrega para esta orden.</p>
+    </div>
+  <% end %>
+</div>
+
+<!-- Upload Image Modal -->
+<div class="modal fade" id="uploadImageModal" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="uploadImageModalLabel">Subir Imagen de Entrega</h4>
+      </div>
+      
+      <form id="upload-form" action="<%= backoffice_order_proof_of_delivery_images_path(@backoffice_order) %>" method="post" enctype="multipart/form-data">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="image-input" class="control-label">Seleccionar imagen</label>
+            <input type="file" 
+                   name="proof_of_delivery_image[proof_of_delivery]" 
+                   accept="image/*" 
+                   capture="environment"
+                   class="form-control" 
+                   id="image-input"
+                   onchange="previewImage(this)">
+            <small class="help-block">Formatos soportados: JPG, PNG, GIF (máximo 10MB)</small>
+          </div>
+          
+          <!-- Image Preview -->
+          <div id="image-preview" style="display: none; margin-top: 15px;">
+            <img id="preview-img" src="" alt="Vista previa" style="max-width: 100%; max-height: 300px; border: 1px solid #ddd; border-radius: 4px;">
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success" id="upload-btn" disabled>Subir Imagen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function previewImage(input) {
+  const preview = document.getElementById('image-preview');
+  const previewImg = document.getElementById('preview-img');
+  const uploadBtn = document.getElementById('upload-btn');
+  
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      preview.style.display = 'block';
+      uploadBtn.disabled = false;
+    }
+    
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    preview.style.display = 'none';
+    uploadBtn.disabled = true;
+  }
+}
+
+// Manual modal control to avoid conflicts
+$(document).ready(function() {
+  console.log('Modal script loaded');
+  
+  // Manual button click handler
+  $('#upload-modal-btn').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Button clicked, opening modal manually');
+    $('#uploadImageModal').modal('show');
+    return false;
+  });
+  
+  // Reset form when modal closes
+  $('#uploadImageModal').on('hidden.bs.modal', function () {
+    console.log('Modal closed, resetting form');
+    document.getElementById('upload-form').reset();
+    document.getElementById('image-preview').style.display = 'none';
+    document.getElementById('upload-btn').disabled = true;
+  });
+
+  // Debug modal events
+  $('#uploadImageModal').on('show.bs.modal', function (e) {
+    console.log('Modal is about to show');
+  });
+
+  $('#uploadImageModal').on('shown.bs.modal', function () {
+    console.log('Modal is now visible');
+  });
+
+  $('#uploadImageModal').on('hide.bs.modal', function (e) {
+    console.log('Modal is about to hide, event origin:', e);
+    // Uncomment the line below to prevent modal from closing (for debugging)
+    // e.preventDefault();
+  });
+});
+</script>

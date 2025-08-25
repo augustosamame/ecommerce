@@ -9,6 +9,11 @@ module Ecommerce
       user ||= User.new # guest user (not logged in)
       if user.admin?
         can :manage, :all
+      if user.driver?
+        can :manage, :all
+        # can :manage, Order
+        # can :manage, ProofOfDeliveryImage
+      end
       elsif user.standard?
         can :read, Brand
         can :read, Property

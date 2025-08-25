@@ -35,7 +35,7 @@
               </a>
             </li>
             <% if current_user %>
-              <% if current_user.admin? %>
+              <% if current_user.admin? || current_user.driver? %>
                 <li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
               <% end %>
               <li class="dropdown dropdown-hover d-flex flex-center">
@@ -222,7 +222,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             
-            <% if current_user && current_user.admin? %>
+            <% if current_user && (current_user.admin? || current_user.driver?) %>
               <li style="border-bottom: 1px solid #ccc;"><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
             <% end %>
 

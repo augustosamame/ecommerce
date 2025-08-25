@@ -1,5 +1,6 @@
 module Ecommerce
   class Backoffice::DashboardController < Backoffice::BaseController
+    before_action :redirect_drivers_to_recent_orders
 
     authorize_resource :class => false
 
@@ -411,6 +412,14 @@ module Ecommerce
           send_data p.to_stream.read, :filename => 'Points Report.xlsx', :type => "application/vnd.openxmlformates-officedocument.spreadsheetml.sheet"
         }
 
+      end
+    end
+
+    private
+
+    def redirect_drivers_to_recent_orders
+      if current_user&.driver?
+        redirect_to backoffice_recent_orders_path
       end
     end
 

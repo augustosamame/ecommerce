@@ -7,7 +7,9 @@ module Ecommerce
   class Backoffice::OrdersController < Backoffice::BaseController
     skip_before_action :authorize_role, only: [:create_culqi_order]
     before_action :set_backoffice_order, only: [:show, :edit, :update, :destroy]
-    authorize_resource :class => "Ecommerce::Order"
+    authorize_resource :class => "Ecommerce::Order", except: [:show]
+    skip_authorization_check only: [:show]
+    before_action :authorize_order_access, only: [:show]
 
     def einvoice
       @backoffice_order = Order.find(params[:format])
@@ -150,6 +152,13 @@ module Ecommerce
       # Use callbacks to share common setup or constraints between actions.
       def set_backoffice_order
         @backoffice_order = Order.find(params[:id])
+      end
+
+      # Custom authorization for order show action
+      def authorize_order_access
+        unless current_user.admin? || current_user.auxiliary? || current_user.driver?
+          raise CanCan::AccessDenied
+        end
       end
 
       # Only allow a trusted parameter "white list" through.
