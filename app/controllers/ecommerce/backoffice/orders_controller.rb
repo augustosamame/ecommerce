@@ -10,6 +10,7 @@ module Ecommerce
     authorize_resource :class => "Ecommerce::Order", except: [:show]
     skip_authorization_check only: [:show]
     before_action :authorize_order_access, only: [:show]
+    before_action :set_mobile_layout, only: [:show]
 
     def einvoice
       @backoffice_order = Order.find(params[:format])
@@ -158,6 +159,13 @@ module Ecommerce
       def authorize_order_access
         unless current_user.admin? || current_user.auxiliary? || current_user.driver?
           raise CanCan::AccessDenied
+        end
+      end
+
+      # Set mobile layout for mobile devices
+      def set_mobile_layout
+        if helpers.browser.device.mobile?
+          self.class.layout 'ecommerce/backoffice_mobile'
         end
       end
 

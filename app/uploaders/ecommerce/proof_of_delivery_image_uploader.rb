@@ -14,13 +14,13 @@ class Ecommerce::ProofOfDeliveryImageUploader < CarrierWave::Uploader::Base
   end
 
   # Process files as they are uploaded:
-  # Resize to 800px width while maintaining aspect ratio
-  process resize_to_limit: [800, nil]
+  # Resize only if width is greater than 800px, maintaining aspect ratio
+  process :resize_to_width_limit => 800
 
   # Create different versions of your uploaded files:
   version :large do
-    # Resize to 800px width, height adjusts automatically to maintain aspect ratio
-    process resize_to_limit: [800, nil]
+    # Resize only if width is greater than 800px, maintaining aspect ratio
+    process :resize_to_width_limit => 800
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
@@ -38,5 +38,17 @@ class Ecommerce::ProofOfDeliveryImageUploader < CarrierWave::Uploader::Base
   def secure_token
     var = :"@#{mounted_as}_secure_token"
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
+  end
+  
+  private
+  
+  # Custom method to resize based on width only, maintaining aspect ratio
+  def resize_to_width_limit(width)
+    manipulate! do |img|
+      if img.width > width
+        img.resize "#{width}x"
+      end
+      img
+    end
   end
 end

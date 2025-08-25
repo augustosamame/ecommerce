@@ -1,31 +1,68 @@
-<div class="page-header">
-  <%= link_to current_user.driver? ? backoffice_recent_orders_path : backoffice_orders_path, class: 'btn btn-default' do %>
-    <span class="glyphicon glyphicon-list-alt"></span>
-    Back
-  <% end %>
+<% if browser.device.mobile? %>
+  <div class="page-header">
+    <div class="btn-toolbar">
+      <%= link_to backoffice_recent_orders_path, class: 'btn btn-default btn-sm' do %>
+        <span class="glyphicon glyphicon-arrow-left"></span> Back
+      <% end %>
+      
+      <button type="button" class="btn btn-success btn-sm" id="upload-modal-btn">
+        <span class="glyphicon glyphicon-camera"></span> Foto
+      </button>
+    </div>
+    <h1 style="font-size: 20px; margin-top: 10px;">Order #<%= @backoffice_order.id %></h1>
+  </div>
+<% else %>
+  <div class="page-header">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="btn-toolbar">
+          <%= link_to current_user.driver? ? backoffice_recent_orders_path : backoffice_orders_path, class: 'btn btn-default btn-sm' do %>
+            <span class="glyphicon glyphicon-list-alt"></span>
+            <span>Back</span>
+          <% end %>
 
-  <!-- Image Upload Button for all users -->
-  <button type="button" class="btn btn-success" id="upload-modal-btn">
-    <span class="glyphicon glyphicon-camera"></span>
-    Subir Imagen
-  </button>
+          <!-- Image Upload Button for all users -->
+          <button type="button" class="btn btn-success btn-sm" id="upload-modal-btn">
+            <span class="glyphicon glyphicon-camera"></span>
+            <span>Subir Imagen</span>
+          </button>
 
-  <% unless current_user.driver? %>
-    <%= link_to edit_backoffice_order_path(@backoffice_order), class: 'btn btn-primary' do %>
-      <span class="glyphicon glyphicon-pencil"></span>
-      Edit
-    <% end %>
+          <% unless current_user.driver? %>
+            <%= link_to edit_backoffice_order_path(@backoffice_order), class: 'btn btn-primary btn-sm' do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+              Edit
+            <% end %>
 
-    <%= link_to backoffice_order_path(@backoffice_order), class: 'btn btn-danger', style: 'margin-left: 40px;', method: :delete, data: { confirm: 'Are you sure?' } do %>
-      <span class="glyphicon glyphicon-trash"></span>
-      Delete
-    <% end %>
-  <% end %>
-  
-  <h1><%= "Order ##{@backoffice_order.id}" %></h1>
-</div>
+            <%= link_to backoffice_order_path(@backoffice_order), class: 'btn btn-danger btn-sm', style: 'margin-left: 10px;', method: :delete, data: { confirm: 'Are you sure?' } do %>
+              <span class="glyphicon glyphicon-trash"></span>
+              Delete
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <h1 style="font-size: 24px; margin-top: 10px;"><%= "Order ##{@backoffice_order.id}" %></h1>
+  </div>
+<% end %>
 
-<dl class="dl-horizontal">
+<% if browser.device.mobile? %>
+  <!-- Mobile view -->
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <p><strong>Date / Time:</strong><br><%= friendly_formatted_date(@backoffice_order.created_at) %></p>
+      <p><strong>User:</strong><br><%= @backoffice_order.user.name %></p>
+      <p><strong>Order Total:</strong><br><%= number_to_currency(@backoffice_order.amount) %></p>
+      <p><strong>Shipping Amount:</strong><br><%= number_to_currency(@backoffice_order.shipping_amount) %></p>
+      <p><strong>Stage:</strong><br><%= @backoffice_order.friendly_stage %></p>
+      <p><strong>Shipping address:</strong><br><%= @backoffice_order.friendly_shipping_address %></p>
+      <p><strong>Payment status:</strong><br><span style="<%= @backoffice_order.unpaid? ? 'color: red; font-size: 16px;' : '' %>"><%= @backoffice_order.payment_status %></span></p>
+      <p><strong>Delivery Instructions:</strong><br><%= @backoffice_order.delivery_comments.present? ? @backoffice_order.delivery_comments : 'None' %></p>
+    </div>
+  </div>
+<% else %>
+  <!-- Desktop view -->
+  <dl class="dl-horizontal">
 
   <dt>Date / Time:</dt>
   <dd><%= friendly_formatted_date(@backoffice_order.created_at) %></dd>
@@ -69,7 +106,8 @@
   <dt>Status:</dt>
   <dd><%= @backoffice_order.status %></dd>
 
-</dl>
+  </dl>
+<% end %>
 
 <%= render 'order_details' %>
 
@@ -82,19 +120,19 @@
 <%= render 'einvoice' %>
 
 <!-- Proof of Delivery Images Gallery -->
-<h3 style='margin-top: 50px;'>Imágenes de Entrega</h3>
+<h3 style='margin-top: 30px; font-size: 20px;'>Imágenes de Entrega</h3>
 <div class="row">
   <% @backoffice_order.proof_of_delivery_images.recent.each do |image| %>
-    <div class="col-md-3 col-sm-4 col-xs-6" style="margin-bottom: 20px;">
+    <div class="<%= browser.device.mobile? ? 'col-xs-12' : 'col-md-3 col-sm-4' %>" style="margin-bottom: 15px;">
       <div class="thumbnail">
         <%= image_tag image.proof_of_delivery.large.url, class: "img-responsive", style: "width: 100%; height: auto; max-width: 100%;" %>
         <div class="caption">
-          <p><small>Subido por: <%= image.user.name %></small></p>
-          <p><small><%= image.created_at.strftime("%d/%m/%Y %H:%M") %></small></p>
+          <p style="margin-bottom: 5px;"><small>Subido por: <%= image.user.name %></small></p>
+          <p style="margin-bottom: 10px;"><small><%= image.created_at.strftime("%d/%m/%Y %H:%M") %></small></p>
           <div class="text-center">
             <button onclick="downloadImage('<%= image.proof_of_delivery.url %>', 'entrega_orden_<%= @backoffice_order.id %>_<%= image.id %>.jpg')" class="btn btn-xs btn-primary">
               <span class="glyphicon glyphicon-download-alt"></span>
-              Descargar
+              <% unless browser.device.mobile? %><span>Descargar</span><% end %>
             </button>
           </div>
         </div>
@@ -111,13 +149,13 @@
 
 <!-- Upload Image Modal -->
 <div class="modal fade" id="uploadImageModal" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" role="document" style="<%= browser.device.mobile? ? 'width: calc(100% - 20px); margin: 10px;' : 'margin: 10px auto;' %>">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <div class="modal-header" style="padding: 10px 15px;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 28px; margin-top: -5px;">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="uploadImageModalLabel">Subir Imagen de Entrega</h4>
+        <h4 class="modal-title" id="uploadImageModalLabel" style="font-size: 18px;">Subir Imagen de Entrega</h4>
       </div>
       
       <form id="upload-form" action="<%= backoffice_order_proof_of_delivery_images_path(@backoffice_order) %>" method="post" enctype="multipart/form-data">
@@ -125,14 +163,14 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="image-input" class="control-label">Seleccionar imagen</label>
+            <!-- Removed capture attribute to allow gallery selection on mobile -->
             <input type="file" 
                    name="proof_of_delivery_image[proof_of_delivery]" 
                    accept="image/*" 
-                   capture="environment"
                    class="form-control" 
                    id="image-input"
                    onchange="previewImage(this)">
-            <small class="help-block">Formatos soportados: JPG, PNG, GIF (máximo 10MB)</small>
+            <small class="help-block">Puedes tomar una foto o seleccionar de la galería</small>
           </div>
           
           <!-- Image Preview -->
@@ -149,6 +187,7 @@
     </div>
   </div>
 </div>
+
 
 <script>
 function previewImage(input) {

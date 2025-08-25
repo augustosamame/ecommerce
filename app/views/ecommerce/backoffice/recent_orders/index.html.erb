@@ -1,36 +1,71 @@
-<div class="page-header">
-  <h1>Órdenes Recientes</h1>
-</div>
-
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Usuario</th>
-        <th>Monto</th>
-        <th>Estado</th>
-        <th>Fecha</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @recent_orders.each do |order| %>
+<% if browser.device.mobile? %>
+  <div class="page-header">
+    <h1>Órdenes Recientes</h1>
+  </div>
+  <!-- Mobile view -->
+  <% @recent_orders.each do |order| %>
+    <div class="panel panel-default" style="margin-bottom: 10px;">
+      <div class="panel-body" style="padding: 10px;">
+        <div class="row">
+          <div class="col-xs-7">
+            <strong style="font-size: 16px;">Orden #<%= order.id %></strong><br>
+            <span style="font-size: 14px;"><%= order.user.name %></span><br>
+            <small class="text-muted"><%= order.created_at.strftime("%d/%m %H:%M") %></small>
+          </div>
+          <div class="col-xs-5 text-right">
+            <strong style="font-size: 15px;"><%= number_to_currency(order.amount) %></strong><br>
+            <span class="label label-<%= order.stage == 'stage_delivered' ? 'success' : 'default' %>" style="font-size: 11px;">
+              <%= order.stage.humanize.upcase %>
+            </span><br>
+            <div style="margin-top: 5px;">
+              <%= link_to "VER", backoffice_order_path(order), class: "btn btn-primary btn-xs", style: "width: 60px;" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <% if @recent_orders.empty? %>
+    <div class="alert alert-info">
+      No hay órdenes recientes para mostrar.
+    </div>
+  <% end %>
+<% else %>
+  <!-- Desktop view -->
+  <div class="page-header">
+    <h1>Órdenes Recientes</h1>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <td><%= order.id %></td>
-          <td><%= order.user.name %></td>
-          <td><%= order.amount %></td>
-          <td>
-            <span class="label label-<%= order.stage == 'stage_delivered' ? 'success' : 'default' %>">
-              <%= order.stage.humanize %>
-            </span>
-          </td>
-          <td><%= order.created_at.strftime("%d/%m/%Y %H:%M") %></td>
-          <td>
-            <%= link_to "Ver", backoffice_order_path(order), class: "btn btn-primary btn-sm" %>
-          </td>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Monto</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        <% @recent_orders.each do |order| %>
+          <tr>
+            <td><%= order.id %></td>
+            <td><%= order.user.name %></td>
+            <td><%= number_to_currency(order.amount) %></td>
+            <td>
+              <span class="label label-<%= order.stage == 'stage_delivered' ? 'success' : 'default' %>">
+                <%= order.stage.humanize %>
+              </span>
+            </td>
+            <td><%= order.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+            <td>
+              <%= link_to "Ver", backoffice_order_path(order), class: "btn btn-primary btn-sm" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

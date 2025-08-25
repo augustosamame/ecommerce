@@ -4,6 +4,7 @@ module Ecommerce
   class Backoffice::RecentOrdersController < Backoffice::BaseController
     skip_authorization_check
     before_action :ensure_driver_access
+    before_action :set_mobile_layout
     
     # GET /backoffice/recent_orders
     def index
@@ -16,6 +17,12 @@ module Ecommerce
 
     def ensure_driver_access
       redirect_to main_app.root_path unless current_user&.driver? || current_user&.admin?
+    end
+    
+    def set_mobile_layout
+      if helpers.browser.device.mobile?
+        self.class.layout 'ecommerce/backoffice_mobile'
+      end
     end
   end
 end

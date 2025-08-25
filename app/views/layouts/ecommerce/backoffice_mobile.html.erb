@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Backoffice Mobile</title>
+  
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag if defined?(csp_meta_tag) %>
+  
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  
+  <!-- Custom mobile styles -->
+  <style>
+    body {
+      padding-top: 50px;
+      background-color: #f5f5f5;
+    }
+    
+    .mobile-navbar {
+      background-color: #2c3e50;
+      border: none;
+      margin-bottom: 0;
+    }
+    
+    .mobile-navbar .navbar-brand {
+      color: white;
+      font-size: 18px;
+      padding: 15px;
+    }
+    
+    .mobile-navbar .btn-back {
+      color: white;
+      padding: 15px;
+      float: left;
+    }
+    
+    .mobile-container {
+      padding: 10px;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    
+    .page-header {
+      margin-top: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .page-header h1 {
+      font-size: 20px;
+      margin: 10px 0;
+    }
+    
+    .panel {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .btn-toolbar {
+      margin-bottom: 10px;
+    }
+    
+    .btn-sm {
+      padding: 8px 12px;
+    }
+    
+    /* Ensure modals work properly */
+    .modal-backdrop {
+      position: fixed;
+    }
+    
+    .modal {
+      position: fixed;
+      overflow-y: auto;
+    }
+  </style>
+  
+  <!-- jQuery and Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <!-- Mobile Navigation Bar -->
+  <nav class="navbar navbar-fixed-top mobile-navbar">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <span class="navbar-brand">
+          <%= current_user.driver? ? "Driver" : "Backoffice" %>
+        </span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="mobile-container">
+    <%= render 'ecommerce/application/flashes' %>
+    <%= yield %>
+  </div>
+
+  <%= javascript_include_tag 'ecommerce/application' if defined?(javascript_include_tag) %>
+</body>
+</html>
