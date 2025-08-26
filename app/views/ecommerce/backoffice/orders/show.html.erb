@@ -109,6 +109,7 @@
   </dl>
 <% end %>
 
+
 <%= render 'order_details' %>
 
 <h3 style='margin-top: 50px;'>Associated Payment Records</h3>
@@ -275,3 +276,19 @@ $(document).ready(function() {
   });
 });
 </script>
+
+<!-- Discount Calculation Details -->
+<% if @backoffice_order.discount_calculation.present? %>
+  <h3 style='margin-top: 50px;'>Discount Calculation Details</h3>
+  <div class="<%= (current_user.driver? && browser.device.mobile?) ? 'panel panel-default' : '' %>">
+    <% if current_user.driver? && browser.device.mobile? %>
+      <div class="panel-body">
+        <pre style="font-size: 12px; white-space: pre-wrap;"><%= @backoffice_order.discount_calculation %></pre>
+      </div>
+    <% else %>
+      <div class="well">
+        <pre style="font-size: 13px; white-space: pre-wrap;"><%= @backoffice_order.discount_calculation %></pre>
+      </div>
+    <% end %>
+  </div>
+<% end %>
