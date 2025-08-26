@@ -23,7 +23,7 @@ module Ecommerce
     after_commit :notify_unpaid_to_paid, on: :update, if: :saved_change_to_payment_status
     after_commit :fire_einvoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
     after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
-    after_commit :generate_discount_calculation_v2, on: :create
+    after_commit :generate_discount_calculation, on: :create
 
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
@@ -397,222 +397,220 @@ module Ecommerce
       self.save
     end
 
-  end
-
-  def generate_discount_calculation_v2
-    Rails.logger.info "=== DISCOUNT CALCULATION DEBUG ==="
-    Rails.logger.info "Order ID: #{self.id}"
-    Rails.logger.info "Cart ID: #{self.cart_id}"
-    Rails.logger.info "User ID: #{self.user_id}"
-    Rails.logger.info "After commit callback triggered for order creation"
-    
-    calculation_details = []
-    
-    begin
-      # Get the cart that was used for this order
-      original_cart = self.cart
-      Rails.logger.info "Original cart found: #{original_cart.present?}"
-      unless original_cart
-        error_msg = "ERROR: No cart found for this order (Cart ID: #{self.cart_id})"
-        Rails.logger.error error_msg
-        self.update_column(:discount_calculation, error_msg)
-        return
-      end
+    def generate_discount_calculation
+      Rails.logger.info "=== DISCOUNT CALCULATION DEBUG ==="
+      Rails.logger.info "Order ID: #{self.id}"
+      Rails.logger.info "Cart ID: #{self.cart_id}"
+      Rails.logger.info "User ID: #{self.user_id}"
+      Rails.logger.info "After commit callback triggered for order creation"
       
-      # Calculate cart subtotal before discounts
-      cart_subtotal = 0
-      calculation_details << "=== CART ANALYSIS ==="
-      calculation_details << "Cart ID: #{original_cart.id}"
+      calculation_details = []
       
-      original_cart.cart_items.includes(:product).each do |cart_item|
-        item_total = cart_item.line_total(self.user)
-        cart_subtotal += item_total
-        calculation_details << "- #{cart_item.product.name}: #{cart_item.quantity} × #{cart_item.product.current_price(self.user)} = #{item_total}"
-      end
-      
-      calculation_details << "Cart Subtotal: #{cart_subtotal}"
-      calculation_details << ""
-      
-      # Check for combo discounts
-      combo_discount_applied = check_combo_discounts(original_cart, calculation_details)
-      
-      # Check for coupon discounts
-      coupon_discount_applied = check_coupon_discounts(original_cart, cart_subtotal, calculation_details)
-      
-      # Points redemption
-      if self.points_redeemed_amount && self.points_redeemed_amount > 0
-        calculation_details << "=== POINTS REDEMPTION ==="
-        calculation_details << "Points redeemed: #{self.points_redeemed_amount} cents"
-        calculation_details << ""
-      end
-      
-      # Final calculation
-      calculation_details << "=== FINAL TOTALS ==="
-      calculation_details << "Cart Subtotal: #{cart_subtotal}"
-      calculation_details << "Coupon Discount: -#{self.discount_amount}"
-      calculation_details << "Points Redeemed: -#{self.points_redeemed_amount || 0} cents"
-      calculation_details << "Shipping: +#{self.shipping_amount}"
-      calculation_details << "Final Amount: #{self.amount}"
-      
-      # Update the discount_calculation field
-      final_calculation = calculation_details.join("\n")
-      Rails.logger.info "Final calculation length: #{final_calculation.length} characters"
-      Rails.logger.info "About to save discount_calculation to database"
-      
-      self.update_column(:discount_calculation, final_calculation)
-      
-      Rails.logger.info "Successfully saved discount_calculation to order #{self.id}"
-      
-    rescue => e
-      # Log the error for debugging
-      Rails.logger.error "Discount calculation failed for Order #{self.id}: #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      
-      # Save error details to the field
-      error_details = []
-      error_details << "=== DISCOUNT CALCULATION ERROR ==="
-      error_details << "Order ID: #{self.id}"
-      error_details << "Error: #{e.message}"
-      error_details << "Timestamp: #{Time.current}"
-      error_details << ""
-      error_details << "=== ORDER SUMMARY ==="
-      error_details << "Cart ID: #{self.cart_id}"
-      error_details << "User ID: #{self.user_id}"
-      error_details << "Coupon ID: #{self.coupon_id}"
-      error_details << "Discount Amount: #{self.discount_amount}"
-      error_details << "Points Redeemed: #{self.points_redeemed_amount}"
-      error_details << "Final Amount: #{self.amount}"
-      error_details << ""
-      error_details << "Note: This error occurred during discount calculation but did not prevent order creation."
-      
-      # Store error in discount_calculation field
-      self.update_column(:discount_calculation, error_details.join("\n"))
-      Rails.logger.info "Saved error details to discount_calculation field for order #{self.id}"
-    end
-  end
-  
-  private
-  
-  def check_combo_discounts(cart, calculation_details)
-    begin
-      calculation_details << "=== COMBO DISCOUNT CHECK ==="
-      
-      # Get all active combo discounts
-      combo_discounts = Ecommerce::ComboDiscount.active
-      
-      if combo_discounts.empty?
-        calculation_details << "No active combo discounts found"
-        calculation_details << ""
-        return false
-      end
-      
-      combo_applied = false
-      combo_discounts.each do |combo|
-        # Check if cart has the required products
-        product_1_items = cart.cart_items.where(product_id: combo.product_id_1)
-        product_2_items = combo.product_id_2.present? ? cart.cart_items.where(product_id: combo.product_id_2) : []
-        
-        if product_1_items.present? && (combo.product_id_2.blank? || product_2_items.present?)
-          product_1_qty = product_1_items.sum(:quantity)
-          product_2_qty = combo.product_id_2.present? ? product_2_items.sum(:quantity) : 0
-          
-          calculation_details << "Combo: #{combo.name || 'Unnamed Combo'}"
-          calculation_details << "- Required: #{combo.product_1 || 'Product ID ' + combo.product_id_1.to_s} (#{combo.qty_product_1})"
-          calculation_details << "- Found: #{product_1_qty} units"
-          
-          if combo.product_id_2.present?
-            calculation_details << "- Required: #{combo.product_2 || 'Product ID ' + combo.product_id_2.to_s} (#{combo.qty_product_2 || 1})"
-            calculation_details << "- Found: #{product_2_qty} units"
-          end
-          
-          # Check if requirements are met
-          requirements_met = product_1_qty >= combo.qty_product_1
-          if combo.product_id_2.present?
-            requirements_met = requirements_met && product_2_qty >= (combo.qty_product_2 || 1)
-          end
-          
-          if requirements_met
-            calculation_details << "✓ Combo requirements met"
-            combo_applied = true
-          else
-            calculation_details << "✗ Combo requirements not met"
-          end
+      begin
+        # Get the cart that was used for this order
+        original_cart = self.cart
+        Rails.logger.info "Original cart found: #{original_cart.present?}"
+        unless original_cart
+          error_msg = "ERROR: No cart found for this order (Cart ID: #{self.cart_id})"
+          Rails.logger.error error_msg
+          self.update_column(:discount_calculation, error_msg)
+          return
         end
-      end
-      
-      calculation_details << "Combo discount applied: #{combo_applied ? 'Yes' : 'No'}"
-      calculation_details << ""
-      combo_applied
-    rescue => e
-      calculation_details << "ERROR in combo discount check: #{e.message}"
-      calculation_details << ""
-      false
-    end
-  end
-  
-  def check_coupon_discounts(cart, cart_subtotal, calculation_details)
-    begin
-      calculation_details << "=== COUPON DISCOUNT CHECK ==="
-      
-      if self.coupon.blank?
-        calculation_details << "No coupon applied"
-        calculation_details << ""
-        return false
-      end
-      
-      coupon = self.coupon
-      calculation_details << "Coupon Code: #{coupon.coupon_code}"
-      calculation_details << "Coupon Type: #{coupon.coupon_type}"
-      
-      case coupon.coupon_type
-      when "percentage_discount"
-        discount_percentage = coupon.discount_percentage_decimal || 0
-        calculated_discount = cart_subtotal * (discount_percentage / 100)
-        calculation_details << "Discount Percentage: #{discount_percentage}%"
-        calculation_details << "Calculated Discount: #{cart_subtotal} × #{discount_percentage}% = #{calculated_discount}"
         
-      when "fixed_discount_with_threshold"
-        threshold = coupon.discount_threshold || 0
-        fixed_discount = coupon.discount_fixed || 0
-        calculation_details << "Discount Threshold: #{threshold}"
+        # Calculate cart subtotal before discounts
+        cart_subtotal = 0
+        calculation_details << "=== CART ANALYSIS ==="
+        calculation_details << "Cart ID: #{original_cart.id}"
+        
+        original_cart.cart_items.includes(:product).each do |cart_item|
+          item_total = cart_item.line_total(self.user)
+          cart_subtotal += item_total
+          calculation_details << "- #{cart_item.product.name}: #{cart_item.quantity} × #{cart_item.product.current_price(self.user)} = #{item_total}"
+        end
+        
         calculation_details << "Cart Subtotal: #{cart_subtotal}"
-        if cart_subtotal >= threshold
-          calculation_details << "✓ Threshold met - Fixed discount applied: #{fixed_discount}"
-        else
-          calculation_details << "✗ Threshold not met - No discount"
+        calculation_details << ""
+        
+        # Check for combo discounts
+        combo_discount_applied = check_combo_discounts(original_cart, calculation_details)
+        
+        # Check for coupon discounts
+        coupon_discount_applied = check_coupon_discounts(original_cart, cart_subtotal, calculation_details)
+        
+        # Points redemption
+        if self.points_redeemed_amount && self.points_redeemed_amount > 0
+          calculation_details << "=== POINTS REDEMPTION ==="
+          calculation_details << "Points redeemed: #{self.points_redeemed_amount} cents"
+          calculation_details << ""
         end
         
-      when "fixed_discount_without_threshold"
-        fixed_discount = coupon.discount_fixed || 0
-        calculation_details << "Fixed Discount: #{fixed_discount}"
+        # Final calculation
+        calculation_details << "=== FINAL TOTALS ==="
+        calculation_details << "Cart Subtotal: #{cart_subtotal}"
+        calculation_details << "Coupon Discount: -#{self.discount_amount}"
+        calculation_details << "Points Redeemed: -#{self.points_redeemed_amount || 0} cents"
+        calculation_details << "Shipping: +#{self.shipping_amount}"
+        calculation_details << "Final Amount: #{self.amount}"
         
-      when "percentage_discount_per_product"
-        discount_percentage = coupon.discount_percentage_decimal || 0
-        qualifying_products = coupon.products.pluck(:id)
-        calculation_details << "Discount Percentage: #{discount_percentage}%"
-        calculation_details << "Qualifying Products: #{qualifying_products.join(', ')}"
+        # Update the discount_calculation field
+        final_calculation = calculation_details.join("\n")
+        Rails.logger.info "Final calculation length: #{final_calculation.length} characters"
+        Rails.logger.info "About to save discount_calculation to database"
         
-        qualifying_items = cart.cart_items.where(product_id: qualifying_products)
-        total_qualifying_discount = 0
-        qualifying_items.each do |item|
-          item_discount = item.line_total(self.user) * (discount_percentage / 100)
-          total_qualifying_discount += item_discount
-          calculation_details << "- #{item.product.name}: #{item.line_total(self.user)} × #{discount_percentage}% = #{item_discount}"
-        end
-        calculation_details << "Total Product-Specific Discount: #{total_qualifying_discount}"
+        self.update_column(:discount_calculation, final_calculation)
+        
+        Rails.logger.info "Successfully saved discount_calculation to order #{self.id}"
+        
+      rescue => e
+        # Log the error for debugging
+        Rails.logger.error "Discount calculation failed for Order #{self.id}: #{e.message}"
+        Rails.logger.error e.backtrace.join("\n")
+        
+        # Save error details to the field
+        error_details = []
+        error_details << "=== DISCOUNT CALCULATION ERROR ==="
+        error_details << "Order ID: #{self.id}"
+        error_details << "Error: #{e.message}"
+        error_details << "Timestamp: #{Time.current}"
+        error_details << ""
+        error_details << "=== ORDER SUMMARY ==="
+        error_details << "Cart ID: #{self.cart_id}"
+        error_details << "User ID: #{self.user_id}"
+        error_details << "Coupon ID: #{self.coupon_id}"
+        error_details << "Discount Amount: #{self.discount_amount}"
+        error_details << "Points Redeemed: #{self.points_redeemed_amount}"
+        error_details << "Final Amount: #{self.amount}"
+        error_details << ""
+        error_details << "Note: This error occurred during discount calculation but did not prevent order creation."
+        
+        # Store error in discount_calculation field
+        self.update_column(:discount_calculation, error_details.join("\n"))
+        Rails.logger.info "Saved error details to discount_calculation field for order #{self.id}"
       end
-      
-      calculation_details << "Applied Discount Amount: #{self.discount_amount}"
-      calculation_details << "Free Shipping: #{coupon.free_shipping? ? 'Yes' : 'No'}"
-      calculation_details << ""
-      true
-    rescue => e
-      calculation_details << "ERROR in coupon discount calculation: #{e.message}"
-      calculation_details << ""
-      Rails.logger.error "Order #{self.id} - Coupon discount calculation error: #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      false
+    end
+    
+    private
+    
+    def check_combo_discounts(cart, calculation_details)
+      begin
+        calculation_details << "=== COMBO DISCOUNT CHECK ==="
+        
+        # Get all active combo discounts
+        combo_discounts = Ecommerce::ComboDiscount.active
+        
+        if combo_discounts.empty?
+          calculation_details << "No active combo discounts found"
+          calculation_details << ""
+          return false
+        end
+        
+        combo_applied = false
+        combo_discounts.each do |combo|
+          # Check if cart has the required products
+          product_1_items = cart.cart_items.where(product_id: combo.product_id_1)
+          product_2_items = combo.product_id_2.present? ? cart.cart_items.where(product_id: combo.product_id_2) : []
+          
+          if product_1_items.present? && (combo.product_id_2.blank? || product_2_items.present?)
+            product_1_qty = product_1_items.sum(:quantity)
+            product_2_qty = combo.product_id_2.present? ? product_2_items.sum(:quantity) : 0
+            
+            calculation_details << "Combo: #{combo.name || 'Unnamed Combo'}"
+            calculation_details << "- Required: #{combo.product_1 || 'Product ID ' + combo.product_id_1.to_s} (#{combo.qty_product_1})"
+            calculation_details << "- Found: #{product_1_qty} units"
+            
+            if combo.product_id_2.present?
+              calculation_details << "- Required: #{combo.product_2 || 'Product ID ' + combo.product_id_2.to_s} (#{combo.qty_product_2 || 1})"
+              calculation_details << "- Found: #{product_2_qty} units"
+            end
+            
+            # Check if requirements are met
+            requirements_met = product_1_qty >= combo.qty_product_1
+            if combo.product_id_2.present?
+              requirements_met = requirements_met && product_2_qty >= (combo.qty_product_2 || 1)
+            end
+            
+            if requirements_met
+              calculation_details << "✓ Combo requirements met"
+              combo_applied = true
+            else
+              calculation_details << "✗ Combo requirements not met"
+            end
+          end
+        end
+        
+        calculation_details << "Combo discount applied: #{combo_applied ? 'Yes' : 'No'}"
+        calculation_details << ""
+        combo_applied
+      rescue => e
+        calculation_details << "ERROR in combo discount check: #{e.message}"
+        calculation_details << ""
+        false
+      end
+    end
+    
+    def check_coupon_discounts(cart, cart_subtotal, calculation_details)
+      begin
+        calculation_details << "=== COUPON DISCOUNT CHECK ==="
+        
+        if self.coupon.blank?
+          calculation_details << "No coupon applied"
+          calculation_details << ""
+          return false
+        end
+        
+        coupon = self.coupon
+        calculation_details << "Coupon Code: #{coupon.coupon_code}"
+        calculation_details << "Coupon Type: #{coupon.coupon_type}"
+        
+        case coupon.coupon_type
+        when "percentage_discount"
+          discount_percentage = coupon.discount_percentage_decimal || 0
+          calculated_discount = cart_subtotal * (discount_percentage / 100)
+          calculation_details << "Discount Percentage: #{discount_percentage}%"
+          calculation_details << "Calculated Discount: #{cart_subtotal} × #{discount_percentage}% = #{calculated_discount}"
+          
+        when "fixed_discount_with_threshold"
+          threshold = coupon.discount_threshold || 0
+          fixed_discount = coupon.discount_fixed || 0
+          calculation_details << "Discount Threshold: #{threshold}"
+          calculation_details << "Cart Subtotal: #{cart_subtotal}"
+          if cart_subtotal >= threshold
+            calculation_details << "✓ Threshold met - Fixed discount applied: #{fixed_discount}"
+          else
+            calculation_details << "✗ Threshold not met - No discount"
+          end
+          
+        when "fixed_discount_without_threshold"
+          fixed_discount = coupon.discount_fixed || 0
+          calculation_details << "Fixed Discount: #{fixed_discount}"
+          
+        when "percentage_discount_per_product"
+          discount_percentage = coupon.discount_percentage_decimal || 0
+          qualifying_products = coupon.products.pluck(:id)
+          calculation_details << "Discount Percentage: #{discount_percentage}%"
+          calculation_details << "Qualifying Products: #{qualifying_products.join(', ')}"
+          
+          qualifying_items = cart.cart_items.where(product_id: qualifying_products)
+          total_qualifying_discount = 0
+          qualifying_items.each do |item|
+            item_discount = item.line_total(self.user) * (discount_percentage / 100)
+            total_qualifying_discount += item_discount
+            calculation_details << "- #{item.product.name}: #{item.line_total(self.user)} × #{discount_percentage}% = #{item_discount}"
+          end
+          calculation_details << "Total Product-Specific Discount: #{total_qualifying_discount}"
+        end
+        
+        calculation_details << "Applied Discount Amount: #{self.discount_amount}"
+        calculation_details << "Free Shipping: #{coupon.free_shipping? ? 'Yes' : 'No'}"
+        calculation_details << ""
+        true
+      rescue => e
+        calculation_details << "ERROR in coupon discount calculation: #{e.message}"
+        calculation_details << ""
+        Rails.logger.error "Order #{self.id} - Coupon discount calculation error: #{e.message}"
+        Rails.logger.error e.backtrace.join("\n")
+        false
+      end
     end
   end
-
 end
