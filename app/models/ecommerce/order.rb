@@ -23,7 +23,7 @@ module Ecommerce
     after_commit :notify_unpaid_to_paid, on: :update, if: :saved_change_to_payment_status
     after_commit :fire_einvoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
     after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
-    after_commit :generate_discount_calculation, on: :create
+    after_commit :generate_discount_calculation_v2, on: :create
 
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
@@ -399,7 +399,7 @@ module Ecommerce
 
   end
 
-  def generate_discount_calculation
+  def generate_discount_calculation_v2
     Rails.logger.info "=== DISCOUNT CALCULATION DEBUG ==="
     Rails.logger.info "Order ID: #{self.id}"
     Rails.logger.info "Cart ID: #{self.cart_id}"
