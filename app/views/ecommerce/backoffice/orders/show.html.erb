@@ -1,4 +1,4 @@
-<% if browser.device.mobile? %>
+<% if current_user.driver? && browser.device.mobile? %>
   <div class="page-header">
     <div class="btn-toolbar">
       <%= link_to backoffice_recent_orders_path, class: 'btn btn-default btn-sm' do %>
@@ -46,7 +46,7 @@
   </div>
 <% end %>
 
-<% if browser.device.mobile? %>
+<% if current_user.driver? && browser.device.mobile? %>
   <!-- Mobile view -->
   <div class="panel panel-default">
     <div class="panel-body">
@@ -123,7 +123,7 @@
 <h3 style='margin-top: 30px; font-size: 20px;'>Imágenes de Entrega</h3>
 <div class="row">
   <% @backoffice_order.proof_of_delivery_images.recent.each do |image| %>
-    <div class="<%= browser.device.mobile? ? 'col-xs-12' : 'col-md-3 col-sm-4' %>" style="margin-bottom: 15px;">
+    <div class="<%= (current_user.driver? && browser.device.mobile?) ? 'col-xs-12' : 'col-md-3 col-sm-4' %>" style="margin-bottom: 15px;">
       <div class="thumbnail">
         <%= image_tag image.proof_of_delivery.large.url, class: "img-responsive", style: "width: 100%; height: auto; max-width: 100%;" %>
         <div class="caption">
@@ -132,7 +132,7 @@
           <div class="text-center">
             <button onclick="downloadImage('<%= image.proof_of_delivery.url %>', 'entrega_orden_<%= @backoffice_order.id %>_<%= image.id %>.jpg')" class="btn btn-xs btn-primary">
               <span class="glyphicon glyphicon-download-alt"></span>
-              <% unless browser.device.mobile? %><span>Descargar</span><% end %>
+              <% unless current_user.driver? && browser.device.mobile? %><span>Descargar</span><% end %>
             </button>
           </div>
         </div>
@@ -149,7 +149,7 @@
 
 <!-- Upload Image Modal -->
 <div class="modal fade" id="uploadImageModal" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel">
-  <div class="modal-dialog" role="document" style="<%= browser.device.mobile? ? 'width: calc(100% - 20px); margin: 10px;' : 'margin: 10px auto;' %>">
+  <div class="modal-dialog" role="document" style="<%= (current_user.driver? && browser.device.mobile?) ? 'width: calc(100% - 20px); margin: 10px;' : 'margin: 10px auto;' %>">
     <div class="modal-content">
       <div class="modal-header" style="padding: 10px 15px;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 28px; margin-top: -5px;">

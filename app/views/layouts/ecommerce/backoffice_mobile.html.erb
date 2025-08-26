@@ -37,6 +37,17 @@
       float: left;
     }
     
+    .mobile-navbar .btn-default {
+      background-color: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+    }
+    
+    .mobile-navbar .btn-default:hover {
+      background-color: rgba(255,255,255,0.1);
+      color: white;
+    }
+    
     .mobile-container {
       padding: 10px;
       max-width: 100%;
@@ -86,10 +97,13 @@
   <!-- Mobile Navigation Bar -->
   <nav class="navbar navbar-fixed-top mobile-navbar">
     <div class="container-fluid">
-      <div class="navbar-header">
-        <span class="navbar-brand">
+      <div class="navbar-header" style="width: 100%;">
+        <span class="navbar-brand" style="float: left;">
           <%= current_user.driver? ? "Driver" : "Backoffice" %>
         </span>
+        <%= link_to main_app.logout_path, class: 'btn btn-default btn-sm', style: 'float: right; margin-top: 10px; margin-right: 10px;' do %>
+          <span class="glyphicon glyphicon-log-out"></span> Cerrar Sesión
+        <% end %>
       </div>
     </div>
   </nav>

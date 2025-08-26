@@ -1,4 +1,4 @@
-<% if browser.device.mobile? %>
+<% if current_user.driver? && browser.device.mobile? %>
   <div class="page-header">
     <h1>Órdenes Recientes</h1>
   </div>
