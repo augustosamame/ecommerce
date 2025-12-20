@@ -91,6 +91,9 @@ en-PE:
       today_afternoon: "today afternoon (Tuesday to Friday)"
       tomorrow_afternoon: "next Business Day (Tuesday to Friday)"
   ecommerce:
+    user_mailer:
+      send_campaign_email:
+        buy_now: "Buy Now"
     shopping_videos:
       add_to_cart_label: "Add to Cart"
       view_products_label: "View Products"
