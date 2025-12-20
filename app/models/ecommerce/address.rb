@@ -7,6 +7,9 @@ module Ecommerce
     enum shipping_or_billing: {shipping: 1, billing: 2}
 
     validates :street, :district, presence: true
+    validates :street, length: { maximum: 85 }
+
+    before_save :truncate_street
 
     attr_accessor :raw_address
     attr_accessor :full_street_address
@@ -25,6 +28,12 @@ module Ecommerce
 
     def friendly_street_select
       return [name, street, street2, district].compact.join(', ')
+    end
+
+    private
+
+    def truncate_street
+      self.street = street[0, 85] if street.present? && street.length > 85
     end
 
   end
