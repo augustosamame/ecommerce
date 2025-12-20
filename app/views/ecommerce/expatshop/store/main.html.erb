@@ -1,5 +1,13 @@
 <!-- hero -->
     <header>
+      <!-- Marketing Tagline Section -->
+      <section class="marketing-tagline">
+        <p class="tagline-small">Desde el 2018</p>
+        <p class="tagline-big">Lo mejor del mundo,</p>
+        <p class="tagline-big">ahora en Perú.</p>
+        <p class="tagline-small">Stock inmediato. Delivery al día siguiente (lun a vie).</p>
+      </section>
+
       <div class="header-hero" style="cursor: pointer">
         <ul class="video-slider">
           <% Ecommerce::Slider.where(slider_view: (browser.device.mobile? ? 'MOBILE' : 'DESKTOP')).order(:slider_order).each do |slider| %>

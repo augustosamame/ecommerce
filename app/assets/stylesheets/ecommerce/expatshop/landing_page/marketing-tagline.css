@@ -1,0 +1,63 @@
+/*
+ * Marketing Tagline Section
+ * Displays brand message above the sliders
+ */
+
+.marketing-tagline {
+  background-color: #f8f3ef;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.marketing-tagline .tagline-small {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 8px 0;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.marketing-tagline .tagline-big {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 36px;
+  color: #4a4a4a;
+  margin: 0;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.marketing-tagline .tagline-big:last-of-type {
+  margin-bottom: 12px;
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .marketing-tagline {
+    padding: 5px 5px;
+  }
+
+  .marketing-tagline .tagline-small {
+    font-size: 12px;
+  }
+
+  .marketing-tagline .tagline-big {
+    font-size: 28px;
+  }
+}
+
+/* Larger screens */
+@media (min-width: 992px) {
+  .marketing-tagline {
+    padding: 50px 20px;
+  }
+
+  .marketing-tagline .tagline-big {
+    font-size: 42px;
+  }
+
+  .marketing-tagline .tagline-small {
+    font-size: 16px;
+  }
+}
