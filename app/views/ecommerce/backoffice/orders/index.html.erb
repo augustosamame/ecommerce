@@ -33,6 +33,7 @@
         <th>Edit</th>
         <th>Invoice</th>
         <th>Ship</th>
+        <th>Foto</th>
       </tr>
     </thead>
 
@@ -66,8 +67,85 @@
 
 
         <td><%= link_to "<i class='material-icons'>local_shipping</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>
+        <td>
+          <a href="#" class="upload-photo-btn" data-order-id="<%= backoffice_order.id %>">
+            <i class='material-icons'>photo_camera</i>
+          </a>
+        </td>
       <% end %>
     </tbody>
   </table>
   <%= paginate @backoffice_orders %>
 </div>
+
+<!-- Upload Image Modal -->
+<div class="modal fade" id="uploadImageModal" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="uploadImageModalLabel">Subir Imagen de Entrega - Orden #<span id="modal-order-id"></span></h4>
+      </div>
+      <form id="upload-form" method="post" enctype="multipart/form-data">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <input type="hidden" name="return_to" value="index">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="image-input">Seleccionar imagen</label>
+            <input type="file" name="proof_of_delivery_image[proof_of_delivery]"
+                   accept="image/*" class="form-control" id="image-input"
+                   onchange="previewImage(this)">
+            <small class="help-block">Puedes tomar una foto o seleccionar de la galería</small>
+          </div>
+          <div id="image-preview" style="display: none; margin-top: 15px;">
+            <img id="preview-img" src="" alt="Vista previa" style="max-width: 100%; max-height: 300px; border: 1px solid #ddd; border-radius: 4px;">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success" id="upload-btn" disabled>Subir Imagen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function previewImage(input) {
+  var preview = document.getElementById('image-preview');
+  var previewImg = document.getElementById('preview-img');
+  var uploadBtn = document.getElementById('upload-btn');
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      preview.style.display = 'block';
+      uploadBtn.disabled = false;
+    }
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    preview.style.display = 'none';
+    uploadBtn.disabled = true;
+  }
+}
+
+$(document).ready(function() {
+  $('.upload-photo-btn').on('click', function(e) {
+    e.preventDefault();
+    var orderId = $(this).data('order-id');
+    var formAction = '/store/backoffice/orders/' + orderId + '/proof_of_delivery_images';
+    $('#upload-form').attr('action', formAction);
+    $('#modal-order-id').text(orderId);
+    $('#uploadImageModal').modal('show');
+  });
+
+  $('#uploadImageModal').on('hidden.bs.modal', function() {
+    document.getElementById('upload-form').reset();
+    document.getElementById('image-preview').style.display = 'none';
+    document.getElementById('upload-btn').disabled = true;
+  });
+});
+</script>
