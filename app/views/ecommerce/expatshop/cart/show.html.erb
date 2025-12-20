@@ -21,6 +21,18 @@
             </tr>
           </thead>
           <tbody>
+            <% unless @friendly_combo_discount_array.blank? %>
+              <tr>
+                <td colspan="5" style="background-color: #fff3cd; padding: 10px;">
+                  <p style="color: red; font-weight: 600; margin: 0; font-size: 14px;">
+                    <%= t('.combo_discount') %>:
+                    <% @friendly_combo_discount_array.each_with_index do |combo_discount, index| %>
+                      <%= combo_discount[:product_name] %> (- <%= session_currency(combo_discount[:discount_amount]) %>)<%= index < @friendly_combo_discount_array.length - 1 ? ' | ' : '' %>
+                    <% end %>
+                  </p>
+                </td>
+              </tr>
+            <% end %>
             <% if @cart.cart_items.count == 0 %>
 
             <% else %>
@@ -87,6 +99,16 @@
       <!-- cart table for mobiles -->
       <div class="cart-desktop visible-xs">
         <% if browser.device.mobile? %>
+          <% unless @friendly_combo_discount_array.blank? %>
+            <div style="background-color: #fff3cd; padding: 10px; margin-bottom: 10px;">
+              <p style="color: red; font-weight: 600; margin: 0; font-size: 14px;">
+                <%= t('.combo_discount') %>:
+                <% @friendly_combo_discount_array.each_with_index do |combo_discount, index| %>
+                  <%= combo_discount[:product_name] %> (- <%= session_currency(combo_discount[:discount_amount]) %>)<%= index < @friendly_combo_discount_array.length - 1 ? ' | ' : '' %>
+                <% end %>
+              </p>
+            </div>
+          <% end %>
 
           <% if @cart.cart_items.count == 0 %>
 
