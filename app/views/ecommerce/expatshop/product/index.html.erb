@@ -84,22 +84,27 @@ $(document).ready(function(){
   var productObserver;
 
   function initProductScrollAnimation() {
-    var products = document.querySelectorAll('.products .product:not(.pop-in)');
+    // Only select products that haven't been animated yet
+    var products = document.querySelectorAll('.products .product:not(.animate-product)');
 
     if (products.length > 0 && 'IntersectionObserver' in window) {
-      productObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('pop-in');
-            productObserver.unobserve(entry.target);
-          }
+      if (!productObserver) {
+        productObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('pop-in');
+              productObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.15,
+          rootMargin: '0px 0px -50px 0px'
         });
-      }, {
-        threshold: 0.15,
-        rootMargin: '0px 0px -80px 0px'
-      });
+      }
 
       products.forEach(function(product) {
+        // Add the animate class first, then observe
+        product.classList.add('animate-product');
         productObserver.observe(product);
       });
     }
@@ -107,8 +112,9 @@ $(document).ready(function(){
 
   // Re-init animation for products loaded via infinite scroll
   $(document).on('append.infiniteScroll', function(event, response, path, items) {
+    // Small delay to ensure DOM is updated
     setTimeout(function() {
       initProductScrollAnimation();
-    }, 100);
+    }, 50);
   });
 </script>

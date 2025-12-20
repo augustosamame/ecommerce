@@ -132,24 +132,24 @@
 }
 
 /* Scroll-triggered pop-out animation for product cards */
-.products .product {
+.products .product.animate-product {
   opacity: 0;
   -webkit-transform: translateY(60px) scale(0.85);
   transform: translateY(60px) scale(0.85);
-  -webkit-transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), -webkit-transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -webkit-transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), -webkit-transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.products .product.pop-in {
+.products .product.animate-product.pop-in {
   opacity: 1;
   -webkit-transform: translateY(0) scale(1);
   transform: translateY(0) scale(1);
 }
 
-/* Staggered animation for products in a row */
-.products .product:nth-child(3n+1).pop-in { -webkit-transition-delay: 0s; transition-delay: 0s; }
-.products .product:nth-child(3n+2).pop-in { -webkit-transition-delay: 0.15s; transition-delay: 0.15s; }
-.products .product:nth-child(3n+3).pop-in { -webkit-transition-delay: 0.3s; transition-delay: 0.3s; }
+/* Staggered animation for products in a row - reduced by 30% */
+.products .product.animate-product:nth-child(3n+1).pop-in { -webkit-transition-delay: 0s; transition-delay: 0s; }
+.products .product.animate-product:nth-child(3n+2).pop-in { -webkit-transition-delay: 0.1s; transition-delay: 0.1s; }
+.products .product.animate-product:nth-child(3n+3).pop-in { -webkit-transition-delay: 0.2s; transition-delay: 0.2s; }
 
 /* Enhanced hover effect for product cards */
 .products .product.pop-in .featured-product {
