@@ -65,7 +65,9 @@ module Ecommerce
       culqi_address = if first_address.blank?
         "".encode('UTF-8')
       else
-        "#{first_address.street},#{first_address.street2.blank? ? "" : (first_address.street2 + ",")} #{first_address.district}".encode('UTF-8')
+        # Culqi requires address to be between 5 and 100 characters
+        full_address = "#{first_address.street},#{first_address.street2.blank? ? "" : (first_address.street2 + ",")} #{first_address.district}"
+        full_address[0, 99].encode('UTF-8')
       end
       no_antifraud_data = culqi_address.blank? || current_user.first_name.blank? || current_user.last_name.blank?
       plain_mobile = current_user.username ? current_user.username.split(':')[0].gsub(/[^\d]/, '') : ( current_user.phone ? current_user.phone.split(':')[0].gsub(/[^\d]/, '') : "" )
