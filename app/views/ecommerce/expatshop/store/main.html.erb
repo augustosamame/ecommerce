@@ -1039,3 +1039,32 @@ categorías.
   })
 
 </script>
+
+<!-- Scroll animation for category images -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get all principle elements in the categories section
+    var principles = document.querySelectorAll('.categories-principles .principle');
+
+    if (principles.length > 0) {
+      // Create Intersection Observer
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('pop-in');
+            // Optional: stop observing after animation triggers
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.2, // Trigger when 20% of element is visible
+        rootMargin: '0px 0px -50px 0px' // Trigger slightly before element is fully in view
+      });
+
+      // Observe each principle element
+      principles.forEach(function(principle) {
+        observer.observe(principle);
+      });
+    }
+  });
+</script>

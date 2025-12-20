@@ -12,3 +12,32 @@
   font-weight: 700;
   margin: 15px 0 25px;
 }
+
+/* Scroll-triggered pop-out animation for category images */
+.categories-principles .principle {
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.categories-principles .principle.pop-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Staggered animation delays for each item */
+.categories-principles .col-xs-4:nth-child(1) .principle { transition-delay: 0s; }
+.categories-principles .col-xs-4:nth-child(2) .principle { transition-delay: 0.1s; }
+.categories-principles .col-xs-4:nth-child(3) .principle { transition-delay: 0.2s; }
+.categories-principles .col-xs-4:nth-child(4) .principle { transition-delay: 0.1s; }
+.categories-principles .col-xs-4:nth-child(5) .principle { transition-delay: 0.2s; }
+.categories-principles .col-xs-4:nth-child(6) .principle { transition-delay: 0.3s; }
+.categories-principles .col-xs-4:nth-child(7) .principle { transition-delay: 0.2s; }
+.categories-principles .col-xs-4:nth-child(8) .principle { transition-delay: 0.3s; }
+.categories-principles .col-xs-4:nth-child(9) .principle { transition-delay: 0.4s; }
+
+/* Subtle hover effect for interactivity */
+.categories-principles .principle:hover {
+  transform: translateY(-5px) scale(1.05);
+  transition: transform 0.3s ease-out;
+}
