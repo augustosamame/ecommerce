@@ -80,41 +80,54 @@ $(document).ready(function(){
     });
   }
 
-  // Scroll animation for product cards
-  var productObserver;
+  // Parallax zoom effect for product cards
+  function initParallaxZoom() {
+    var ticking = false;
 
-  function initProductScrollAnimation() {
-    // Only select products that haven't been animated yet
-    var products = document.querySelectorAll('.products .product:not(.animate-product)');
-
-    if (products.length > 0 && 'IntersectionObserver' in window) {
-      if (!productObserver) {
-        productObserver = new IntersectionObserver(function(entries) {
-          entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('pop-in');
-              productObserver.unobserve(entry.target);
-            }
-          });
-        }, {
-          threshold: 0.15,
-          rootMargin: '0px 0px -50px 0px'
-        });
-      }
+    function updateParallax() {
+      var products = document.querySelectorAll('.products .product .featured-product');
+      var viewportHeight = window.innerHeight;
+      var viewportCenter = viewportHeight / 2;
 
       products.forEach(function(product) {
-        // Add the animate class first, then observe
-        product.classList.add('animate-product');
-        productObserver.observe(product);
+        var rect = product.getBoundingClientRect();
+        var elementCenter = rect.top + (rect.height / 2);
+
+        // Calculate distance from viewport center (0 = center, 1 = edge)
+        var distanceFromCenter = Math.abs(elementCenter - viewportCenter) / viewportCenter;
+
+        // Only apply effect when element is in viewport
+        if (rect.top < viewportHeight && rect.bottom > 0) {
+          // Scale: 1.0 at edges, up to 1.12 at center
+          var scale = 1 + (0.12 * (1 - Math.min(distanceFromCenter, 1)));
+          // Shadow intensity based on scale
+          var shadowIntensity = 0.1 + (0.15 * (1 - Math.min(distanceFromCenter, 1)));
+
+          product.style.transform = 'scale(' + scale + ')';
+          product.style.boxShadow = '0px ' + Math.round(8 * scale) + 'px ' + Math.round(16 * scale) + 'px 0px rgba(0, 0, 0, ' + shadowIntensity + ')';
+        } else {
+          product.style.transform = 'scale(1)';
+          product.style.boxShadow = '';
+        }
       });
+
+      ticking = false;
     }
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }
+
+    // Listen for scroll
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Initial call
+    updateParallax();
   }
 
-  // Re-init animation for products loaded via infinite scroll
-  $(document).on('append.infiniteScroll', function(event, response, path, items) {
-    // Small delay to ensure DOM is updated
-    setTimeout(function() {
-      initProductScrollAnimation();
-    }, 50);
-  });
+  // Initialize parallax effect
+  initParallaxZoom();
 </script>
