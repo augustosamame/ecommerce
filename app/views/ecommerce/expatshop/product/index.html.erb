@@ -51,6 +51,7 @@ $(document).ready(function(){
 <script>
   $(document).ready(function(){
     bindPlusMinusButtons();
+    initProductScrollAnimation();
   });
 
   function bindPlusMinusButtons() {
@@ -78,4 +79,36 @@ $(document).ready(function(){
       e.preventDefault();
     });
   }
+
+  // Scroll animation for product cards
+  var productObserver;
+
+  function initProductScrollAnimation() {
+    var products = document.querySelectorAll('.products .product:not(.pop-in)');
+
+    if (products.length > 0 && 'IntersectionObserver' in window) {
+      productObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('pop-in');
+            productObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -80px 0px'
+      });
+
+      products.forEach(function(product) {
+        productObserver.observe(product);
+      });
+    }
+  }
+
+  // Re-init animation for products loaded via infinite scroll
+  $(document).on('append.infiniteScroll', function(event, response, path, items) {
+    setTimeout(function() {
+      initProductScrollAnimation();
+    }, 100);
+  });
 </script>

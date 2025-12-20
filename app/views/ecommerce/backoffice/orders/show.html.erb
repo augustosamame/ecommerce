@@ -4,9 +4,13 @@
       <%= link_to backoffice_recent_orders_path, class: 'btn btn-default btn-sm' do %>
         <span class="glyphicon glyphicon-arrow-left"></span> Back
       <% end %>
-      
-      <button type="button" class="btn btn-success btn-sm" id="upload-modal-btn">
-        <span class="glyphicon glyphicon-camera"></span> Foto
+
+      <!-- Direct upload buttons - no modal -->
+      <button type="button" class="btn btn-success btn-sm" id="camera-btn">
+        <span class="glyphicon glyphicon-camera"></span> Cámara
+      </button>
+      <button type="button" class="btn btn-info btn-sm" id="gallery-btn">
+        <span class="glyphicon glyphicon-picture"></span> Galería
       </button>
     </div>
     <h1 style="font-size: 20px; margin-top: 10px;">Order #<%= @backoffice_order.id %></h1>
@@ -21,10 +25,14 @@
             <span>Back</span>
           <% end %>
 
-          <!-- Image Upload Button for all users -->
-          <button type="button" class="btn btn-success btn-sm" id="upload-modal-btn">
+          <!-- Direct upload buttons - no modal -->
+          <button type="button" class="btn btn-success btn-sm" id="camera-btn">
             <span class="glyphicon glyphicon-camera"></span>
-            <span>Subir Imagen</span>
+            <span>Cámara</span>
+          </button>
+          <button type="button" class="btn btn-info btn-sm" id="gallery-btn">
+            <span class="glyphicon glyphicon-picture"></span>
+            <span>Galería</span>
           </button>
 
           <% unless current_user.driver? %>
@@ -41,7 +49,7 @@
         </div>
       </div>
     </div>
-    
+
     <h1 style="font-size: 24px; margin-top: 10px;"><%= "Order ##{@backoffice_order.id}" %></h1>
   </div>
 <% end %>
@@ -148,79 +156,25 @@
   <% end %>
 </div>
 
-<!-- Upload Image Modal -->
-<div class="modal fade" id="uploadImageModal" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel">
-  <div class="modal-dialog" role="document" style="<%= (current_user.driver? && browser.device.mobile?) ? 'width: calc(100% - 20px); margin: 10px;' : 'margin: 10px auto;' %>">
-    <div class="modal-content">
-      <div class="modal-header" style="padding: 10px 15px;">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 28px; margin-top: -5px;">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="uploadImageModalLabel" style="font-size: 18px;">Subir Imagen de Entrega</h4>
-      </div>
-      
-      <form id="upload-form" action="<%= backoffice_order_proof_of_delivery_images_path(@backoffice_order) %>" method="post" enctype="multipart/form-data">
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="image-input" class="control-label">Seleccionar imagen</label>
-            <input type="file"
-                   name="proof_of_delivery_image[proof_of_delivery]"
-                   accept="image/*"
-                   capture="environment"
-                   class="form-control"
-                   id="image-input"
-                   onchange="previewImage(this)">
-            <small class="help-block">Puedes tomar una foto o seleccionar de la galería</small>
-          </div>
-          
-          <!-- Image Preview -->
-          <div id="image-preview" style="display: none; margin-top: 15px;">
-            <img id="preview-img" src="" alt="Vista previa" style="max-width: 100%; max-height: 300px; border: 1px solid #ddd; border-radius: 4px;">
-          </div>
-        </div>
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-success" id="upload-btn" disabled>Subir Imagen</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+<!-- Hidden forms for direct camera/gallery upload -->
+<form id="camera-form" action="<%= backoffice_order_proof_of_delivery_images_path(@backoffice_order) %>" method="post" enctype="multipart/form-data" style="display: none;">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input type="file" name="proof_of_delivery_image[proof_of_delivery]" accept="image/*" capture="environment" id="camera-input">
+</form>
 
+<form id="gallery-form" action="<%= backoffice_order_proof_of_delivery_images_path(@backoffice_order) %>" method="post" enctype="multipart/form-data" style="display: none;">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input type="file" name="proof_of_delivery_image[proof_of_delivery]" accept="image/*" id="gallery-input">
+</form>
 
 <script>
-function previewImage(input) {
-  const preview = document.getElementById('image-preview');
-  const previewImg = document.getElementById('preview-img');
-  const uploadBtn = document.getElementById('upload-btn');
-  
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    
-    reader.onload = function(e) {
-      previewImg.src = e.target.result;
-      preview.style.display = 'block';
-      uploadBtn.disabled = false;
-    }
-    
-    reader.readAsDataURL(input.files[0]);
-  } else {
-    preview.style.display = 'none';
-    uploadBtn.disabled = true;
-  }
-}
-
 // Force download of images from S3
 function downloadImage(url, filename) {
-  // Create a temporary anchor element
   const link = document.createElement('a');
   link.href = url;
   link.download = filename;
   link.target = '_blank';
-  
-  // For S3 URLs, we need to fetch and create a blob
+
   fetch(url)
     .then(response => response.blob())
     .then(blob => {
@@ -229,50 +183,39 @@ function downloadImage(url, filename) {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      // Clean up the blob URL after a short delay
       setTimeout(() => window.URL.revokeObjectURL(blobUrl), 100);
     })
     .catch(error => {
       console.error('Error downloading image:', error);
-      // Fallback: just open in new tab if fetch fails
       window.open(url, '_blank');
     });
 }
 
-// Manual modal control to avoid conflicts
 $(document).ready(function() {
-  console.log('Modal script loaded');
-  
-  // Manual button click handler
-  $('#upload-modal-btn').on('click', function(e) {
+  // Camera button - opens camera directly
+  $('#camera-btn').on('click', function(e) {
     e.preventDefault();
-    e.stopPropagation();
-    console.log('Button clicked, opening modal manually');
-    $('#uploadImageModal').modal('show');
-    return false;
-  });
-  
-  // Reset form when modal closes
-  $('#uploadImageModal').on('hidden.bs.modal', function () {
-    console.log('Modal closed, resetting form');
-    document.getElementById('upload-form').reset();
-    document.getElementById('image-preview').style.display = 'none';
-    document.getElementById('upload-btn').disabled = true;
+    $('#camera-input').click();
   });
 
-  // Debug modal events
-  $('#uploadImageModal').on('show.bs.modal', function (e) {
-    console.log('Modal is about to show');
+  // Gallery button - opens gallery/file picker
+  $('#gallery-btn').on('click', function(e) {
+    e.preventDefault();
+    $('#gallery-input').click();
   });
 
-  $('#uploadImageModal').on('shown.bs.modal', function () {
-    console.log('Modal is now visible');
+  // Auto-submit when file is selected from camera
+  $('#camera-input').on('change', function() {
+    if (this.files && this.files[0]) {
+      $('#camera-form').submit();
+    }
   });
 
-  $('#uploadImageModal').on('hide.bs.modal', function (e) {
-    console.log('Modal is about to hide, event origin:', e);
-    // Uncomment the line below to prevent modal from closing (for debugging)
-    // e.preventDefault();
+  // Auto-submit when file is selected from gallery
+  $('#gallery-input').on('change', function() {
+    if (this.files && this.files[0]) {
+      $('#gallery-form').submit();
+    }
   });
 });
 </script>
