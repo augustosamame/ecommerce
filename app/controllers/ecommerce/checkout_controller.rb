@@ -164,6 +164,19 @@ module Ecommerce
         else
           posted_address = params[:picked_shipping_address_id]
           last_user_address = Address.where(user_id: current_user.id).order(:id).last
+
+          # Determine shipping address ID - use posted address, fallback to last user address
+          if posted_address.present?
+            shipping_address_id = posted_address.to_i
+          elsif last_user_address.present?
+            shipping_address_id = last_user_address.id
+          else
+            # No address available - redirect back with error
+            flash[:error] = t('.you_must_pick_or_save_an_address')
+            flash.keep(:error)
+            render js: "window.location = '#{checkout_path}'" and return
+          end
+
           used_coupon = Coupon.find_by(coupon_code: params[:applied_coupon])
           points_redeemed_amount = params[:points_redeemed_amount].to_i
           ActiveRecord::Base.transaction do
@@ -172,8 +185,8 @@ module Ecommerce
                           shipping_amount: Money.new((params[:shipping_amount].to_i), 'usd'),
                           stage: "stage_new",
                           cart_id: params[:cart_id].to_i,
-                          shipping_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
-                          billing_address_id: posted_address.blank? ? last_user_address.id : posted_address.to_i,
+                          shipping_address_id: shipping_address_id,
+                          billing_address_id: shipping_address_id,
                           payment_status: "unpaid",
                           efact_type: params[:want_factura] == "true" ? "factura" : "boleta",
                           required_doc: params[:required_doc],

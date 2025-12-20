@@ -434,6 +434,47 @@ $( document ).ready(function() {
     });
   }
 
+  // Auto-save address via AJAX (returns a Promise)
+  function tryAutoSaveAddress() {
+    return new Promise(function(resolve, reject) {
+      var addressData = {
+        address: {
+          name: $('#address_name').val() || 'Home',
+          street: $('#address_street').val(),
+          district: $('#address_district').val(),
+          city: 'Lima',
+          state: 'Lima',
+          country: 'Peru',
+          shipping_or_billing: 'shipping',
+          latitude: $('#address_latitude').val(),
+          longitude: $('#address_longitude').val(),
+          raw_address: $('#address_raw_address').val()
+        }
+      };
+
+      $.ajax({
+        url: "<%= Ecommerce::Engine.routes.url_helpers.addresses_path %>",
+        type: 'POST',
+        dataType: 'json',
+        data: addressData,
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+          resolve(data);
+        },
+        error: function(xhr) {
+          try {
+            var errorData = JSON.parse(xhr.responseText);
+            resolve(errorData);
+          } catch (e) {
+            reject(new Error('Failed to save address'));
+          }
+        }
+      });
+    });
+  }
+
   function recalculate_checkout_totals() {
     Culqi.publicKey = "<%= Culqi.public_key %>";
     // console.log('Culqi.publicKey: ',Culqi.publicKey)
@@ -480,7 +521,7 @@ $( document ).ready(function() {
    });
 
 
-  function process_payment(e) {
+  async function process_payment(e) {
     var errors_present = false
     // Abre el formulario con las opciones de Culqi.settings
     if (!$('input[name=payment_method]:checked').val()) {
@@ -509,14 +550,52 @@ $( document ).ready(function() {
           text: "<%= t('.you_must_enter_doc') %>"
         });
       }
+    // Auto-save address if not saved but form fields are filled
     if (!address_saved_flag && !$('#address_id').val()) {
-      errors_present = true ;
-      Swal({
+      var streetVal = $('#address_street').val();
+      var districtVal = $('#address_district').val();
+
+      // Check if address form fields are filled
+      if (streetVal && streetVal.trim() !== '' && districtVal && districtVal.trim() !== '') {
+        // Try to auto-save the address
+        try {
+          var saveResult = await tryAutoSaveAddress();
+          if (saveResult.success) {
+            // Address saved successfully, update the flag and dropdown
+            address_saved_flag = true;
+            // Add the new address to the dropdown and select it
+            var newOption = new Option(saveResult.address.display, saveResult.address.id, true, true);
+            $('#address_id').append(newOption);
+            // Explicitly set the value to ensure it's selected
+            $('#address_id').val(saveResult.address.id);
+            // Calculate shipping for the new address
+            calculate_shipping(streetVal, districtVal, 'save_address');
+          } else {
+            errors_present = true;
+            Swal({
+              type: 'error',
+              title: '<%= t('.order_not_placed') %>',
+              text: saveResult.errors ? saveResult.errors.join(', ') : "<%= t('.you_must_pick_or_save_an_address') %>"
+            });
+          }
+        } catch (error) {
+          errors_present = true;
+          Swal({
+            type: 'error',
+            title: '<%= t('.order_not_placed') %>',
+            text: "<%= t('.you_must_pick_or_save_an_address') %>"
+          });
+        }
+      } else {
+        // Form fields are empty, show error
+        errors_present = true;
+        Swal({
           type: 'error',
           title: '<%= t('.order_not_placed') %>',
           text: "<%= t('.you_must_pick_or_save_an_address') %>"
         });
       }
+    }
     if ($('#factura-checkbox').is(':checked') && info_factura_blank) {
       errors_present = true ;
       Swal({

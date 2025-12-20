@@ -68,11 +68,13 @@ module Ecommerce
           #head :ok
           format.html { redirect_to @address, notice: "#{t('.address_was_successfully_created')}" }
           format.js   { render action: 'show_address_ajax', status: :created, :layout => false }
+          format.json { render json: { success: true, address: { id: @address.id, display: "#{@address.name}, #{@address.street}, #{@address.district}" } }, status: :created }
         else
           format.html { render :new }
           #format.json   {render json: @address.errors, status: :unprocessable_entity }
           #format.js { render json: @address.errors, status: :unprocessable_entity }
           format.js   { render action: 'error_address_ajax', status: :unprocessable_entity }
+          format.json { render json: { success: false, errors: @address.errors.full_messages }, status: :unprocessable_entity }
           #format.js
         end
       end
@@ -84,15 +86,18 @@ module Ecommerce
       @address = Address.new
       @address.street = params[:address][:street]
       @address.district = params[:address][:district]
-      found_address_in_google_maps = (Geocoder.search("#{@address.street}, #{@address.district}, Lima, Peru"))[0]
-      if found_address_in_google_maps
-        coordinates = found_address_in_google_maps.coordinates
-        @address.latitude = coordinates[0]
-        @address.longitude = coordinates[1]
-      else
-        @error_found_address = "Google Maps could not find your address. If it's correct, don't worry, continue placing your order and we'll find the location the old-fashioned way :) "
-        #@address.latitude = coordinates[0] #TODO enter not found arbitrary coordinates here
-        #@address.longitude = coordinates[1] #TODO enter not found arbitrary coordinates here
+      begin
+        found_address_in_google_maps = (Geocoder.search("#{@address.street}, #{@address.district}, Lima, Peru"))[0]
+        if found_address_in_google_maps
+          coordinates = found_address_in_google_maps.coordinates
+          @address.latitude = coordinates[0]
+          @address.longitude = coordinates[1]
+        else
+          @error_found_address = "Google Maps could not find your address. If it's correct, don't worry, continue placing your order and we'll find the location the old-fashioned way :) "
+        end
+      rescue OpenSSL::SSL::SSLError, SocketError, Timeout::Error => e
+        Rails.logger.warn "Geocoding failed in update_map: #{e.message}"
+        @error_found_address = "Could not connect to Google Maps. Your address will be saved without coordinates."
       end
       respond_to do |format|
         #if @address.update(address_params)

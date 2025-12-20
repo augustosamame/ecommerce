@@ -16,7 +16,7 @@ module Ecommerce
 
     geocoded_by :full_street_address
 
-    after_validation :geocode, if: ->(obj){ obj.street.present? && (obj.street_changed? || obj.street2_changed? || obj.district_changed?) }
+    after_validation :safe_geocode, if: ->(obj){ obj.street.present? && (obj.street_changed? || obj.street2_changed? || obj.district_changed?) }
 
     def full_street_address
       return [street, street2, district, (city || "Lima"), (country || "Perú")].compact.join(', ')
@@ -31,6 +31,13 @@ module Ecommerce
     end
 
     private
+
+    def safe_geocode
+      geocode
+    rescue OpenSSL::SSL::SSLError, SocketError, Timeout::Error => e
+      Rails.logger.warn "Geocoding failed for address: #{e.message}"
+      # Address saves without coordinates - can be geocoded later
+    end
 
     def truncate_street
       self.street = street[0, 85] if street.present? && street.length > 85
