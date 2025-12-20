@@ -5,7 +5,7 @@
 
 .marketing-tagline {
   background-color: #f8f3ef;
-  padding: 40px 20px;
+  padding: 5px 20px;
   text-align: center;
 }
 
@@ -13,7 +13,7 @@
   font-family: "Poppins", sans-serif;
   font-size: 14px;
   color: #666;
-  margin: 0 0 8px 0;
+  margin: 0 0 0px 0;
   font-weight: 400;
   letter-spacing: 0.5px;
 }
@@ -44,13 +44,14 @@
 
   .marketing-tagline .tagline-big {
     font-size: 28px;
+    margin: -5px 0px 0px 0px;
   }
 }
 
 /* Larger screens */
 @media (min-width: 992px) {
   .marketing-tagline {
-    padding: 50px 20px;
+    padding: 5px 20px;
   }
 
   .marketing-tagline .tagline-big {
