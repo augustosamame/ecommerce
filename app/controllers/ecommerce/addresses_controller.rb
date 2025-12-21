@@ -45,9 +45,10 @@ module Ecommerce
       @address = Address.new(address_params)
       @address.user = current_user
 
-      unless @address.district.starts_with? "Lima" 
-        @address.city = @address.district.split("-")[0].strip
-        @address.state = @address.district.split("-")[0].strip
+      if @address.district.present? && !@address.district.starts_with?("Lima")
+        district_part = @address.district.split("-")[0]
+        @address.city = district_part&.strip
+        @address.state = district_part&.strip
       end
   #    respond_to do |format|
   #      if @address.save

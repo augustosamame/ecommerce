@@ -377,6 +377,8 @@ module Ecommerce
     end
 
     def normalize_district_for_einvoice(order_billing_address)
+      return nil if order_billing_address.nil?
+
       if order_billing_address.district
         if order_billing_address.district.starts_with?("Lima Metropolitana - ") || order_billing_address.district.starts_with?("Lima Provincia - ")
           return order_billing_address.district.gsub("Lima Metropolitana - ", "").gsub("Lima Provincia - ", "").strip
