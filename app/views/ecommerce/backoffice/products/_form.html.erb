@@ -60,7 +60,7 @@
                   <%= f.fields_for :combo_components, combo_component do |cc| %>
                     <%= cc.hidden_field :id %>
                     <%= cc.select :component_product_id,
-                        @all_products.map { |p| [p.name, p.id] },
+                        @all_products.map { |p| ["#{p.name} (ID: #{p.id})", p.id] },
                         { include_blank: 'Seleccionar producto...' },
                         { class: 'form-control combo-product-select' } %>
                   <% end %>
@@ -172,7 +172,7 @@
     $('#add_combo_component').on('click', function() {
       var productOptions = '<option value="">Seleccionar producto...</option>';
       <% @all_products&.each do |p| %>
-        productOptions += '<option value="<%= p.id %>"><%= j(p.name) %></option>';
+        productOptions += '<option value="<%= p.id %>"><%= j(p.name) %> (ID: <%= p.id %>)</option>';
       <% end %>
 
       var newRow = '<div class="combo-component-row row" style="margin-bottom: 10px;">' +

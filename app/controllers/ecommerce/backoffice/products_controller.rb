@@ -36,7 +36,7 @@ module Ecommerce
         counter +=1
       }
       @cross_sell_products = Ecommerce::Product.active
-      @all_products = Ecommerce::Product.active.joins(:translations).order('ecommerce_product_translations.name')
+      @all_products = Ecommerce::Product.active.includes(:translations).order(:id)
 
       #@backoffice_product.product_skus.build
     end
@@ -58,7 +58,7 @@ module Ecommerce
       @backoffice_product.tax_3_check = true if found_other
       @backoffice_product.tax_3_amount = found_other.try(:tax_amount) if @backoffice_product.tax_3_check
       @cross_sell_products = Ecommerce::Product.active
-      @all_products = Ecommerce::Product.active.joins(:translations).order('ecommerce_product_translations.name')
+      @all_products = Ecommerce::Product.active.includes(:translations).order(:id)
 
       #@backoffice_product.product_taxes.each do |pt|
       #  eval("@backoffice_product.tax_#{counter}_check = true")

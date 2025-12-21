@@ -103,6 +103,7 @@
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
+        <th>ID</th>
         <th>Product Name</th>
         <th>Quantity</th>
         <th>Product Price</th>
@@ -114,6 +115,7 @@
     <tbody>
       <% @backoffice_product.combo_components.each do |combo_component| %>
       <tr>
+        <td><%= combo_component.component_product.id %></td>
         <td><%= combo_component.component_product.name %></td>
         <td><%= combo_component.quantity %></td>
         <td><%= combo_component.component_product.price %></td>
