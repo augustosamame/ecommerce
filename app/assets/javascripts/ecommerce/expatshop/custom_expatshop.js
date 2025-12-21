@@ -278,13 +278,36 @@ $(document).ready(function () {
   //  randomize: false,
   // });
 
-  $(".noo-search").on("click", function () {
+  console.log("Setting up search button handler, .noo-search elements found:", $(".noo-search").length);
+  console.log(".search-header5 elements found:", $(".search-header5").length);
+
+  $(document).on("click", ".noo-search", function (e) {
+    console.log("Search button clicked!");
+    console.log("Event target:", e.target);
+    console.log("Current target:", e.currentTarget);
+    e.preventDefault();
+    e.stopPropagation();
+    var searchHeader = $(".search-header5");
+    console.log("search-header5 found:", searchHeader.length);
+    searchHeader.fadeIn(1).addClass("search-header-eff");
+    searchHeader.find('input[type="search"]').val("").attr("placeholder", "").select();
+    console.log("Search header should now be visible");
+    return false;
+  });
+
+  $(document).on("click", ".remove-form", function () {
+    console.log("Remove form clicked, hiding search");
+    $(".search-header5").fadeOut(1).removeClass("search-header-eff");
+  });
+
+  // Also try binding directly to the element with id
+  $(document).on("click", "#noo-search", function (e) {
+    console.log("Search button clicked via #noo-search ID!");
+    e.preventDefault();
+    e.stopPropagation();
     $(".search-header5").fadeIn(1).addClass("search-header-eff");
     $(".search-header5").find('input[type="search"]').val("").attr("placeholder", "").select();
     return false;
-  });
-  $(".remove-form").on("click", function () {
-    $(".search-header5").fadeOut(1).removeClass("search-header-eff");
   });
 
 
