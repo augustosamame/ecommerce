@@ -21,6 +21,8 @@ module Ecommerce
     has_many :product_prices
 
     has_many :cross_sell_products, :class_name => "Ecommerce::Product", :foreign_key => "cross_parent_id"
+    has_many :combo_components, dependent: :destroy
+    has_many :component_products, through: :combo_components
 
     #after_commit :create_product_taxes, on: :create
 
@@ -45,6 +47,7 @@ module Ecommerce
 
     accepts_nested_attributes_for :product_skus, reject_if: proc { |attributes| attributes['sku'].blank? }, :allow_destroy => true
     accepts_nested_attributes_for :product_properties, reject_if: proc { |attributes| attributes['description'].blank? }, allow_destroy: true
+    accepts_nested_attributes_for :combo_components, reject_if: proc { |attributes| attributes['component_product_id'].blank? }, allow_destroy: true
     #accepts_nested_attributes_for :images,             reject_if: proc { |t| (t['photo'].nil? && t['photo_from_link'].blank? && t['id'].blank?) }, allow_destroy: true
 
     mount_uploader :image, Ecommerce::ProductImageUploader
@@ -57,8 +60,10 @@ module Ecommerce
     #validates :category_id, presence: true
     validates_presence_of :category_list
     validates :name, presence: true, length: { maximum: 165 }
+    validate :no_duplicate_combo_components
 
     after_save :notify_stock_alert_users
+    after_save :reset_component_combo_if_no_components
 
     def notify_stock_alert_users
       if self.saved_change_to_total_quantity?
@@ -162,6 +167,21 @@ module Ecommerce
       end
       return tcl
 
+    end
+
+    private
+
+    def reset_component_combo_if_no_components
+      if component_combo && combo_components.reload.empty?
+        update_column(:component_combo, false)
+      end
+    end
+
+    def no_duplicate_combo_components
+      component_ids = combo_components.reject(&:marked_for_destruction?).map(&:component_product_id)
+      if component_ids.length != component_ids.uniq.length
+        errors.add(:base, "No se puede agregar el mismo producto como componente más de una vez")
+      end
     end
 
   end

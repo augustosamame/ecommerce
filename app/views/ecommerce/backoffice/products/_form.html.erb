@@ -45,6 +45,50 @@
 
     <%= f.input :home_featured, label: t('.home_featured') %>
 
+    <h4>Combo Components</h4>
+    <div class="well">
+      <%= f.input :component_combo, as: :boolean, label: 'Este producto es un combo de otros productos', input_html: { id: 'component_combo_checkbox' } %>
+
+      <div id="combo_components_section" style="<%= 'display: none;' unless @backoffice_product.component_combo %>">
+        <p class="text-muted">Seleccione los productos que componen este combo y la cantidad de cada uno.</p>
+
+        <div id="combo_components_container">
+          <% if @backoffice_product.combo_components.any? %>
+            <% @backoffice_product.combo_components.each_with_index do |combo_component, index| %>
+              <div class="combo-component-row row" style="margin-bottom: 10px;">
+                <div class="col-md-6">
+                  <%= f.fields_for :combo_components, combo_component do |cc| %>
+                    <%= cc.hidden_field :id %>
+                    <%= cc.select :component_product_id,
+                        @all_products.map { |p| [p.name, p.id] },
+                        { include_blank: 'Seleccionar producto...' },
+                        { class: 'form-control combo-product-select' } %>
+                  <% end %>
+                </div>
+                <div class="col-md-3">
+                  <%= f.fields_for :combo_components, combo_component do |cc| %>
+                    <%= cc.number_field :quantity, min: 1, value: combo_component.quantity, class: 'form-control', placeholder: 'Cantidad' %>
+                  <% end %>
+                </div>
+                <div class="col-md-3">
+                  <%= f.fields_for :combo_components, combo_component do |cc| %>
+                    <%= cc.hidden_field :_destroy, value: '0', class: 'destroy-field' %>
+                  <% end %>
+                  <button type="button" class="btn btn-danger remove-combo-component">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <button type="button" class="btn btn-success" id="add_combo_component">
+          <span class="glyphicon glyphicon-plus"></span> Agregar componente
+        </button>
+      </div>
+    </div>
+
     <%= f.label t('.main_product_image') %>
     <div class="form-group">
       <% if f.object.image? %>
@@ -108,6 +152,65 @@
     $('select.form-control.tags').trigger('change'); // Notify any JS components that the value changed
 
     $('#product_cross_sell_product_ids').select2({ });
+
+    // Initialize select2 on combo product selects
+    $('.combo-product-select').select2({ width: '100%' });
+
+    // Toggle combo components section visibility
+    $('#component_combo_checkbox').on('change', function() {
+      if ($(this).is(':checked')) {
+        $('#combo_components_section').slideDown();
+      } else {
+        $('#combo_components_section').slideUp();
+      }
+    });
+
+    // Counter for new combo component rows
+    var comboComponentIndex = <%= @backoffice_product.combo_components.count %>;
+
+    // Add new combo component row
+    $('#add_combo_component').on('click', function() {
+      var productOptions = '<option value="">Seleccionar producto...</option>';
+      <% @all_products&.each do |p| %>
+        productOptions += '<option value="<%= p.id %>"><%= j(p.name) %></option>';
+      <% end %>
+
+      var newRow = '<div class="combo-component-row row" style="margin-bottom: 10px;">' +
+        '<div class="col-md-6">' +
+          '<select name="product[combo_components_attributes][' + comboComponentIndex + '][component_product_id]" class="form-control combo-product-select">' +
+            productOptions +
+          '</select>' +
+        '</div>' +
+        '<div class="col-md-3">' +
+          '<input type="number" name="product[combo_components_attributes][' + comboComponentIndex + '][quantity]" min="1" value="1" class="form-control" placeholder="Cantidad">' +
+        '</div>' +
+        '<div class="col-md-3">' +
+          '<input type="hidden" name="product[combo_components_attributes][' + comboComponentIndex + '][_destroy]" value="0" class="destroy-field">' +
+          '<button type="button" class="btn btn-danger remove-combo-component">' +
+            '<span class="glyphicon glyphicon-trash"></span>' +
+          '</button>' +
+        '</div>' +
+      '</div>';
+
+      $('#combo_components_container').append(newRow);
+      $('#combo_components_container .combo-component-row:last .combo-product-select').select2({ width: '100%' });
+      comboComponentIndex++;
+    });
+
+    // Remove combo component row
+    $(document).on('click', '.remove-combo-component', function() {
+      var row = $(this).closest('.combo-component-row');
+      var destroyField = row.find('.destroy-field');
+
+      if (destroyField.length && row.find('input[name*="[id]"]').length) {
+        // Existing record - mark for destruction
+        destroyField.val('1');
+        row.slideUp();
+      } else {
+        // New record - just remove the row
+        row.remove();
+      }
+    });
 
   };
   });

@@ -36,6 +36,7 @@ module Ecommerce
         counter +=1
       }
       @cross_sell_products = Ecommerce::Product.active
+      @all_products = Ecommerce::Product.active.joins(:translations).order('ecommerce_product_translations.name')
 
       #@backoffice_product.product_skus.build
     end
@@ -57,6 +58,7 @@ module Ecommerce
       @backoffice_product.tax_3_check = true if found_other
       @backoffice_product.tax_3_amount = found_other.try(:tax_amount) if @backoffice_product.tax_3_check
       @cross_sell_products = Ecommerce::Product.active
+      @all_products = Ecommerce::Product.active.joins(:translations).order('ecommerce_product_translations.name')
 
       #@backoffice_product.product_taxes.each do |pt|
       #  eval("@backoffice_product.tax_#{counter}_check = true")
@@ -77,6 +79,8 @@ module Ecommerce
         redirect_to backoffice_product_path(@backoffice_product), notice: 'Product was successfully created.'
       else
         Rails.logger.error @backoffice_product.errors
+        @all_products = Ecommerce::Product.active.joins(:translations).order('ecommerce_product_translations.name')
+        @cross_sell_products = Ecommerce::Product.active
         render :new
       end
     end
@@ -91,6 +95,8 @@ module Ecommerce
         @backoffice_product.save
         redirect_to backoffice_product_path(@backoffice_product), notice: 'Product was successfully updated.'
       else
+        @all_products = Ecommerce::Product.active.joins(:translations).order('ecommerce_product_translations.name')
+        @cross_sell_products = Ecommerce::Product.active
         render :edit
       end
     end
@@ -169,7 +175,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_params
-        params.require(:product).permit(:weight, :coupon, :coupons, :coupon_id, :tax_1_check, :tax_1_amount, :tax_2_check, :tax_2_amount, :tax_3_check, :tax_3_amount, :status, :brand_id, :supplier_id, :name, :short_description, :description, :description2, :price_cents, :discounted_price_cents, :total_quantity, :stockable, :home_featured, :product_order, :image, :image_cache, Product.globalize_attribute_names, :show_callout, :callout_label_en, :collout_label_es, :callout_discount, :callout_discount_label_en, :callout_discount_label_es, :cross_sell_default, cross_sell_product_ids: [], cross_parent_ids: [], category_id: [], category_list: [], coupon_ids: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy])
+        params.require(:product).permit(:weight, :coupon, :coupons, :coupon_id, :tax_1_check, :tax_1_amount, :tax_2_check, :tax_2_amount, :tax_3_check, :tax_3_amount, :status, :brand_id, :supplier_id, :name, :short_description, :description, :description2, :price_cents, :discounted_price_cents, :total_quantity, :stockable, :home_featured, :product_order, :image, :image_cache, Product.globalize_attribute_names, :show_callout, :callout_label_en, :collout_label_es, :callout_discount, :callout_discount_label_en, :callout_discount_label_es, :cross_sell_default, :component_combo, cross_sell_product_ids: [], cross_parent_ids: [], category_id: [], category_list: [], coupon_ids: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy], :combo_components_attributes => [:id, :component_product_id, :quantity, :_destroy])
       end
   end
 end
