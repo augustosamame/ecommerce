@@ -28,6 +28,7 @@
         <th>Payment status</th>
         <th>Payment method</th>
         <th>Special Instructions</th>
+        <th>Platform</th>
         <th>Status</th>
         <th>Show</th>
         <th>Edit</th>
@@ -53,6 +54,9 @@
         <td style= "<%= backoffice_order.unpaid? ? 'color: red; font-size: 18px;' : '' %>"><%= backoffice_order.payment_status %></td>
         <td><%= backoffice_order.process_comments %></td>
         <td><%= backoffice_order.delivery_comments %></td>
+        <td><% if backoffice_order.respond_to?(:platform) && backoffice_order.platform.present? %>
+          <span class="label <%= backoffice_order.app? ? 'label-info' : 'label-default' %>"><%= backoffice_order.platform.capitalize %></span>
+        <% end %></td>
         <td><%= backoffice_order.status %></td>
         <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_order_path(backoffice_order) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>

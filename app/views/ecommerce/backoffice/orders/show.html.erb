@@ -65,6 +65,9 @@
       <p><strong>Stage:</strong><br><%= @backoffice_order.friendly_stage %></p>
       <p><strong>Shipping address:</strong><br><%= @backoffice_order.friendly_shipping_address %></p>
       <p><strong>Payment status:</strong><br><span style="<%= @backoffice_order.unpaid? ? 'color: red; font-size: 16px;' : '' %>"><%= @backoffice_order.payment_status %></span></p>
+      <p><strong>Platform:</strong><br><% if @backoffice_order.respond_to?(:platform) && @backoffice_order.platform.present? %>
+        <span class="label <%= @backoffice_order.app? ? 'label-info' : 'label-default' %>"><%= @backoffice_order.platform.capitalize %></span>
+      <% end %></p>
       <p><strong>Delivery Instructions:</strong><br><%= @backoffice_order.delivery_comments.present? ? @backoffice_order.delivery_comments : 'None' %></p>
     </div>
   </div>
@@ -110,6 +113,11 @@
 
   <dt>Payment Method:</dt>
   <dd style= <%= @backoffice_order.process_comments %></dd>
+
+  <dt>Platform:</dt>
+  <dd><% if @backoffice_order.respond_to?(:platform) && @backoffice_order.platform.present? %>
+    <span class="label <%= @backoffice_order.app? ? 'label-info' : 'label-default' %>"><%= @backoffice_order.platform.capitalize %></span>
+  <% end %></dd>
 
   <dt>Status:</dt>
   <dd><%= @backoffice_order.status %></dd>

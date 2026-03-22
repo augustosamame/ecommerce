@@ -14,6 +14,7 @@ module Ecommerce
     enum payment_status: {unpaid: 0, paid: 1, refunded: 2, payment_void: 3 }
     enum status: {active: 0, void: 2 }
     enum efact_type: {boleta: 0, factura: 1 }
+    enum platform: {web: 0, app: 1 }
 
     monetize :amount_cents, :shipping_amount_cents, :discount_amount_cents, with_model_currency: :currency
 
