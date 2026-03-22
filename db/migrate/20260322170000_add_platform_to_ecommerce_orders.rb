@@ -1,4 +1,4 @@
-class AddPlatformToEcommerceOrders < ActiveRecord::Migration[7.0]
+class AddPlatformToOrders < ActiveRecord::Migration[7.0]
   def change
     add_column :ecommerce_orders, :platform, :integer, default: 0, null: false
   end
