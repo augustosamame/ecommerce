@@ -36,7 +36,7 @@
             <% if @cart.cart_items.count == 0 %>
 
             <% else %>
-              <% @cart.cart_items.order(:id).each do |item| %>
+              <% @cart.cart_items.order(:id).sort_by { |item| @combo_injected_product_ids.include?(item.product_id) ? 1 : 0 }.each do |item| %>
                 <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
                   <tr>
                     <th class="cart-desktop-table-product-row">
@@ -119,7 +119,7 @@
           <% if @cart.cart_items.count == 0 %>
 
           <% else %>
-            <% @cart.cart_items.order(:id).each do |item| %>
+            <% @cart.cart_items.order(:id).sort_by { |item| @combo_injected_product_ids.include?(item.product_id) ? 1 : 0 }.each do |item| %>
 
               <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
                 <div class="row mobile-cart-row">
@@ -222,17 +222,6 @@
   </section>
 </main>
 
-<% if @friendly_combo_discount_array.present? %>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      Swal.fire({
-        icon: 'success',
-        title: "<span style='background-color: red; color: white; font-size: 16px; padding: 10px;'><%= j t('combo_discounts.combo_discount_applied') %></span>",
-        html: "<span style='color: red; font-size: 16px;'><%= j t('combo_discounts.combo_discount_message') %></span>"
-      });
-    });
-  </script>
-<% end %>
 
 <script>
   $(document).ready(function(){
