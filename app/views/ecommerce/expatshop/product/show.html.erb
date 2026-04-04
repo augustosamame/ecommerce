@@ -1,3 +1,7 @@
+<script type="application/ld+json">
+<%= raw product_json_ld(@product).to_json %>
+</script>
+
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -7,7 +11,7 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
-<main class="product-details-main">
+<main class="product-details-main" data-availability="<%= @product.in_stock? ? 'in_stock' : 'out_of_stock' %>">
   <section class="product-details">
     <div class="container-fluid">
       <div class="row">
@@ -58,7 +62,7 @@
             </div>
           <% end %>
           <div>
-            <p class="out_of_stock"><span class="" id="out_of_stock_text"><%= t('.no_more_stock_available') %></span></p>
+            <p class="out_of_stock" aria-hidden="true"><span class="" id="out_of_stock_text"><%= t('.no_more_stock_available') %></span></p>
           </div>
           <div class="add-to-cart-btn-group max-360">
             <% if @product.in_stock? %>

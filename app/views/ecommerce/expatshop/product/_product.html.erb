@@ -1,4 +1,4 @@
-<div class="col-md-4 product">
+<div class="col-md-4 product" data-availability="<%= item.in_stock? ? 'in_stock' : 'out_of_stock' %>">
   <div class="featured-product position-relative d-flex">
     <%= link_to product_path(item) do %>
       <div class="featured-product-body">
@@ -35,9 +35,11 @@
             </div>
           <% end %>
         </div>
-        <div class='out_of_stock' style='font-size: 14px;'>
-          <div class='out_of_stock_text_class <%= "out_of_stock_text_#{item.id}" %>' style="float: left;"><%= t('.no_more_stock_available') %></div>
-        </div>
+        <% unless item.in_stock? %>
+          <div class='out_of_stock' style='font-size: 14px;'>
+            <div class='out_of_stock_text_class <%= "out_of_stock_text_#{item.id}" %>' style="float: left;"><%= t('.no_more_stock_available') %></div>
+          </div>
+        <% end %>
       </div>
     <% end %>
     <div class="add-to-cart-btn-group">

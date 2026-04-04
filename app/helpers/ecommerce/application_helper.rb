@@ -217,5 +217,95 @@ module Ecommerce
 
     end
 
+    def product_json_ld(product)
+      base_url = request.base_url rescue "https://expatshop.pe"
+      name_en = product.name_en_pe.presence
+      name_es = product.name_es_pe.presence
+      desc_en = product.description_en_pe&.gsub("**", " ")&.strip.presence
+      desc_es = product.description_es_pe&.gsub("**", " ")&.strip.presence
+      combined_name = [name_en, name_es].compact.uniq.join(" / ")
+      combined_desc = [desc_en, desc_es].compact.uniq.join(" | ")
+      usd_price = product.discounted_price.to_f
+      usd_regular = product.price.to_f
+      rate = Ecommerce::Control.get_control_value("exchange_rate").to_f
+      pen_price = (usd_price * rate).round(2)
+      pen_regular = (usd_regular * rate).round(2)
+      availability = product.in_stock? ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+      product_url = "#{base_url}/store/products/#{product.permalink}"
+
+      usd_offer = {
+        "@type" => "Offer",
+        "url" => product_url,
+        "priceCurrency" => "USD",
+        "price" => usd_price.to_s,
+        "availability" => availability,
+        "itemCondition" => "https://schema.org/NewCondition"
+      }
+      usd_offer["highPrice"] = usd_regular.to_s if product.discounted?
+
+      pen_offer = {
+        "@type" => "Offer",
+        "url" => product_url,
+        "priceCurrency" => "PEN",
+        "price" => pen_price.to_s,
+        "availability" => availability,
+        "itemCondition" => "https://schema.org/NewCondition"
+      }
+      pen_offer["highPrice"] = pen_regular.to_s if product.discounted?
+
+      data = {
+        "@context" => "https://schema.org",
+        "@type" => "Product",
+        "name" => combined_name,
+        "description" => combined_desc,
+        "image" => product.image.url,
+        "sku" => product.id.to_s,
+        "url" => product_url,
+        "brand" => {
+          "@type" => "Brand",
+          "name" => product.brand&.name
+        },
+        "offers" => [usd_offer, pen_offer]
+      }
+      data
+    end
+
+    def product_list_json_ld(products)
+      {
+        "@context" => "https://schema.org",
+        "@type" => "ItemList",
+        "itemListElement" => products.each_with_index.map do |product, index|
+          item_data = product_json_ld(product)
+          item_data.delete("@context")
+          {
+            "@type" => "ListItem",
+            "position" => index + 1,
+            "item" => item_data
+          }
+        end
+      }
+    end
+
+    def website_json_ld
+      base_url = request.base_url rescue "https://expatshop.pe"
+      {
+        "@context" => "https://schema.org",
+        "@type" => "WebSite",
+        "name" => Ecommerce.site_name,
+        "url" => base_url
+      }
+    end
+
+    def organization_json_ld
+      base_url = request.base_url rescue "https://expatshop.pe"
+      {
+        "@context" => "https://schema.org",
+        "@type" => "Organization",
+        "name" => Ecommerce.site_name,
+        "url" => base_url,
+        "logo" => Ecommerce.logo
+      }
+    end
+
   end
 end
