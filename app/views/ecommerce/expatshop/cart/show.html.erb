@@ -62,18 +62,18 @@
                     </th>
                     <th class="cart-desktop-table-other-row">
                       <div class="quantity-btn d-flex flex-center">
-                        
-                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %>>
+                        <% combo_injected = @combo_injected_product_ids.include?(item.product_id) %>
+                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %> <%= 'style="pointer-events: none; opacity: 0.3;"'.html_safe if combo_injected %>>
                           <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.quantity}" %>>-</a>
                         </div>
                         <div class="quantity container-qty" id="devtech_quantity">
-                          <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();' } %>
+                          <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();', disabled: combo_injected } %>
                         </div>
 
-                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %>>
+                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %> <%= 'style="pointer-events: none; opacity: 0.3;"'.html_safe if combo_injected %>>
                           <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.quantity}" %>>+</a>
                         </div>
-                        
+
                       </div>
                     </th>
                     <th class="cart-desktop-table-other-row">
@@ -82,9 +82,15 @@
                     </th>
 
                     <th class="cart-desktop-table-delete-row">
-                      <% delete_cart_item_data = { controller: 'cart_items', action: 'destroy', id: item.id } %>
-                      <%= link_to delete_cart_item_data, method: :delete, class: "remove" do %>
-                        <%= fa_icon 'trash', class: 'cursor-pointer remove' %>
+                      <% if @combo_injected_product_ids.include?(item.product_id) %>
+                        <span class="remove combo-injected-item" data-toggle="tooltip" data-placement="top" title="<%= t('combo_discounts.combo_injected_tooltip') %>">
+                          <%= fa_icon 'trash', class: 'cursor-pointer remove', style: 'opacity: 0.3; cursor: not-allowed;' %>
+                        </span>
+                      <% else %>
+                        <% delete_cart_item_data = { controller: 'cart_items', action: 'destroy', id: item.id } %>
+                        <%= link_to delete_cart_item_data, method: :delete, class: "remove" do %>
+                          <%= fa_icon 'trash', class: 'cursor-pointer remove' %>
+                        <% end %>
                       <% end %>
                     </th>
                     
@@ -127,27 +133,33 @@
                   
 
                   <div class="cart-mobile-table-delete-row">
-                    <% delete_cart_item_data = { controller: 'cart_items', action: 'destroy', id: item.id } %>
-                    <%= link_to delete_cart_item_data, method: :delete, class: "remove" do %>
-                      <%= fa_icon 'trash 2x', class: 'cursor-pointer remove' %>
+                    <% if @combo_injected_product_ids.include?(item.product_id) %>
+                      <span class="remove combo-injected-item" data-toggle="tooltip" data-placement="top" title="<%= t('combo_discounts.combo_injected_tooltip') %>">
+                        <%= fa_icon 'trash 2x', class: 'cursor-pointer remove', style: 'opacity: 0.3; cursor: not-allowed;' %>
+                      </span>
+                    <% else %>
+                      <% delete_cart_item_data = { controller: 'cart_items', action: 'destroy', id: item.id } %>
+                      <%= link_to delete_cart_item_data, method: :delete, class: "remove" do %>
+                        <%= fa_icon 'trash 2x', class: 'cursor-pointer remove' %>
+                      <% end %>
                     <% end %>
                   </div>
 
                   <div class="row">
                     <div class="col-xs-8 col-xs-offset-3">
                       <div class="quantity-btn d-flex flex-center">
-                      
-                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %>>
+                        <% combo_injected_mobile = @combo_injected_product_ids.include?(item.product_id) %>
+                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %> <%= 'style="pointer-events: none; opacity: 0.3;"'.html_safe if combo_injected_mobile %>>
                           <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.quantity}" %>>-</a>
                         </div>
                         <div class="quantity container-qty" id="devtech_quantity">
-                          <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();' } %>
+                          <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();', disabled: combo_injected_mobile } %>
                         </div>
 
-                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %>>
+                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %> <%= 'style="pointer-events: none; opacity: 0.3;"'.html_safe if combo_injected_mobile %>>
                           <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.quantity}" %>>+</a>
                         </div>
-                        
+
                       </div>
 
                       <p class="mobile-cart-product-totals"><span style="font-weight: 600;">Total: </span><span><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/. ") %></span> <span style="margin-left: 20px;"><%= session_price(item.line_total(@current_user)) %></span></p>
@@ -224,6 +236,7 @@
 
 <script>
   $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
     bindPlusMinusButtons();
   });
 

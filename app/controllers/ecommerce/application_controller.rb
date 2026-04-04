@@ -26,9 +26,10 @@ module Ecommerce
 
     def calculate_combo_discounts
       @exchange_rate = Ecommerce::Control.get_control_value("exchange_rate") || 3.8
-      
+
       @combo_discount_array = []
       @friendly_combo_discount_array = []
+      @combo_injected_product_ids = []
 
       my_cart = Cart.where(id: session[:cart_id], status: "active").order(:id).last
       if my_cart
@@ -117,6 +118,9 @@ module Ecommerce
             end
 
             if combo_added
+              if combo_discount.inject_product_two && combo_discount.product_id_2.present?
+                @combo_injected_product_ids << combo_discount.product_id_2
+              end
 
               line_discount = 0
               line_discount_usd = 0

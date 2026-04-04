@@ -41,8 +41,14 @@
                     <p><%= session_price(item.product, "current_price") %><span> (x<%= item.quantity %>)</span></p>
                   </div>
                   <div class="col-md-2">
-                    <%= link_to cart_item_path(item.id), method: :delete, remote: true, class: "remove" do %>
-                      <%= fa_icon('trash 2x', style: 'color: #67696C;', class: 'icon-color cursor-pointer') %>
+                    <% if @combo_injected_product_ids&.include?(item.product_id) %>
+                      <span class="remove combo-injected-item" data-toggle="tooltip" data-placement="top" title="<%= t('combo_discounts.combo_injected_tooltip') %>">
+                        <%= fa_icon('trash 2x', style: 'color: #67696C; opacity: 0.3; cursor: not-allowed;', class: 'icon-color') %>
+                      </span>
+                    <% else %>
+                      <%= link_to cart_item_path(item.id), method: :delete, remote: true, class: "remove" do %>
+                        <%= fa_icon('trash 2x', style: 'color: #67696C;', class: 'icon-color cursor-pointer') %>
+                      <% end %>
                     <% end %>
                   </div>
                 </div>
