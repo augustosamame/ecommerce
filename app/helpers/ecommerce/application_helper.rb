@@ -303,7 +303,42 @@ module Ecommerce
         "@type" => "Organization",
         "name" => Ecommerce.site_name,
         "url" => base_url,
-        "logo" => Ecommerce.logo
+        "logo" => Ecommerce.logo,
+        "foundingDate" => "2018",
+        "areaServed" => {
+          "@type" => "Country",
+          "name" => "Peru"
+        },
+        "contactPoint" => {
+          "@type" => "ContactPoint",
+          "contactType" => "customer service",
+          "availableLanguage" => ["Spanish", "English"]
+        }
+      }
+    end
+
+    def breadcrumb_json_ld(product)
+      base_url = request.base_url rescue "https://expatshop.pe"
+      items = [
+        { "@type" => "ListItem", "position" => 1, "name" => "Home", "item" => base_url },
+        { "@type" => "ListItem", "position" => 2, "name" => "Products", "item" => "#{base_url}/store/products" }
+      ]
+      first_category = product.translated_category_list.first
+      if first_category.present?
+        cat = Ecommerce::Category.find_by("lower(name) = ?", first_category.downcase)
+        if cat
+          items << { "@type" => "ListItem", "position" => 3, "name" => first_category, "item" => "#{base_url}/store/products?category_id=#{cat.id}" }
+          items << { "@type" => "ListItem", "position" => 4, "name" => product.name }
+        else
+          items << { "@type" => "ListItem", "position" => 3, "name" => product.name }
+        end
+      else
+        items << { "@type" => "ListItem", "position" => 3, "name" => product.name }
+      end
+      {
+        "@context" => "https://schema.org",
+        "@type" => "BreadcrumbList",
+        "itemListElement" => items
       }
     end
 

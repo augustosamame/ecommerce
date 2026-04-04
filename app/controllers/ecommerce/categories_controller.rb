@@ -67,21 +67,40 @@ module Ecommerce
       end
 
       def set_show_meta_tags
+        category_url = "#{request.base_url}/store/categories/#{@category.id}"
         set_meta_tags title: @category.name,
                       description: @category.description,
+                      canonical: category_url,
                       og: {
-                        title: "#{@category.name} | #{Ecommerce.site_name}", #TODO change this to global value to save a db call
-                        description:    @category.description,
-                        image:    @category.image.medium_400.url
+                        title: "#{@category.name} | #{Ecommerce.site_name}",
+                        description: @category.description,
+                        image: @category.image.medium_400.url,
+                        url: category_url,
+                        type: "website"
+                      },
+                      twitter: {
+                        card: "summary_large_image",
+                        title: "#{@category.name} | #{Ecommerce.site_name}",
+                        description: @category.description,
+                        image: @category.image.medium_400.url
                       }
       end
 
       def set_index_meta_tags
+        categories_url = "#{request.base_url}/store/categories"
         set_meta_tags title: "Categories",
-                      description: "Categorías #{Ecommerce.site_name}",
+                      description: "Categorías #{Ecommerce.site_name} - Browse our product categories",
+                      canonical: categories_url,
                       og: {
-                        title:    :full_title,
-                        image:    Ecommerce.logo
+                        title: :full_title,
+                        image: Ecommerce.logo,
+                        url: categories_url,
+                        type: "website"
+                      },
+                      twitter: {
+                        card: "summary",
+                        title: :full_title,
+                        image: Ecommerce.logo
                       }
       end
 

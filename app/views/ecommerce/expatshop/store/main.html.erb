@@ -76,7 +76,7 @@
                 <%= link_to brand_url(brand_logo.id) do %>
                 <img
                   src="<%= brand_logo.logo.medium_200.url %>"
-                  alt=""
+                  alt="<%= brand_logo.name %>"
                   class="img-responsive"
                 />
                 <% end %>
@@ -110,7 +110,7 @@
                       <% end %>
                       <img
                         src="<%= product.image.medium_400.url %>"
-                        alt=""
+                        alt="<%= product.name %>"
                         class="img-responsive"
                       />
                       <div class="featured-product-info d-flex flex-center">
@@ -167,7 +167,7 @@
                   <div class="principle" style="height: 200px;">
                     <%= link_to products_path(category_id: category.id) do %>
                       <div class="cat-img-wrapper">
-                        <img src="<%= category.image.medium_400.url %>" class="cat-image img-responsive" alt="" />
+                        <img src="<%= category.image.medium_400.url %>" class="cat-image img-responsive" alt="<%= category.name %>" />
                       </div>
                       <p><%= category.name %></p>
                     <% end %>

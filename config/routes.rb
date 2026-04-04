@@ -127,6 +127,9 @@ Ecommerce::Engine.routes.draw do
   
   get '/ecommerce_root', to: 'store#main'
 
+  # Public product feed for bots and integrations
+  get '/feed/products', to: 'product_feed#index', defaults: { format: :json }
+
   root to: 'store#main'
 
 end

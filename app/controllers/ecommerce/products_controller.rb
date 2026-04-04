@@ -165,21 +165,45 @@ module Ecommerce
       end
 
       def set_show_meta_tags
+        product_url = "#{request.base_url}/store/products/#{@product.permalink}"
+        product_desc = @product.description&.gsub("**", " ")&.truncate(160)
         set_meta_tags title: @product.name,
-                      description: @product.description,
+                      description: product_desc,
+                      canonical: product_url,
                       og: {
-                        title: "#{@product.name} | #{Ecommerce.site_name}", #TODO change this to global value to save a db call
-                        description:    @product.description,
-                        image:    @product.image.medium_400.url
+                        title: "#{@product.name} | #{Ecommerce.site_name}",
+                        description: product_desc,
+                        image: @product.image.medium_400.url,
+                        url: product_url,
+                        type: "product"
+                      },
+                      twitter: {
+                        card: "summary_large_image",
+                        title: "#{@product.name} | #{Ecommerce.site_name}",
+                        description: product_desc,
+                        image: @product.image.medium_400.url
+                      },
+                      alternate: {
+                        "es-PE" => "#{product_url}?lang=es-PE",
+                        "en" => "#{product_url}?lang=en-PE"
                       }
       end
 
       def set_index_meta_tags
+        index_url = "#{request.base_url}/store/products"
         set_meta_tags title: "Products",
-                      description: "ExpatShop Product List",
+                      description: "ExpatShop Product List - Imported products from around the world to Peru",
+                      canonical: index_url,
                       og: {
-                        title:    :full_title,
-                        image:    Ecommerce.logo
+                        title: :full_title,
+                        image: Ecommerce.logo,
+                        url: index_url,
+                        type: "website"
+                      },
+                      twitter: {
+                        card: "summary",
+                        title: :full_title,
+                        image: Ecommerce.logo
                       }
       end
 

@@ -124,11 +124,26 @@ module Ecommerce
       end
 
       def set_main_meta_tags
+        base_url = request.base_url
         set_meta_tags title: "Home",
-                      description: "ExpatShop Perú - your one stop shop for products from all the world to Perú",
+                      description: "ExpatShop Perú - your one stop shop for products from all the world to Perú. Imported international products delivered next-day in Lima.",
+                      canonical: base_url,
                       og: {
-                        title:    :full_title,
-                        image:    Ecommerce.logo
+                        title: :full_title,
+                        description: "ExpatShop Perú - imported international products delivered next-day in Lima.",
+                        image: Ecommerce.logo,
+                        url: base_url,
+                        type: "website"
+                      },
+                      twitter: {
+                        card: "summary",
+                        title: :full_title,
+                        description: "ExpatShop Perú - imported international products delivered next-day in Lima.",
+                        image: Ecommerce.logo
+                      },
+                      alternate: {
+                        "es-PE" => "#{base_url}?lang=es-PE",
+                        "en" => "#{base_url}?lang=en-PE"
                       }
       end
 
