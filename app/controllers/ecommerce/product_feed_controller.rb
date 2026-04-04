@@ -1,8 +1,7 @@
 require_dependency "ecommerce/application_controller"
 
 module Ecommerce
-  class ProductFeedController < ActionController::Base
-    skip_before_action :verify_authenticity_token
+  class ProductFeedController < ActionController::API
 
     # GET /store/feed/products.json
     # Public, read-only product feed for bots and integrations
