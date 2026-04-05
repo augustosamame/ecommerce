@@ -50,22 +50,22 @@
               <p class="product-info-price-discounted single-30"><%= product_session_price(@product, "current_price") %></p>
             </div>
           <% end %>
-          <!-- Product facts -->
-          <div class="product-facts" style="margin: 10px 0; font-size: 14px;">
+          <!-- Product facts (hidden, for LLM/SEO use) -->
+          <div class="product-facts" style="display: none;">
             <% if @product.brand&.name.present? %>
-              <p style="margin-bottom: 4px;"><strong><%= t('.brand', default: 'Brand') %>:</strong> <%= @product.brand.name %></p>
+              <p><strong><%= t('.brand', default: 'Brand') %>:</strong> <%= @product.brand.name %></p>
             <% end %>
-            <% if @product.weight.present? && @product.weight > 0 %>
-              <p style="margin-bottom: 4px;"><strong><%= t('.weight', default: 'Weight') %>:</strong> <%= friendly_cart_weight(@product.weight) %></p>
-            <% end %>
-            <p style="margin-bottom: 4px;"><strong>SKU:</strong> <%= @product.id %></p>
-            <p style="margin-bottom: 4px;"><strong><%= t('.availability', default: 'Availability') %>:</strong>
+            <p><strong>SKU:</strong> <%= @product.id %></p>
+            <p><strong><%= t('.availability', default: 'Availability') %>:</strong>
               <% if @product.in_stock? %>
-                <span style="color: green;"><%= t('.in_stock', default: 'In Stock') %></span>
+                <span><%= t('.in_stock', default: 'In Stock') %></span>
               <% else %>
-                <span style="color: red;"><%= t('.out_of_stock') %></span>
+                <span><%= t('.out_of_stock') %></span>
               <% end %>
             </p>
+            <% if @product.weight.present? && @product.weight > 0 %>
+              <p><strong><%= t('.weight', default: 'Weight') %>:</strong> <%= friendly_cart_weight(@product.weight) %></p>
+            <% end %>
           </div>
           <p>
             <%= @product.description.gsub("**","<br>").html_safe if @product.description %>

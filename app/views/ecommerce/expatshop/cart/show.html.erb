@@ -101,6 +101,13 @@
 
           </tbody>
         </table>
+        <% if @cart.cart_items.any? %>
+          <div style="margin-top: 10px; text-align: right;">
+            <%= button_to clear_cart_path(@cart), method: :delete, data: { confirm: t('.clear_cart_confirm') }, class: "btn", style: "color: red; font-size: 18px;" do %>
+              <%= fa_icon('times') %> <%= t('.clear_cart') %>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
       <!-- cart table for mobiles -->
       <div class="cart-desktop visible-xs">
@@ -173,6 +180,14 @@
           <% end %>
         <% end %>
 
+        <% if @cart.cart_items.any? %>
+          <div style="margin-top: -20px; margin-bottom: 15px; text-align: right;">
+            <%= button_to clear_cart_path(@cart), method: :delete, data: { confirm: t('.clear_cart_confirm') }, class: "btn", style: "color: red;" do %>
+              <%= fa_icon('times') %> <%= t('.clear_cart') %>
+            <% end %>
+          </div>
+        <% end %>
+
       </div>
 
 
@@ -182,11 +197,6 @@
           ><button>
             <%= fa_icon('shopping-cart') %><%= t('.my_orders') %></button
           ><button><%= fa_icon('user') %><%= t('.my_account') %></button>
-          <% if @cart.cart_items.any? %>
-            <%= button_to clear_cart_path(@cart), method: :delete, data: { confirm: t('.clear_cart_confirm') }, class: "btn", style: "color: red; margin-top: 5px;" do %>
-              <%= fa_icon('times') %> <%= t('.clear_cart') %>
-            <% end %>
-          <% end %>
         </div>
         <div>
           <div class="cart-info">
