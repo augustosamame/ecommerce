@@ -98,6 +98,9 @@ en-PE:
     shopping_videos:
       add_to_cart_label: "Add to Cart"
       view_products_label: "View Products"
+    carts:
+      clear:
+        cart_cleared: "All items have been removed from the cart."
     cart_items:
       create:
         product_out_of_stock: "Product Out of Stock"
@@ -437,6 +440,8 @@ en-PE:
           coupon: "Coupon"
           my_orders: "My Orders"
           my_account: "My Account"
+          clear_cart: "Clear Cart"
+          clear_cart_confirm: "Are you sure you want to remove all items from the cart?"
     backoffice:
       dashboard:
         main:

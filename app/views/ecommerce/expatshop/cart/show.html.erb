@@ -182,6 +182,11 @@
           ><button>
             <%= fa_icon('shopping-cart') %><%= t('.my_orders') %></button
           ><button><%= fa_icon('user') %><%= t('.my_account') %></button>
+          <% if @cart.cart_items.any? %>
+            <%= button_to clear_cart_path(@cart), method: :delete, data: { confirm: t('.clear_cart_confirm') }, class: "btn", style: "color: red; margin-top: 5px;" do %>
+              <%= fa_icon('times') %> <%= t('.clear_cart') %>
+            <% end %>
+          <% end %>
         </div>
         <div>
           <div class="cart-info">

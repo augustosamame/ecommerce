@@ -92,6 +92,9 @@ es-PE:
     shopping_videos:
       add_to_cart_label: "Agr al Carrito"
       view_products_label: "Ver Productos"
+    carts:
+      clear:
+        cart_cleared: "Todos los productos han sido eliminados del carrito."
     cart_items:
       create:
         product_out_of_stock: "Producto Fuera de Stock"
@@ -306,6 +309,8 @@ es-PE:
           coupon: "Cupón"
           my_orders: "Mis Pedidos"
           my_account: "Mi Cuenta"
+          clear_cart: "Vaciar Carrito"
+          clear_cart_confirm: "¿Está seguro que desea eliminar todos los productos del carrito?"
       wishlist:
         show:
           title: "Lista de Deseos"

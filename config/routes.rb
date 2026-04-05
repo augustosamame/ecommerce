@@ -104,7 +104,11 @@ Ecommerce::Engine.routes.draw do
   post '/mov_to_mp4_error', :to => 'shopping_videos#mov_to_mp4_error'
   post '/new_mov_in_s3', :to => 'shopping_videos#new_mov_in_s3'
   resources :testimonials, only: [:index]
-  resources :carts, except: [:index, :new, :create]
+  resources :carts, except: [:index, :new, :create] do
+    member do
+      delete :clear
+    end
+  end
   resources :cart_items
   post 'stock_alerts', :to => 'products#stock_alert', as: 'stock_alerts'
   get 'search_product', :to => 'products#search', as: 'search_product'

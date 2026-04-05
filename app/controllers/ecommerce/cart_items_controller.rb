@@ -55,6 +55,7 @@ module Ecommerce
         end
         #refresh with latest cart so it will be repainted properly
         set_cart
+        calculate_combo_discounts
         respond_to do |format|
           
           format.js {
@@ -79,8 +80,14 @@ module Ecommerce
     end
 
     def destroy
+      # If removing a trigger product, also remove its combo-injected free product
+      combo = ComboDiscount.where(status: "active", product_id_1: @cart_item.product_id, inject_product_two: true).first
+      if combo&.product_id_2.present?
+        @cart.cart_items.where(product_id: combo.product_id_2).destroy_all
+      end
       @cart_item.destroy
       set_cart
+      calculate_combo_discounts
       respond_to do |format|
         format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show" }
         format.html {redirect_to cart_path(@cart), notice: t('.item_deleted') }

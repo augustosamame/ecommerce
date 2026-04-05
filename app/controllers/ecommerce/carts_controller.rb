@@ -47,6 +47,13 @@ module Ecommerce
       redirect_to carts_url, notice: 'Cart was successfully destroyed.'
     end
 
+    # DELETE /carts/:id/clear
+    def clear
+      @cart = Cart.find(params[:id])
+      @cart.cart_items.destroy_all
+      redirect_to cart_path(@cart), notice: t('.cart_cleared')
+    end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_cart
