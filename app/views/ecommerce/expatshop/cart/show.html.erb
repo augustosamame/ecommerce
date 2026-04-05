@@ -193,10 +193,9 @@
 
       <div class="cart-info-container">
         <div class="cart-info-btn hidden-xs">
-          <button><%= fa_icon('arrow-left') %><%= t('.continue_shopping') %></button
-          ><button>
-            <%= fa_icon('shopping-cart') %><%= t('.my_orders') %></button
-          ><button><%= fa_icon('user') %><%= t('.my_account') %></button>
+          <button onclick="window.location.href='<%= main_app.root_path %>'"><%= fa_icon('arrow-left') %><%= t('.continue_shopping') %></button
+          ><button onclick="window.location.href='<%= orders_path %>'">
+            <%= fa_icon('shopping-cart') %><%= t('.my_orders') %></button>
         </div>
         <div>
           <div class="cart-info">
