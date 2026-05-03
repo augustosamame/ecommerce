@@ -10,6 +10,41 @@ module Ecommerce
       @backoffice_products = Product.all.order(:product_order, id: :desc)
     end
 
+    # GET /backoffice/products/autocomplete?term=...&with_categories=1
+    # Returns up to 20 products matching the term against the product name
+    # (across both globalize translations). When `with_categories=1` the label
+    # is decorated with the product's category list (used by the dual
+    # "products and categories" search field). Replaces the layout before_action
+    # that previously loaded every product into memory.
+    def autocomplete
+      authorize! :read, Ecommerce::Product
+      term = params[:term].to_s.strip
+      if term.blank?
+        return render(json: [])
+      end
+
+      pattern = "%#{ActiveRecord::Base.sanitize_sql_like(term)}%"
+      scope = Ecommerce::Product
+                .joins(:translations)
+                .where('product_translations.name ILIKE ?', pattern)
+                .order(id: :desc)
+                .limit(20)
+                .distinct
+
+      with_categories = ActiveModel::Type::Boolean.new.cast(params[:with_categories])
+      scope = scope.includes(:taggings) if with_categories
+
+      results = scope.map do |product|
+        label = product.name
+        if with_categories
+          cats = product.category_list.to_a
+          label = "#{label} - #{cats.join(',')}" if cats.any?
+        end
+        { id: product.id, label: label, value: product.name }
+      end
+      render json: results
+    end
+
     def cross_selling
       children = Ecommerce::Product.where(cross_sell_default: true).pluck(:id).uniq
       children += Ecommerce::Product.where("cross_parent_id IS NOT NULL").pluck(:cross_parent_id).uniq

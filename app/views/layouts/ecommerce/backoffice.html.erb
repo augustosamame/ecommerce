@@ -60,7 +60,6 @@ $(function(){
 </script>
 
 <script type="text/javascript">
-//tags = <%= raw @users_array %>
 $(document).ready(function(){
 
   /* Activating Best In Place */
@@ -71,41 +70,49 @@ $(document).ready(function(){
     $('#layout-condensed-toggle').click();
   }
 
-  users_tags = jQuery.parseJSON(<%=raw @users_array.to_json.inspect %>);
-  products_tags = jQuery.parseJSON(<%=raw @products_array.to_json.inspect %>);
-  category_products_tags = jQuery.parseJSON(<%=raw @category_products_array.to_json.inspect %>);
-  orders_tags = jQuery.parseJSON(<%=raw @orders_array.to_json.inspect %>);
-  $( ".search_users" ).autocomplete({
-    autoFocus: true,
-    minLength: 0,
-    source: users_tags,
+  // Backoffice header search — AJAX autocomplete. Replaces the prior approach
+  // of inlining all users/orders/products as JSON in every page; that pushed
+  // first-load over 30s. Each search now hits a `LIMIT 20` endpoint and the
+  // results render after a small debounce.
+  var BO_BASE = "/<%= Ecommerce.engine_alias_endpoint %>/backoffice";
+
+  function ajaxSource(url, extraParams) {
+    return function(request, response) {
+      $.getJSON(url, $.extend({ term: request.term }, extraParams || {}), response);
+    };
+  }
+
+  $(".search_users").autocomplete({
+    minLength: 2,
+    delay: 250,
+    source: ajaxSource(BO_BASE + "/users/autocomplete"),
     select: function (e, ui) {
-          window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/users/" + ui.item.id);
-      },
+      window.location.href = BO_BASE + "/users/" + ui.item.id;
+    }
   });
-  $( ".search_products" ).autocomplete({
-    autoFocus: false,
-    minLength: 1,
-    source: products_tags,
+  $(".search_products").autocomplete({
+    minLength: 2,
+    delay: 250,
+    source: ajaxSource(BO_BASE + "/products/autocomplete"),
     select: function (e, ui) {
-          window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/products/" + ui.item.id);
-      },
+      window.location.href = BO_BASE + "/products/" + ui.item.id;
+    }
   });
-  $( ".search_category_products" ).autocomplete({
-    autoFocus: false,
-    minLength: 1,
-    source: category_products_tags,
+  $(".search_category_products").autocomplete({
+    minLength: 2,
+    delay: 250,
+    source: ajaxSource(BO_BASE + "/products/autocomplete", { with_categories: 1 }),
     select: function (e, ui) {
-          window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/products/" + ui.item.id);
-      },
+      window.location.href = BO_BASE + "/products/" + ui.item.id;
+    }
   });
-  $( ".search_orders" ).autocomplete({
-    autoFocus: false,
-    minLength: 1,
-    source: orders_tags,
+  $(".search_orders").autocomplete({
+    minLength: 2,
+    delay: 250,
+    source: ajaxSource(BO_BASE + "/orders/autocomplete"),
     select: function (e, ui) {
-          window.location.href = ("/<%= Ecommerce.engine_alias_endpoint %>" + "/backoffice/orders/" + ui.item.id);
-      },
+      window.location.href = BO_BASE + "/orders/" + ui.item.id;
+    }
   });
 });
 </script>

@@ -2,6 +2,7 @@ Ecommerce::Engine.routes.draw do
 
   namespace :backoffice do
     get 'dashboard', :to => "dashboard#main"
+    get 'users/autocomplete', :to => 'users#autocomplete'
     resources :users
     resources :brands
     resources :sliders
@@ -11,6 +12,7 @@ Ecommerce::Engine.routes.draw do
     resources :categories
     put '/categories_in_place/:id' => 'categories#best_in_place_update'
     put '/translations/category_translations_in_place/:id' => 'categories#best_in_place_translation_update'
+    get 'products/autocomplete', :to => 'products#autocomplete'
     resources :products
     put '/products_in_place/:id' => 'products#best_in_place_update'
     put '/translations/product_translations_in_place/:id' => 'products#best_in_place_translation_update'
@@ -20,6 +22,7 @@ Ecommerce::Engine.routes.draw do
     resources :properties
     resources :addresses
     resources :provinces
+    get 'orders/autocomplete', :to => 'orders#autocomplete'
     resources :orders do
       post :create_culqi_order, on: :collection
       resources :proof_of_delivery_images, only: [:create]

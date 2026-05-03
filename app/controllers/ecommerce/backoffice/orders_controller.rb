@@ -37,6 +37,31 @@ module Ecommerce
       @page_param = params[:page]
     end
 
+    # GET /backoffice/orders/autocomplete?term=...
+    # Returns up to 20 orders matching the term against the order id (when the
+    # term is numeric) or the buyer's first/last name. Replaces the old layout
+    # before_action that loaded every order in the system.
+    def autocomplete
+      authorize! :read, Order
+      term = params[:term].to_s.strip
+      if term.blank?
+        return render(json: [])
+      end
+
+      pattern = "%#{ActiveRecord::Base.sanitize_sql_like(term)}%"
+      scope = Order.joins(:user).order('ecommerce_orders.id DESC').limit(20)
+      scope = if term =~ /\A\d+\z/
+                scope.where('ecommerce_orders.id = :id OR users.first_name ILIKE :p OR users.last_name ILIKE :p',
+                            id: term.to_i, p: pattern)
+              else
+                scope.where('users.first_name ILIKE :p OR users.last_name ILIKE :p', p: pattern)
+              end
+
+      results = scope.pluck('ecommerce_orders.id', 'users.first_name', 'users.last_name')
+                     .map { |id, first, last| { id: id, label: "Order ##{id} - #{first} #{last}", value: "#{first} #{last}" } }
+      render json: results
+    end
+
     # GET /backoffice/orders/1
     def show
       @order_details = Order.find(@backoffice_order.id).order_items.includes(:product)

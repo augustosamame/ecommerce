@@ -10,6 +10,27 @@ module Ecommerce
       @backoffice_users = User.all.order(id: :desc)
     end
 
+    # GET /backoffice/users/autocomplete?term=...
+    # Returns up to 20 users matching the term across first_name, last_name, or
+    # email. Used by the backoffice header search; replaces the old approach of
+    # eager-loading all users into the layout.
+    def autocomplete
+      authorize! :read, User
+      term = params[:term].to_s.strip
+      results = if term.blank?
+                  []
+                else
+                  pattern = "%#{ActiveRecord::Base.sanitize_sql_like(term)}%"
+                  User
+                    .where('first_name ILIKE :p OR last_name ILIKE :p OR email ILIKE :p', p: pattern)
+                    .order(id: :desc)
+                    .limit(20)
+                    .pluck(:id, :first_name, :last_name, :email)
+                    .map { |id, first, last, email| { id: id, label: "#{first} #{last} <#{email}>", value: "#{first} #{last}" } }
+                end
+      render json: results
+    end
+
 
     # GET /backoffice/users/1
     def show
