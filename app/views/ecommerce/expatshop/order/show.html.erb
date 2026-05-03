@@ -17,7 +17,7 @@
         </span>
       </p>
       <p class="d-flex space-between"><%= t('.points_won') %><span><%= PointsTransaction.find_by(tx_type: 'purchase', tx_id: @order.id).try(:points) || 0 %></span></p>
-      <p class="d-flex space-between"><%= t('.payment') %><span><%= friendly_payment_stage(@order.payment_status) %></span></p>
+      <p class="d-flex space-between"><%= t('.payment') %><span><%= friendly_order_status(@order) %></span></p>
 
       <% if @order.process_comments == "PagoEfectivo" %>
 
@@ -200,6 +200,13 @@ Culqi.settings({
 $('#retry-pay-now-button').on('click', function(e) {
   // Abre el formulario con las opciones de Culqi.settings
   var culqi_payment_amount = $('#pay_in_soles').prop('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+
+  // Always (re-)assign the public key right before opening the popup. The
+  // Culqi v4 SDK can lose its internal state after the popup is closed once,
+  // resulting in "No ha ingresado la llave pública del comercio o no es
+  // válida" on the second attempt.
+  Culqi.publicKey = "<%= Culqi.public_key %>";
+  Culqi3DS.publicKey = "<%= Culqi.public_key %>";
 
   Culqi.settings({
     title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',

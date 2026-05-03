@@ -59,6 +59,7 @@ Ecommerce::Engine.routes.draw do
     get 'audience_get_purchasers', :to => "audiences#get_product_purchasers"
     get 'audience_get_no_purchase_within_days', :to => "audiences#get_no_purchase_within_days"
 
+    get 'sales_per_product', to: 'dashboard#sales_per_product', as: :sales_per_product
     get "export_products" => "dashboard#export_products", as: :export_products
     get "export_users" => "dashboard#export_users", as: :export_users
     get "export_orders" => "dashboard#export_orders", as: :export_orders

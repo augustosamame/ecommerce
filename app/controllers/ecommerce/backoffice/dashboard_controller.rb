@@ -1,3 +1,6 @@
+require 'csv'
+require 'set'
+
 module Ecommerce
   class Backoffice::DashboardController < Backoffice::BaseController
     before_action :redirect_drivers_to_recent_orders
@@ -415,7 +418,198 @@ module Ecommerce
       end
     end
 
+    # GET /backoffice/sales_per_product[.csv]
+    # Sales report for a single product (direct sales + sales as a component
+    # inside any combo). Combo revenue is allocated proportionally to each
+    # component by its quantity within the combo.
+    def sales_per_product
+      @product = Ecommerce::Product.find_by(id: params[:product_id]) if params[:product_id].present?
+      @start_date = parse_report_date(params[:start_date])
+      @end_date = parse_report_date(params[:end_date])
+      @monthly = params[:monthly] != '0' # default on
+      @currency = Ecommerce.default_currency || 'PEN'
+      @products_collection = Ecommerce::Product.order(:permalink)
+
+      @rows = []
+      @summary = nil
+      @line_items = []
+
+      if @product && @start_date && @end_date && @start_date <= @end_date
+        compute_sales_per_product
+      end
+
+      respond_to do |format|
+        format.html
+        format.csv do
+          fname = "sales_#{@product&.id}_#{@start_date}_to_#{@end_date}.csv"
+          send_data sales_per_product_csv, type: 'text/csv', filename: fname
+        end
+      end
+    end
+
     private
+
+    def parse_report_date(value)
+      return nil if value.blank?
+      Date.parse(value.to_s)
+    rescue ArgumentError
+      nil
+    end
+
+    # Builds @line_items, @rows (per-month or single bucket), and @summary.
+    def compute_sales_per_product
+      product_id = @product.id
+
+      # Combos that include this product as a component, indexed by parent
+      # combo product id → { component_qty:, total_components_qty: }.
+      combo_links = Ecommerce::ComboComponent.where(component_product_id: product_id).to_a
+      combo_parent_ids = combo_links.map(&:product_id).uniq
+
+      total_qty_by_combo = {}
+      if combo_parent_ids.any?
+        Ecommerce::ComboComponent.where(product_id: combo_parent_ids).group(:product_id).sum(:quantity).each do |pid, total|
+          total_qty_by_combo[pid] = total
+        end
+      end
+
+      component_qty_by_combo = combo_links.each_with_object({}) do |cc, h|
+        h[cc.product_id] = cc.quantity
+      end
+
+      target_product_ids = [product_id] + combo_parent_ids
+      range_start = @start_date.beginning_of_day
+      range_end = @end_date.end_of_day
+
+      # Only count paid orders (refunds/voids excluded). Includes cancelled
+      # ones that were paid then refunded would still appear as paid, which is
+      # what most reports want; tweak here if business decides otherwise.
+      items = Ecommerce::OrderItem
+        .joins(:order)
+        .includes(:order, :product)
+        .where(product_id: target_product_ids)
+        .where(ecommerce_orders: { payment_status: Ecommerce::Order.payment_statuses[:paid] })
+        .where('ecommerce_orders.created_at >= ? AND ecommerce_orders.created_at <= ?', range_start, range_end)
+        .order('ecommerce_orders.created_at ASC')
+
+      items.each do |oi|
+        is_direct = (oi.product_id == product_id)
+        line_amount_cents = oi.price_cents.to_i * oi.quantity.to_i
+
+        if is_direct
+          target_units = oi.quantity.to_i
+          allocated_cents = line_amount_cents
+        else
+          comp_qty = component_qty_by_combo[oi.product_id] || 0
+          total_in_combo = total_qty_by_combo[oi.product_id] || 0
+          next if comp_qty.zero? || total_in_combo.zero?
+          target_units = oi.quantity.to_i * comp_qty
+          allocated_cents = (line_amount_cents.to_f * comp_qty.to_f / total_in_combo.to_f).round
+        end
+
+        @line_items << {
+          order_id: oi.order_id,
+          order_number: oi.order.try(:order_number),
+          order_date: oi.order.created_at,
+          customer_email: oi.order.try(:user)&.email,
+          line_type: is_direct ? 'direct' : 'combo',
+          line_product_id: oi.product_id,
+          line_product_name: oi.product&.name,
+          line_quantity: oi.quantity.to_i,
+          line_unit_price_cents: oi.price_cents.to_i,
+          line_total_cents: line_amount_cents,
+          target_units: target_units,
+          allocated_cents: allocated_cents,
+        }
+      end
+
+      # Bucket by month or one global bucket
+      buckets = Hash.new do |h, k|
+        h[k] = {
+          orders: Set.new,
+          order_lines: 0,
+          total_units: 0,
+          total_cents: 0,
+          direct_units: 0,
+          direct_cents: 0,
+          combo_units: 0,
+          combo_cents: 0,
+        }
+      end
+
+      @line_items.each do |li|
+        key = @monthly ? li[:order_date].strftime('%Y-%m') : 'total'
+        b = buckets[key]
+        b[:orders] << li[:order_id]
+        b[:order_lines] += 1
+        b[:total_units] += li[:target_units]
+        b[:total_cents] += li[:allocated_cents]
+        if li[:line_type] == 'direct'
+          b[:direct_units] += li[:target_units]
+          b[:direct_cents] += li[:allocated_cents]
+        else
+          b[:combo_units] += li[:target_units]
+          b[:combo_cents] += li[:allocated_cents]
+        end
+      end
+
+      @rows = buckets.map do |label, b|
+        {
+          label: label,
+          orders: b[:orders].size,
+          order_lines: b[:order_lines],
+          total_units: b[:total_units],
+          total_cents: b[:total_cents],
+          direct_units: b[:direct_units],
+          direct_cents: b[:direct_cents],
+          combo_units: b[:combo_units],
+          combo_cents: b[:combo_cents],
+        }
+      end.sort_by { |r| r[:label] }
+
+      @summary = {
+        orders: @line_items.map { |li| li[:order_id] }.uniq.size,
+        order_lines: @line_items.size,
+        total_units: @line_items.sum { |li| li[:target_units] },
+        total_cents: @line_items.sum { |li| li[:allocated_cents] },
+        direct_units: @line_items.select { |li| li[:line_type] == 'direct' }.sum { |li| li[:target_units] },
+        direct_cents: @line_items.select { |li| li[:line_type] == 'direct' }.sum { |li| li[:allocated_cents] },
+        combo_units: @line_items.select { |li| li[:line_type] == 'combo' }.sum { |li| li[:target_units] },
+        combo_cents: @line_items.select { |li| li[:line_type] == 'combo' }.sum { |li| li[:allocated_cents] },
+      }
+
+      @combos_used = combo_links.map do |cc|
+        parent = Ecommerce::Product.find_by(id: cc.product_id)
+        { id: cc.product_id, name: parent&.name, qty_per_combo: cc.quantity }
+      end
+    end
+
+    def sales_per_product_csv
+      CSV.generate do |csv|
+        csv << [
+          'order_id', 'order_number', 'order_date', 'customer_email',
+          'type', 'line_product_id', 'line_product_name', 'line_quantity',
+          'line_unit_price', 'line_total',
+          'target_product_units', 'target_product_amount', 'currency'
+        ]
+        @line_items.each do |li|
+          csv << [
+            li[:order_id],
+            li[:order_number],
+            li[:order_date].strftime('%Y-%m-%d %H:%M'),
+            li[:customer_email],
+            li[:line_type],
+            li[:line_product_id],
+            li[:line_product_name],
+            li[:line_quantity],
+            (li[:line_unit_price_cents].to_f / 100).round(2),
+            (li[:line_total_cents].to_f / 100).round(2),
+            li[:target_units],
+            (li[:allocated_cents].to_f / 100).round(2),
+            @currency,
+          ]
+        end
+      end
+    end
 
     def redirect_drivers_to_recent_orders
       if current_user&.driver?

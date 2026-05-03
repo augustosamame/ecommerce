@@ -29,7 +29,7 @@
               <p><%= order.created_at.localtime.strftime("%d-%b-%y") %></p>
             </th>
             <th>
-              <p><%= friendly_payment_stage(order.payment_status) %></p>
+              <p><%= friendly_order_status(order) %></p>
             </th>
             <th>
               <p><%= number_to_currency((order.amount * @exchange_rate), unit: "S/. " )%></p>
@@ -62,7 +62,7 @@
             </tr>
             <tr>
               <th><%= t('.status') %></th>
-              <td><p><%= friendly_payment_stage(order.payment_status) %></p></td>
+              <td><p><%= friendly_order_status(order) %></p></td>
             </tr>
             <tr>
               <th><%= t('.total') %></th>

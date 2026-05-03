@@ -731,6 +731,14 @@ $( document ).ready(function() {
           success: function(data) {
             console.log(data.id, '<= Culqi Order Id');
             culqi_order_id = data.id;
+            // Always (re-)assign the public key right before opening the popup.
+            // The Culqi v4 SDK can lose its internal state after the popup is
+            // closed once (e.g. user dismissed, validation Swal interrupts a
+            // retry), and recalculate_checkout_totals isn't guaranteed to run
+            // again before the second click. Without this we would hit
+            // "No ha ingresado la llave pública del comercio o no es válida".
+            Culqi.publicKey = "<%= Culqi.public_key %>";
+            Culqi3DS.publicKey = "<%= Culqi.public_key %>";
             Culqi.settings({
               title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
               amount: Number(culqi_payment_amount),

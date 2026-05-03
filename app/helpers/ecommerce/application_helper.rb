@@ -202,9 +202,16 @@ module Ecommerce
         return t('model.order.payment_stage_unpaid')
       when "refunded"
         return t('model.order.payment_stage_refunded')
-      when "void"
+      when "payment_void", "void"
         return t('model.order.payment_stage_void')
       end
+    end
+
+    # Combined order status label that prefers a void/cancelled state over the
+    # raw payment_status, so a stage_void order doesn't appear as "Pendiente".
+    def friendly_order_status(order)
+      return t('model.order.stage_void') if order.stage == "stage_void"
+      friendly_payment_stage(order.payment_status)
     end
 
     def friendly_delivery_window(order_time)

@@ -1,0 +1,135 @@
+<div class="container">
+  <h2>Sales Per Product (inc combos)</h2>
+
+  <div class="well">
+    <%= form_with url: backoffice_sales_per_product_path, method: :get, local: true, class: "form-inline" do %>
+      <div class="form-group" style="margin-right: 12px;">
+        <%= label_tag :product_id, "Product" %>
+        <%= select_tag :product_id,
+              options_from_collection_for_select(@products_collection, :id, :permalink, @product&.id),
+              include_blank: '— Select a product —',
+              class: "form-control select2",
+              style: "min-width: 320px;" %>
+      </div>
+
+      <div class="form-group" style="margin-right: 12px;">
+        <%= label_tag :start_date, "Start date" %>
+        <%= date_field_tag :start_date, @start_date&.iso8601, class: "form-control" %>
+      </div>
+
+      <div class="form-group" style="margin-right: 12px;">
+        <%= label_tag :end_date, "End date" %>
+        <%= date_field_tag :end_date, @end_date&.iso8601, class: "form-control" %>
+      </div>
+
+      <div class="checkbox" style="margin-right: 12px;">
+        <label>
+          <%# preserve "off" via hidden field with same name; Rails form pattern %>
+          <%= hidden_field_tag :monthly, '0' %>
+          <%= check_box_tag :monthly, '1', @monthly %>
+          Per month totals
+        </label>
+      </div>
+
+      <%= submit_tag "Run report", class: "btn btn-primary" %>
+
+      <% if @product && @rows.any? %>
+        <%= link_to "Export CSV",
+              backoffice_sales_per_product_path(format: :csv,
+                                                product_id: @product.id,
+                                                start_date: @start_date,
+                                                end_date: @end_date,
+                                                monthly: @monthly ? '1' : '0'),
+              class: "btn btn-success",
+              style: "margin-left: 8px;" %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if @product && (!@start_date || !@end_date) %>
+    <div class="alert alert-warning">Please pick a start and end date.</div>
+  <% end %>
+
+  <% if @product && @start_date && @end_date %>
+    <p>
+      <strong>Product <%= @product.id %>:</strong>
+      <%= @product.permalink %>
+      <br>
+      <strong>Range:</strong> <%= @start_date %> → <%= @end_date %>
+    </p>
+
+    <% if @combos_used && @combos_used.any? %>
+      <p>This product is a component of:</p>
+      <ul>
+        <% @combos_used.each do |cb| %>
+          <li>
+            #<%= cb[:id] %> — <%= cb[:name] %>
+            (qty <strong><%= cb[:qty_per_combo] %></strong> per combo)
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p><em>This product is not a component of any combo.</em></p>
+    <% end %>
+
+    <% if @rows.any? %>
+      <table class="table table-striped table-bordered" style="margin-top: 12px;">
+        <thead>
+          <tr>
+            <% if @monthly %><th>Month</th><% else %><th>Range</th><% end %>
+            <th>Orders</th>
+            <th>Order lines</th>
+            <th>Total units sold</th>
+            <th>Total amount</th>
+            <th>Direct units</th>
+            <th>Direct amount</th>
+            <th>Combo units</th>
+            <th>Combo amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @rows.each do |r| %>
+            <tr>
+              <td><%= @monthly ? r[:label] : "#{@start_date} → #{@end_date}" %></td>
+              <td><%= r[:orders] %></td>
+              <td><%= r[:order_lines] %></td>
+              <td><%= r[:total_units] %></td>
+              <td><%= @currency %> <%= number_with_precision(r[:total_cents].to_f / 100, precision: 2, delimiter: ',') %></td>
+              <td><%= r[:direct_units] %></td>
+              <td><%= @currency %> <%= number_with_precision(r[:direct_cents].to_f / 100, precision: 2, delimiter: ',') %></td>
+              <td><%= r[:combo_units] %></td>
+              <td><%= @currency %> <%= number_with_precision(r[:combo_cents].to_f / 100, precision: 2, delimiter: ',') %></td>
+            </tr>
+          <% end %>
+        </tbody>
+        <% if @monthly && @summary %>
+          <tfoot>
+            <tr style="font-weight: bold;">
+              <td>Total</td>
+              <td><%= @summary[:orders] %></td>
+              <td><%= @summary[:order_lines] %></td>
+              <td><%= @summary[:total_units] %></td>
+              <td><%= @currency %> <%= number_with_precision(@summary[:total_cents].to_f / 100, precision: 2, delimiter: ',') %></td>
+              <td><%= @summary[:direct_units] %></td>
+              <td><%= @currency %> <%= number_with_precision(@summary[:direct_cents].to_f / 100, precision: 2, delimiter: ',') %></td>
+              <td><%= @summary[:combo_units] %></td>
+              <td><%= @currency %> <%= number_with_precision(@summary[:combo_cents].to_f / 100, precision: 2, delimiter: ',') %></td>
+            </tr>
+          </tfoot>
+        <% end %>
+      </table>
+
+      <p><em>Combo revenue is allocated proportionally by component quantity within each combo. Only paid orders are included.</em></p>
+    <% else %>
+      <div class="alert alert-info">No paid sales found in this range.</div>
+    <% end %>
+  <% end %>
+</div>
+
+<script>
+  $(function () {
+    if (typeof $.fn.select2 === 'function') {
+      $('select.select2').select2({ width: 'resolve' });
+    }
+  });
+</script>
