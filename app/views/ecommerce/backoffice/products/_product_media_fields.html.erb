@@ -1,0 +1,36 @@
+<div class="product-media-row" style="border:1px solid #ddd; padding:8px; margin-bottom:8px;">
+  <div style="display:flex; gap:12px; align-items:flex-start;">
+    <div style="width:120px;">
+      <% if f.object.persisted? && f.object.file.present? %>
+        <% if f.object.image? %>
+          <%= image_tag f.object.file.try(:thumb_100).try(:url) || f.object.file.url, class: "img-thumbnail", style: "max-width:100px;" %>
+        <% elsif f.object.video? %>
+          <video src="<%= f.object.file.url %>" controls style="max-width:100px;"></video>
+        <% end %>
+      <% else %>
+        <div class="text-muted" style="font-size:12px;">New media</div>
+      <% end %>
+    </div>
+
+    <div style="flex:1;">
+      <%= f.hidden_field :id %>
+      <div class="form-group">
+        <label>Type</label>
+        <%= f.select :media_type, Ecommerce::ProductMedia::MEDIA_TYPES.map { |t| [t.titleize, t] }, {}, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <label>File</label>
+        <%= f.file_field :file %>
+      </div>
+      <div class="form-group">
+        <label>Position</label>
+        <%= f.number_field :position, value: f.object.position || 0, class: 'form-control', style: 'width:120px;' %>
+      </div>
+      <% if f.object.persisted? %>
+        <label>
+          <%= f.check_box :_destroy %> Remove
+        </label>
+      <% end %>
+    </div>
+  </div>
+</div>

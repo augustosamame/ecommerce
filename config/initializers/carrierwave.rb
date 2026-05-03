@@ -7,7 +7,10 @@ CarrierWave.configure do |config|
   Dotenv::Railtie.load
 
   config.fog_provider = 'fog/aws'
-  config.asset_host = "https://#{ENV['CLOUDFRONT_DOMAIN']}"
+  # Only route through CloudFront when configured (prod). When unset (typical
+  # in dev), leave asset_host nil so CarrierWave builds direct S3 URLs and
+  # we don't end up with broken `https:///uploads/...` links.
+  config.asset_host = "https://#{ENV['CLOUDFRONT_DOMAIN']}" if ENV['CLOUDFRONT_DOMAIN'].present?
 
   config.fog_credentials = {
   :provider               => 'AWS',

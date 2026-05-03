@@ -67,6 +67,26 @@ module Ecommerce
       end
     end
 
+    def save_factura_info
+      data_biz = Ecommerce::DataBizInvoice.find_or_create_by(user_id: current_user.id)
+      if data_biz.update(
+        vat: params[:vat].to_s.strip,
+        razon_social: params[:razon_social].to_s.strip,
+        address: params[:address].to_s.strip,
+        city: params[:city].to_s.strip
+      )
+        render json: {
+          success: true,
+          vat: data_biz.vat,
+          razon_social: data_biz.razon_social,
+          address: data_biz.address,
+          city: data_biz.city
+        }
+      else
+        render json: { success: false, errors: data_biz.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
     def pre_checkout
       session[:pre_checkout_shown_cart] = @cart.id
       children = Ecommerce::Product.active.where(cross_sell_default: true).pluck(:id).uniq

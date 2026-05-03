@@ -3,6 +3,7 @@ class SendUnpaidToPaidInteraktWorker
 
   def perform(order_id)
     order = Ecommerce::Order.find(order_id)
+    return if order.stage == 'stage_void' || order.status == 'void'
     if order.payment_status == 'unpaid'
       user = order.user
       Interakt.new.send_message({

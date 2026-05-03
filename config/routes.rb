@@ -80,7 +80,11 @@ Ecommerce::Engine.routes.draw do
   resources :brands, only: [:show]
   get 'favorites', :to => 'products#favorites'
   resources :categories, only: [:index]
-  resources :orders, only: [:index, :show]
+  resources :orders, only: [:index, :show] do
+    member do
+      post :cancel
+    end
+  end
   get '/points', :to => 'users#points_index'
   get '/referral', :to => 'users#referrals_index'
   get '/checkout/check_stock_cart_js_from_checkout', :to => 'checkout#check_stock_cart_js_from_checkout'
@@ -96,6 +100,7 @@ Ecommerce::Engine.routes.draw do
   post '/orders/checkout/pay_order_pagoefectivo_checkout', :to => 'checkout#pay_order_pagoefectivo_checkout'
   post '/checkout/pay_order_manual', :to => 'checkout#pay_order_manual'
   get '/checkout', :to => 'checkout#show'
+  post '/checkout/save_factura_info', :to => 'checkout#save_factura_info', as: :save_factura_info
   get '/pre_checkout', :to => 'checkout#pre_checkout'
   get '/my_account', :to => 'users#show'
 

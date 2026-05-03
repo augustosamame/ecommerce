@@ -188,15 +188,14 @@
               <%= check_box_tag("pay_in_soles", "0", false, class: "factura_checkbox", id: "factura-checkbox") %>
               <%= t('.i_need_a_factura') %>
             </div>
-            <div style="margin-left: 30px;">
-              <% if @info_factura_available %>
-                <p><%= "RUC: #{@factura_vat}" %></p>
-                <p><%= "Razón Social: #{@factura_razon_social}" %></p>
-                <p><%= "#{t('.address')}: #{@factura_address}, #{@factura_city}" %></p>
-              <% else %>
-                <%= button_to t('.click_here_to_setup_factura_info'), main_app.edit_user_registration_path(origin: "checkout"), method: :get, class: "checkout-receipt-button" %>
-                
-              <% end %>
+            <div style="margin-left: 30px;" id="factura-info-display">
+              <div id="factura-info-saved" style="<%= @info_factura_available ? '' : 'display: none;' %>">
+                <p>RUC: <span id="factura-vat-display"><%= @factura_vat %></span></p>
+                <p>Razón Social: <span id="factura-razon-social-display"><%= @factura_razon_social %></span></p>
+                <p><%= t('.address') %>: <span id="factura-address-display"><%= @factura_address %></span>, <span id="factura-city-display"><%= @factura_city %></span></p>
+                <button type="button" class="checkout-receipt-button" id="factura-edit-button"><%= t('.click_here_to_setup_factura_info') %></button>
+              </div>
+              <button type="button" class="checkout-receipt-button" id="factura-setup-button" style="<%= @info_factura_available ? 'display: none;' : '' %>"><%= t('.click_here_to_setup_factura_info') %></button>
             </div>
           </div>
         </div>
@@ -259,6 +258,34 @@
     </div>
   </div>
 </section>
+
+<div id="factura-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9998;"></div>
+<div id="factura-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 25px; border-radius: 6px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 9999; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto;">
+  <h4 style="margin-top: 0;"><%= I18n.t('devise.registrations.edit.invoice_information', default: 'Información para Factura') %></h4>
+  <p style="font-size: 14px; color: #666;"><%= I18n.t('devise.registrations.edit.fill_in_all_fields', default: 'Llene todos los campos') %></p>
+  <div id="factura-modal-error" style="color: red; font-size: 14px; display: none; margin-bottom: 10px;"></div>
+  <div class="form-group">
+    <label for="factura-vat">RUC</label>
+    <input type="text" id="factura-vat" class="form-control" value="<%= @factura_vat %>" maxlength="11" />
+  </div>
+  <div class="form-group">
+    <label for="factura-razon-social">Razón Social</label>
+    <input type="text" id="factura-razon-social" class="form-control" value="<%= @factura_razon_social %>" />
+  </div>
+  <div class="form-group">
+    <label for="factura-address"><%= t('.address') %></label>
+    <input type="text" id="factura-address" class="form-control" value="<%= @factura_address %>" />
+  </div>
+  <div class="form-group">
+    <label for="factura-city">Ciudad</label>
+    <input type="text" id="factura-city" class="form-control" value="<%= @factura_city %>" />
+  </div>
+  <div style="text-align: right; margin-top: 15px;">
+    <button type="button" id="factura-modal-cancel" class="btn btn-default" style="margin-right: 10px;">Cancelar</button>
+    <button type="button" id="factura-modal-save" class="btn btn-primary">Guardar</button>
+  </div>
+</div>
+
 </main>
 
 <!-- Incluyendo .js de Culqi Checkout-->
@@ -298,7 +325,7 @@ $( document ).ready(function() {
 
   $('#new-address-button').click(function(){
     $('#new-address-container').show();
-    // $(this).parent.hide();
+    $('.direction-btn').hide();
   });
 
     $('#delete-address-button').click(function(){
@@ -329,6 +356,68 @@ $( document ).ready(function() {
     var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
     calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
   }
+
+  function openFacturaModal() {
+    $('#factura-modal-error').hide().text('');
+    $('#factura-modal-backdrop').show();
+    $('#factura-modal').show();
+  }
+  function closeFacturaModal() {
+    $('#factura-modal-backdrop').hide();
+    $('#factura-modal').hide();
+  }
+  $('#factura-setup-button, #factura-edit-button').on('click', openFacturaModal);
+  $('#factura-modal-cancel, #factura-modal-backdrop').on('click', closeFacturaModal);
+
+  $('#factura-modal-save').on('click', function() {
+    var vat = $.trim($('#factura-vat').val());
+    var razon_social = $.trim($('#factura-razon-social').val());
+    var address = $.trim($('#factura-address').val());
+    var city = $.trim($('#factura-city').val());
+
+    if (!vat || !razon_social || !address || !city) {
+      $('#factura-modal-error').text('<%= j(t('.you_must_enter_factura_info')) %>').show();
+      return;
+    }
+    if (!/^\d{11}$/.test(vat)) {
+      $('#factura-modal-error').text('RUC debe tener 11 dígitos').show();
+      return;
+    }
+
+    $('#factura-modal-save').prop('disabled', true);
+    $.ajax({
+      url: '<%= Ecommerce::Engine.routes.url_helpers.save_factura_info_path %>',
+      type: 'POST',
+      dataType: 'json',
+      data: { vat: vat, razon_social: razon_social, address: address, city: city },
+      headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+      success: function(data) {
+        if (data && data.success) {
+          $('#factura-vat-display').text(data.vat);
+          $('#factura-razon-social-display').text(data.razon_social);
+          $('#factura-address-display').text(data.address);
+          $('#factura-city-display').text(data.city);
+          $('#factura-info-saved').show();
+          $('#factura-setup-button').hide();
+          info_factura_blank = false;
+          closeFacturaModal();
+        } else {
+          $('#factura-modal-error').text((data && data.errors) ? data.errors.join(', ') : 'Error').show();
+        }
+      },
+      error: function(xhr) {
+        var msg = 'Error';
+        try {
+          var resp = JSON.parse(xhr.responseText);
+          if (resp.errors) msg = resp.errors.join(', ');
+        } catch (e) {}
+        $('#factura-modal-error').text(msg).show();
+      },
+      complete: function() {
+        $('#factura-modal-save').prop('disabled', false);
+      }
+    });
+  });
 
 });
 

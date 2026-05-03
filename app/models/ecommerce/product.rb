@@ -24,6 +24,8 @@ module Ecommerce
     has_many :combo_components, dependent: :destroy
     has_many :component_products, through: :combo_components
 
+    has_many :media, class_name: 'Ecommerce::ProductMedia', dependent: :destroy, inverse_of: :product
+
     #after_commit :create_product_taxes, on: :create
 
     attr_accessor :tax_1_check, :tax_2_check, :tax_3_check, :tax_1_amount, :tax_2_amount, :tax_3_amount
@@ -48,7 +50,9 @@ module Ecommerce
     accepts_nested_attributes_for :product_skus, reject_if: proc { |attributes| attributes['sku'].blank? }, :allow_destroy => true
     accepts_nested_attributes_for :product_properties, reject_if: proc { |attributes| attributes['description'].blank? }, allow_destroy: true
     accepts_nested_attributes_for :combo_components, reject_if: proc { |attributes| attributes['component_product_id'].blank? }, allow_destroy: true
-    #accepts_nested_attributes_for :images,             reject_if: proc { |t| (t['photo'].nil? && t['photo_from_link'].blank? && t['id'].blank?) }, allow_destroy: true
+    accepts_nested_attributes_for :media,
+                                  reject_if: ->(attrs) { attrs['file'].blank? && attrs['id'].blank? },
+                                  allow_destroy: true
 
     mount_uploader :image, Ecommerce::ProductImageUploader
 

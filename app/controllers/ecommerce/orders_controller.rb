@@ -7,7 +7,7 @@ module Ecommerce
     skip_before_action :authenticate_user!, only: [:culqi_webhook]
 
     prepend_view_path "ecommerce/store/#{Ecommerce.ecommerce_layout}"
-    before_action :set_order, only: [:show]
+    before_action :set_order, only: [:show, :cancel]
 
     authorize_resource
 
@@ -28,6 +28,21 @@ module Ecommerce
       @current_user_phone = "+51#{current_user.username}".split(':')[0].gsub(/[^\d]/, '')
       
       render "ecommerce/#{Ecommerce.ecommerce_layout}/order/show"
+    end
+
+    # POST /orders/:id/cancel
+    # Lets a customer void their own unpaid order. The Order model's
+    # `revert_unpaid_cancellation_credits` after_commit refunds redeemed points
+    # and decrements coupon usage automatically when stage flips to stage_void.
+    def cancel
+      unless @order.payment_status == 'unpaid' && @order.stage != 'stage_void'
+        redirect_to order_path(@order), alert: I18n.t('controllers.orders.cancel.not_cancellable',
+                                                      default: 'Este pedido no se puede anular.') and return
+      end
+
+      @order.update!(stage: 'stage_void', status: 'void')
+      redirect_to order_path(@order), notice: I18n.t('controllers.orders.cancel.cancelled',
+                                                     default: 'Pedido anulado.')
     end
 
     def culqi_webhook

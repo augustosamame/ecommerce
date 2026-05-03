@@ -34,8 +34,77 @@
       </nav>
       <div class="row">
         <div class="col-md-5">
-          <%= link_to @product.image.url do %>
-            <%= image_tag @product.image.url, class: "img-responsive desktop-500", alt: @product.name %>
+          <% gallery = ([{ type: 'image', url: @product.image.url, thumb: @product.image.try(:thumb_100).try(:url) || @product.image.url }] +
+                       @product.media.order(:position, :id).map do |m|
+                         next nil if m.file.blank?
+                         if m.image?
+                           { type: 'image', url: m.file.url, thumb: m.file.try(:thumb_100).try(:url) || m.file.url }
+                         else
+                           { type: 'video', url: m.file.url, thumb: nil }
+                         end
+                       end.compact).reject { |g| g[:url].blank? } %>
+
+          <% if gallery.size <= 1 %>
+            <%= link_to @product.image.url do %>
+              <%= image_tag @product.image.url, class: "img-responsive desktop-500", alt: @product.name %>
+            <% end %>
+          <% else %>
+            <div class="product-gallery" id="product-gallery">
+              <div class="product-gallery-main"
+                   style="position: relative; width: 100%; aspect-ratio: 1 / 1; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <%= image_tag gallery.first[:url],
+                              class: "product-gallery-main-img",
+                              id: "product-gallery-main-img",
+                              alt: @product.name,
+                              style: "max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;" %>
+                <video src="" controls
+                       style="display:none; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; background: #000;"
+                       id="product-gallery-main-video"></video>
+              </div>
+              <div class="product-gallery-thumbs" style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+                <% gallery.each_with_index do |item, idx| %>
+                  <a href="#" class="product-gallery-thumb <%= 'active' if idx == 0 %>"
+                     data-type="<%= item[:type] %>"
+                     data-url="<%= item[:url] %>"
+                     style="border:<%= idx == 0 ? '2px solid #c33' : '1px solid #ddd' %>; padding:2px; display:inline-block;">
+                    <% if item[:type] == 'image' %>
+                      <%= image_tag item[:thumb] || item[:url], style: "width:60px; height:60px; object-fit:cover;", alt: "" %>
+                    <% else %>
+                      <span style="display:inline-block; width:60px; height:60px; background:#000; color:#fff; text-align:center; line-height:60px;">▶</span>
+                    <% end %>
+                  </a>
+                <% end %>
+              </div>
+            </div>
+
+            <script>
+              (function() {
+                var $main = document.getElementById('product-gallery-main-img');
+                var $video = document.getElementById('product-gallery-main-video');
+                var thumbs = document.querySelectorAll('.product-gallery-thumb');
+                thumbs.forEach(function(t) {
+                  t.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    thumbs.forEach(function(x) { x.style.borderColor = '#ddd'; x.style.borderWidth = '1px'; });
+                    t.style.borderColor = '#c33'; t.style.borderWidth = '2px';
+                    var type = t.getAttribute('data-type');
+                    var url = t.getAttribute('data-url');
+                    if (type === 'video') {
+                      $main.style.display = 'none';
+                      $video.style.display = 'block';
+                      $video.src = url;
+                      $video.play();
+                    } else {
+                      $video.pause();
+                      $video.style.display = 'none';
+                      $video.src = '';
+                      $main.style.display = '';
+                      $main.src = url;
+                    }
+                  });
+                });
+              })();
+            </script>
           <% end %>
         </div>
         <div class="col-md-7">

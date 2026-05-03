@@ -11,9 +11,11 @@ module Ecommerce
     end
 
     # GET /backoffice/products/autocomplete?term=...&with_categories=1
-    # Returns up to 20 products matching the term against the product name
-    # (across both globalize translations). When `with_categories=1` the label
-    # is decorated with the product's category list (used by the dual
+    # Returns up to 20 products matching the term against either the legacy
+    # `ecommerce_products.name` column or any Globalize translation row in
+    # `ecommerce_product_translations.name`. LEFT OUTER joins the translations
+    # so products without a translation row still match. When `with_categories=1`
+    # the label is decorated with the product's category list (used by the dual
     # "products and categories" search field). Replaces the layout before_action
     # that previously loaded every product into memory.
     def autocomplete
@@ -25,9 +27,12 @@ module Ecommerce
 
       pattern = "%#{ActiveRecord::Base.sanitize_sql_like(term)}%"
       scope = Ecommerce::Product
-                .joins(:translations)
-                .where('product_translations.name ILIKE ?', pattern)
-                .order(id: :desc)
+                .left_joins(:translations)
+                .where(
+                  'ecommerce_products.name ILIKE :p OR ecommerce_product_translations.name ILIKE :p',
+                  p: pattern
+                )
+                .order('ecommerce_products.id DESC')
                 .limit(20)
                 .distinct
 
@@ -59,6 +64,7 @@ module Ecommerce
     # GET /backoffice/products/new
     def new
       @backoffice_product = Product.new
+      @normalized_category_list = []
       @backoffice_product.stockable = true
       @tax1 = Ecommerce::Tax.first.try(:tax_name)
       @tax2 = Ecommerce::Tax.second.try(:tax_name)
@@ -78,6 +84,7 @@ module Ecommerce
 
     # GET /backoffice/products/1/edit
     def edit
+      @normalized_category_list = normalize_category_list_for_locale(@backoffice_product.category_list)
       #@backoffice_product.tax_1_check = @backoffice_product.product_taxes.try(:first).try(:tax).try(:name)
       @tax1 = Ecommerce::Tax.first.try(:tax_name)
       @tax2 = Ecommerce::Tax.second.try(:tax_name)
@@ -210,7 +217,38 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def backoffice_product_params
-        params.require(:product).permit(:weight, :coupon, :coupons, :coupon_id, :tax_1_check, :tax_1_amount, :tax_2_check, :tax_2_amount, :tax_3_check, :tax_3_amount, :status, :brand_id, :supplier_id, :name, :short_description, :description, :description2, :price_cents, :discounted_price_cents, :total_quantity, :stockable, :home_featured, :product_order, :image, :image_cache, Product.globalize_attribute_names, :show_callout, :callout_label_en, :collout_label_es, :callout_discount, :callout_discount_label_en, :callout_discount_label_es, :cross_sell_default, :component_combo, cross_sell_product_ids: [], cross_parent_ids: [], category_id: [], category_list: [], coupon_ids: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy], :combo_components_attributes => [:id, :component_product_id, :quantity, :_destroy])
+        params.require(:product).permit(:weight, :coupon, :coupons, :coupon_id, :tax_1_check, :tax_1_amount, :tax_2_check, :tax_2_amount, :tax_3_check, :tax_3_amount, :status, :brand_id, :supplier_id, :name, :short_description, :description, :description2, :price_cents, :discounted_price_cents, :total_quantity, :stockable, :home_featured, :product_order, :image, :image_cache, Product.globalize_attribute_names, :show_callout, :callout_label_en, :collout_label_es, :callout_discount, :callout_discount_label_en, :callout_discount_label_es, :cross_sell_default, :component_combo, cross_sell_product_ids: [], cross_parent_ids: [], category_id: [], category_list: [], coupon_ids: [], :product_skus_attributes => [:id, :sku, :price_cents, :status, :_destroy], :combo_components_attributes => [:id, :component_product_id, :quantity, :_destroy], :media_attributes => [:id, :file, :media_type, :position, :_destroy])
+      end
+
+      # Map each saved category tag to the Category's name in the current
+      # admin locale. The dropdown options on the form are
+      # `Ecommerce::Category` records rendered with `category.name`, which is
+      # Globalize-translated. `category_list` (acts_as_taggable_on) returns the
+      # raw tag string from whatever locale was active at save time, so a tag
+      # saved as "Wines" doesn't match the "Vinos" option under es-PE and gets
+      # silently dropped by Select2.val(). Resolving each tag via any-locale
+      # `Category::Translation` lookups, then re-translating into the current
+      # locale, lets the matching option be found and pre-selected. Tags with
+      # no matching Category record (e.g. tag-only values like "Offers &
+      # Discounts") fall through unchanged and are appended as new options in
+      # the form's JS.
+      def normalize_category_list_for_locale(tag_names)
+        names = tag_names.to_a
+        return [] if names.empty?
+
+        any_locale = Ecommerce::Category::Translation
+                       .where(name: names)
+                       .pluck(:name, :ecommerce_category_id)
+                       .to_h
+        current_locale = Ecommerce::Category::Translation
+                           .where(ecommerce_category_id: any_locale.values, locale: I18n.locale)
+                           .pluck(:ecommerce_category_id, :name)
+                           .to_h
+
+        names.map do |tag|
+          cat_id = any_locale[tag]
+          cat_id ? (current_locale[cat_id] || tag) : tag
+        end
       end
   end
 end

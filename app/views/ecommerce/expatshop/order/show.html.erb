@@ -42,7 +42,16 @@
       </p>
     </div>
 
-    <% if @order.payment_status == "unpaid" %>
+    <% if @order.payment_status == "unpaid" && @order.stage != "stage_void" %>
+      <div style="margin: 12px 0; text-align: right;">
+        <%= button_to t('ecommerce.expatshop.order.index.cancel'),
+                      cancel_order_path(@order),
+                      method: :post,
+                      data: { confirm: t('ecommerce.expatshop.order.show.cancel_confirm',
+                                         default: '¿Estás seguro? Esta acción anulará el pedido y no se puede deshacer.') },
+                      class: "main-btn",
+                      style: "background: #c33;" %>
+      </div>
 
       <% if @order.process_comments == "PagoEfectivo" %>
 

@@ -25,6 +25,7 @@ module Ecommerce
     after_commit :fire_einvoice_worker, on: [:create, :update], if: :saved_change_to_payment_status?
     after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
     after_commit :generate_discount_calculation, on: :create
+    after_commit :revert_unpaid_cancellation_credits, on: :update, if: :saved_change_to_stage?
 
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
@@ -614,6 +615,52 @@ module Ecommerce
         Rails.logger.error e.backtrace.join("\n")
         false
       end
+    end
+
+    # When an unpaid order is cancelled (stage transitions to stage_void), give
+    # back anything that was "spent" up-front at order creation:
+    #   * redeemed loyalty points → void the original PointsTransaction and
+    #     create a counter "void" transaction so `recalculate_points` restores
+    #     the user's balance (mirrors Backoffice::UsersController#void_points).
+    #   * applied coupon → decrement `coupon.current_uses` so single-use codes
+    #     can be used again.
+    # Skipped for paid orders: their refund flow is separate (Culqi/refund
+    # invoice) and outside this hook's responsibility.
+    # Idempotent: only fires on the first non-void → stage_void transition.
+    def revert_unpaid_cancellation_credits
+      return unless self.stage_void?
+      return unless self.payment_status == 'unpaid'
+
+      prior_stage, _new_stage = self.saved_change_to_stage
+      return if prior_stage == 'stage_void'
+
+      ActiveRecord::Base.transaction do
+        if self.points_redeemed_amount.to_i > 0
+          original = ::PointsTransaction.where(
+            user_id: self.user_id,
+            tx_id: self.id,
+            tx_type: 'redemption',
+            status: 'active'
+          ).first
+          if original
+            original.update!(status: 'inactive')
+            ::PointsTransaction.create!(
+              user_id: self.user_id,
+              points: -original.points, # `original.points` is negative; this is positive
+              tx_type: 'void',
+              tx_id: self.id
+            )
+          end
+        end
+
+        coupon = self.coupon
+        if coupon && coupon.current_uses.to_i > 0
+          coupon.update!(current_uses: coupon.current_uses - 1)
+        end
+      end
+    rescue => e
+      Rails.logger.error "Order #{self.id} - revert_unpaid_cancellation_credits error: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
     end
   end
 end

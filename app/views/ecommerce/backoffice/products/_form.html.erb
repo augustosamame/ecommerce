@@ -102,6 +102,20 @@
       <%= f.hidden_field :image_cache %>
     </div>
 
+    <h2>Additional images & videos</h2>
+    <p class="text-muted">
+      Drag rows or edit the position number to reorder. Mark "Remove" to delete on save.
+      Allowed: jpg, jpeg, png, gif, webp, mp4, mov.
+    </p>
+    <div id="product-media-list" data-template-index="<%= f.object.media.size %>">
+      <%= f.fields_for :media, f.object.media.order(:position, :id) do |media_form| %>
+        <%= render 'product_media_fields', f: media_form %>
+      <% end %>
+    </div>
+    <button type="button" class="btn btn-default" id="add-product-media">
+      <i class="material-icons">add</i> Add image or video
+    </button>
+
     <h2><%= t('.translations') %></h2>
     <% Globalize.with_locale(:"es-PE") do %>
       <%= f.input :name_es_pe, label: t('.name_in_spanish') %>
@@ -142,14 +156,70 @@
       $('#discounted-price-cents').val($('#price-cents').val());
     });
 
+    // "Add image or video" — appends a new fields row using the next index
+    // (data-template-index seeded with the count of existing rows so
+    // accepts_nested_attributes_for treats them as new records).
+    $('#add-product-media').on('click', function() {
+      var $list = $('#product-media-list');
+      var idx = parseInt($list.attr('data-template-index'), 10) || 0;
+      var html =
+        '<div class="product-media-row" style="border:1px solid #ddd; padding:8px; margin-bottom:8px;">' +
+          '<div style="display:flex; gap:12px; align-items:flex-start;">' +
+            '<div style="width:120px;"><div class="text-muted" style="font-size:12px;">New media</div></div>' +
+            '<div style="flex:1;">' +
+              '<div class="form-group">' +
+                '<label>Type</label>' +
+                '<select name="product[media_attributes][' + idx + '][media_type]" class="form-control">' +
+                  '<option value="image">Image</option>' +
+                  '<option value="video">Video</option>' +
+                '</select>' +
+              '</div>' +
+              '<div class="form-group">' +
+                '<label>File</label>' +
+                '<input type="file" name="product[media_attributes][' + idx + '][file]" />' +
+              '</div>' +
+              '<div class="form-group">' +
+                '<label>Position</label>' +
+                '<input type="number" name="product[media_attributes][' + idx + '][position]" value="' + idx + '" class="form-control" style="width:120px;" />' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      $list.append(html);
+      $list.attr('data-template-index', idx + 1);
+    });
+
     $('select.form-control.tags').select2({
       tags: true
     });
 
     $('#product_coupon_ids').select2({ });
 
-    $('select.form-control.tags').val(JSON.parse(<%=raw @backoffice_product.category_list.to_json.inspect %>));
-    $('select.form-control.tags').trigger('change'); // Notify any JS components that the value changed
+    // Pre-select the product's saved category tags. Two failure modes that
+    // were silently dropping tags on edit:
+    //
+    //   1) The dropdown's <option> values are Ecommerce::Category names in the
+    //      admin's CURRENT locale (Globalize-translated). `category_list`
+    //      stores the raw tag string from whatever locale was active at save
+    //      time. So a tag saved as "Wines" doesn't match the "Vinos" option
+    //      under es-PE, and Select2.val() silently drops it.
+    //   2) Tag-only values (e.g. "Offers & Discounts") have no matching
+    //      Category record at all and never appear as options.
+    //
+    // (1) is fixed in the controller (`@normalized_category_list` maps each
+    // saved tag to the current locale's category name). (2) is handled here:
+    // any value that still doesn't match an existing option is appended as a
+    // new tag option so it round-trips through the form.
+    (function() {
+      var savedCategories = JSON.parse(<%=raw @normalized_category_list.to_json.inspect %>);
+      var $tagSelect = $('select.form-control.tags');
+      savedCategories.forEach(function(value) {
+        if ($tagSelect.find('option').filter(function() { return $(this).val() === value; }).length === 0) {
+          $tagSelect.append(new Option(value, value, true, true));
+        }
+      });
+      $tagSelect.val(savedCategories).trigger('change');
+    })();
 
     $('#product_cross_sell_product_ids').select2({ });
 
