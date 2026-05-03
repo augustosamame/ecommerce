@@ -33,23 +33,16 @@
   outline: 0;
   width: 100%;
   font-size: 24px;
-  padding: 10px 7px;
+  padding: 10px 36px 10px 7px;
   border-radius: 5px;
   border-color: #8e8b8b;
   margin-bottom: 40px;
   position: relative;
-  background: transparent;
-}
-.checkout .have-address form::after,
-.checkout .new-address .btn-group:first-child::after,
-.checkout .new-address .btn-group:last-of-type::after {
-  content: "\f078";
-  position: absolute;
-  font-family: "FontAwesome";
-  font-weight: 900;
-  right: 40px;
-  top: 125px;
-  z-index: -1;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%238e8b8b' d='M3.2 5.6l4.8 4.8 4.8-4.8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
 }
 .checkout-address-button {
   border: 0;
