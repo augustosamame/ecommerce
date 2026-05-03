@@ -18,6 +18,8 @@ module Ecommerce
 
     monetize :amount_cents, :shipping_amount_cents, :discount_amount_cents, with_model_currency: :currency
 
+    before_create :stamp_usd_equivalent
+
     after_commit :notify_new_order, on: :create
     after_commit :create_and_notify_interakt_order_event, on: :create
     after_commit :blank_user_carts, on: :create
@@ -494,7 +496,29 @@ module Ecommerce
     end
     
     private
-    
+
+    # Stamp the FX rate at order time and pre-compute USD equivalents.
+    # Reports across mixed-currency orders rely on these columns since the
+    # `Control` exchange_rate value can change after the order is placed.
+    def stamp_usd_equivalent
+      rate = Ecommerce::Control.get_control_value("exchange_rate").to_d rescue nil
+      rate = BigDecimal("3.8") if rate.nil? || rate <= 0
+      self.exchange_rate ||= rate
+
+      cur = (self.currency || "usd").to_s.downcase
+      effective_rate = self.exchange_rate
+      self.amount_usd_cents          = to_usd_cents(self.amount_cents,          cur, effective_rate)
+      self.shipping_amount_usd_cents = to_usd_cents(self.shipping_amount_cents, cur, effective_rate)
+      self.discount_amount_usd_cents = to_usd_cents(self.discount_amount_cents, cur, effective_rate)
+    end
+
+    def to_usd_cents(cents, currency, rate)
+      return nil if cents.nil?
+      return cents.to_i if currency == "usd"
+      return (cents.to_d / rate).round.to_i if rate && rate > 0
+      nil
+    end
+
     def check_combo_discounts(cart, calculation_details)
       begin
         calculation_details << "=== COMBO DISCOUNT CHECK ==="
