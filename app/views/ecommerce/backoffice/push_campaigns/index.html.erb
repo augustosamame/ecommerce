@@ -1,0 +1,47 @@
+<div class="page-header">
+  <%= link_to new_backoffice_push_campaign_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Push Campaign
+  <% end %>
+  <h1>Listing Push Campaigns</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Coupon</th>
+        <th>Type</th>
+        <th>Title</th>
+        <th>Target Product</th>
+        <th>Status</th>
+        <th>Send</th>
+        <th>Show</th>
+        <th>Edit</th>
+        <th>Destroy</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @push_campaigns.each do |push_campaign| %>
+        <tr id="<%= dom_id(push_campaign) %>">
+          <td><%= push_campaign.name %></td>
+          <td><%= push_campaign.coupon.try(:coupon_code) %></td>
+          <td><%= push_campaign.campaign_type %></td>
+          <td><%= push_campaign.title %></td>
+          <td><%= push_campaign.target_product.try(:name) %></td>
+          <td><%= push_campaign.status %></td>
+          <% if push_campaign.bulk_push? && push_campaign.active? %>
+            <td><%= link_to "<i class='material-icons'>send</i>".html_safe, backoffice_push_send_recipients_path(push_campaign) %></td>
+          <% else %>
+            <td></td>
+          <% end %>
+          <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_push_campaign_path(push_campaign) %></td>
+          <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_push_campaign_path(push_campaign) %></td>
+          <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_push_campaign_path(push_campaign), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

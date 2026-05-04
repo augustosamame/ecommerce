@@ -14,9 +14,18 @@
     <%= f.input :current_uses, label: t('.current_uses') %>
     <%= f.input :free_shipping, label: t('.free_shipping') %>
     <div class="well">
+      <%= f.input :web_enabled, label: t('.web_enabled'), as: :boolean %>
+      <%= f.input :app_enabled, label: t('.app_enabled'), as: :boolean %>
+    </div>
+    <div class="well">
       <%= f.input :always_on_active, label: 'Always On Coupon' %>
       <%= f.input :always_on_message_en, label: 'Message in ENGLISH to show for always on coupon' %>
       <%= f.input :always_on_message_es, label: 'Message in SPANISH to show for always on coupon' %>
+    </div>
+    <div class="well">
+      <%= f.input :first_app_purchase_active, label: 'First App Purchase Coupon (auto app-only, single use per user)' %>
+      <%= f.input :first_app_purchase_message_en, label: 'Message in ENGLISH to show for first app purchase coupon' %>
+      <%= f.input :first_app_purchase_message_es, label: 'Message in SPANISH to show for first app purchase coupon' %>
     </div>
     <%# 
     <div class="well">

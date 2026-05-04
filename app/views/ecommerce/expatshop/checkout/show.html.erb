@@ -167,19 +167,19 @@
         <% end %>
 
         <% if @coupons_active %>
-          <% unless @always_on_coupon %>
-
-            <div class="coupon checkout-p-text-mobile">
-              <p><%= fa_icon "tags" %><%= t('.enter_coupon_1') %></p>
-              <form action="">
-                <label for="coupon-code"><%= t('.enter_coupon_2') %></label>
+          <div class="coupon checkout-p-text-mobile">
+            <p><%= fa_icon "tags" %><%= t('.enter_coupon_1') %></p>
+            <form action="">
+              <label for="coupon-code"><%= t('.enter_coupon_2') %></label>
+              <% if @always_on_coupon_redeemable %>
+                <input type="text" id="coupon-code" value="<%= @always_on_coupon.coupon_code %>" readonly style="text-transform: uppercase; background-color: #f5f5f5;" />
+              <% else %>
                 <input type="text" name="" id="coupon-code" style="text-transform: uppercase;" />
                 <button class="coupon-apply"><%= t('.apply_coupon') %></button>
-                <label id="coupon-error" style="font-size: 16px; color: red; margin-left: 10px;"></label>
-              </form>
-            </div>
-
-          <% end %>  
+              <% end %>
+            </form>
+            <label id="coupon-error" style="display: block; font-size: 16px; color: red; margin-top: 10px;"></label>
+          </div>
         <% end %>
 
          <div class="pay-in-soles d-flex space-between checkout-p-text-mobile" style="padding-bottom: 20px;">
@@ -305,13 +305,11 @@ $( document ).ready(function() {
 
   Culqi3DS.reset();
 
-  var applied_coupon = '';
-  <% if @always_on_coupon %>
-    var applied_coupon = "<%= @always_on_coupon.coupon_code %>";
-    // calculate coupon and recalculate_checkout_totals
-    calculate_coupon(applied_coupon);
-  <% else %>
-    var applied_coupon = '';
+  // applied_coupon is initialized below alongside the other checkout-state
+  // variables; if there is an always-on coupon and this user can still redeem
+  // it, kick off the auto-apply now so the discount lands before submit.
+  <% if @always_on_coupon_redeemable %>
+    calculate_coupon("<%= @always_on_coupon.coupon_code %>");
   <% end %>
 
 
@@ -434,7 +432,7 @@ $( document ).ready(function() {
   var info_factura_blank = <%= @info_factura_available.blank? %>
   var address_saved_flag = false
   var culqi_order_id = ''
-  var applied_coupon = ''
+  var applied_coupon = '<%= @always_on_coupon_redeemable ? @always_on_coupon.coupon_code : "" %>'
 
   // calculate and update shipping html tag when shipping address is created
   $("#save-address-button").click(function() {

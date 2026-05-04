@@ -14,6 +14,7 @@
         <th><%= t('.name') %></th>
         <th><%= t('.email') %></th>
         <th><%= t('.phone') %></th>
+        <th>App</th>
         <th><%= t('.role') %></th>
         <th><%= t('.points') %></th>
         <th><%= t('.pricelist') %></th>
@@ -29,6 +30,13 @@
         <td><%= backoffice_user.name %></td>
         <td><%= backoffice_user.email %></td>
         <td><%= backoffice_user.username %></td>
+        <td class="text-center">
+          <% if backoffice_user.expo_push_token.present? %>
+            <span class="label label-success" title="App user (push token registered)">
+              <i class="material-icons" style="font-size:13px;vertical-align:-2px;">phone_iphone</i>
+            </span>
+          <% end %>
+        </td>
         <td><%= backoffice_user.role %></td>
         <td><%= link_to backoffice_user.points, backoffice_user_points_path(backoffice_user) %></td>
         <td><%= backoffice_user.pricelist.try(:name) %></td>

@@ -7,38 +7,250 @@
     <span class="glyphicon glyphicon-pencil"></span>
     Edit
   <% end %>
-  <h1>Show User</h1>
+  <%= link_to backoffice_user_points_path(@backoffice_user), class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-star"></span>
+    Points
+  <% end %>
+  <h1>
+    <%= @backoffice_user.name %>
+    <small>
+      <%= @backoffice_user.email %>
+      <% if @backoffice_user.expo_push_token.present? %>
+        <span class="label label-success" style="font-size:11px;vertical-align:middle;">
+          <i class="material-icons" style="font-size:12px;vertical-align:-2px;">phone_iphone</i> APP USER
+        </span>
+      <% end %>
+      <% if @backoffice_user.email_suppressed %>
+        <span class="label label-danger" style="font-size:11px;vertical-align:middle;">EMAIL SUPPRESSED</span>
+      <% end %>
+    </small>
+  </h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt>Id:</dt>
-  <dd><%= @backoffice_user.id %></dd>
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading"><strong>Profile</strong></div>
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          <dt>ID:</dt><dd><%= @backoffice_user.id %></dd>
+          <dt>First name:</dt><dd><%= @backoffice_user.first_name.presence || "—" %></dd>
+          <dt>Last name:</dt><dd><%= @backoffice_user.last_name.presence || "—" %></dd>
+          <dt>Email:</dt><dd><%= mail_to(@backoffice_user.email) %></dd>
+          <dt>Phone:</dt>
+          <dd>
+            <% phone = @backoffice_user.username.to_s %>
+            <% if phone.present? && phone.length >= 9 %>
+              +51 <%= phone[0..8] %>
+            <% else %>
+              <%= phone.presence || "—" %>
+            <% end %>
+          </dd>
+          <dt>Document:</dt><dd><%= @backoffice_user.doc_id.presence || "—" %></dd>
+          <dt>Role:</dt><dd><span class="label label-default"><%= @backoffice_user.role %></span></dd>
+          <dt>Status:</dt><dd><%= @backoffice_user.status.presence || "—" %></dd>
+          <dt>Pricelist:</dt><dd><%= @backoffice_user.pricelist.try(:name).presence || "—" %></dd>
+          <dt>Points:</dt>
+          <dd>
+            <%= link_to backoffice_user_points_path(@backoffice_user) do %>
+              <%= @backoffice_user.points || 0 %>
+            <% end %>
+          </dd>
+          <dt>Signed up:</dt>
+          <dd>
+            <%= @backoffice_user.created_at&.strftime("%Y-%m-%d %H:%M") %>
+            <% if @backoffice_user.created_at %>
+              <small class="text-muted">(<%= time_ago_in_words(@backoffice_user.created_at) %> ago)</small>
+            <% end %>
+          </dd>
+          <dt>Last updated:</dt>
+          <dd><%= @backoffice_user.updated_at&.strftime("%Y-%m-%d %H:%M") %></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
 
-  <dt>Name:</dt>
-  <dd><%= @backoffice_user.name %></dd>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading"><strong>Mobile app</strong></div>
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          <dt>App user:</dt>
+          <dd>
+            <% if @backoffice_user.expo_push_token.present? %>
+              <span class="label label-success">Yes</span>
+            <% else %>
+              <span class="label label-default">No</span>
+            <% end %>
+          </dd>
+          <dt>Push token:</dt>
+          <dd>
+            <% if @backoffice_user.expo_push_token.present? %>
+              <code style="font-size:11px;word-break:break-all;"><%= @backoffice_user.expo_push_token %></code>
+            <% else %>
+              —
+            <% end %>
+          </dd>
+        </dl>
+      </div>
+    </div>
 
-  <dt>Email:</dt>
-  <dd><%= @backoffice_user.email %></dd>
+    <div class="panel panel-default">
+      <div class="panel-heading"><strong>Sign-in activity</strong></div>
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          <dt>Sign-ins:</dt><dd><%= @backoffice_user.sign_in_count %></dd>
+          <dt>Current sign-in:</dt>
+          <dd>
+            <%= @backoffice_user.current_sign_in_at&.strftime("%Y-%m-%d %H:%M") || "—" %>
+            <% if @backoffice_user.current_sign_in_ip %>
+              <small class="text-muted">(<%= @backoffice_user.current_sign_in_ip %>)</small>
+            <% end %>
+          </dd>
+          <dt>Last sign-in:</dt>
+          <dd>
+            <%= @backoffice_user.last_sign_in_at&.strftime("%Y-%m-%d %H:%M") || "—" %>
+            <% if @backoffice_user.last_sign_in_ip %>
+              <small class="text-muted">(<%= @backoffice_user.last_sign_in_ip %>)</small>
+            <% end %>
+          </dd>
+          <dt>Remembered:</dt>
+          <dd><%= @backoffice_user.remember_created_at&.strftime("%Y-%m-%d %H:%M") || "—" %></dd>
+        </dl>
+      </div>
+    </div>
 
-  <dt>Points:</dt>
-  <dd><%= @backoffice_user.points %></dd>
+    <div class="panel panel-default">
+      <div class="panel-heading"><strong>Referral</strong></div>
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          <dt>Code:</dt>
+          <dd>
+            <% if @backoffice_user.referral_code.present? %>
+              <code><%= @backoffice_user.referral_code %></code>
+            <% else %>
+              —
+            <% end %>
+          </dd>
+          <dt>Referred by:</dt>
+          <dd>
+            <% if @backoffice_user.referrer_id.present? && (referrer = User.find_by(id: @backoffice_user.referrer_id)) %>
+              <%= link_to "#{referrer.name} (##{referrer.id})", backoffice_user_path(referrer) %>
+            <% else %>
+              —
+            <% end %>
+          </dd>
+          <dt>Referral paid:</dt>
+          <dd>
+            <% if @backoffice_user.referral_paid %>
+              <span class="label label-success">Yes</span>
+            <% else %>
+              <span class="label label-default">No</span>
+            <% end %>
+          </dd>
+        </dl>
+      </div>
+    </div>
 
-  <dt>Phone:</dt>
-  <dd><%= @backoffice_user.username %></dd>
+    <div class="panel panel-default">
+      <div class="panel-heading"><strong>Communications</strong></div>
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          <dt>Email suppressed:</dt>
+          <dd>
+            <% if @backoffice_user.email_suppressed %>
+              <span class="label label-danger">Yes</span>
+              <% if @backoffice_user.suppression_reason.present? %>
+                <small class="text-muted">(<%= @backoffice_user.suppression_reason %>)</small>
+              <% end %>
+            <% else %>
+              <span class="label label-default">No</span>
+            <% end %>
+          </dd>
+          <dt>Interakt ID:</dt>
+          <dd>
+            <% if @backoffice_user.interakt_userid.present? %>
+              <code style="font-size:11px;"><%= @backoffice_user.interakt_userid %></code>
+            <% else %>
+              —
+            <% end %>
+          </dd>
+          <dt>Interakt opted-out:</dt>
+          <dd>
+            <% if @backoffice_user.interakt_opted_out %>
+              <span class="label label-warning">Yes</span>
+            <% else %>
+              <span class="label label-default">No</span>
+            <% end %>
+          </dd>
+          <% if @backoffice_user.interakt_test %>
+            <dt>Interakt test:</dt><dd><span class="label label-info">Yes</span></dd>
+          <% end %>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <dt>Document:</dt>
-  <dd><%= @backoffice_user.doc_id %></dd>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <strong>Order history</strong>
+        <span class="badge pull-right"><%= @backoffice_user.user_orders.count %></span>
+      </div>
+      <div class="panel-body">
+        <% recent_orders = @backoffice_user.user_orders.order(id: :desc).limit(10) %>
+        <% if recent_orders.empty? %>
+          <p class="text-muted" style="margin:0;">No orders.</p>
+        <% else %>
+          <div class="table-responsive">
+            <table class="table table-striped" style="margin-bottom:0;">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Stage</th>
+                  <th>Payment</th>
+                  <th class="text-right">Amount</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% recent_orders.each do |order| %>
+                  <tr>
+                    <td><%= order.id %></td>
+                    <td><%= order.created_at&.strftime("%Y-%m-%d %H:%M") %></td>
+                    <td>
+                      <span class="label label-<%= order.stage == 'stage_delivered' ? 'success' : (order.stage == 'stage_void' ? 'danger' : 'default') %>">
+                        <%= order.stage.to_s.sub(/^stage_/, '') %>
+                      </span>
+                    </td>
+                    <td>
+                      <span class="label label-<%= order.payment_status == 'paid' ? 'success' : (order.payment_status == 'unpaid' ? 'warning' : 'default') %>">
+                        <%= order.payment_status %>
+                      </span>
+                    </td>
+                    <td class="text-right"><%= order.currency %> <%= number_with_precision(order.amount, precision: 2) %></td>
+                    <td><%= link_to "View", backoffice_order_path(order), class: "btn btn-xs btn-default" %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <% if @backoffice_user.user_orders.count > 10 %>
+            <p class="text-muted" style="margin:10px 0 0;">
+              Showing 10 most recent of <%= @backoffice_user.user_orders.count %> orders.
+            </p>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <dt>Role:</dt>
-  <dd><%= @backoffice_user.role %></dd>
-
-  <dt>Pricelist:</dt>
-  <dd><%= @backoffice_user.pricelist.try(:name) %></dd>
-
-</dl>
-
-<h3 style='margin-top: 50px;'>User Adresses</h3>
+<h3 style='margin-top: 30px;'>User Addresses</h3>
 <%= render "ecommerce/backoffice/addresses/index" %>
 
-<h3 style='margin-top: 50px;'>User Points</h3>
+<h3 style='margin-top: 30px;'>User Points</h3>
 <%= render "ecommerce/backoffice/users/points_details" %>

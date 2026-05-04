@@ -1,0 +1,164 @@
+<div class="page-header">
+  <%= link_to backoffice_push_campaigns_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <h1>Send Bulk Push Notification</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Name:</dt>
+  <dd><%= @push_campaign.name %></dd>
+
+  <dt>Coupon:</dt>
+  <dd><%= @push_campaign.coupon.try(:coupon_code) %></dd>
+
+  <dt>Title:</dt>
+  <dd><%= @push_campaign.title %></dd>
+
+  <dt>Body:</dt>
+  <dd><%= @push_campaign.body %></dd>
+</dl>
+
+<div class="alert alert-info">
+  Audience is restricted to users with the app installed (Expo push token registered).
+  <strong>Total reachable users right now: <%= @total_app_users %></strong>.
+  Filters below operate within this universe — users without the app are excluded automatically.
+</div>
+
+<div class= "col-lg-8">
+  <div class="well" style="margin-top: 0px;">
+    <h2><strong>Audience Selection</strong></h2>
+    <div class= "row" style="margin-bottom: 30px; margin-left: 0px;">
+      <button type="button" class="btn btn-info" id="select_all_app_users">Select all <%= @total_app_users %> app users</button>
+    </div>
+    <div class= "row" style="margin-bottom: 30px; margin-left: 0px;">
+      <h3>Filter by Purchasers of Product (app users only)</h3>
+      <span class="add-on">Choose Product:</span>
+      <input name="" type="text" class="no-boarder search_purchaser_products" placeholder="start typing to search..." style="width:250px;">
+    </div>
+    <div class= "row" style="margin-bottom: 30px; margin-left: 0px;">
+      <h3>Filter by Purchasing Activity (app users only)</h3>
+      <span style="margin-right: 5px;">No Purchases in last</span>
+      <input name="days_since_purchase" type="text" class="" style="width:50px;" id="days_since_purchase">
+      <span style="margin-left: 5px;"> days</span>
+    </div>
+  </div>
+
+  <div class="well" style="margin-top: 0px;">
+    <%= simple_form_for([:backoffice, @push_campaign], url: backoffice_push_post_send_recipients_path(@push_campaign), method: :post) do |f| %>
+      <%= f.error_notification %>
+
+      <%= simple_fields_for :other do |o| %>
+
+        <h2><strong>Audiences</strong></h2>
+        <div class= "row" style="margin-bottom: 30px; margin-left: 0px;">
+          <h3>Send to Predetermined Audience</h3>
+          <span class="add-on">Choose Audience:</span>
+        </div>
+
+        <%= o.input :audience_id, as: :integer, input_html: {value: @push_campaign.audience_id} %>
+
+  </div>
+
+  <div class="well" style="margin-top: 0px;">
+        <%= o.label :user_list, 'Total Number of Recipients: ', :id => "recipientLabel" %>
+        <%= o.input :user_list, as: :string, label: false %>
+        <%= o.input :coupon_id, as: :hidden, input_html: {value: @push_campaign.coupon.try(:id)} %>
+      <% end %>
+
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, 'Send Bulk Push', class: "btn btn-primary" %>
+  </div>
+  <% end %>
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function(){
+
+  products_tags = jQuery.parseJSON(<%= raw @products_array.to_json.inspect %>);
+  $(".search_purchaser_products" ).autocomplete({
+    autoFocus: false,
+    minLength: 1,
+    source: products_tags,
+    select: function (e, ui) {
+        console.log("chose " + ui.item.id);
+        $("#days_since_purchase").val("");
+        $("#other_user_list").val(getPurchasers(ui.item.id))
+      },
+  });
+
+  $("#days_since_purchase").change(function() {
+    $(".search_purchaser_products").val("");
+    getNoPurchaseWithinDays($(this).val());
+  });
+
+  $("#select_all_app_users").click(function(e) {
+    e.preventDefault();
+    $(".search_purchaser_products").val("");
+    $("#days_since_purchase").val("");
+    $.ajax({
+      url: "/store/backoffice/push_get_all_app_users",
+      type: 'GET',
+      dataType: "json",
+      success: function(data) {
+        if (typeof data == 'undefined') return;
+        var parsed = JSON.parse(data["data"]);
+        $("#other_user_list").val(parsed);
+        $("#recipientLabel").text("Total Number of Recipients: " + parsed.length);
+      }
+    });
+  });
+
+  function getNoPurchaseWithinDays(numberDays) {
+
+    $.ajax({
+      url: "/store/backoffice/push_get_no_purchase_within_days?days=" + numberDays,
+      type:'GET',
+      dataType: "json",
+      success:function(data){
+        if (typeof data == 'undefined') {
+          console.log("undefined response");
+        } else {
+          parsed_object = JSON.parse(data["data"]);
+          $("#other_user_list").val(parsed_object);
+          $("#recipientLabel").text("Total Number of Recipients: " + parsed_object.length);
+        }
+      },
+      error:function(data){
+          console.log('error');
+          console.log(data);
+      }
+    });
+
+  }
+
+  function getPurchasers(productId) {
+
+    $.ajax({
+      url: "/store/backoffice/push_get_purchasers?product_id=" + productId,
+      type:'GET',
+      dataType: "json",
+      success:function(data){
+        if (typeof data == 'undefined') {
+          console.log("undefined response");
+        } else {
+          parsed_object = JSON.parse(data["data"]);
+          $("#other_user_list").val(parsed_object);
+          $("#recipientLabel").text("Total Number of Recipients: " + parsed_object.length);
+        }
+      },
+      error:function(data){
+          console.log('error');
+          console.log(data);
+      }
+    });
+
+
+  }
+
+});
+</script>

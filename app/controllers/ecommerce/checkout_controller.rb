@@ -147,6 +147,7 @@ module Ecommerce
       @current_user_phone = "+51#{current_user.username}".split(':')[0].gsub(/[^\d]/, '')
 
       @coupons_active = Ecommerce::allow_coupons
+      @always_on_coupon_redeemable = @always_on_coupon && @always_on_coupon.validate_redemption(user: current_user, platform: 'web').first
 
       info_factura_vat = !Ecommerce::DataBizInvoice.find_by(user_id: current_user.id).try(:vat).blank?
       @info_factura_available = false
@@ -198,6 +199,9 @@ module Ecommerce
           end
 
           used_coupon = Coupon.find_by(coupon_code: params[:applied_coupon])
+          if used_coupon && !used_coupon.enabled_for_platform?('web')
+            used_coupon = nil
+          end
           points_redeemed_amount = params[:points_redeemed_amount].to_i
           ActiveRecord::Base.transaction do
             @order = Order.new( user_id: current_user.id,

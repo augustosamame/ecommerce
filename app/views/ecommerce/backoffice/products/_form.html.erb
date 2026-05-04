@@ -37,6 +37,11 @@
     <%= f.input :stockable, label: t('.stockable') %>
     <%= f.input :total_quantity, label: t('.quantity') %>
 
+    <%= f.input :days_to_restock,
+        label: "Days to restock (optional)",
+        hint: "If set, the app sends a restock push notification (days × ordered qty) days after each paid order. New orders for this product cancel any prior pending reminder for the same user.",
+        input_html: { min: 1 } %>
+
     <%= f.input :show_callout, as: :boolean, label: "Show Callout Element" %>
     <%= f.input :callout_label_en, label: "Callout Label English" %>
     <%= f.input :collout_label_es, label: "Callout Label Spanish" %>

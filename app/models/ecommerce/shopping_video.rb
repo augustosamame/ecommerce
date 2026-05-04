@@ -20,16 +20,8 @@ module Ecommerce
     after_commit :check_video_changed, unless: :skip_video_processing
 
     def queue_video_processing
-
-
-      Rails.logger.info("Queueing video processing for URL #{self.id}")
-
-      MediaConvertWorker.perform_in(60.seconds, self.id)
-
-      #s3_key = self.video.path.sub(/^#{Regexp.escape('expatshop-prod-mov-in')}\//, '')
-      #MediaConvertWorker.perform_async(ENV['S3_MOV_IN_BUCKET_NAME'], s3_key)
-
-      #VideoProcessingWorker.perform_in(5.seconds, self.id)
+      Rails.logger.info("Queueing video processing for ShoppingVideo #{self.id}")
+      VideoProcessingWorker.perform_in(10.seconds, self.id)
     end
 
     def update_processed_video(new_video_url)

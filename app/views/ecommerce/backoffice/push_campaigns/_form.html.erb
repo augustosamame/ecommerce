@@ -1,0 +1,30 @@
+<%= simple_form_for([:backoffice, @push_campaign]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name, label: "Internal Name" %>
+    <%= f.input :campaign_type, label: "Campaign Type", collection: Ecommerce::PushCampaign.campaign_types.keys %>
+    <%= f.input :status, label: "Status", collection: Ecommerce::PushCampaign.statuses.keys %>
+    <%= f.input :coupon_id, as: :select2, label: "Coupon (optional)", collection: Ecommerce::Coupon.active.where(dynamic: false).order(:coupon_code), label_method: lambda { |obj| obj.coupon_code }, include_blank: true %>
+    <%= f.input :title, label: "Title (English)", hint: "Short notification title shown on the lock screen" %>
+    <%= f.input :title_es, label: "Title (Spanish)" %>
+    <%= f.input :body, label: "Body (English)", as: :text, input_html: { rows: 3 }, hint: "Notification body. Keep concise (under 240 chars)." %>
+    <%= f.input :body_es, label: "Body (Spanish)", as: :text, input_html: { rows: 3 } %>
+    <%= f.input :target_product_id, as: :select2,
+        label: "Target Product (optional)",
+        hint: "If set, tapping the notification opens this product in the app. Leave blank to just open the app.",
+        collection: Ecommerce::Product.order(:permalink),
+        label_method: :name,
+        include_blank: "— No product (just open the app) —" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Save", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<script>
+  $(document).ready(function(){
+    $("#push_campaign_coupon_id, #push_campaign_target_product_id").select2({ width: '100%' });
+  });
+</script>

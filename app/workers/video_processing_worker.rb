@@ -1,44 +1,48 @@
 require 'streamio-ffmpeg'
 require 'open-uri'
+require 'securerandom'
 
 class VideoProcessingWorker
   include Sidekiq::Worker
-  sidekiq_options queue: 'video_processing'
+  sidekiq_options queue: 'video_processing', retry: 3
 
   def perform(shopping_video_id)
+    in_path  = "/tmp/sv_#{shopping_video_id}_in_#{SecureRandom.hex(4)}.mp4"
+    out_path = "/tmp/sv_#{shopping_video_id}_out_#{SecureRandom.hex(4)}.mp4"
+
     shopping_video = Ecommerce::ShoppingVideo.find(shopping_video_id)
-    shopping_video.update_column(:processing_status, 'processing')
+    shopping_video.update_column(:processing_status, Ecommerce::ShoppingVideo.processing_statuses[:processing])
 
-    begin
-      # Download file from S3
-      s3_object = shopping_video.video
-      local_file_path = "/tmp/#{File.basename(s3_object.path)}"
-      File.open(local_file_path, 'wb') do |file|
-        file.write(s3_object.read)
-      end
-
-      # Process video
-      video = FFMPEG::Movie.new(local_file_path)
-      output_path = "/tmp/#{File.basename(local_file_path, '.*')}_converted.mp4"
-
-      video.transcode(output_path, encoding_options)
-
-      # Upload processed file back to S3
-      File.open(output_path) do |file|
-        shopping_video.update_column(:video, file)
-      end
-
-      shopping_video.update_column(:processing_status, 'completed')
-
-      # Clean up temporary files
-      File.delete(local_file_path) if File.exist?(local_file_path)
-      File.delete(output_path) if File.exist?(output_path)
-
-    rescue => e
-      shopping_video.update_column(:processing_status, 'failed')
-      Rails.logger.error "Video processing failed for ShoppingVideo #{shopping_video_id}: #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
+    src_url = shopping_video.video.url
+    Rails.logger.info "[VideoProcessing #{shopping_video_id}] downloading #{src_url}"
+    URI.open(src_url, read_timeout: 120) do |remote|
+      File.open(in_path, 'wb') { |f| IO.copy_stream(remote, f) }
     end
+
+    movie = FFMPEG::Movie.new(in_path)
+    raise "Invalid video file at #{in_path}" unless movie.valid?
+    Rails.logger.info "[VideoProcessing #{shopping_video_id}] source codec=#{movie.video_codec} #{movie.resolution} #{movie.duration.to_i}s — transcoding"
+
+    movie.transcode(out_path, encoding_options)
+
+    Rails.logger.info "[VideoProcessing #{shopping_video_id}] uploading converted file via CarrierWave"
+    File.open(out_path, 'rb') do |f|
+      shopping_video.skip_video_processing = true
+      shopping_video.video = f
+      shopping_video.processing_status = :completed
+      shopping_video.save!(validate: false)
+    end
+
+    Rails.logger.info "[VideoProcessing #{shopping_video_id}] done — new url: #{shopping_video.reload.video.url}"
+  rescue => e
+    Ecommerce::ShoppingVideo.where(id: shopping_video_id)
+      .update_all(processing_status: Ecommerce::ShoppingVideo.processing_statuses[:failed])
+    Rails.logger.error "[VideoProcessing #{shopping_video_id}] FAILED: #{e.class} #{e.message}"
+    Rails.logger.error e.backtrace.first(20).join("\n")
+    raise
+  ensure
+    File.delete(in_path)  if in_path  && File.exist?(in_path)
+    File.delete(out_path) if out_path && File.exist?(out_path)
   end
 
   private
@@ -50,7 +54,7 @@ class VideoProcessingWorker
       custom: %w(
         -pix_fmt yuv420p
         -profile:v main
-        -level 5.1
+        -level 4.0
         -movflags +faststart
         -crf 23
         -preset medium
@@ -58,7 +62,6 @@ class VideoProcessingWorker
         -bufsize 10M
         -ar 44100
         -b:a 128k
-        -strict -2
       )
     }
   end

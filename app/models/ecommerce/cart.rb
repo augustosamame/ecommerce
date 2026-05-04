@@ -27,7 +27,8 @@ module Ecommerce
         Ecommerce::Cart.where(status: 'active', abandoned_email_sent: false).where("ecommerce_carts.created_at < ? AND ecommerce_carts.created_at > ?", Time.now - 24.hours, Time.now - 48.hours).where.not(user_id: nil).distinct.each do |cart|
           unless cart.cart_items.empty?
             coupon = Ecommerce::Coupon.one_time_coupon(cart.user.id)
-            SendAbandonedCartEmailWorker.perform_async(cart.id, coupon.id) 
+            SendAbandonedCartEmailWorker.perform_async(cart.id, coupon.id)
+            SendAbandonedCartPushWorker.perform_async(cart.id, coupon.id)
           end
         end
       end

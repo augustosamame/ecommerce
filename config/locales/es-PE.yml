@@ -49,6 +49,10 @@ es-PE:
         max_times_per_user_exceeded: "El cupón ya ha sido utilizado el máximo de veces permitido"
         max_times_exceeded: "El cupón ya ha sido utilizado el máximo de veces permitido"
         coupon_expired: "El cupón ha expirado"
+        coupon_inactive: "Cupón inactivo"
+        not_valid_for_web: "Este cupón solo es válido en la aplicación móvil"
+        not_valid_for_app: "Este cupón solo es válido en la web"
+        first_app_purchase_only: "Este cupón solo es válido en tu primera compra desde la app"
   activerecord:
     attributes:
       ecommerce/address:
@@ -763,6 +767,8 @@ es-PE:
           max_uses: 'Máximo de Usos'
           current_uses: 'Usos Actuales'
           free_shipping: 'Envío Gratis'
+          web_enabled: 'Válido en Web'
+          app_enabled: 'Válido en App'
           status: 'Estado'
           submit: 'Grabar'
       campaigns:
@@ -819,3 +825,7 @@ es-PE:
           editing_payment_method: 'Editar Método de Pago'
         form:
           name: 'Nombre (Tarjeta, Manual o Pago Bancario)'
+    workers:
+      send_restock_reminder:
+        title: 'Hora de reabastecer'
+        body: '¿Se te está acabando %{product}? Vuelve a pedirlo aquí.'

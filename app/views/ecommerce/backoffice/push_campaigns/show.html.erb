@@ -1,0 +1,46 @@
+<div class="page-header">
+  <%= link_to backoffice_push_campaigns_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_backoffice_push_campaign_path(@push_campaign), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <% if @push_campaign.bulk_push? && @push_campaign.active? %>
+    <%= link_to backoffice_push_send_recipients_path(@push_campaign), class: 'btn btn-success' do %>
+      <i class='material-icons' style='vertical-align:middle'>send</i>
+      Send
+    <% end %>
+  <% end %>
+  <h1>Show Push Campaign</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Name:</dt>
+  <dd><%= @push_campaign.name %></dd>
+
+  <dt>Campaign Type:</dt>
+  <dd><%= @push_campaign.campaign_type %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @push_campaign.status %></dd>
+
+  <dt>Coupon:</dt>
+  <dd><%= @push_campaign.coupon.try(:coupon_code) %></dd>
+
+  <dt>Title (EN):</dt>
+  <dd><%= @push_campaign.title %></dd>
+
+  <dt>Title (ES):</dt>
+  <dd><%= @push_campaign.title_es %></dd>
+
+  <dt>Body (EN):</dt>
+  <dd><%= simple_format(@push_campaign.body) %></dd>
+
+  <dt>Body (ES):</dt>
+  <dd><%= simple_format(@push_campaign.body_es) %></dd>
+
+  <dt>Target Product:</dt>
+  <dd><%= @push_campaign.target_product.try(:name) || "— None (just opens the app) —" %></dd>
+</dl>

@@ -1,0 +1,146 @@
+<div class="page-header">
+  <h1>Email Tracking Report</h1>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= form_with url: backoffice_email_reports_path, method: :get, local: true, class: "form-inline" do %>
+      <div class="form-group" style="margin-right:10px;">
+        <label style="margin-right:5px;">From</label>
+        <%= text_field_tag :from, @from.to_date, class: "form-control", type: "date" %>
+      </div>
+      <div class="form-group" style="margin-right:10px;">
+        <label style="margin-right:5px;">To</label>
+        <%= text_field_tag :to, @to.to_date, class: "form-control", type: "date" %>
+      </div>
+      <div class="form-group" style="margin-right:10px;">
+        <label style="margin-right:5px;">Category</label>
+        <%= select_tag :category,
+              options_for_select([["All", ""], ["Operational", "operational"], ["Bulk", "bulk"]], @category),
+              class: "form-control" %>
+      </div>
+      <%= submit_tag "Apply", class: "btn btn-primary" %>
+      <%= link_to "Reset", backoffice_email_reports_path, class: "btn btn-default" %>
+    <% end %>
+    <p class="text-muted" style="margin-top:10px;margin-bottom:0;">
+      Showing <%= @from.strftime("%Y-%m-%d") %> to <%= @to.strftime("%Y-%m-%d") %><%= " — #{@category}" if @category.present? %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <% [
+    ["Sends",         @total_sends,   nil],
+    ["Unique opens",  @unique_opens,  "#{@open_rate}% open rate"],
+    ["Unique clicks", @unique_clicks, "#{@click_rate}% click rate"],
+    ["Total opens",   @total_opens,   nil],
+    ["Total clicks",  @total_clicks,  nil],
+    ["Click-to-open", "#{@click_to_open_rate}%", nil]
+  ].each do |label, value, sub| %>
+    <div class="col-md-2 col-sm-4 col-xs-6">
+      <div class="panel panel-default">
+        <div class="panel-body text-center">
+          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;"><%= label %></div>
+          <div style="font-size:22px;font-weight:600;margin-top:4px;">
+            <%= value.is_a?(Numeric) ? number_with_delimiter(value) : value %>
+          </div>
+          <% if sub %>
+            <div style="font-size:11px;color:#888;"><%= sub %></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<h3>By category &amp; subtype</h3>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Subtype</th>
+        <th class="text-right">Sends</th>
+        <th class="text-right">Unique opens</th>
+        <th class="text-right">Unique clicks</th>
+        <th class="text-right">Open rate</th>
+        <th class="text-right">Click rate</th>
+        <th class="text-right">Total opens</th>
+        <th class="text-right">Total clicks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @breakdown.empty? %>
+        <tr><td colspan="9" class="text-center text-muted">No data in selected range.</td></tr>
+      <% else %>
+        <% @breakdown.each do |row| %>
+          <tr>
+            <td>
+              <span class="label label-<%= row[:category] == 'operational' ? 'info' : 'warning' %>">
+                <%= row[:category] %>
+              </span>
+            </td>
+            <td><%= row[:subtype].presence || "—" %></td>
+            <td class="text-right"><%= number_with_delimiter(row[:sends]) %></td>
+            <td class="text-right"><%= number_with_delimiter(row[:unique_opens]) %></td>
+            <td class="text-right"><%= number_with_delimiter(row[:unique_clicks]) %></td>
+            <td class="text-right"><%= row[:open_rate] %>%</td>
+            <td class="text-right"><%= row[:click_rate] %>%</td>
+            <td class="text-right"><%= number_with_delimiter(row[:opens]) %></td>
+            <td class="text-right"><%= number_with_delimiter(row[:clicks]) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<h3>Recent sends</h3>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Sent at</th>
+        <th>Recipient</th>
+        <th>Category</th>
+        <th>Subtype</th>
+        <th>Subject</th>
+        <th class="text-right">Opens</th>
+        <th class="text-right">Clicks</th>
+        <th>First opened</th>
+        <th>First clicked</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @recent_sends.empty? %>
+        <tr><td colspan="9" class="text-center text-muted">No sends in selected range.</td></tr>
+      <% else %>
+        <% @recent_sends.each do |s| %>
+          <tr>
+            <td><%= s.sent_at&.strftime("%Y-%m-%d %H:%M") %></td>
+            <td><%= s.email.presence || "—" %></td>
+            <td>
+              <span class="label label-<%= s.category == 'operational' ? 'info' : 'warning' %>">
+                <%= s.category %>
+              </span>
+            </td>
+            <td><%= s.subtype.presence || "—" %></td>
+            <td>
+              <% if s.subject_type.present? %>
+                <%= s.subject_type.to_s.demodulize %> #<%= s.subject_id %>
+              <% else %>
+                —
+              <% end %>
+            </td>
+            <td class="text-right"><%= s.opens_count %></td>
+            <td class="text-right"><%= s.clicks_count %></td>
+            <td><%= s.first_opened_at&.strftime("%Y-%m-%d %H:%M") %></td>
+            <td><%= s.first_clicked_at&.strftime("%Y-%m-%d %H:%M") %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= paginate @recent_sends %>

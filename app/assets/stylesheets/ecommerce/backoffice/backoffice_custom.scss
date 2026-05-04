@@ -75,3 +75,26 @@
  -moz-border-radius: 0px;
  background-image: none;
 }
+
+/*
+ * Mobile sidebar flyout fix.
+ *
+ * In mini (condensed) mode, sub-menus are positioned absolutely as flyouts
+ * next to the icon column. The vendored rule
+ *   .page-sidebar > ul > li.active > ul.sub-menu { display: block }
+ * keeps the active section's flyout permanently visible, which on mobile
+ * leaves a sticky overlay on top of page content after navigation.
+ *
+ * Below 992px, we hide the active flyout and show it only when the JS click
+ * handler adds .open (tap-to-toggle) or on :hover. Page navigation clears
+ * .open, so the flyout closes after the user taps a sub-item.
+ */
+@media (max-width: 991px) {
+  .page-sidebar.mini .page-sidebar-wrapper > ul > li.active > ul.sub-menu {
+    display: none;
+  }
+  .page-sidebar.mini .page-sidebar-wrapper > ul > li.open > ul.sub-menu,
+  .page-sidebar.mini .page-sidebar-wrapper > ul > li:hover > ul.sub-menu {
+    display: block;
+  }
+}

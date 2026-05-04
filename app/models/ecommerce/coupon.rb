@@ -10,8 +10,15 @@ module Ecommerce
     validates_presence_of :coupon_code, :coupon_type, :status
 
     validate :can_only_exist_one_always_on_coupon
+    validate :can_only_exist_one_first_app_purchase_coupon
     validate :validations_for_minimum_quantity_applies
     validate :validations_for_combo_applies
+
+    # When a coupon is flagged as first-app-purchase, force its platform
+    # flags to app-only so the backoffice user doesn't have to remember to
+    # uncheck web. Runs before validation so the persisted record is always
+    # consistent.
+    before_validation :enforce_first_app_purchase_platform
 
     def self.one_time_coupon(order_user_id)
       charset = %w{ 2 3 4 6 7 9 A C D E F G H J K M N P Q R T V W X Y Z}
@@ -36,12 +43,90 @@ module Ecommerce
       Ecommerce::Coupon.where("end_date < ? AND dynamic = ?", Time.now, true).destroy_all
     end
 
+    def enabled_for_platform?(platform)
+      case platform.to_s
+      when 'web' then web_enabled
+      when 'app' then app_enabled
+      else true
+      end
+    end
+
+    # Returns the active first-app-purchase coupon iff `user` qualifies — i.e.
+    # logged in and has zero active app orders. Returns nil otherwise. Used
+    # by both the home banner and the checkout summary in the API.
+    def self.first_app_purchase_for(user)
+      return nil unless user
+      coupon = Ecommerce::Coupon.where(first_app_purchase_active: true, status: :active).first
+      return nil unless coupon
+      coupon.eligible_for_first_app_purchase?(user) ? coupon : nil
+    end
+
+    def eligible_for_first_app_purchase?(user)
+      return false unless first_app_purchase_active && user
+      Ecommerce::Order.where(user_id: user.id, platform: 'app', status: 'active').none?
+    end
+
+    # Single source of truth for redemption checks shared by web and app.
+    # Returns [ok?, error_message]. Cart-specific checks (minimum quantity,
+    # combo, threshold) stay in the discount calculators since they need cart
+    # context.
+    def validate_redemption(user:, platform:)
+      unless active?
+        return [false, I18n.t('controllers.orders.calculate_coupon.coupon_inactive', default: 'Cupón inactivo')]
+      end
+
+      unless enabled_for_platform?(platform)
+        key = platform.to_s == 'web' ? 'not_valid_for_web' : 'not_valid_for_app'
+        return [false, I18n.t("controllers.orders.calculate_coupon.#{key}")]
+      end
+
+      if end_date.present? && Time.current > end_date
+        return [false, I18n.t('controllers.orders.calculate_coupon.coupon_expired')]
+      end
+
+      if max_uses_per_user.to_i > 0 && user
+        times_used_by_user = Ecommerce::Order.where(coupon_id: id, user_id: user.id, status: 'active').count
+        if times_used_by_user >= max_uses_per_user
+          return [false, I18n.t('controllers.orders.calculate_coupon.max_times_per_user_exceeded')]
+        end
+      end
+
+      if max_uses.to_i > 0
+        times_used = Ecommerce::Order.where(coupon_id: id, status: 'active').count
+        if times_used >= max_uses
+          return [false, I18n.t('controllers.orders.calculate_coupon.max_times_exceeded')]
+        end
+      end
+
+      if first_app_purchase_active && !eligible_for_first_app_purchase?(user)
+        return [false, I18n.t('controllers.orders.calculate_coupon.first_app_purchase_only', default: 'Cupón válido sólo en la primera compra desde la app')]
+      end
+
+      [true, nil]
+    end
+
     def can_only_exist_one_always_on_coupon
       if self.always_on_active
         coupon_always_on_already_exists = Ecommerce::Coupon.where(always_on_active: true).where.not(id: self.id).first
         if coupon_always_on_already_exists
           errors.add(:always_on_active, 'There is already a coupon with Always On active.')
         end
+      end
+    end
+
+    def can_only_exist_one_first_app_purchase_coupon
+      if self.first_app_purchase_active
+        existing = Ecommerce::Coupon.where(first_app_purchase_active: true).where.not(id: self.id).first
+        if existing
+          errors.add(:first_app_purchase_active, 'There is already a coupon flagged as First App Purchase.')
+        end
+      end
+    end
+
+    def enforce_first_app_purchase_platform
+      if self.first_app_purchase_active
+        self.web_enabled = false
+        self.app_enabled = true
       end
     end
 

@@ -84,8 +84,16 @@ module Ecommerce
           body_values: [self.user.name, self.id, "#{self.currency} #{self.amount.to_s}", self.friendly_shipping_address, "1"],
           button_values: {"0": ["#{self.id}"]}
         })
-        SendUnpaidToPaidInteraktWorker.perform_in(6.hours, self.id)  
-      end          
+        SendUnpaidToPaidInteraktWorker.perform_in(6.hours, self.id)
+
+        SendExpoPushWorker.perform_async(
+          self.user.id,
+          "¡Pedido recibido!",
+          "Tu pedido ##{self.id} por #{self.currency} #{self.amount} fue creado. Te avisaremos cuando lo enviemos.",
+          { type: "order_placed", order_id: self.id }
+        )
+        SendUnpaidOrderPushWorker.perform_in(6.hours, self.id)
+      end
     end
 
     def notify_new_order
@@ -111,7 +119,15 @@ module Ecommerce
     end
 
     def notify_unpaid_to_paid
-      SendUnpaidToPaidEmailsWorker.perform_async(self.id) if self.payment_status == "paid" && Time.now > (self.created_at + 1.minute)
+      if self.payment_status == "paid" && Time.now > (self.created_at + 1.minute)
+        SendUnpaidToPaidEmailsWorker.perform_async(self.id)
+        SendExpoPushWorker.perform_async(
+          self.user_id,
+          "¡Pago confirmado!",
+          "Recibimos el pago de tu pedido ##{self.id}. ¡Estamos preparando tu envío!",
+          { type: "order_paid", order_id: self.id }
+        )
+      end
     end
 
     def set_stock_and_stage
@@ -121,8 +137,54 @@ module Ecommerce
           ol.product.update(total_quantity: ol.product.total_quantity -= ol.quantity)
         end
         #TwilioIntegration.new.send_sms_to_user("Your ExpatShop Order No. #{self.id} has been Paid! We will let you know when we ship.", self.user.id) if Rails.env == "production"
+        schedule_restock_reminders
         Campaign.send_recipients(self.id)
       end
+    end
+
+    # Intelligent restocking: for each paid line whose product has
+    # `days_to_restock` set, cancel any pending reminder for the same
+    # (user, product) and schedule a new push notification at
+    # `Time.current + (days_to_restock * quantity).days`. The worker
+    # re-validates the reminder's status at fire time, so cancelled
+    # reminders never deliver even if their Sidekiq job is already
+    # in the scheduled set.
+    def schedule_restock_reminders
+      return if self.user_id.blank?
+
+      self.order_items.where(status: "active").includes(:product).each do |item|
+        product = item.product
+        next unless product
+        days = product.days_to_restock.to_i
+        next unless days > 0
+        qty = item.quantity.to_i
+        next unless qty > 0
+
+        Ecommerce::RestockReminder
+          .for_user_product(self.user_id, product.id)
+          .pending
+          .update_all(
+            status:     Ecommerce::RestockReminder.statuses[:cancelled],
+            updated_at: Time.current
+          )
+
+        fires_at = Time.current + (days * qty).days
+        reminder = Ecommerce::RestockReminder.create!(
+          user_id:         self.user_id,
+          product_id:      product.id,
+          order_id:        self.id,
+          order_item_id:   item.id,
+          quantity:        qty,
+          days_to_restock: days,
+          status:          :pending,
+          fires_at:        fires_at
+        )
+
+        SendRestockReminderWorker.perform_at(fires_at, reminder.id)
+      end
+    rescue => e
+      Rails.logger.warn("[RestockReminder] schedule failed for order #{self.id}: #{e.class}: #{e.message}")
+      Rollbar.warning(e, order_id: self.id) if defined?(Rollbar)
     end
 
     def friendly_stage

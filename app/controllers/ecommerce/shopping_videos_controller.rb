@@ -17,14 +17,13 @@ module Ecommerce
       s3_message = JSON.parse(sns_message['Message'])
       Rails.logger.info "S3 Message: #{s3_message}"
 
+      # Transcoding is now handled by VideoProcessingWorker, enqueued from
+      # ShoppingVideo's after_commit. The legacy MediaConvert pipeline is
+      # disabled — leaving this endpoint as a no-op so the SNS subscription
+      # can stay in place harmlessly until it's torn down.
       if s3_message['Records']
         s3_message['Records'].each do |record|
-          if record['eventName'].start_with?('ObjectCreated:')
-            bucket = record['s3']['bucket']['name']
-            key = record['s3']['object']['key']
-            Rails.logger.info "Sending to transcoder, bucket: #{bucket}, key: #{key}"
-            MediaConvertWorker.perform_async(bucket, key)
-          end
+          Rails.logger.info "S3 event ignored (legacy MediaConvert path disabled): #{record['eventName']} #{record.dig('s3','object','key')}"
         end
       end
 

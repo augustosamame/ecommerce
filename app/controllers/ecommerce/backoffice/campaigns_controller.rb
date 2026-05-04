@@ -11,8 +11,8 @@ module Ecommerce
     end
 
     def send_recipients
-      @users = User.standard
-      @total_users = User.standard.count
+      @users = emailable_users
+      @total_users = @users.count
       @products_array = Product.all.map{|f| {label: f.name, id: f.id}}
       #@users_array = User.standard.includes(:country).map{|f| {label: f.country_name_helper, id: f.id}}
       #@user_purchase_category_array = Order.stage_paid.includes(:user).map{|f| {label: f.user.try(:name), id: f.id}}
@@ -21,7 +21,7 @@ module Ecommerce
     def post_send_recipients
       user_array = params[:other][:user_list].split(',').map(&:to_i)
       coupon_id = params[:other][:coupon_id]
-      unique_users_by_email = User.where(id: user_array).uniq(&:email)
+      unique_users_by_email = emailable_users.where(id: user_array).uniq(&:email)
 
       user_ids = unique_users_by_email.map(&:id)
 
@@ -29,13 +29,14 @@ module Ecommerce
         SendAllCampaignEmailsWorker.perform_async(user_ids, coupon_id, @campaign.id)
       end
 
-      redirect_to :backoffice_campaigns, notice: "#{user_array.length} Bulk Emails sent"
+      redirect_to :backoffice_campaigns, notice: "#{user_ids.length} Bulk Emails queued (#{user_array.length - user_ids.length} skipped: suppressed/guest/duplicate)"
     end
 
     def get_product_purchasers
       product_id = params[:product_id].to_i
       order_items = Ecommerce::OrderItem.eager_load(:product).where('ecommerce_products.id = ?', product_id).pluck(:order_id)
-      purchasers = Ecommerce::Order.eager_load(:user).where(id: order_items).pluck(:user_id).uniq
+      purchaser_ids = Ecommerce::Order.where(id: order_items).pluck(:user_id).uniq
+      purchasers = emailable_users.where(id: purchaser_ids).pluck(:id)
       respond_to do |format|
         format.json { render json: {data: purchasers.to_json} }
       end
@@ -44,7 +45,7 @@ module Ecommerce
     def get_no_purchase_within_days
       num_days = params[:days].to_i
       did_purchase = Ecommerce::Order.where('created_at >= ?', Date.today - num_days.days ).pluck(:user_id).uniq
-      did_not_purchase = User.where.not(id: did_purchase).pluck(:id).uniq
+      did_not_purchase = emailable_users.where.not(id: did_purchase).pluck(:id).uniq
       respond_to do |format|
         format.json { render json: {data: did_not_purchase.to_json} }
       end
@@ -131,6 +132,31 @@ module Ecommerce
       # Only allow a trusted parameter "white list" through.
       def campaign_params
         params.require(:campaign).permit(:email_subject, :email_subject_es, :email_coupon_description, :email_coupon_description_es, :image, :image_cache, :campaign_type, :coupon, :coupon_id, :name, :email_template_id, :status, :link, :drip_base_coupon_id, :drip_days_after, :drip_product_id)
+      end
+
+      # Excludes admin/driver/etc roles, guest accounts, users on the suppression
+      # list, users with no email, and any email whose sibling row is suppressed.
+      # Then collapses duplicates so each unique (LOWER+TRIM) email only appears
+      # once, keeping the earliest-created row.
+      def emailable_users
+        @emailable_users ||= begin
+          suppressed_emails_sql = User
+            .where(email_suppressed: true)
+            .where.not(email: [nil, ""])
+            .select("LOWER(TRIM(email))")
+            .to_sql
+
+          base = User.standard.regular
+                     .where.not(email_suppressed: true)
+                     .where.not(email: [nil, ""])
+                     .where("LOWER(TRIM(email)) NOT IN (#{suppressed_emails_sql})")
+
+          ids = base.select("DISTINCT ON (LOWER(TRIM(email))) id")
+                    .order(Arel.sql("LOWER(TRIM(email)), created_at ASC"))
+                    .map(&:id)
+
+          User.where(id: ids)
+        end
       end
   end
 end

@@ -77,40 +77,9 @@ module Ecommerce
       found_coupon = Coupon.find_by(coupon_code: params[:coupon_code])
       if found_coupon
 
-        #check max_uses_per_user
-        if found_coupon.max_uses_per_user && found_coupon.max_uses_per_user > 0
-          times_used_by_user = Order.where(coupon_id: found_coupon.id, user_id: current_user.id, status: "active").count
-          if times_used_by_user >= found_coupon.max_uses_per_user
-            response = {
-                        :result => "error",
-                        :error_message => I18n.t('controllers.orders.calculate_coupon.max_times_per_user_exceeded')
-                       }
-            respond_to do |format|
-              format.json { render json: response.to_json and return}
-            end
-          end
-        end
-
-        #check max_uses_total
-        if found_coupon.max_uses && found_coupon.max_uses > 0
-          times_used = Order.where(coupon_id: found_coupon.id, status: "active").count
-          if times_used >= found_coupon.max_uses
-            response = {
-                        :result => "error",
-                        :error_message => I18n.t('controllers.orders.calculate_coupon.max_times_exceeded')
-                       }
-            respond_to do |format|
-              format.json { render json: response.to_json and return}
-            end
-          end
-        end
-
-        #check expiration
-        if found_coupon.end_date && Date.today > found_coupon.end_date
-          response = {
-                      :result => "error",
-                      :error_message => I18n.t('controllers.orders.calculate_coupon.coupon_expired')
-                     }
+        ok, error_message = found_coupon.validate_redemption(user: current_user, platform: 'web')
+        unless ok
+          response = { :result => "error", :error_message => error_message }
           respond_to do |format|
             format.json { render json: response.to_json and return}
           end

@@ -12,6 +12,7 @@ module Ecommerce
       @proof_of_delivery_image.user = current_user
 
       if @proof_of_delivery_image.save
+        notify_order_delivered if @order.proof_of_delivery_images.count == 1
         if params[:return_to] == 'index'
           redirect_to backoffice_orders_path, notice: 'Imagen subida correctamente.'
         else
@@ -40,6 +41,16 @@ module Ecommerce
 
     def proof_of_delivery_image_params
       params.require(:proof_of_delivery_image).permit(:proof_of_delivery)
+    end
+
+    def notify_order_delivered
+      return if @order.user_id.blank?
+      SendExpoPushWorker.perform_async(
+        @order.user_id,
+        "¡Tu pedido fue entregado!",
+        "Tu pedido ##{@order.id} ha sido entregado. ¡Gracias por tu compra!",
+        { type: "order_delivered", order_id: @order.id }
+      )
     end
   end
 end

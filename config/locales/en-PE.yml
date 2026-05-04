@@ -64,6 +64,10 @@ en-PE:
         max_times_per_user_exceeded: "Coupon has exceeded the max number of times it can be used"
         max_times_exceeded: "Coupon has exceeded the max number of times it can be used"
         coupon_expired: "Coupon has expired"
+        coupon_inactive: "Coupon inactive"
+        not_valid_for_web: "This coupon is only valid in the mobile app"
+        not_valid_for_app: "This coupon is only valid on the website"
+        first_app_purchase_only: "This coupon is only valid on your first purchase from the app"
   activemodel:
     errors:
       models:
@@ -693,6 +697,8 @@ en-PE:
           max_uses: 'Max Uses'
           current_uses: 'Current Uses'
           free_shipping: 'Free Shipping'
+          web_enabled: 'Valid on Web'
+          app_enabled: 'Valid on App'
           status: 'Status'
           submit: 'Submit'
       campaigns:
@@ -748,3 +754,7 @@ en-PE:
           editing_payment_method: 'Editing Payment Method'
         form:
           name: "Name (Card, Manual or Bank Payment)"
+    workers:
+      send_restock_reminder:
+        title: 'Time to restock'
+        body: 'Running low on %{product}? Reorder here.'

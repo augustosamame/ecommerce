@@ -43,6 +43,12 @@ Ecommerce::Engine.routes.draw do
     post 'send_recipients/:id', :to => "campaigns#post_send_recipients", as: 'post_send_recipients'
     get 'get_purchasers', :to => "campaigns#get_product_purchasers"
     get 'get_no_purchase_within_days', :to => "campaigns#get_no_purchase_within_days"
+    resources :push_campaigns
+    get 'push_send_recipients/:id', :to => "push_campaigns#send_recipients", as: 'push_send_recipients'
+    post 'push_send_recipients/:id', :to => "push_campaigns#post_send_recipients", as: 'push_post_send_recipients'
+    get 'push_get_purchasers', :to => "push_campaigns#get_product_purchasers"
+    get 'push_get_no_purchase_within_days', :to => "push_campaigns#get_no_purchase_within_days"
+    get 'push_get_all_app_users', :to => "push_campaigns#get_all_app_users"
     get 'business_intelligence', :to => "dashboard#business_intelligence"
     post 'complete_sale_data', :to => "dashboard#complete_sale_data", as: 'complete_sale_data'
     post 'biz_top_buyers', :to => "dashboard#biz_top_buyers", as: 'post_biz_top_buyers'
@@ -72,6 +78,7 @@ Ecommerce::Engine.routes.draw do
     resources :stock_alerts
     resources :testimonials
     resources :shopping_videos
+    resources :email_reports, only: [:index]
   end
 
   post 'locale', :to => 'application#locale'
