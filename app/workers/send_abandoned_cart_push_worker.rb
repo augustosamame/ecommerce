@@ -9,7 +9,7 @@ class SendAbandonedCartPushWorker
     if Ecommerce::Control.find_by(name: 'send_abandoned_cart_coupon')&.boolean_value && coupon_id
       coupon = Ecommerce::Coupon.find_by(id: coupon_id)
       body = if coupon
-        "Dejaste productos en tu carrito. Usa el cupón #{coupon.code} y termina tu compra."
+        "Dejaste productos en tu carrito. Usa el cupón #{coupon.coupon_code} y termina tu compra."
       else
         "Tienes productos esperando en tu carrito. ¡Termina tu compra!"
       end

@@ -17,14 +17,12 @@ module Ecommerce
     end
 
     def get_all_app_users
-      ids = User.where.not(expo_push_token: [nil, ""]).pluck(:id)
-      respond_to do |format|
-        format.json { render json: {data: ids.to_json} }
-      end
+      scope = User.where.not(expo_push_token: [nil, ""])
+      render json: build_recipients_payload(scope)
     end
 
     def post_send_recipients
-      user_array = params[:other][:user_list].split(',').map(&:to_i)
+      user_array = params[:other][:user_list].to_s.split(',').map(&:to_i).reject(&:zero?)
       coupon_id = params[:other][:coupon_id]
       target_users = User.where(id: user_array).where.not(expo_push_token: [nil, ""])
       user_ids = target_users.pluck(:id).uniq
@@ -40,19 +38,15 @@ module Ecommerce
       product_id = params[:product_id].to_i
       order_items = Ecommerce::OrderItem.eager_load(:product).where('ecommerce_products.id = ?', product_id).pluck(:order_id)
       purchaser_ids = Ecommerce::Order.where(id: order_items).pluck(:user_id).uniq
-      app_purchasers = User.where(id: purchaser_ids).where.not(expo_push_token: [nil, ""]).pluck(:id)
-      respond_to do |format|
-        format.json { render json: {data: app_purchasers.to_json} }
-      end
+      scope = User.where(id: purchaser_ids).where.not(expo_push_token: [nil, ""])
+      render json: build_recipients_payload(scope)
     end
 
     def get_no_purchase_within_days
       num_days = params[:days].to_i
       did_purchase = Ecommerce::Order.where('created_at >= ?', Date.today - num_days.days).pluck(:user_id).uniq
-      did_not_purchase = User.where.not(id: did_purchase).where.not(expo_push_token: [nil, ""]).pluck(:id).uniq
-      respond_to do |format|
-        format.json { render json: {data: did_not_purchase.to_json} }
-      end
+      scope = User.where.not(id: did_purchase).where.not(expo_push_token: [nil, ""])
+      render json: build_recipients_payload(scope)
     end
 
     # GET /push_campaigns/1
@@ -101,6 +95,30 @@ module Ecommerce
 
     def push_campaign_params
       params.require(:push_campaign).permit(:name, :campaign_type, :status, :coupon_id, :audience_id, :title, :title_es, :body, :body_es, :target_product_id)
+    end
+
+    RECIPIENT_PREVIEW_LIMIT = 200
+
+    # Returns ids (CSV target for the form) plus a previewable list of users.
+    # Capped at RECIPIENT_PREVIEW_LIMIT rows in the preview to keep the page small.
+    def build_recipients_payload(scope)
+      ids = scope.pluck(:id)
+      preview = scope.limit(RECIPIENT_PREVIEW_LIMIT)
+                     .pluck(:id, :first_name, :last_name, :email, :username)
+                     .map do |id, fn, ln, em, un|
+        {
+          id: id,
+          name: "#{fn} #{ln}".strip,
+          email: em,
+          phone: un
+        }
+      end
+      {
+        data: ids.to_json,
+        users: preview,
+        total: ids.size,
+        preview_limit: RECIPIENT_PREVIEW_LIMIT
+      }
     end
   end
 end
