@@ -495,9 +495,18 @@
 }
 /* Pre-checkout cross-sell cards drop the +/- qty controls (the partial only
    renders the Add-to-cart button). The default `.container-cart-button` width
-   reserves 126px for those controls, so we expand it to full width here. */
+   reserves 126px for those controls, so we expand it to full width and shrink
+   the price labels (which are 24px elsewhere — too tall for the half-width
+   card on mobile). */
 .pre-checkout-product .container-cart-button {
-  width: 100%;
+  width: 100% !important;
+  flex: 1 1 auto !important;
+}
+.pre-checkout-product .product-info-price,
+.pre-checkout-product .product-info-price-regular,
+.pre-checkout-product .product-info-price-discounted {
+  font-size: 14px !important;
+  width: auto;
 }
 .out_of_stock {
   display: none;
