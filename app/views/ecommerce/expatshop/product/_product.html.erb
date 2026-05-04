@@ -1,4 +1,4 @@
-<div class="<%= local_assigns[:pre_checkout] ? 'col-md-6 col-sm-6 col-xs-12' : 'col-md-4' %> product" data-availability="<%= item.in_stock? ? 'in_stock' : 'out_of_stock' %>">
+<div class="<%= local_assigns[:pre_checkout] ? 'col-md-6 col-sm-6 col-xs-6 pre-checkout-product' : 'col-md-4' %> product" data-availability="<%= item.in_stock? ? 'in_stock' : 'out_of_stock' %>">
   <div class="featured-product position-relative d-flex">
     <%= link_to product_path(item) do %>
       <div class="featured-product-body">

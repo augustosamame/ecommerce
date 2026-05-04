@@ -493,6 +493,12 @@
   outline: none;
   /* Inherit the color from the parent element */
 }
+/* Pre-checkout cross-sell cards drop the +/- qty controls (the partial only
+   renders the Add-to-cart button). The default `.container-cart-button` width
+   reserves 126px for those controls, so we expand it to full width here. */
+.pre-checkout-product .container-cart-button {
+  width: 100%;
+}
 .out_of_stock {
   display: none;
   margin-bottom: 30px;

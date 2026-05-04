@@ -6,12 +6,14 @@ module Ecommerce
     def welcome_email(user)
       @user = user
       @url  = "https://#{ActionMailer::Base.default_url_options[:host]}/users/sign_in"
+      track_email(category: :operational, subtype: 'welcome', user: user)
       mail(to: @user.email, subject: t('.subject'))
     end
 
     def new_order_email(user, order)
       @user = user
       @order = order
+      track_email(category: :operational, subtype: 'new_order', user: user, subject: order)
       mail(to: @user.email, subject: t('.subject', order_id: @order.id))
     end
 
@@ -23,6 +25,7 @@ module Ecommerce
       @coupon_description_en = @campaign.email_coupon_description
       @coupon_description_es = @campaign.email_coupon_description_es
       coupon_subject = I18n.locale == ':es-PE' ? @campaign.email_subject_es : @campaign.email_subject
+      track_email(category: :operational, subtype: 'next_order_coupon', user: user, subject: campaign)
       mail(to: @user.email, subject: coupon_subject)
     end
 
@@ -31,18 +34,21 @@ module Ecommerce
       @coupon = coupon
       @campaign = campaign
       email_subject = I18n.locale == ':es-PE' ? @campaign.email_subject_es : @campaign.email_subject
+      track_email(category: :bulk, subtype: 'campaign', user: user, subject: campaign)
       mail(to: @user.email, subject: email_subject)
     end
 
     def order_paid(user, order)
       @user = user
       @order = order
+      track_email(category: :operational, subtype: 'order_paid', user: user, subject: order)
       mail(to: @user.email, subject: t('.subject'))
     end
 
     def update_to_paid_email(user, order)
       @user = user
       @order = order
+      track_email(category: :operational, subtype: 'update_to_paid', user: user, subject: order)
       mail(to: @user.email, subject: t('.subject'))
     end
 
@@ -50,27 +56,32 @@ module Ecommerce
       @user = user
       @cart = cart
       @coupon = coupon
+      track_email(category: :operational, subtype: 'abandoned_cart', user: user, subject: cart)
       mail(to: @user.email, subject: t('.subject'))
     end
 
     def referral_program_email(user)
       @user = user
+      track_email(category: :bulk, subtype: 'referral_program', user: user)
       mail(to: @user.email, subject: t('.subject'))
     end
 
     def earned_referral_points_email(user, order)
       @user = user
       @order = order
+      track_email(category: :operational, subtype: 'earned_referral_points', user: user, subject: order)
       mail(to: @user.email, subject: t('.subject'))
     end
 
     def points_will_expire_monthly_email(user)
       @user = user
+      track_email(category: :bulk, subtype: 'points_expire_monthly', user: user)
       mail(to: @user.email, subject: t('.subject'))
     end
 
     def points_will_expire_daily_email(user)
       @user = user
+      track_email(category: :bulk, subtype: 'points_expire_daily', user: user)
       mail(to: @user.email, subject: t('.subject'))
     end
 
