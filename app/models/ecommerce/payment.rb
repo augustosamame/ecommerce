@@ -144,8 +144,18 @@ module Ecommerce
         else
           success = false
           Rails.logger.debug "Payment failed. Response from Culqi: #{response.inspect}"
+          # Two distinct shapes come back when a charge does not succeed:
+          # 1. Top-level error envelope (HTTP 4xx) — `object: "error"` with
+          #    `user_message` / `merchant_message` at the root.
+          # 2. Charge object with a declined outcome (HTTP 200, e.g.
+          #    `sospecha_fraude`) — the messages live under `outcome`.
+          # Both should bubble the user-facing message back to the frontend.
           if response["object"] == "error"
-            error_message = "#{response['user_message']} #{response['merchant_message']}" || "Error al intentar realizar el pago"
+            error_message = response["user_message"].presence || response["merchant_message"].presence || "Error al intentar realizar el pago"
+            return success, error_message
+          elsif response["outcome"].is_a?(Hash)
+            outcome = response["outcome"]
+            error_message = outcome["user_message"].presence || outcome["merchant_message"].presence || "Pago rechazado"
             return success, error_message
           else
             return success, "Error interno al procesar el pago"
