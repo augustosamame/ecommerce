@@ -106,7 +106,16 @@ module Ecommerce
     end
 
     def favorites
-      if Ecommerce::Order.where(user_id: current_user.id).count > 0
+      # Anonymous traffic (logged-out users, bots, scanners) reaches this
+      # action because the controller skips authenticate_user! globally. The
+      # action is meaningless without a user — bounce them out instead of
+      # crashing on `current_user.id`.
+      unless current_user
+        redirect_back fallback_location: root_path
+        return
+      end
+
+      if Ecommerce::Order.where(user_id: current_user.id).exists?
         user_orders_items = Ecommerce::OrderItem.where(order_id: current_user.user_orders.pluck(:id)).group(:product_id).order(Arel.sql('COUNT(*) DESC')).select('product_id').pluck(:product_id)
         @products = Product.where(id: user_orders_items).includes(:translations).order(:product_order).active.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"

@@ -174,7 +174,19 @@ module Ecommerce
         unless cart_still_active
           flash[:error] = t('.error_cart_already_placed')
           flash.keep(:error)
-          render js: "window.location = '#{orders_path}'"
+          render(js: "window.location = '#{orders_path}'") and return
+        end
+
+        # Reject empty-cart submissions before any Order is created. The form
+        # may have been rendered while items existed but the cart was emptied
+        # (cleanup, manual remove, race with a different tab) before the user
+        # hit Submit. Without this guard we used to create an order with only
+        # shipping cost and zero line items, which then crashed the Interakt
+        # callback (`array_of_hashes.first.keys` on nil).
+        unless cart_still_active.cart_items.exists?
+          flash[:error] = t('.error_cart_already_placed')
+          flash.keep(:error)
+          render(js: "window.location = '#{cart_path}'") and return
         end
       end
       order_with_cart_exists = Order.find_by(cart_id: params[:cart_id].to_i)

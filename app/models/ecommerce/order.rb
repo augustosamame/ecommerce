@@ -48,10 +48,13 @@ module Ecommerce
 
         require 'csv'
 
-        # Assuming you have an array of hashes called `array_of_hashes`
+        # Build the per-line-item rows for the WhatsApp template. An order
+        # with no items (e.g. one that failed mid-creation) leaves this empty,
+        # which used to crash on `array_of_hashes.first.keys` — bail out and
+        # skip the Interakt notification rather than raising.
         array_of_hashes = self.order_items.map{|oi| {product_name: oi.product.name, product_price: oi.price.to_f, product_quantity: oi.quantity, product_total: (oi.price * oi.quantity).to_f}}
+        return if array_of_hashes.empty?
 
-        # Get the headers from the first hash in the array
         headers = array_of_hashes.first.keys
 
         # Convert the array of hashes to a CSV string
@@ -111,7 +114,21 @@ module Ecommerce
     end
 
     def blank_user_carts
-      Cart.where(user_id: self.user).destroy_all
+      # Close the user's *older* active carts after a successful order. We
+      # must avoid touching:
+      #   1. self.cart_id — the cart this very order references. Destroying
+      #      or repurposing it breaks referential integrity (this was the
+      #      root cause of the `array_of_hashes.first.keys` crash on empty
+      #      orders, since the cart row vanished afterwards).
+      #   2. Any cart created at or after this order, including the fresh
+      #      active basket spun up by
+      #      CheckoutController#close_cart_and_create_new.
+      # Closing instead of destroying also preserves history — `destroy_all`
+      # was wiping data useful for analytics and any audit/refund lookups.
+      Cart.where(user_id: self.user_id, status: 'active')
+          .where('created_at < ?', self.created_at)
+          .where.not(id: self.cart_id)
+          .update_all(status: 'closed')
     end
 
     def fire_einvoice_worker
