@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/augusto/workspace/expatshop/expatshop/config/**)",
+      "Read(//Users/augusto/workspace/expatshop/expatshop/app/models/**)",
+      "Read(//Users/augusto/workspace/expatshop/expatshop/db/**)",
+      "Bash(rails generate migration:*)",
+      "Bash(rails console:*)",
+      "Bash(rails runner:*)",
+      "Bash(rvm use:*)",
+      "Bash(bundle config:*)",
+      "Bash(rails assets:precompile --trace)",
+      "Bash(ruby --version)",
+      "Bash(/Users/augusto/.rvm/rubies/ruby-3.3.4/bin/ruby:*)",
+      "WebFetch(domain:expatshop.pe)",
+      "Bash(ruby -c app/controllers/ecommerce/product_feed_controller.rb)",
+      "Bash(ruby -c app/helpers/ecommerce/application_helper.rb)",
+      "Bash(ruby -c /Users/augusto/workspace/expatshop/ecommerce/app/controllers/ecommerce/products_controller.rb)",
+      "Bash(ruby -c /Users/augusto/workspace/expatshop/ecommerce/app/controllers/ecommerce/store_controller.rb)",
+      "Bash(ruby -c /Users/augusto/workspace/expatshop/ecommerce/app/controllers/ecommerce/categories_controller.rb)",
+      "Bash(bundle exec:*)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/augusto/workspace/expatshop/ExpatshopApp/assets/images/square_expatshop_logo.jpg)",
+      "Bash(xcrun simctl:*)"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "/Users/augusto/workspace/expatshop/expatshop",
+      "/Users/augusto/.rvm/gems/ruby-3.3.4@expatshop-3.3.4/gems/ckeditor-4.3.0/app/assets/javascripts"
+    ]
+  }
+}

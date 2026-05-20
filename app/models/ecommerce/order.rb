@@ -422,7 +422,18 @@ module Ecommerce
           }
       end
 
-      url = URI(Ecommerce::Control.find_by(name: 'efact_url').text_value)
+      # When NEW_INVOICING=true, route einvoices to the new invoicing platform
+      # gateway instead of posting directly to efact_sunat_admin. False or missing
+      # keeps the current behavior (destination/token from the Control model).
+      if ENV["NEW_INVOICING"] == "true"
+        einvoice_url   = ENV.fetch("NEW_INVOICING_URL")   { Ecommerce::Control.find_by(name: "new_invoicing_url")&.text_value }
+        einvoice_token = ENV.fetch("NEW_INVOICING_TOKEN") { Ecommerce::Control.find_by(name: "new_invoicing_token")&.text_value }
+      else
+        einvoice_url   = Ecommerce::Control.find_by(name: "efact_url").text_value
+        einvoice_token = Ecommerce::Control.find_by!(name: "efact_token").text_value
+      end
+
+      url = URI(einvoice_url)
       puts "invoice_hash: #{invoice_hash.to_json} sent to #{url}"
       Rails.logger.debug "invoice_hash: #{invoice_hash.to_json} sent to #{url}"
       http = Net::HTTP.new(url.host, url.port)
@@ -430,7 +441,7 @@ module Ecommerce
       request = Net::HTTP::Post.new(url)
       request["Content-Type"] = 'application/json'
       #TODO add type of authentication field in backoffice to support Bearer Token
-      request["Authorization"] = "Bearer #{Ecommerce::Control.find_by!(name: "efact_token").text_value}"
+      request["Authorization"] = "Bearer #{einvoice_token}"
       request["Cache-Control"] = 'no-cache'
       request.body = invoice_hash.to_json
       self.update_columns(efact_sent_text: invoice_hash.to_json)
