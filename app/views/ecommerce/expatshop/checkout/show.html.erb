@@ -433,6 +433,13 @@ $( document ).ready(function() {
   var address_saved_flag = false
   var culqi_order_id = ''
   var applied_coupon = '<%= @always_on_coupon_redeemable ? @always_on_coupon.coupon_code : "" %>'
+  // True when the applied coupon grants free shipping. Seeded server-side so the
+  // page-load shipping calculation can't overwrite a free-shipping coupon: the
+  // auto-apply coupon AJAX and the address shipping AJAX used to race, and
+  // whichever returned last won the #shipping-amount value (so shipping was
+  // charged at random). calculate_shipping() now respects this flag, and
+  // calculate_coupon() keeps it in sync.
+  var free_shipping_active = <%= (@always_on_coupon_redeemable && @always_on_coupon&.free_shipping?) ? 'true' : 'false' %>;
 
   // calculate and update shipping html tag when shipping address is created
   $("#save-address-button").click(function() {
@@ -480,7 +487,12 @@ $( document ).ready(function() {
       data: { address: street, district: district },
       success: function(data){
         if (data.currency == "pen") { cur_sym = "S/. " } else { cur_sym = "$ " }
-        $("#shipping-amount").html(data.amount.toFixed(2))
+        // Don't overwrite free shipping granted by an applied coupon.
+        if (free_shipping_active) {
+          $("#shipping-amount").html(0)
+        } else {
+          $("#shipping-amount").html(data.amount.toFixed(2))
+        }
         //$("#free-shipping-text").show()
         recalculate_checkout_totals();
         shipping_calculated_flag = true
@@ -504,9 +516,11 @@ $( document ).ready(function() {
           $("#coupon-error").html("");
           applied_coupon = coupon_code
           if (data.free_shipping == true) {
+            free_shipping_active = true
             $("#shipping-amount").html(0)
             $("#free-shipping-text").hide()
           } else {
+            free_shipping_active = false
             if ($("#address_id option:selected").text().split(',')[2]) {
               var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
               calculate_shipping($("#address_street").val(), district_from_dropdown, 'coupon');
@@ -515,7 +529,15 @@ $( document ).ready(function() {
           recalculate_checkout_totals();
         }
         else {
+          // Coupon not redeemable — never leave free shipping on (the flag may
+          // have been seeded true for an always-on coupon), and restore the
+          // real shipping cost.
+          free_shipping_active = false
           $("#coupon-error").html(data.error_message);
+          if ($("#address_id option:selected").text().split(',')[2]) {
+            var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
+            calculate_shipping($("#address_street").val(), district_from_dropdown, 'coupon');
+          }
         }
       }
     });
