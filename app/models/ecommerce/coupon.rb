@@ -106,10 +106,10 @@ module Ecommerce
     end
 
     def can_only_exist_one_always_on_coupon
-      if self.always_on_active
-        coupon_always_on_already_exists = Ecommerce::Coupon.where(always_on_active: true).where.not(id: self.id).first
+      if self.always_on_active && self.active?
+        coupon_always_on_already_exists = Ecommerce::Coupon.active.where(always_on_active: true).where.not(id: self.id).first
         if coupon_always_on_already_exists
-          errors.add(:always_on_active, 'There is already a coupon with Always On active.')
+          errors.add(:always_on_active, 'There is already an active coupon with Always On active.')
         end
       end
     end
