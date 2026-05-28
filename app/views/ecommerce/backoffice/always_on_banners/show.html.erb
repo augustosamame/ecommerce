@@ -1,0 +1,34 @@
+<div class="page-header">
+  <%= link_to backoffice_always_on_banners_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    <%= t('common.back') %>
+  <% end %>
+  <%= link_to edit_backoffice_always_on_banner_path(@always_on_banner), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    <%= t('common.edit') %>
+  <% end %>
+  <h1>Always On Banner</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Id:</dt>
+  <dd><%= @always_on_banner.id %></dd>
+
+  <dt>Message (Spanish):</dt>
+  <dd><%= @always_on_banner.message_es.to_s.html_safe %></dd>
+
+  <dt>Message (English):</dt>
+  <dd><%= @always_on_banner.message_en.to_s.html_safe %></dd>
+
+  <dt>Link URL:</dt>
+  <dd><%= @always_on_banner.link_url.presence || '(none)' %></dd>
+
+  <dt>Show on Web:</dt>
+  <dd><%= @always_on_banner.web_enabled? %></dd>
+
+  <dt>Show on App:</dt>
+  <dd><%= @always_on_banner.app_enabled? %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @always_on_banner.status %></dd>
+</dl>

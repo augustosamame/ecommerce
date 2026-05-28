@@ -106,20 +106,28 @@ module Ecommerce
     end
 
     def can_only_exist_one_always_on_coupon
-      if self.always_on_active && self.active?
-        coupon_always_on_already_exists = Ecommerce::Coupon.active.where(always_on_active: true).where.not(id: self.id).first
-        if coupon_always_on_already_exists
-          errors.add(:always_on_active, 'There is already an active coupon with Always On active.')
-        end
+      return unless self.always_on_active && self.active?
+
+      scope = Ecommerce::Coupon.active.where(always_on_active: true).where.not(id: self.id)
+
+      # Two active always-on coupons may coexist as long as they don't both
+      # target the same platform. We only flag a conflict when the existing
+      # coupon overlaps on web or on app with the one being saved.
+      platform_clauses = []
+      platform_clauses << "web_enabled = TRUE" if self.web_enabled
+      platform_clauses << "app_enabled = TRUE" if self.app_enabled
+      return if platform_clauses.empty?
+
+      if scope.where(platform_clauses.join(' OR ')).exists?
+        errors.add(:always_on_active, 'There is already an active Always On coupon for the same platform (web or app).')
       end
     end
 
     def can_only_exist_one_first_app_purchase_coupon
-      if self.first_app_purchase_active
-        existing = Ecommerce::Coupon.where(first_app_purchase_active: true).where.not(id: self.id).first
-        if existing
-          errors.add(:first_app_purchase_active, 'There is already a coupon flagged as First App Purchase.')
-        end
+      return unless self.first_app_purchase_active && self.active?
+      existing = Ecommerce::Coupon.active.where(first_app_purchase_active: true).where.not(id: self.id).first
+      if existing
+        errors.add(:first_app_purchase_active, 'There is already an active First App Purchase coupon.')
       end
     end
 

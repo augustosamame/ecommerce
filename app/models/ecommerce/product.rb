@@ -10,6 +10,7 @@ module Ecommerce
     belongs_to :category, optional: true
     belongs_to :brand
     belongs_to :supplier
+    belongs_to :accounting_code_family, optional: true
     #belongs_to :coupon, optional: true
     has_and_belongs_to_many :coupons, join_table: :coupons_products
 
@@ -60,6 +61,7 @@ module Ecommerce
     monetize :discounted_price_cents
     monetize :usd_price_cents
     monetize :usd_discounted_price_cents
+    monetize :costo_cents
 
     #validates :category_id, presence: true
     validates_presence_of :category_list

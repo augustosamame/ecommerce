@@ -1,0 +1,16 @@
+<%= simple_form_for([:backoffice, @always_on_banner]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :message_es, as: :text, label: 'Message (Spanish)', input_html: { rows: 3 }, hint: 'HTML allowed. Will be shown on top of the always-on coupon banner when both are active.' %>
+    <%= f.input :message_en, as: :text, label: 'Message (English)', input_html: { rows: 3 }, hint: 'HTML allowed.' %>
+    <%= f.input :link_url, label: 'Link URL (optional)', placeholder: 'https://example.com/landing', hint: 'If set, the banner will be clickable and navigate to this URL.' %>
+    <%= f.input :web_enabled, as: :boolean, label: 'Show on Web' %>
+    <%= f.input :app_enabled, as: :boolean, label: 'Show on App' %>
+    <%= f.input :status, collection: Ecommerce::AlwaysOnBanner.statuses.keys, label: 'Status' %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, t('common.save'), class: "btn btn-primary" %>
+  </div>
+<% end %>

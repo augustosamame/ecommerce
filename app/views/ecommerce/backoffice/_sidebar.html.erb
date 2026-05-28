@@ -33,7 +33,7 @@
       <% end %>
 
       <% unless current_user.driver? %>
-        <li class="<%= class_string({ active: (['products','categories','suppliers','brands','properties','pricelists'].include? controller.controller_name) }) %>">
+        <li class="<%= class_string({ active: (['products','categories','suppliers','brands','accounting_code_families','properties','pricelists'].include? controller.controller_name) }) %>">
           <a href="javascript:;"> <i class="material-icons">store</i> <span class="title"><%= t('.products') %></span> <span class=" arrow"></span> </a>
           <ul class="sub-menu">
             <li class="<%= class_string({ start: true, active: (controller.controller_name == 'products' && controller.action_name == 'index')}) %>">
@@ -58,6 +58,9 @@
             </li>
             <li class="<%= class_string({ start: true, active: (controller.controller_name == 'brands' && controller.action_name == 'index')}) %>">
               <%= link_to t('.brands'), backoffice_brands_path %>
+            </li>
+            <li class="<%= class_string({ start: true, active: (controller.controller_name == 'accounting_code_families' && controller.action_name == 'index')}) %>">
+              <%= link_to 'Accounting Codes', backoffice_accounting_code_families_path %>
             </li>
           <!--  <li class="<%= class_string({ start: true, active: (controller.controller_name == 'properties' && controller.action_name == 'index')}) %>">
               <%= link_to t('.properties'), backoffice_properties_path %>
@@ -98,7 +101,7 @@
           </ul>
         </li>
 
-        <li class="<%= class_string({ active: (['coupons','campaigns', 'push_campaigns', 'audiences', 'stock_alerts', 'testimonials', 'shopping_videos'].include? controller.controller_name) }) %>">
+        <li class="<%= class_string({ active: (['coupons','campaigns', 'push_campaigns', 'audiences', 'stock_alerts', 'testimonials', 'shopping_videos', 'always_on_banners'].include? controller.controller_name) }) %>">
           <a href="javascript:;"> <i class="material-icons">attach_money</i> <span class="title">Marketing</span><span class=" arrow"></span>
           </a>
           <ul class="sub-menu">
@@ -128,6 +131,9 @@
             </li>
             <li class="<%= class_string({ start: true, active: (controller.controller_name == 'shopping_videos' && controller.action_name == 'index')}) %>">
               <%= link_to "Shopping Videos", backoffice_shopping_videos_path %>
+            </li>
+            <li class="<%= class_string({ start: true, active: (controller.controller_name == 'always_on_banners' && controller.action_name == 'index')}) %>">
+              <%= link_to "Always On Banner", backoffice_always_on_banners_path %>
             </li>
           </ul>
         </li>

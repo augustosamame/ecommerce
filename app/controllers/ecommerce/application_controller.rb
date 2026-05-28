@@ -12,6 +12,7 @@ module Ecommerce
     # before_action :set_wishlist
     before_action :set_header_menu_items
     before_action :set_always_on_coupon
+    before_action :set_always_on_banner
     #before_render :set_controller_meta_tags
 
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"
@@ -164,7 +165,11 @@ module Ecommerce
     end
 
     def set_always_on_coupon
-      @always_on_coupon = Ecommerce::Coupon.where(always_on_active: true).first
+      @always_on_coupon = Ecommerce::Coupon.where(always_on_active: true, status: :active, web_enabled: true).first
+    end
+
+    def set_always_on_banner
+      @always_on_banner = Ecommerce::AlwaysOnBanner.active.where(web_enabled: true).first
     end
 
     def set_controller_meta_tags

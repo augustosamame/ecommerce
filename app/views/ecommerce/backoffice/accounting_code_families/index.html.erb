@@ -1,0 +1,33 @@
+<div class="page-header">
+  <%= link_to new_backoffice_accounting_code_family_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Accounting Code Family
+  <% end %>
+  <h1>Listing Accounting Code Families</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Accounting Code</th>
+        <th>Product Family</th>
+        <th><%= t('common.show') %></th>
+        <th><%= t('common.edit') %></th>
+        <th><%= t('common.destroy') %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @backoffice_accounting_code_families.each do |backoffice_accounting_code_family| %>
+        <tr>
+          <td><%= backoffice_accounting_code_family.accounting_code %></td>
+          <td><%= backoffice_accounting_code_family.product_family %></td>
+          <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_accounting_code_family_path(backoffice_accounting_code_family) %></td>
+          <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_accounting_code_family_path(backoffice_accounting_code_family) %></td>
+          <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_accounting_code_family_path(backoffice_accounting_code_family), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

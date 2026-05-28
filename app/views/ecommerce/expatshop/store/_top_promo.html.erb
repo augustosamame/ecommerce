@@ -1,9 +1,20 @@
+<% if @always_on_banner %>
+  <% banner_message = (session[:locale] == 'es-PE' ? @always_on_banner.message_es : @always_on_banner.message_en).to_s %>
+  <% if @always_on_banner.link_url.present? %>
+    <a href="<%= @always_on_banner.link_url %>" class="top_promo_link">
+      <div class="top_promo"><%= banner_message.html_safe %></div>
+    </a>
+  <% else %>
+    <div class="top_promo"><%= banner_message.html_safe %></div>
+  <% end %>
+<% end %>
+
 <% if @always_on_coupon %>
   <div class="top_promo">
     <% if session[:locale] == 'es-PE' %>
       <%= @always_on_coupon.always_on_message_es.try(:html_safe) %>
-    <% else %> 
+    <% else %>
       <%= @always_on_coupon.always_on_message_en.try(:html_safe) %>
-    <% end %> 
+    <% end %>
   </div>
-<% end %> 
+<% end %>

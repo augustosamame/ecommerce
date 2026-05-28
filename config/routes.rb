@@ -5,6 +5,7 @@ Ecommerce::Engine.routes.draw do
     get 'users/autocomplete', :to => 'users#autocomplete'
     resources :users
     resources :brands
+    resources :accounting_code_families
     resources :sliders
     put '/sliders_in_place/:id' => 'sliders#best_in_place_update'
     resources :suppliers
@@ -78,6 +79,7 @@ Ecommerce::Engine.routes.draw do
     resources :stock_alerts
     resources :testimonials
     resources :shopping_videos
+    resources :always_on_banners
     resources :email_reports, only: [:index]
   end
 

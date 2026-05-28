@@ -5,6 +5,7 @@
     <%= f.association :category, as: :tags, :value_method => lambda { |category| "#{category.name}" }, :label_method => lambda { |category| "#{category.name}" }, label: t('.categories') %>
     <%= f.association :brand, :label_method => lambda { |brand| "#{brand.name}" }, label: t('.brand') %>
     <%= f.association :supplier, :label_method => lambda { |supplier| "#{supplier.name}" }, label: t('.supplier')  %>
+    <%= f.association :accounting_code_family, :label_method => lambda { |acf| acf.code_and_family }, label: 'Accounting Code / Family', include_blank: true %>
     <%= f.input :status, collection: Ecommerce::Product.statuses.keys, label: t('.status') %>
     <%= f.input :name, label: t('.name') %>
     <%= f.association :coupons, :value_method => lambda { |coupon| "#{coupon.id}" }, :label_method => lambda { |coupon| "#{coupon.coupon_code}" }, label: t('.any_coupons') %>
@@ -14,6 +15,7 @@
     <%= f.input :description, label: t('.long_description') %>
     <%= f.input :price_cents, :input_html => { :id => 'price-cents' }, label: t('.price') %>
     <%= f.input :discounted_price_cents, :input_html => { :id => 'discounted-price-cents' }, label: t('.discounted_price') %>
+    <%= f.input :costo_cents, label: 'Costo (optional)', required: false %>
     <%= f.input :weight, label: t('.item_weight') %>
     <h4>Taxes</h4>
     <div class="well">

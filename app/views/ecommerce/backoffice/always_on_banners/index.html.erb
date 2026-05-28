@@ -1,0 +1,41 @@
+<div class="page-header">
+  <%= link_to new_backoffice_always_on_banner_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Always On Banner
+  <% end %>
+  <h1>Always On Banners</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Message (ES)</th>
+        <th>Message (EN)</th>
+        <th>Link</th>
+        <th>Web</th>
+        <th>App</th>
+        <th>Status</th>
+        <th><%= t('common.show') %></th>
+        <th><%= t('common.edit') %></th>
+        <th><%= t('common.destroy') %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @always_on_banners) do |banner| %>
+        <td><%= banner.id %></td>
+        <td><%= truncate(banner.message_es.to_s, length: 80) %></td>
+        <td><%= truncate(banner.message_en.to_s, length: 80) %></td>
+        <td><%= banner.link_url %></td>
+        <td><%= banner.web_enabled? %></td>
+        <td><%= banner.app_enabled? %></td>
+        <td><%= banner.status %></td>
+        <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_always_on_banner_path(banner) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_always_on_banner_path(banner) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_always_on_banner_path(banner), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

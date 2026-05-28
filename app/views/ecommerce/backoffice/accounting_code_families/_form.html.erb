@@ -1,0 +1,12 @@
+<%= simple_form_for([:backoffice, @backoffice_accounting_code_family]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :accounting_code, label: 'Accounting Code' %>
+    <%= f.input :product_family, label: 'Product Family' %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, t('common.save'), class: "btn btn-primary" %>
+  </div>
+<% end %>
