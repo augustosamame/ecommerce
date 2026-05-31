@@ -17,7 +17,7 @@ module Ecommerce
         .where("ecommerce_carts.created_at < ?", cutoff)
         .where(id: Ecommerce::CartItem.select(:cart_id))
         .includes(:user, cart_items: :product)
-        .order(created_at: :asc)
+        .order(created_at: :desc)
 
       @total_carts        = scope.count
       @carts_with_user    = scope.where.not(user_id: nil).count
