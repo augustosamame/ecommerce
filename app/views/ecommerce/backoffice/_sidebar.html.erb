@@ -101,7 +101,7 @@
           </ul>
         </li>
 
-        <li class="<%= class_string({ active: (['coupons','campaigns', 'push_campaigns', 'audiences', 'stock_alerts', 'testimonials', 'shopping_videos', 'always_on_banners', 'free_products'].include? controller.controller_name) }) %>">
+        <li class="<%= class_string({ active: (['coupons','campaigns', 'push_campaigns', 'audiences', 'stock_alerts', 'testimonials', 'shopping_videos', 'always_on_banners'].include? controller.controller_name) }) %>">
           <a href="javascript:;"> <i class="material-icons">attach_money</i> <span class="title">Marketing</span><span class=" arrow"></span>
           </a>
           <ul class="sub-menu">
@@ -134,9 +134,6 @@
             </li>
             <li class="<%= class_string({ start: true, active: (controller.controller_name == 'always_on_banners' && controller.action_name == 'index')}) %>">
               <%= link_to "Always On Banner", backoffice_always_on_banners_path %>
-            </li>
-            <li class="<%= class_string({ start: true, active: (controller.controller_name == 'free_products')}) %>">
-              <%= link_to "Free Product", edit_backoffice_free_product_path %>
             </li>
           </ul>
         </li>

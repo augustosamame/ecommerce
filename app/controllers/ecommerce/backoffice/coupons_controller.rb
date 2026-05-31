@@ -71,7 +71,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def coupon_params
-        params.require(:coupon).permit(:coupon_code, :coupon_type, :discount_percentage_decimal, :discount_fixed, :discount_threshold, :start_date, :end_date, :max_uses_per_user, :max_uses, :current_uses, :free_shipping, :status, :web_enabled, :app_enabled, :always_on_active, :always_on_start_date, :always_on_end_date, :always_on_message_en, :always_on_message_es, :first_app_purchase_active, :first_app_purchase_message_en, :first_app_purchase_message_es, :minimum_quantity_applies, :minimum_quantity, :minimum_quantity_product, :combo_applies, :coupon_terms_en, :coupon_terms_es, :combo_products => [])
+        params.require(:coupon).permit(:coupon_code, :coupon_type, :discount_percentage_decimal, :discount_fixed, :discount_threshold, :start_date, :end_date, :max_uses_per_user, :max_uses, :current_uses, :free_shipping, :status, :web_enabled, :app_enabled, :always_on_active, :always_on_start_date, :always_on_end_date, :always_on_message_en, :always_on_message_es, :first_app_purchase_active, :first_app_purchase_message_en, :first_app_purchase_message_es, :minimum_quantity_applies, :minimum_quantity, :minimum_quantity_product, :combo_applies, :coupon_terms_en, :coupon_terms_es, :free_product_id, :combo_products => [])
       end
   end
 end

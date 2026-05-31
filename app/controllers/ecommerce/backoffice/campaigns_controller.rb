@@ -19,6 +19,31 @@ module Ecommerce
     end
 
     def post_send_recipients
+      coupon_id = params[:other][:coupon_id]
+
+      # Test-send path: admin explicitly picked one user to receive the
+      # campaign. Bypass the role / guest-status filters (the whole point of
+      # the test field is to send to any one specific user), but still keep
+      # the compliance checks — must have an email and not be on the
+      # suppression list.
+      test_user_id = params[:other][:test_user_id].to_i
+      if test_user_id > 0
+        test_user = User.find_by(id: test_user_id)
+        if test_user.nil?
+          return redirect_to :backoffice_campaigns, alert: "Test user ##{test_user_id} not found."
+        end
+        if test_user.email.blank?
+          return redirect_to :backoffice_campaigns, alert: "Test user ##{test_user_id} has no email on file."
+        end
+        if test_user.email_suppressed?
+          return redirect_to :backoffice_campaigns, alert: "Test user ##{test_user_id} (#{test_user.email}) is on the suppression list."
+        end
+
+        SendAllCampaignEmailsWorker.perform_async([test_user.id], coupon_id, @campaign.id)
+        return redirect_to :backoffice_campaigns,
+                           notice: "Test email queued to user ##{test_user.id} (#{test_user.email})."
+      end
+
       user_array = params[:other][:user_list].to_s.split(',').map(&:to_i).reject(&:zero?)
 
       # When the admin picks a predetermined Audience, materialize its active
@@ -33,7 +58,6 @@ module Ecommerce
         user_array = (user_array + audience_user_ids).uniq
       end
 
-      coupon_id = params[:other][:coupon_id]
       unique_users_by_email = emailable_users.where(id: user_array).uniq(&:email)
 
       user_ids = unique_users_by_email.map(&:id)

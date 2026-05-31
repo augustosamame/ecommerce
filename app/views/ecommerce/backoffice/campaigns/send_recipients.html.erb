@@ -33,6 +33,14 @@
       <span style="margin-left: 5px;"> days</span>
     </div>
 
+    <div class= "row" style="margin-bottom: 30px; margin-left: 0px;">
+      <h3>Send Test to a Single User</h3>
+      <span style="margin-right:5px;">User ID:</span>
+      <input type="text" id="test_user_id" style="width:120px;">
+      <button type="button" class="btn btn-default" id="set_test_user_btn">Use this user</button>
+      <span class="text-muted" style="margin-left:10px;">Replaces the recipient list with just this user — handy to test the campaign before a bulk send.</span>
+    </div>
+
     </div>
 
     <div class="well" style="margin-top: 0px;">
@@ -57,6 +65,8 @@
         <%= o.label :user_list, 'Total Number of Recipients: ', :id => "recipientLabel" %>
         <%= o.input :user_list, as: :string, label: false %>
         <%= o.input :coupon_id, as: :hidden, input_html: {value: @campaign.coupon.try(:id)} %>
+        <%# When set, the controller routes through the test-send path which bypasses role/guest filters. %>
+        <%= o.input :test_user_id, as: :hidden %>
       <% end %>
 
   </div>
@@ -87,6 +97,22 @@ document.addEventListener('DOMContentLoaded', function(){
     $("#negative-selection").val("");
     $(".search_purchaser_products").val("");
     $("#campaign_recipient").val(getNoPurchaseWithinDays($(this).val()));
+  });
+
+  $("#set_test_user_btn").click(function() {
+    var raw = $("#test_user_id").val().trim();
+    if (!raw) return;
+    var n = parseInt(raw, 10);
+    if (isNaN(n) || n <= 0) { alert("Enter a valid user ID"); return; }
+    // Route through the controller's test-send path (bypasses role/guest
+    // filters). Clear the bulk inputs so there's no ambiguity about who
+    // will receive the email.
+    $(".search_purchaser_products").val("");
+    $("#days_since_purchase").val("");
+    $("#other_audience_id").val("");
+    $("#other_user_list").val("");
+    $("#other_test_user_id").val(String(n));
+    $("#recipientLabel").text("Total Number of Recipients: 1 (test → user " + n + ")");
   });
 
   function getNoPurchaseWithinDays(numberDays) {

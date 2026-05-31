@@ -10,11 +10,15 @@ module Ecommerce
     has_many :orders
     #has_many :products
     has_and_belongs_to_many :products, join_table: :coupons_products
+    # For coupon_type=free_product: the product to inject into the cart at 1c.
+    belongs_to :free_product, class_name: 'Ecommerce::Product',
+               foreign_key: :free_product_id, optional: true
 
     enum status: {active: 0, inactive: 1}
-    enum coupon_type: {percentage_discount: 0, fixed_discount_with_threshold: 1, fixed_discount_without_threshold: 2, percentage_discount_per_product: 3}
+    enum coupon_type: {percentage_discount: 0, fixed_discount_with_threshold: 1, fixed_discount_without_threshold: 2, percentage_discount_per_product: 3, free_product: 4}
 
     validates_presence_of :coupon_code, :coupon_type, :status
+    validate :free_product_id_required_when_free_product_type
 
     def start_date=(value)
       super(coerce_form_datetime(value, :beginning_of_day))
@@ -154,6 +158,28 @@ module Ecommerce
       if self.first_app_purchase_active
         self.web_enabled = false
         self.app_enabled = true
+      end
+    end
+
+    def free_product_id_required_when_free_product_type
+      return unless free_product?
+      errors.add(:free_product_id, 'must be selected for Free Product coupons') if free_product_id.blank?
+    end
+
+    # Returns the currently-applicable always-on free_product coupon for the
+    # given platform, or nil. Mirrors the start/end_date + status/web/app
+    # filters used by set_always_on_coupon so cart-side logic doesn't need
+    # to re-derive eligibility.
+    def self.active_free_product_for(platform)
+      scope = where(coupon_type: coupon_types[:free_product],
+                    status: statuses[:active],
+                    always_on_active: true)
+        .where("start_date IS NULL OR start_date <= ?", Time.current)
+        .where("end_date IS NULL OR end_date >= ?", Time.current)
+
+      case platform.to_s
+      when 'web' then scope.where(web_enabled: true).first
+      when 'app' then scope.where(app_enabled: true).first
       end
     end
 

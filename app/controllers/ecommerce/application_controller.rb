@@ -179,43 +179,43 @@ module Ecommerce
     end
 
     # Web requests run through this controller; stamp the current platform so
-    # models (Ecommerce::CartItem) can branch behaviour without taking a
-    # platform: kwarg on every call.
+    # models (Ecommerce::CartItem) can branch the Free Product coupon logic
+    # without taking a platform: kwarg on every call.
     def set_platform_context
       Current.platform = :web
     end
 
-    # Cart views call this to decide whether to disable remove + qty controls
-    # for a given line. Currently true for combo-injected free products and
-    # for the Free Product marketing line. Keep this as the single check so
-    # we don't sprinkle array unions across templates.
-    helper_method :cart_item_locked?
-    def cart_item_locked?(item)
-      return false unless item
-      pid = item.respond_to?(:product_id) ? item.product_id : item
-      @combo_injected_product_ids.to_a.include?(pid) ||
-        @free_product_protected_ids.to_a.include?(pid)
-    end
-
-    # When the Free Product feature is active, ensure the singleton's
-    # configured product is in the cart with quantity 1. Resets the
-    # quantity if it drifted, and records the product_id in
-    # @free_product_protected_ids so views can render the disabled-delete
-    # affordance (mirroring the combo-injected pattern).
+    # When a `free_product` coupon is active (always_on, status active, in
+    # date range, web_enabled) ensure its product is in the cart at qty 1.
+    # Mirrors the always-on coupon eligibility checks so admin-side toggles
+    # propagate immediately.
     def ensure_free_product_in_cart
-      @free_product_protected_ids = []
+      @free_product_coupon_product_ids = []
       return unless @cart && @cart.status == 'active'
 
-      free_id = Ecommerce::FreeProduct.protected_product_id_for(:web)
-      return unless free_id
+      coupon = Ecommerce::Coupon.active_free_product_for(:web)
+      return unless coupon&.free_product_id
 
+      free_id = coupon.free_product_id
       item = @cart.cart_items.find_by(product_id: free_id)
       if item
         item.update(quantity: 1) if item.quantity != 1
       else
         @cart.cart_items.create(product_id: free_id, quantity: 1)
       end
-      @free_product_protected_ids = [free_id]
+      @free_product_coupon_product_ids = [free_id]
+    end
+
+    # Cart views call this to decide whether to disable remove + qty controls
+    # for a given line. True for combo-injected free products AND for the
+    # Free Product coupon line — keep the single check so we don't sprinkle
+    # array unions across templates.
+    helper_method :cart_item_locked?
+    def cart_item_locked?(item)
+      return false unless item
+      pid = item.respond_to?(:product_id) ? item.product_id : item
+      @combo_injected_product_ids.to_a.include?(pid) ||
+        @free_product_coupon_product_ids.to_a.include?(pid)
     end
 
     def set_controller_meta_tags

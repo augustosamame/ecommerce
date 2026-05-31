@@ -75,10 +75,9 @@ module Ecommerce
     end
 
     def update
-      # The Free Product line is fixed at quantity 1 — silently ignore any
-      # qty mutation. The UI disables the controls; this is the backend safety
-      # net against direct POSTs.
-      if @cart_item.free_product?
+      # Free Product coupon line is locked at qty 1 — silently no-op so the UI
+      # disable + this backend guard stay aligned against direct POSTs.
+      if @cart_item.free_product_line?
         redirect_to @cart_item.cart and return
       end
       @cart_item.update(quantity: cart_item_params[:quantity]) unless cart_item_params[:quantity].nil?
@@ -86,8 +85,8 @@ module Ecommerce
     end
 
     def destroy
-      # The Free Product line cannot be removed while the feature is active.
-      if @cart_item.free_product?
+      # Free Product coupon line cannot be removed while the coupon is active.
+      if @cart_item.free_product_line?
         respond_to do |format|
           format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show" }
           format.html { redirect_to cart_path(@cart) }

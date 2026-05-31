@@ -1,0 +1,133 @@
+<div class="page-header">
+  <%= link_to backoffice_audiences_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <h1>Populate Audience Members</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Audience Name:</dt>
+  <dd><%= @audience.audience_name %></dd>
+
+  <dt>Audience Type:</dt>
+  <dd><%= @audience.audience_type %></dd>
+
+  <dt>Status:</dt>
+  <dd><%= @audience.status %></dd>
+
+  <dt>Current members:</dt>
+  <dd>
+    <%= @current_member_count %> total
+    <% if @current_member_count != @active_member_count %>
+      (<%= @active_member_count %> active, <%= @current_member_count - @active_member_count %> inactive)
+    <% end %>
+  </dd>
+</dl>
+
+<div class= "col-lg-8">
+  <div class="well" style="margin-top: 0px;">
+    <h2><strong>Filters</strong></h2>
+    <div class= "row" style="margin-bottom: 30px; margin-left: 0px;">
+      <h3>Filter by Purchasers of Product</h3>
+      <span class="add-on">Choose Product:</span>
+      <input name="" type="text" class="no-boarder search_purchaser_products" placeholder="start typing to search..." style="width:250px;">
+    </div>
+    <div class= "row" style="margin-bottom: 30px; margin-left: 0px;">
+      <h3>Filter by Purchasing Activity</h3>
+      <span style="margin-right: 5px;">No Purchases in last</span>
+      <input name="days_since_purchase" type="text" class="" style="width:50px;" id="days_since_purchase">
+      <span style="margin-left: 5px;"> days</span>
+    </div>
+
+    <div class= "row" style="margin-bottom: 30px; margin-left: 0px;">
+      <h3>Add a Single User</h3>
+      <span style="margin-right:5px;">User ID:</span>
+      <input type="text" id="single_user_id" style="width:120px;">
+      <button type="button" class="btn btn-default" id="add_single_user_btn">Add to list</button>
+      <span class="text-muted" style="margin-left:10px;">Quick way to seed/test with one user.</span>
+    </div>
+  </div>
+
+  <div class="well" style="margin-top: 0px;">
+    <%= simple_form_for(:other,
+          url: backoffice_audience_post_create_recipients_path(@audience),
+          method: :post,
+          html: { id: 'audience_recipients_form' }) do |o| %>
+
+      <%= o.label :user_list, 'Selected User IDs (comma-separated): ', id: 'recipientLabel' %>
+      <%= o.input :user_list, as: :text, label: false, input_html: { rows: 4 } %>
+
+      <%= o.input :mode, as: :radio_buttons,
+              collection: [['Add to existing members', 'add'], ['Replace existing members', 'replace']],
+              label: 'How to apply',
+              checked: 'add' %>
+
+      <div class="form-actions">
+        <%= o.button :submit, 'Save Members to Audience', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var products_tags = jQuery.parseJSON(<%= raw @products_array.to_json.inspect %>);
+
+  $(".search_purchaser_products").autocomplete({
+    autoFocus: false,
+    minLength: 1,
+    source: products_tags,
+    select: function (e, ui) {
+      $("#days_since_purchase").val("");
+      getPurchasers(ui.item.id);
+    }
+  });
+
+  $("#days_since_purchase").change(function () {
+    $(".search_purchaser_products").val("");
+    getNoPurchaseWithinDays($(this).val());
+  });
+
+  $("#add_single_user_btn").click(function () {
+    var raw = $("#single_user_id").val().trim();
+    if (!raw) return;
+    var n = parseInt(raw, 10);
+    if (isNaN(n) || n <= 0) {
+      alert("Enter a valid user ID");
+      return;
+    }
+    var current = $("#other_user_list").val().split(',').map(function(s){ return s.trim(); }).filter(function(s){ return s.length; });
+    if (current.indexOf(String(n)) === -1) current.push(String(n));
+    $("#other_user_list").val(current.join(','));
+    $("#recipientLabel").text("Selected User IDs (comma-separated): " + current.length + " selected");
+    $("#single_user_id").val("");
+  });
+
+  function getNoPurchaseWithinDays(numberDays) {
+    $.ajax({
+      url: "/store/backoffice/audience_get_no_purchase_within_days?days=" + numberDays,
+      type: 'GET',
+      dataType: "json",
+      success: function (data) {
+        var parsed = JSON.parse(data["data"]);
+        $("#other_user_list").val(parsed);
+        $("#recipientLabel").text("Selected User IDs (comma-separated): " + parsed.length + " selected");
+      }
+    });
+  }
+
+  function getPurchasers(productId) {
+    $.ajax({
+      url: "/store/backoffice/audience_get_purchasers?product_id=" + productId,
+      type: 'GET',
+      dataType: "json",
+      success: function (data) {
+        var parsed = JSON.parse(data["data"]);
+        $("#other_user_list").val(parsed);
+        $("#recipientLabel").text("Selected User IDs (comma-separated): " + parsed.length + " selected");
+      }
+    });
+  }
+});
+</script>

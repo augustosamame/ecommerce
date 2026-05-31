@@ -4,6 +4,17 @@
   <div class="form-inputs">
     <%= f.input :coupon_code, label: t('.coupon_code') %>
     <%= f.input :coupon_type, label: t('.coupon_type'), collection: Ecommerce::Coupon.coupon_types.keys %>
+
+    <div id="coupon-free-product-fields" class="well" style="<%= 'display: none;' unless @coupon.free_product? %>">
+      <%= f.input :free_product_id,
+          as: :select2,
+          collection: Ecommerce::Product.active.order(:name),
+          label_method: :name,
+          label: 'Free product to inject into cart at 1 cent',
+          include_blank: '— select a product —' %>
+      <small class="text-muted">Used only by the <code>free_product</code> coupon type. One unit is auto-added to every cart on the enabled platform(s) and cannot be removed or its quantity changed.</small>
+    </div>
+
     <%= f.input :discount_percentage_decimal, label: t('.discount_percentage_decimal') %>
     <%= f.input :discount_fixed, label: t('.discount_fixed') %>
     <%= f.input :discount_threshold, label: t('.discount_threshold') %>
@@ -57,6 +68,17 @@ $(document).ready(function () {
     locale: 'en',
     format: 'YYYY-MM-DD'
   });
+  $('#coupon_free_product_id').select2({ width: '100%' });
+
+  function toggleFreeProductFields() {
+    var $fields = $('#coupon-free-product-fields');
+    if ($('#coupon_coupon_type').val() === 'free_product') {
+      $fields.show();
+    } else {
+      $fields.hide();
+    }
+  }
+  $('#coupon_coupon_type').on('change', toggleFreeProductFields);
 });
 
 </script>

@@ -80,7 +80,6 @@ Ecommerce::Engine.routes.draw do
     resources :testimonials
     resources :shopping_videos
     resources :always_on_banners
-    resource :free_product, only: [:show, :edit, :update], controller: 'free_products'
     resources :email_reports, only: [:index]
     resources :abandoned_carts, only: [:index]
   end
