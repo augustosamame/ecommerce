@@ -5,7 +5,7 @@ module Ecommerce
     # Guest checkout: allow logged-out visitors to view checkout and submit the
     # disguised "Comprar como Invitado" form without hitting the global
     # authenticate_user! wall (defined in the host ApplicationController).
-    skip_before_action :authenticate_user!, only: [:show, :guest_register, :check_stock_cart_js_from_checkout]
+    skip_before_action :authenticate_user!, only: [:show, :pre_checkout, :guest_register, :check_stock_cart_js_from_checkout]
     #before_action :set_checkout, only: [:show, :edit, :update, :destroy]
     before_action :find_or_create_order, only: [:pay_order_culqi_checkout, :pay_order_pagoefectivo_checkout, :pay_order_bank, :pay_order_manual]
     before_action :consolidate_cart, only: [:show]
