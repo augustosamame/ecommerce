@@ -4,12 +4,16 @@ module Ecommerce
   class AddressesController < ApplicationController
     before_action :set_address, only: [:show, :edit, :update, :destroy]
 
-    #skip_before_action :authenticate_user!, except: [:destroy]
+    # Guest checkout: the map preview geocodes a street+district only (no user
+    # data), so allow it for logged-out visitors filling the "Comprar como
+    # Invitado" form before they have a session.
+    skip_before_action :authenticate_user!, only: [:update_map]
+
     #skip_before_action :verify_authenticity_token, only: [:create]
 
     respond_to :html, :json, :js
 
-    authorize_resource
+    authorize_resource except: [:update_map]
 
     # GET /addresses
     # GET /addresses.json

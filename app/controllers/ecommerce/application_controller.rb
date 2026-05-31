@@ -165,7 +165,11 @@ module Ecommerce
     end
 
     def set_always_on_coupon
-      @always_on_coupon = Ecommerce::Coupon.where(always_on_active: true, status: :active, web_enabled: true).first
+      @always_on_coupon = Ecommerce::Coupon
+        .where(always_on_active: true, status: :active, web_enabled: true)
+        .where("start_date IS NULL OR start_date <= ?", Time.current)
+        .where("end_date IS NULL OR end_date >= ?", Time.current)
+        .first
     end
 
     def set_always_on_banner

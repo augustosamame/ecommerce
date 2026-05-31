@@ -138,7 +138,7 @@
           </ul>
         </li>
 
-        <li class="<%= class_string({ active: (['reports', 'email_reports'].include? controller.controller_name) }) %>">
+        <li class="<%= class_string({ active: (['reports', 'email_reports', 'abandoned_carts'].include? controller.controller_name) }) %>">
           <a href="javascript:;"> <i class="material-icons">assessment</i> <span class="title">Reports</span><span class=" arrow"></span>
           </a>
           <ul class="sub-menu">
@@ -147,6 +147,9 @@
             </li>
             <li class="<%= class_string({ start: true, active: (controller.controller_name == 'email_reports' && controller.action_name == 'index')}) %>">
               <%= link_to "Email Tracking", backoffice_email_reports_path %>
+            </li>
+            <li class="<%= class_string({ start: true, active: (controller.controller_name == 'abandoned_carts' && controller.action_name == 'index')}) %>">
+              <%= link_to "Abandoned Carts", backoffice_abandoned_carts_path %>
             </li>
           </ul>
         </li>

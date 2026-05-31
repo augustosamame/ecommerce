@@ -10,20 +10,25 @@
   <div class="container-fluid">
     <div class="row checkout-row">
       <div class="col-md-6">
-        <h3><%= t('.shipping_address') %></h3>
-        <div class="have-address">
-          <p><%= t('.pick_address') %></p>
+        <% if @guest_checkout %>
+          <h3><%= t('.buy_as_guest') %></h3>
+          <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/guest_form" %>
+        <% else %>
+          <h3><%= t('.shipping_address') %></h3>
+          <div class="have-address">
+            <p><%= t('.pick_address') %></p>
 
-          <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
-        </div>
-        <div class="direction-btn">
-          <button id="new-address-button" class="checkout-address-button"><%= t('.new_address') %></button>
-          <button id="delete-address-button" class="checkout-address-button"><%= t('.delete_address') %></button>
-        </div>
+            <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
+          </div>
+          <div class="direction-btn">
+            <button id="new-address-button" class="checkout-address-button"><%= t('.new_address') %></button>
+            <button id="delete-address-button" class="checkout-address-button"><%= t('.delete_address') %></button>
+          </div>
 
-        <div id="new-address-container" style="display: none;">
-          <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
-        </div>
+          <div id="new-address-container" style="display: none;">
+            <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
+          </div>
+        <% end %>
       </div>
 
 
@@ -112,7 +117,7 @@
             </div>
           </div>
 
-          <% if current_user.try(:points) > 0 %>
+          <% if current_user && current_user.points.to_i > 0 %>
 
             <div class="d-flex space-between" style="margin-top: 20px;">
               <div class="checkout-pay-in-points-p">
@@ -182,6 +187,10 @@
           </div>
         <% end %>
 
+         <%# Factura (electronic invoice) is a session/account feature: a guest has %>
+         <%# no saved factura record and no signed-in context to enter one, so the %>
+         <%# whole block is hidden for guests (they receive a boleta). %>
+         <% unless @guest_checkout %>
          <div class="pay-in-soles d-flex space-between checkout-p-text-mobile" style="padding-bottom: 20px;">
           <div class="checkout-receipt-div">
             <div class="checkout-receipt-div-inner">
@@ -199,6 +208,7 @@
             </div>
           </div>
         </div>
+        <% end %>
 
         <form id="radio_form">
           <div class="payment">
@@ -348,11 +358,13 @@ $( document ).ready(function() {
       });
   }
 
-  var address_option_length = $('#address_id > option').length;
-  $("#address_id").get(0).selectedIndex = address_option_length - 1;
-  if ($("#address_id option:selected").text().split(',')[2]) {
-    var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
-    calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
+  if ($("#address_id").get(0)) {
+    var address_option_length = $('#address_id > option').length;
+    $("#address_id").get(0).selectedIndex = address_option_length - 1;
+    if ($("#address_id option:selected").text().split(',')[2]) {
+      var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
+      calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
+    }
   }
 
   function openFacturaModal() {
@@ -427,6 +439,17 @@ $( document ).ready(function() {
 
   var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
   var culqi_payment_amount = Number(($('#payment-amount').html() * 100).toFixed(2));
+
+  // Guest checkout state. When the visitor has no session the disguised
+  // "Comprar como Invitado" form collects their identity + address; on submit
+  // we create+sign-in a guest user (guest_register) and these client_* values
+  // are filled from the server response so the Culqi popup gets real data.
+  var is_guest_checkout = <%= @guest_checkout ? 'true' : 'false' %>;
+  var client_first_name = '<%= j(@current_user_first_name.to_s) %>';
+  var client_last_name = '<%= j(@current_user_last_name.to_s) %>';
+  var client_email = '<%= j(@current_user_email.to_s) %>';
+  var client_phone = '<%= j(@current_user_phone.to_s) %>';
+
   var shipping_calculated_flag = false
   var exchange_rate = <%= @exchange_rate %>
   var info_factura_blank = <%= @info_factura_available.blank? %>
@@ -543,34 +566,89 @@ $( document ).ready(function() {
     });
   }
 
-  // Auto-save address via AJAX (returns a Promise)
+  // Validate the guest identity fields before we try to register. Returns an
+  // error message string, or null when everything looks good.
+  function validateGuestFields() {
+    var firstName = $.trim($('#guest_first_name').val());
+    var lastName = $.trim($('#guest_last_name').val());
+    var phone = $.trim($('#guest_username').val());
+    var email = $.trim($('#guest_email').val());
+
+    if (!firstName || !lastName || !phone || !email) {
+      return "<%= j(t('.you_must_pick_or_save_an_address')) %>";
+    }
+    if (!/^\d{9}$/.test(phone)) {
+      return '<%= j(I18n.t("activerecord.errors.models.user.attributes.username.wrong_length", default: "El celular debe tener 9 dígitos")) %>';
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      return '<%= j(I18n.t("errors.messages.invalid", default: "Correo electrónico inválido")) %>';
+    }
+    return null;
+  }
+
+  // Auto-save address via AJAX (returns a Promise). For guests this hits
+  // guest_register (create+sign-in+address) instead of the addresses endpoint;
+  // both return the same { success, address: {id, display} } shape so the
+  // caller is identical.
   function tryAutoSaveAddress() {
     return new Promise(function(resolve, reject) {
-      var addressData = {
-        address: {
-          name: $('#address_name').val() || 'Home',
+      var url, data;
+
+      if (is_guest_checkout) {
+        url = "<%= Ecommerce::Engine.routes.url_helpers.checkout_guest_register_path %>";
+        data = {
+          first_name: $('#guest_first_name').val(),
+          last_name: $('#guest_last_name').val(),
+          username: $('#guest_username').val(),
+          email: $('#guest_email').val(),
+          address_name: $('#address_name').val() || 'Home',
           street: $('#address_street').val(),
           district: $('#address_district').val(),
-          city: 'Lima',
-          state: 'Lima',
-          country: 'Peru',
-          shipping_or_billing: 'shipping',
           latitude: $('#address_latitude').val(),
           longitude: $('#address_longitude').val(),
           raw_address: $('#address_raw_address').val()
-        }
-      };
+        };
+      } else {
+        url = "<%= Ecommerce::Engine.routes.url_helpers.addresses_path %>";
+        data = {
+          address: {
+            name: $('#address_name').val() || 'Home',
+            street: $('#address_street').val(),
+            district: $('#address_district').val(),
+            city: 'Lima',
+            state: 'Lima',
+            country: 'Peru',
+            shipping_or_billing: 'shipping',
+            latitude: $('#address_latitude').val(),
+            longitude: $('#address_longitude').val(),
+            raw_address: $('#address_raw_address').val()
+          }
+        };
+      }
 
       $.ajax({
-        url: "<%= Ecommerce::Engine.routes.url_helpers.addresses_path %>",
+        url: url,
         type: 'POST',
         dataType: 'json',
-        data: addressData,
+        data: data,
         headers: {
           'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
         },
-        success: function(data) {
-          resolve(data);
+        success: function(resp) {
+          if (is_guest_checkout && resp && resp.success) {
+            // Devise rotates the CSRF token on sign-in; adopt the fresh one so
+            // the follow-up payment POSTs (which read this meta tag) succeed.
+            if (resp.csrf_token) {
+              $('meta[name="csrf-token"]').attr('content', resp.csrf_token);
+            }
+            if (resp.client_details) {
+              client_first_name = resp.client_details.first_name || client_first_name;
+              client_last_name = resp.client_details.last_name || client_last_name;
+              client_email = resp.client_details.email || client_email;
+              client_phone = resp.client_details.phone || client_phone;
+            }
+          }
+          resolve(resp);
         },
         error: function(xhr) {
           try {
@@ -664,8 +742,18 @@ $( document ).ready(function() {
       var streetVal = $('#address_street').val();
       var districtVal = $('#address_district').val();
 
-      // Check if address form fields are filled
-      if (streetVal && streetVal.trim() !== '' && districtVal && districtVal.trim() !== '') {
+      // For guests, the address form doubles as a sign-up form: validate the
+      // identity fields before attempting to register + save the address.
+      var guestFieldError = is_guest_checkout ? validateGuestFields() : null;
+
+      if (guestFieldError) {
+        errors_present = true;
+        Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: guestFieldError
+        });
+      } else if (streetVal && streetVal.trim() !== '' && districtVal && districtVal.trim() !== '') {
         // Try to auto-save the address
         try {
           var saveResult = await tryAutoSaveAddress();
@@ -733,10 +821,10 @@ $( document ).ready(function() {
           currency_code: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
           cart_id: '<%= @cart.id %>',
           client_details: {
-            first_name: '<%= @current_user_first_name %>',
-            last_name: '<%= @current_user_last_name %>',
-            email: '<%= @current_user_email %>',
-            phone_number: '<%= @current_user_phone %>'
+            first_name: client_first_name,
+            last_name: client_last_name,
+            email: client_email,
+            phone_number: client_phone
           }
         };
 
@@ -773,7 +861,7 @@ $( document ).ready(function() {
                 returnUrl: "<%= ENV["ROLLBAR_ENV"] == 'production' ? 'https://expatshop.pe/store/checkout' : 'http://localhost:3000/store/checkout' %>",
               },
               card: {
-                email: "<%= @current_user_email %>",
+                email: client_email,
               },
             };
 

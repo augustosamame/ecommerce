@@ -2,7 +2,10 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   class CheckoutController < ApplicationController
-    #skip_before_action :authenticate_user!, only: [:show]
+    # Guest checkout: allow logged-out visitors to view checkout and submit the
+    # disguised "Comprar como Invitado" form without hitting the global
+    # authenticate_user! wall (defined in the host ApplicationController).
+    skip_before_action :authenticate_user!, only: [:show, :guest_register, :check_stock_cart_js_from_checkout]
     #before_action :set_checkout, only: [:show, :edit, :update, :destroy]
     before_action :find_or_create_order, only: [:pay_order_culqi_checkout, :pay_order_pagoefectivo_checkout, :pay_order_bank, :pay_order_manual]
     before_action :consolidate_cart, only: [:show]
@@ -87,6 +90,76 @@ module Ecommerce
       end
     end
 
+    # Guest checkout: the disguised "Comprar como Invitado" form posts here.
+    # We find-or-create a (guest) user from the captured data, silently sign
+    # them in (so the rest of checkout runs exactly as a logged-in user), move
+    # the session cart onto the user, and create their shipping address.
+    #
+    # Returns JSON shaped like AddressesController#create so the existing
+    # checkout JS can drop the new address into the (hidden) #address_id select
+    # and continue to payment. We also return a fresh CSRF token because Devise
+    # rotates it on sign-in, which would otherwise 422 the follow-up payment
+    # POSTs that reuse the page's now-stale token.
+    def guest_register
+      user = User.find_or_create_guest_for_checkout(
+        first_name: params[:first_name],
+        last_name:  params[:last_name],
+        username:   params[:username],
+        email:      params[:email]
+      )
+
+      unless user&.persisted?
+        errors = user ? user.errors.full_messages : [t('.you_must_pick_or_save_an_address', default: 'Invalid data')]
+        render json: { success: false, errors: errors }, status: :unprocessable_entity and return
+      end
+
+      sign_in(user)
+
+      # Transfer the anonymous session cart to the now-signed-in user (fills the
+      # long-standing TODO in application_controller#set_cart).
+      if @cart && @cart.user_id.blank?
+        @cart.update(user_id: user.id)
+        user.update(last_cart: @cart.id)
+      end
+
+      address = Address.new(
+        name: params[:address_name].presence || 'Home',
+        street: params[:street],
+        district: params[:district],
+        city: 'Lima',
+        state: 'Lima',
+        country: 'Peru',
+        shipping_or_billing: 'shipping',
+        latitude: params[:latitude],
+        longitude: params[:longitude],
+        raw_address: params[:raw_address]
+      )
+      address.user = user
+
+      if address.district.present? && !address.district.starts_with?("Lima")
+        district_part = address.district.split("-")[0]
+        address.city = district_part&.strip
+        address.state = district_part&.strip
+      end
+
+      if address.save
+        render json: {
+          success: true,
+          signed_in: true,
+          csrf_token: form_authenticity_token,
+          address: { id: address.id, display: "#{address.name}, #{address.street}, #{address.district}" },
+          client_details: {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            phone: "+51#{user.username}".split(':')[0].gsub(/[^\d]/, '')
+          }
+        }, status: :created
+      else
+        render json: { success: false, errors: address.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
     def pre_checkout
       session[:pre_checkout_shown_cart] = @cart.id
       children = Ecommerce::Product.active.where(cross_sell_default: true).pluck(:id).uniq
@@ -118,9 +191,17 @@ module Ecommerce
         end
       end
 
-      @address = Address.new(user_id: current_user.id)
-      @picked_address = Address.new(user_id: current_user.id)
-      @checkout_addresses = Address.where(user_id: current_user.id).order(id: :asc)
+      @guest_checkout = current_user.nil?
+      if current_user
+        @address = Address.new(user_id: current_user.id)
+        @picked_address = Address.new(user_id: current_user.id)
+        @checkout_addresses = Address.where(user_id: current_user.id).order(id: :asc)
+      else
+        # Guest: no saved addresses; the disguised guest form supplies the data.
+        @address = Address.new
+        @picked_address = Address.new
+        @checkout_addresses = []
+      end
       #@districts = ['San Isidro', 'Miraflores', 'Barranco', 'Santiago de Surco', 'La Molina','Chorrillos','San Borja','San Luis','Surquillo','San Miguel','Pueblo Libre','La Victoria','Magdalena','Jesus María','Lince', 'Bellavista de Callao', 'La Perla', 'Breña', 'San Martin de Porras', 'Los Olivos', 'San Juan de Miraflores'].sort
       @districts = Province.all.order(priority: :asc).map{|p| "#{p.province} - #{p.district}"}
       @cart_subtotal = 0
@@ -137,27 +218,30 @@ module Ecommerce
       @payment_manual = PaymentMethod.is_active.find_by(name: "Manual")
       @payment_credit_card_visanet = PaymentMethod.is_active.find_by(name: "Card", processor: "Visanet")
       @payment_credit_card_culqi = PaymentMethod.is_active.find_by(name: "Card", processor: "Culqi")
-      @current_doc_id = current_user.doc_id
+      @current_doc_id = current_user.try(:doc_id)
       @dni_required = (@cart_subtotal.to_f >= 0)
       #@dni_required = (@cart_subtotal.to_f >= 10)
 
-      @current_user_first_name = current_user.first_name
-      @current_user_last_name = current_user.last_name
-      @current_user_email = current_user.email
-      @current_user_phone = "+51#{current_user.username}".split(':')[0].gsub(/[^\d]/, '')
+      @current_user_first_name = current_user.try(:first_name)
+      @current_user_last_name = current_user.try(:last_name)
+      @current_user_email = current_user.try(:email)
+      @current_user_phone = current_user ? "+51#{current_user.username}".split(':')[0].gsub(/[^\d]/, '') : ""
 
       @coupons_active = Ecommerce::allow_coupons
       @always_on_coupon_redeemable = @always_on_coupon && @always_on_coupon.validate_redemption(user: current_user, platform: 'web').first
 
-      info_factura_vat = !Ecommerce::DataBizInvoice.find_by(user_id: current_user.id).try(:vat).blank?
+      # Saved factura (invoice) data is session-dependent; hidden for guests.
       @info_factura_available = false
-      if info_factura_vat
-        @info_factura = Ecommerce::DataBizInvoice.find_by(user_id: current_user.id)
-        @info_factura_available = true
-        @factura_vat = @info_factura.vat
-        @factura_razon_social = @info_factura.razon_social
-        @factura_address = @info_factura.address
-        @factura_city = @info_factura.city
+      if current_user
+        info_factura_vat = !Ecommerce::DataBizInvoice.find_by(user_id: current_user.id).try(:vat).blank?
+        if info_factura_vat
+          @info_factura = Ecommerce::DataBizInvoice.find_by(user_id: current_user.id)
+          @info_factura_available = true
+          @factura_vat = @info_factura.vat
+          @factura_razon_social = @info_factura.razon_social
+          @factura_address = @info_factura.address
+          @factura_city = @info_factura.city
+        end
       end
 
       FacebookConversionsWorker.perform_async('ViewContent', {

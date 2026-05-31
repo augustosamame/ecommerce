@@ -173,6 +173,7 @@ es-PE:
           not_interested_proceed_to_checkout: "CONTINUAR CON CHECKOUT"
         show:
           shipping_address: "Dirección de Envío"
+          buy_as_guest: "Comprar como Invitado"
           pick_address: "Seleccionar Dirección"
           create_a_new_address: "Crear Nueva Dirección"
           your_order: "TU PEDIDO"
@@ -223,6 +224,16 @@ es-PE:
           you_must_check_marketing: "Debe aceptar recibir comunicaciones por correo y SMS"
         pick_address_form:
           pick_an_address: "Selecciona Una Dirección"
+        guest_form:
+          guest_contact_note: "Necesitamos esta información para que el repartidor pueda contactarlo al momento de entregar su pedido."
+          already_a_customer_log_in: "¿Ya eres cliente? Inicia sesión aquí"
+          first_name: "Nombres"
+          last_name: "Apellidos"
+          phone: "Celular"
+          email: "Correo electrónico"
+          street: "Dirección (max 85 caracteres)"
+          district: "Distrito"
+          select_district: "Seleccionar Distrito"
         new_address_form:
           create_a_new_address: "Crear Nueva Dirección"
           type: "Tipo"

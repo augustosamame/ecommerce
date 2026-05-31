@@ -35,10 +35,21 @@
   <dt>Status:</dt>
   <dd><%= @campaign.status %></dd>
 
-  <dt>Link:</dt>
-  <dd><%= @campaign.link %></dd>
-
-  <dt>Image:</dt>
-  <dd><%= image_tag @campaign.image.large.url %></dd>
-
+  <dt>Email Images:</dt>
+  <dd>
+    <% if @campaign.campaign_images.any? %>
+      <% @campaign.campaign_images.each do |ci| %>
+        <div style="margin-bottom: 12px;">
+          <% if ci.link.present? %>
+            <a href="<%= ci.link %>" target="_blank"><%= image_tag ci.image.thumb_100.url %></a>
+            <div><small><%= ci.link %></small></div>
+          <% else %>
+            <%= image_tag ci.image.thumb_100.url %>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <em>(none)</em>
+    <% end %>
+  </dd>
 </dl>

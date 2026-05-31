@@ -131,7 +131,14 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def campaign_params
-        params.require(:campaign).permit(:email_subject, :email_subject_es, :email_coupon_description, :email_coupon_description_es, :image, :image_cache, :campaign_type, :coupon, :coupon_id, :name, :email_template_id, :status, :link, :drip_base_coupon_id, :drip_days_after, :drip_product_id)
+        params.require(:campaign).permit(
+          :email_subject, :email_subject_es,
+          :email_coupon_description, :email_coupon_description_es,
+          :campaign_type, :coupon, :coupon_id, :name,
+          :email_template_id, :status,
+          :drip_base_coupon_id, :drip_days_after, :drip_product_id,
+          campaign_images_attributes: [:id, :image, :image_cache, :link, :position, :_destroy]
+        )
       end
 
       # Excludes admin/driver/etc roles, guest accounts, users on the suppression

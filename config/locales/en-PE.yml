@@ -287,6 +287,7 @@ en-PE:
           not_interested_proceed_to_checkout: "PROCEED TO CHECKOUT"
         show:
           shipping_address: "Shipping Address"
+          buy_as_guest: "Checkout as Guest"
           pick_address: "Pick an Address"
           create_a_new_address: "Create a New Address"
           your_order: "YOUR ORDER"
@@ -337,6 +338,16 @@ en-PE:
           you_must_check_marketing: "You must accept email and SMS communications"
         pick_address_form:
           pick_an_address: "Pick An Address"
+        guest_form:
+          guest_contact_note: "We need this information so the driver can contact you when delivering your order."
+          already_a_customer_log_in: "Already a Customer? Log in Here"
+          first_name: "First Name"
+          last_name: "Last Name"
+          phone: "Cell Phone"
+          email: "Email"
+          street: "Street (max 85 chars)"
+          district: "District"
+          select_district: "Select District"
         new_address_form:
           type: "Type"
           select_type_of_address: "Select Type of Address"

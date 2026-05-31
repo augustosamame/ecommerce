@@ -1,5 +1,12 @@
 module Ecommerce
   class Coupon < ApplicationRecord
+    # Admins enter dates in Lima time in the backoffice form, but the app's
+    # default Time.zone is UTC, so a bare "YYYY-MM-DD" would be parsed as UTC
+    # midnight and the coupon would silently expire ~19:00 the previous day in
+    # Lima. We coerce inputs against this zone in the start_date= / end_date=
+    # setters below.
+    FORM_TIME_ZONE = ActiveSupport::TimeZone["Lima"]
+
     has_many :orders
     #has_many :products
     has_and_belongs_to_many :products, join_table: :coupons_products
@@ -8,6 +15,14 @@ module Ecommerce
     enum coupon_type: {percentage_discount: 0, fixed_discount_with_threshold: 1, fixed_discount_without_threshold: 2, percentage_discount_per_product: 3}
 
     validates_presence_of :coupon_code, :coupon_type, :status
+
+    def start_date=(value)
+      super(coerce_form_datetime(value, :beginning_of_day))
+    end
+
+    def end_date=(value)
+      super(coerce_form_datetime(value, :end_of_day))
+    end
 
     validate :can_only_exist_one_always_on_coupon
     validate :can_only_exist_one_first_app_purchase_coupon
@@ -151,6 +166,19 @@ module Ecommerce
           errors.add(:coupon_type, 'Minimum Qty coupons must be of type: Percentage Discount or Fixed Discount without Threshold.')
         end
       end
+    end
+
+    # String inputs from the form ("YYYY-MM-DD" or "YYYY-MM-DD HH:MM:SS") are
+    # interpreted as Lima time. A date-only string is snapped to the given
+    # boundary so end_date covers the full day in Lima. Non-string values
+    # (Time, Date, nil, TimeWithZone) pass through untouched so console and
+    # programmatic assignment behaviour are unaffected.
+    def coerce_form_datetime(value, boundary)
+      return value unless value.is_a?(String)
+      return nil if value.strip.empty?
+      parsed = FORM_TIME_ZONE.parse(value)
+      return value if parsed.nil?
+      value.match?(/\A\d{4}-\d{2}-\d{2}\z/) ? parsed.public_send(boundary) : parsed
     end
 
     def validations_for_combo_applies

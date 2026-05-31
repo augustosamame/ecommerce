@@ -7,8 +7,12 @@
     <%= f.input :discount_percentage_decimal, label: t('.discount_percentage_decimal') %>
     <%= f.input :discount_fixed, label: t('.discount_fixed') %>
     <%= f.input :discount_threshold, label: t('.discount_threshold') %>
-    <%= f.input :start_date, label: t('.start_date'), as: :date_time_picker %>
-    <%= f.input :end_date, label: t('.end_date'), as: :date_time_picker %>
+    <%= f.input :start_date, label: t('.start_date'), as: :date_time_picker,
+        input_html: { value: @coupon.start_date&.in_time_zone(Ecommerce::Coupon::FORM_TIME_ZONE)&.strftime("%Y-%m-%d") },
+        hint: "Lima time. The coupon is valid from the start of this day." %>
+    <%= f.input :end_date, label: t('.end_date'), as: :date_time_picker,
+        input_html: { value: @coupon.end_date&.in_time_zone(Ecommerce::Coupon::FORM_TIME_ZONE)&.strftime("%Y-%m-%d") },
+        hint: "Lima time. The coupon is valid through the end of this day." %>
     <%= f.input :max_uses_per_user, label: t('.max_uses_per_user') %>
     <%= f.input :max_uses, label: t('.max_uses') %>
     <%= f.input :current_uses, label: t('.current_uses') %>

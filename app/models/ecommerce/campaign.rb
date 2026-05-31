@@ -2,6 +2,9 @@ module Ecommerce
   class Campaign < ApplicationRecord
     belongs_to :coupon, optional: true
     belongs_to :audience, optional: true
+    has_many :campaign_images, -> { order(:position, :id) }, inverse_of: :campaign, dependent: :destroy
+
+    accepts_nested_attributes_for :campaign_images, allow_destroy: true, reject_if: :all_blank
 
     enum campaign_type: {next_purchase_email: 0, bulk_email: 1, product_drip_email: 2}
     enum status: {inactive: 0, active: 1}

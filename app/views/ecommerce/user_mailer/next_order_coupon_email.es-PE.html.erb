@@ -14,5 +14,13 @@
 <p> <%= t('.thank_you_2') %></p>
 <p><%= t('.farewell_1') %></p>
 <p><%= t('.farewell_2') %></p>
-<%= image_tag @campaign.image.large.url if @campaign.image %>
+<% @campaign.campaign_images.each do |ci| %>
+  <div style="margin: 15px 0;">
+    <% if ci.link.present? %>
+      <a href="<%= ci.link %>" target="_blank"><%= image_tag ci.image.large.url %></a>
+    <% else %>
+      <%= image_tag ci.image.large.url %>
+    <% end %>
+  </div>
+<% end %>
 </div>

@@ -81,6 +81,7 @@ Ecommerce::Engine.routes.draw do
     resources :shopping_videos
     resources :always_on_banners
     resources :email_reports, only: [:index]
+    resources :abandoned_carts, only: [:index]
   end
 
   post 'locale', :to => 'application#locale'
@@ -110,6 +111,7 @@ Ecommerce::Engine.routes.draw do
   post '/orders/checkout/pay_order_pagoefectivo_checkout', :to => 'checkout#pay_order_pagoefectivo_checkout'
   post '/checkout/pay_order_manual', :to => 'checkout#pay_order_manual'
   get '/checkout', :to => 'checkout#show'
+  post '/checkout/guest_register', :to => 'checkout#guest_register', as: :checkout_guest_register
   post '/checkout/save_factura_info', :to => 'checkout#save_factura_info', as: :save_factura_info
   get '/pre_checkout', :to => 'checkout#pre_checkout'
   get '/my_account', :to => 'users#show'

@@ -1,0 +1,23 @@
+<div class="nested-fields well" style="background: #f9f9f9; margin-bottom: 15px;">
+  <div class="form-group">
+    <div class="row">
+      <div class="col-xs-4">
+        <%= f.label :image, "Image" %>
+        <% if f.object.image? %>
+          <%= image_tag f.object.image.large.url, class: "img-thumbnail", style: "max-height: 160px; display: block; margin-bottom: 6px;" %>
+        <% end %>
+        <span class="btn btn-default btn-file">
+          <%= f.file_field :image, class: "campaign-image-file" %>
+        </span>
+        <%= f.hidden_field :image_cache %>
+      </div>
+      <div class="col-xs-6">
+        <%= f.input :link, label: "URL (optional — image and button will navigate here)", placeholder: "https://..." %>
+        <%= f.input :position, label: "Order (lower = shown first)", input_html: { type: "number" } %>
+      </div>
+      <div class="col-xs-2">
+        <%= link_to_remove_association "Remove", f, class: 'btn btn-danger remove-nested-item', style: "margin-top: 25px;" %>
+      </div>
+    </div>
+  </div>
+</div>

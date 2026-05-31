@@ -12,19 +12,18 @@
     <%= f.input :email_subject_es, label: t('.email_subject_es') %>
     <%= f.input :email_coupon_description, label: t('.email_coupon_description') %>
     <%= f.input :email_coupon_description_es, label: t('.email_coupon_description_es') %>
-    <%= f.input :link, label: t('.link') %>
-    <%= f.label t('.main_product_image') %>
-    <div class="form-group">
-      <% if f.object.image? %>
-        <%= image_tag f.object.image.url, id: "img_actual", class: "img-thumbnail", :height => "200", :width => "200" %>
+
+    <h3 style="margin-top: 30px;">Email Images</h3>
+    <p class="text-muted">Add one or more images. Each is rendered vertically in the email; if a URL is set, both the button above and the image itself link to that URL.</p>
+    <div id="campaign_images">
+      <%= f.simple_fields_for :campaign_images do |ci| %>
+        <%= render 'campaign_image_fields', f: ci %>
       <% end %>
-      <img alt="your image" class="img-thumbnail hidden" height="200" id="img_prev" src="#" width="200"/>
-      <br/>
-      <span class="btn btn-default btn-file">
-        <%= f.file_field :image, id: "file-image-upload", label: "Email Body Image" %>
-      </span>
-      <%= f.hidden_field :image_cache %>
+      <div class="links">
+        <%= link_to_add_association 'Add Image', f, :campaign_images, class: 'btn btn-primary', style: "margin-bottom: 15px;" %>
+      </div>
     </div>
+
     <div class="well <%= @campaign.campaign_type == "product_drip_email" ? '' : 'drip-hidden' %>" id="drip-fields-div">
       <%= f.input :drip_product_id, as: :select2, collection: Ecommerce::Product.all.order(:permalink), label: "Drip Product", label_method: :permalink %>
       <%= f.input :drip_base_coupon_id, as: :select2, collection: Ecommerce::Coupon.active.where(dynamic: false).order(:coupon_code), label: "Drip Base Coupon", label_method: :coupon_code %>
@@ -38,28 +37,8 @@
 <% end %>
 
 <script>
-
   $(document).ready(function(){
-
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-          $('#img_prev').attr('src', e.target.result);
-        }
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-
-    $("#file-image-upload").change(function(){
-      $('#img_prev').removeClass('hidden');
-      $('#img_actual').addClass('hidden');
-      readURL(this);
-    });
-
     $("#campaign_campaign_type").change(function(){
-      console.log('dropdown changed', $(this).val());
       if($(this).val() == "product_drip_email"){
         $("#drip-fields-div").removeClass("drip-hidden");
         $("#campaign-coupon-id-div").addClass("drip-hidden");
@@ -72,8 +51,5 @@
     $("#campaign_drip_product_id, #campaign_drip_base_coupon_id, #campaign_coupon_id").select2({
       width: '100%',
     });
-
   });
-
-
 </script>

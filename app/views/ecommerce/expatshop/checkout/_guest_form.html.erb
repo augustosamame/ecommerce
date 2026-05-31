@@ -1,0 +1,76 @@
+<div class="new-address guest-checkout-form">
+  <p style="font-size: 18px; color: #333; margin-bottom: 20px;"><%= t('.guest_contact_note') %></p>
+
+  <button type="button" id="guest-login-link" class="checkout-address-button" style="margin-bottom: 20px;"
+          onclick="window.location.href='<%= main_app.new_user_session_path(origin: 'checkout') %>'">
+    <%= t('.already_a_customer_log_in') %>
+  </button>
+
+  <%= simple_form_for(@address, url: "#", html: { id: "guest-checkout-simple-form", onsubmit: "return false;" }) do |f| %>
+
+    <div class="form-group">
+      <label for="guest_first_name"><%= t('.first_name') %> *</label>
+      <%= text_field_tag :guest_first_name, nil, id: "guest_first_name", class: "form-control", style: "height: 54px; border-color: #8e8b8b;" %>
+    </div>
+
+    <div class="form-group">
+      <label for="guest_last_name"><%= t('.last_name') %> *</label>
+      <%= text_field_tag :guest_last_name, nil, id: "guest_last_name", class: "form-control", style: "height: 54px; border-color: #8e8b8b;" %>
+    </div>
+
+    <div class="form-group">
+      <label for="guest_username"><%= t('.phone') %> *</label>
+      <%= telephone_field_tag :guest_username, nil, id: "guest_username", maxlength: 9, class: "form-control", style: "height: 54px; border-color: #8e8b8b;" %>
+    </div>
+
+    <div class="form-group">
+      <label for="guest_email"><%= t('.email') %> *</label>
+      <%= email_field_tag :guest_email, nil, id: "guest_email", class: "form-control", style: "height: 54px; border-color: #8e8b8b;" %>
+    </div>
+
+    <%= f.input :street, input_html: { maxlength: 85, style: 'height: 54px; border-color: #8e8b8b; font-size: 24px;' }, label: "#{t('.street')} *" %>
+
+    <%= f.input :district, collection: @districts, prompt: t('.select_district'), input_html: { style: 'height: 54px; border-color: #8e8b8b;' }, label: "#{t('.district')} *" %>
+
+    <%= f.input :name, as: :hidden, input_html: { value: "Home" } %>
+    <%= f.input :city, as: :hidden, input_html: { value: "Lima" } %>
+    <%= f.input :state, as: :hidden, input_html: { value: "Lima" } %>
+    <%= f.input :country, as: :hidden, input_html: { value: "Peru" } %>
+    <%= f.input :shipping_or_billing, as: :hidden, input_html: { value: "shipping" } %>
+
+    <div id="map_partial">
+      <%= render :partial => "ecommerce/addresses/google_map" %>
+    </div>
+
+    <div style="display: none;">
+      <%= f.text_field :raw_address %>
+      <%= f.text_field :latitude %>
+      <%= f.text_field :longitude %>
+    </div>
+  <% end %>
+
+  <%# Hidden, empty address select so the shared checkout JS (which appends the %>
+  <%# newly-created address here after guest_register) has its expected target. %>
+  <select id="address_id" style="display: none;"></select>
+</div>
+
+<script>
+  // Live-refresh the static map preview as the guest types their street /
+  // picks a district (mirrors _new_address_form). update_map only geocodes,
+  // so it works before the guest has a session.
+  $("#address_street, #address_district").on("change", function(){
+    $.ajax({
+      url: '<%= "addresses/update_map" %>',
+      type: 'PATCH',
+      dataType: 'script',
+      data: $.param({
+        address: {
+          street: $("#address_street").val(),
+          district: $("#address_district").val()
+        }
+      }),
+      success: function(data){},
+      error: function(data){}
+    });
+  });
+</script>

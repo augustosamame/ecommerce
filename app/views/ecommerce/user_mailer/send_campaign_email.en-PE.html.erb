@@ -2,20 +2,24 @@
   <%= image_tag "https://s3.amazonaws.com/v1-devtechperu-expatshop-dev/static/images/expatshop_logo_circular_180x180.png", style: "position: absolute; width: 120px; height: 120px; top: 0px;" %>
 </div>
 <div style="margin-top: 140px;">
-  <% if @campaign.link.blank? %>
-    <%= image_tag @campaign.image.large.url %>
-  <% else %>
-    <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 0 20px 0;">
-      <tr>
-        <td align="left" bgcolor="#4CAF50" style="border-radius: 5px;">
-          <a href="<%= @campaign.link %>" target="_blank" style="display: inline-block; padding: 0px 30px; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none; border-radius: 5px;">
-            <%= t('.buy_now') %>
-          </a>
-        </td>
-      </tr>
-    </table>
-    <a href="<%= @campaign.link %>">
-      <%= image_tag @campaign.image.large.url %>
-    </a>
+  <% @campaign.campaign_images.each do |ci| %>
+    <div style="margin: 0 0 25px 0;">
+      <% if ci.link.present? %>
+        <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 0 10px 0;">
+          <tr>
+            <td align="left" bgcolor="#4CAF50" style="border-radius: 5px;">
+              <a href="<%= ci.link %>" target="_blank" style="display: inline-block; padding: 0px 30px; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none; border-radius: 5px;">
+                <%= t('.buy_now') %>
+              </a>
+            </td>
+          </tr>
+        </table>
+        <a href="<%= ci.link %>" target="_blank">
+          <%= image_tag ci.image.large.url %>
+        </a>
+      <% else %>
+        <%= image_tag ci.image.large.url %>
+      <% end %>
+    </div>
   <% end %>
 </div>
