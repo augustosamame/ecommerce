@@ -95,6 +95,10 @@ module Ecommerce
         return [false, I18n.t("controllers.orders.calculate_coupon.#{key}")]
       end
 
+      if start_date.present? && Time.current < start_date
+        return [false, I18n.t('controllers.orders.calculate_coupon.coupon_not_started', default: 'El cupón aún no está vigente')]
+      end
+
       if end_date.present? && Time.current > end_date
         return [false, I18n.t('controllers.orders.calculate_coupon.coupon_expired')]
       end

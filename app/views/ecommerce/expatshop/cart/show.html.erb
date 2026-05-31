@@ -36,7 +36,7 @@
             <% if @cart.cart_items.count == 0 %>
 
             <% else %>
-              <% @cart.cart_items.order(:id).sort_by { |item| @combo_injected_product_ids.include?(item.product_id) ? 1 : 0 }.each do |item| %>
+              <% @cart.cart_items.order(:id).sort_by { |item| cart_item_locked?(item) ? 1 : 0 }.each do |item| %>
                 <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
                   <tr>
                     <th class="cart-desktop-table-product-row">
@@ -62,7 +62,7 @@
                     </th>
                     <th class="cart-desktop-table-other-row">
                       <div class="quantity-btn d-flex flex-center">
-                        <% combo_injected = @combo_injected_product_ids.include?(item.product_id) %>
+                        <% combo_injected = cart_item_locked?(item) %>
                         <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %> <%= 'style="pointer-events: none; opacity: 0.3;"'.html_safe if combo_injected %>>
                           <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.quantity}" %>>-</a>
                         </div>
@@ -82,7 +82,7 @@
                     </th>
 
                     <th class="cart-desktop-table-delete-row">
-                      <% if @combo_injected_product_ids.include?(item.product_id) %>
+                      <% if cart_item_locked?(item) %>
                         <span class="remove combo-injected-item" data-toggle="tooltip" data-placement="top" title="<%= t('combo_discounts.combo_injected_tooltip') %>">
                           <%= fa_icon 'trash', class: 'cursor-pointer remove', style: 'opacity: 0.3; cursor: not-allowed;' %>
                         </span>
@@ -126,7 +126,7 @@
           <% if @cart.cart_items.count == 0 %>
 
           <% else %>
-            <% @cart.cart_items.order(:id).sort_by { |item| @combo_injected_product_ids.include?(item.product_id) ? 1 : 0 }.each do |item| %>
+            <% @cart.cart_items.order(:id).sort_by { |item| cart_item_locked?(item) ? 1 : 0 }.each do |item| %>
 
               <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
                 <div class="row mobile-cart-row">
@@ -140,7 +140,7 @@
                   
 
                   <div class="cart-mobile-table-delete-row">
-                    <% if @combo_injected_product_ids.include?(item.product_id) %>
+                    <% if cart_item_locked?(item) %>
                       <span class="remove combo-injected-item" data-toggle="tooltip" data-placement="top" title="<%= t('combo_discounts.combo_injected_tooltip') %>">
                         <%= fa_icon 'trash 2x', class: 'cursor-pointer remove', style: 'opacity: 0.3; cursor: not-allowed;' %>
                       </span>
@@ -155,7 +155,7 @@
                   <div class="row">
                     <div class="col-xs-8 col-xs-offset-3">
                       <div class="quantity-btn d-flex flex-center">
-                        <% combo_injected_mobile = @combo_injected_product_ids.include?(item.product_id) %>
+                        <% combo_injected_mobile = cart_item_locked?(item) %>
                         <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %> <%= 'style="pointer-events: none; opacity: 0.3;"'.html_safe if combo_injected_mobile %>>
                           <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.quantity}" %>>-</a>
                         </div>

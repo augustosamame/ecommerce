@@ -5,9 +5,11 @@ module Ecommerce
   class ApplicationController < ::ApplicationController
     #include Ecommerce::BeforeRender
     
+    before_action :set_platform_context
     before_action :merge_abilities
     before_action :add_stretched_to_body_tag
     before_action :set_cart
+    before_action :ensure_free_product_in_cart
     before_action :calculate_combo_discounts
     # before_action :set_wishlist
     before_action :set_header_menu_items
@@ -174,6 +176,46 @@ module Ecommerce
 
     def set_always_on_banner
       @always_on_banner = Ecommerce::AlwaysOnBanner.active.where(web_enabled: true).first
+    end
+
+    # Web requests run through this controller; stamp the current platform so
+    # models (Ecommerce::CartItem) can branch behaviour without taking a
+    # platform: kwarg on every call.
+    def set_platform_context
+      Current.platform = :web
+    end
+
+    # Cart views call this to decide whether to disable remove + qty controls
+    # for a given line. Currently true for combo-injected free products and
+    # for the Free Product marketing line. Keep this as the single check so
+    # we don't sprinkle array unions across templates.
+    helper_method :cart_item_locked?
+    def cart_item_locked?(item)
+      return false unless item
+      pid = item.respond_to?(:product_id) ? item.product_id : item
+      @combo_injected_product_ids.to_a.include?(pid) ||
+        @free_product_protected_ids.to_a.include?(pid)
+    end
+
+    # When the Free Product feature is active, ensure the singleton's
+    # configured product is in the cart with quantity 1. Resets the
+    # quantity if it drifted, and records the product_id in
+    # @free_product_protected_ids so views can render the disabled-delete
+    # affordance (mirroring the combo-injected pattern).
+    def ensure_free_product_in_cart
+      @free_product_protected_ids = []
+      return unless @cart && @cart.status == 'active'
+
+      free_id = Ecommerce::FreeProduct.protected_product_id_for(:web)
+      return unless free_id
+
+      item = @cart.cart_items.find_by(product_id: free_id)
+      if item
+        item.update(quantity: 1) if item.quantity != 1
+      else
+        @cart.cart_items.create(product_id: free_id, quantity: 1)
+      end
+      @free_product_protected_ids = [free_id]
     end
 
     def set_controller_meta_tags

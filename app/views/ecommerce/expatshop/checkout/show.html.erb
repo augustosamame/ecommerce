@@ -9,10 +9,13 @@
 <section class="checkout">
   <div class="container-fluid">
     <div class="row checkout-row">
-      <div class="col-md-6">
+      <div class="col-md-6 checkout-left-col">
         <% if @guest_checkout %>
-          <h3><%= t('.buy_as_guest') %></h3>
-          <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/guest_form" %>
+          <%# On mobile this block is relocated under "Pagar en Soles" via JS; %>
+          <%# guest-block-home is its desktop position. %>
+          <div id="guest-block-home">
+            <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/guest_form" %>
+          </div>
         <% else %>
           <h3><%= t('.shipping_address') %></h3>
           <div class="have-address">
@@ -32,7 +35,7 @@
       </div>
 
 
-      <div class="col-md-6">
+      <div class="col-md-6 checkout-right-col">
         <p class="hidden-xs"><%= t('.your_order') %></p>
         <div class="mini-cart">
           <p class="visible-xs"><%= t('.your_order') %></p>
@@ -135,7 +138,7 @@
 
         </div>
 
-        <div class="pay-in-soles d-flex space-between checkout-p-text-mobile" style="padding-bottom: 30px;">
+        <div id="pay-in-soles-section" class="pay-in-soles d-flex space-between checkout-p-text-mobile" style="padding-bottom: 30px;">
           <div class="checkout-pay-in-soles-p d-flex" style="align-items: center;">
             <%= check_box_tag("pay_in_soles", "0", false, class: "pay_in_soles_checkbox") %>
             <%= t('.pay_in_soles') %>
@@ -150,7 +153,9 @@
           </div>
         </div>
 
-         <% if @dni_required %>
+         <%# DNI: for guests this lives in the guest form (left column); logged-in %>
+         <%# users keep it here so they can edit their stored doc_id. %>
+         <% if @dni_required && !@guest_checkout %>
           <div class="commerce-checkout-payment">
             <ul class="payment_methods">
 

@@ -25,7 +25,7 @@
           <div class="container-fluid">   
             <div class="item">
 
-              <% @cart.cart_items.sort_by { |item| @combo_injected_product_ids&.include?(item.product_id) ? 1 : 0 }.each do |item| %>
+              <% @cart.cart_items.sort_by { |item| cart_item_locked?(item) ? 1 : 0 }.each do |item| %>
 
                 <div class="row d-flex flex-center">
                   <div class="col-md-3">
@@ -41,7 +41,7 @@
                     <p><%= session_price(item.product, "current_price") %><span> (x<%= item.quantity %>)</span></p>
                   </div>
                   <div class="col-md-2">
-                    <% if @combo_injected_product_ids&.include?(item.product_id) %>
+                    <% if cart_item_locked?(item) %>
                       <span class="remove combo-injected-item" data-toggle="tooltip" data-placement="top" title="<%= t('combo_discounts.combo_injected_tooltip') %>">
                         <%= fa_icon('trash 2x', style: 'color: #67696C; opacity: 0.3; cursor: not-allowed;', class: 'icon-color') %>
                       </span>

@@ -75,11 +75,26 @@ module Ecommerce
     end
 
     def update
+      # The Free Product line is fixed at quantity 1 — silently ignore any
+      # qty mutation. The UI disables the controls; this is the backend safety
+      # net against direct POSTs.
+      if @cart_item.free_product?
+        redirect_to @cart_item.cart and return
+      end
       @cart_item.update(quantity: cart_item_params[:quantity]) unless cart_item_params[:quantity].nil?
       redirect_to @cart_item.cart, notice: t('.cart_updated')
     end
 
     def destroy
+      # The Free Product line cannot be removed while the feature is active.
+      if @cart_item.free_product?
+        respond_to do |format|
+          format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show" }
+          format.html { redirect_to cart_path(@cart) }
+        end
+        return
+      end
+
       # If removing a trigger product, also remove its combo-injected free product
       combo = ComboDiscount.where(status: "active", product_id_1: @cart_item.product_id, inject_product_two: true).first
       if combo&.product_id_2.present?

@@ -336,7 +336,7 @@ module Ecommerce
                   OrderItem.create!(
                     order_id: @order.id,
                     product_id: item.product_id,
-                    price: item.product.current_price(current_user),
+                    price: item.unit_price(current_user),
                     quantity: item.quantity,
                     status: "active",
                     pre_checkout: item.pre_checkout

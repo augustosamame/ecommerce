@@ -19,7 +19,20 @@ module Ecommerce
     end
 
     def post_send_recipients
-      user_array = params[:other][:user_list].split(',').map(&:to_i)
+      user_array = params[:other][:user_list].to_s.split(',').map(&:to_i).reject(&:zero?)
+
+      # When the admin picks a predetermined Audience, materialize its active
+      # UserAudience rows into user IDs and merge with anything the JS filters
+      # already populated in user_list. Without this, an audience-only send
+      # silently queues zero emails because the form's user_list stays empty.
+      audience_id = params[:other][:audience_id].presence
+      if audience_id
+        audience_user_ids = Ecommerce::UserAudience
+          .where(audience_id: audience_id, status: :active)
+          .pluck(:user_id)
+        user_array = (user_array + audience_user_ids).uniq
+      end
+
       coupon_id = params[:other][:coupon_id]
       unique_users_by_email = emailable_users.where(id: user_array).uniq(&:email)
 
