@@ -5,10 +5,14 @@ module Ecommerce
     belongs_to :product
 
     # Override applied when this cart line is the product attached to an
-    # active `free_product` coupon for the current platform. Stored in USD
-    # cents to match how the order/cart/order_item pipeline denominates
-    # everything; PEN display happens later via cart_session_price.
-    FREE_PRODUCT_OVERRIDE = Money.new(1, 'usd')
+    # active `free_product` coupon for the current platform. It MUST be labeled
+    # in the same currency as every product price (Money.default_currency, set
+    # from Ecommerce.default_currency). Otherwise summing it into the cart
+    # subtotal mixes currencies and Money silently converts the other lines
+    # (e.g. PEN 8.90 -> USD 2.34), corrupting the totals — or raises
+    # Money::Bank::UnknownRate. The 1-cent value still renders as ~0; the cart
+    # view shows it as $0.01 / S/.0.04 via the usual dollar/exchange_rate display.
+    FREE_PRODUCT_OVERRIDE = Money.new(1, Money.default_currency)
 
     def unit_price(current_user)
       return FREE_PRODUCT_OVERRIDE if free_product_line?

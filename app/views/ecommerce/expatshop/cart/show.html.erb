@@ -56,8 +56,10 @@
                     </th>
                     <th class="cart-desktop-table-other-row">
                       <div>
-                        <p><%= number_to_currency(([item.product.price, item.product.discounted_price].min * @exchange_rate), unit: "S/.") %></p>
-                        <p><%= session_price(item.product, "current_price") %></p>
+                        <%# unit_price returns the free-product override ($0.01) for free lines, %>
+                        <%# the normal current_price otherwise — so free products read $0.01 here too. %>
+                        <p><%= number_to_currency((item.unit_price(@current_user) * @exchange_rate), unit: "S/.") %></p>
+                        <p><%= session_price(item.unit_price(@current_user)) %></p>
                       </div>
                     </th>
                     <th class="cart-desktop-table-other-row">
