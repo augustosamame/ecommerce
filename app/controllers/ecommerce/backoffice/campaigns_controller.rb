@@ -63,7 +63,9 @@ module Ecommerce
       user_ids = unique_users_by_email.map(&:id)
 
       if user_ids.any?
-        SendAllCampaignEmailsWorker.perform_async(user_ids, coupon_id, @campaign.id)
+        # include_controls: true seeds the start/middle/last monitoring inboxes.
+        # The test-send path above intentionally omits it.
+        SendAllCampaignEmailsWorker.perform_async(user_ids, coupon_id, @campaign.id, true)
       end
 
       redirect_to :backoffice_campaigns, notice: "#{user_ids.length} Bulk Emails queued (#{user_array.length - user_ids.length} skipped: suppressed/guest/duplicate)"
