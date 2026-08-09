@@ -289,14 +289,21 @@ window.culqi = async function () {
         function(data) {
           // console.log('data response from checkout/pay_order_culqi_checkout: ', data)
           if (data.result && data.result == "3ds_required") {
+            // A real 3DS challenge is starting: from here a `response.error`
+            // message means the authentication genuinely failed.
+            window.threeDSInProgress = true;
             Culqi3DS.initAuthentication(token.id);
 
           } else {
+            // Non-3DS flow (e.g. Yape) already settled server-side. The
+            // Culqi3DS SDK can still emit a spurious `error` message here, so
+            // make sure the message listener will ignore it.
+            window.threeDSInProgress = false;
             Culqi3DS.reset();
             window.deviceFingerPrintId = null
             window.token = null
           }
-          
+
         }
      );
      //alert('Se ha creado un token:' + token);
@@ -325,6 +332,7 @@ window.culqi = async function () {
     if (response.parameters3DS) {
       // 3DS authentication completed successfully
       // console.log("3DS Auth Success:", response.parameters3DS);
+      window.threeDSInProgress = false;
 
       var culqi_payment_amount = $('#pay_in_soles').prop('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
 
@@ -346,9 +354,17 @@ window.culqi = async function () {
     }
 
     if (response.error) {
-      // There was an error with the 3DS authentication
-      console.log("3DS Auth Error:", response.error);
-      window.location.replace("<%= orders_path %>?error=payment");
+      if (window.threeDSInProgress) {
+        // A genuine 3DS challenge failed: the charge did NOT go through.
+        console.log("3DS Auth Error:", response.error);
+        window.threeDSInProgress = false;
+        window.location.replace("<%= orders_path %>?error=payment");
+      } else {
+        // Spurious error message from the Culqi3DS SDK on a non-3DS flow
+        // (e.g. Yape). The charge was already resolved server-side, so do
+        // NOT show a payment error. Culqi began emitting this for Yape.
+        console.log("Ignoring non-3DS Culqi message error:", response.error);
+      }
     }
   }, false);
 </script>
