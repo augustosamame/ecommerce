@@ -456,6 +456,12 @@ $( document ).ready(function() {
   var client_phone = '<%= j(@current_user_phone.to_s) %>';
 
   var shipping_calculated_flag = false
+  // Number of in-flight calculate_shipping() AJAX calls. The Pay button is
+  // blocked while this is > 0 (and until shipping has been calculated at least
+  // once) so the amount sent to Culqi/PagoEfectivo can never be frozen before
+  // shipping has been folded into the total. Without this the charge could omit
+  // shipping while the stored order still recorded the full total.
+  var shipping_requests_pending = 0
   var exchange_rate = <%= @exchange_rate %>
   var info_factura_blank = <%= @info_factura_available.blank? %>
   var address_saved_flag = false
@@ -508,6 +514,7 @@ $( document ).ready(function() {
   }
 
   function calculate_shipping(street, district, origin) {
+    shipping_requests_pending++;
     $.ajax({
       url: "calculate_shipping",
       dataType: "json",
@@ -527,6 +534,10 @@ $( document ).ready(function() {
         if (origin == 'save_address') {
           address_saved_flag = true
         }
+      },
+      complete: function(){
+        shipping_requests_pending--;
+        if (shipping_requests_pending < 0) { shipping_requests_pending = 0; }
       }
     });
   }
@@ -699,6 +710,30 @@ $( document ).ready(function() {
   }
 
   $('#pay-now-button').on('click', function(e) {
+    // Shipping-race guard: never begin a payment while a shipping calculation is
+    // still in flight, or before shipping has been resolved at least once (a
+    // free-shipping coupon counts as resolved). Otherwise the amount frozen for
+    // Culqi/PagoEfectivo can miss shipping while the stored order keeps the full
+    // total, undercharging the customer.
+    if (shipping_requests_pending > 0 || !(shipping_calculated_flag || free_shipping_active)) {
+      e.preventDefault();
+      // Self-heal: if nothing is in flight and shipping simply hasn't been
+      // calculated yet, kick off a calculation for the selected saved address so
+      // the customer's retry succeeds instead of being permanently blocked.
+      if (shipping_requests_pending === 0 && !shipping_calculated_flag && !free_shipping_active) {
+        var selected_text = $("#address_id option:selected").text();
+        if (selected_text) {
+          var district_from_dropdown = selected_text.split(',').pop().trim();
+          calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
+        }
+      }
+      Swal({
+        type: 'info',
+        title: "<%= j(session[:locale] == 'es-PE' ? 'Un momento' : 'One moment') %>",
+        text: "<%= j(session[:locale] == 'es-PE' ? 'Estamos calculando el costo de envío. Por favor espere un momento y vuelva a intentar.' : 'We are calculating the shipping cost. Please wait a moment and try again.') %>"
+      });
+      return;
+    }
     $.ajax({
       url: "checkout/check_stock_cart_js_from_checkout",
       dataType: "json",
@@ -715,6 +750,11 @@ $( document ).ready(function() {
 
   async function process_payment(e) {
     var errors_present = false
+    // Re-freeze the payment globals from the current DOM right before we send the
+    // amount to Culqi/PagoEfectivo. The Pay button is already gated on shipping
+    // being resolved, and this guarantees culqi_payment_amount reflects the
+    // latest #shipping-amount (incl. any late recalc) rather than a stale value.
+    recalculate_checkout_totals();
     // Abre el formulario con las opciones de Culqi.settings
     if (!$('input[name=payment_method]:checked').val()) {
       errors_present = true ;

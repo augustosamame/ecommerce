@@ -19,9 +19,12 @@
     <%= " Total: #{@order.amount.currency.symbol} #{(line.quantity * line.price).to_s}" %>
   </p>
   <% end %>
-  <p>Sub Total Amount: <%= "#{@order.amount.currency.symbol} #{@order.amount.to_s}" %></p>
+  <%# @order.amount already INCLUDES shipping (and discounts). Show the line-items
+      subtotal as amount - shipping, and the grand total as amount itself. Adding
+      shipping_amount again here double-counted shipping in the email. %>
+  <p>Sub Total Amount: <%= "#{@order.amount.currency.symbol} #{(@order.amount - @order.shipping_amount).to_s}" %></p>
   <p>Shipping Amount: <%= "#{@order.amount.currency.symbol} #{@order.shipping_amount.to_s}" %></p>
-  <p>Order Total Amount: <%= "#{@order.amount.currency.symbol} #{(@order.amount + @order.shipping_amount).to_s}" %></p>
+  <p>Order Total Amount: <%= "#{@order.amount.currency.symbol} #{@order.amount.to_s}" %></p>
 </br>
 <p>Current Payment Status: <%= @order.payment_status %></p>
 <p>Shipping Address: <%= "#{@order.shipping_address.try(:street)} - #{@order.shipping_address.try(:district)}" %></p>
