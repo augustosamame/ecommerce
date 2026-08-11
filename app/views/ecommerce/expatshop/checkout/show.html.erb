@@ -515,7 +515,10 @@ $( document ).ready(function() {
 
   function calculate_shipping(street, district, origin) {
     shipping_requests_pending++;
-    $.ajax({
+    // Returns the jqXHR (thenable) so callers can await the calculation
+    // instead of racing it — the amount sent to Culqi/PagoEfectivo must never
+    // be frozen before shipping is folded into the total.
+    return $.ajax({
       url: "calculate_shipping",
       dataType: "json",
       method: "POST",
@@ -709,31 +712,49 @@ $( document ).ready(function() {
 
   }
 
-  $('#pay-now-button').on('click', function(e) {
-    // Shipping-race guard: never begin a payment while a shipping calculation is
-    // still in flight, or before shipping has been resolved at least once (a
-    // free-shipping coupon counts as resolved). Otherwise the amount frozen for
-    // Culqi/PagoEfectivo can miss shipping while the stored order keeps the full
-    // total, undercharging the customer.
-    if (shipping_requests_pending > 0 || !(shipping_calculated_flag || free_shipping_active)) {
-      e.preventDefault();
-      // Self-heal: if nothing is in flight and shipping simply hasn't been
-      // calculated yet, kick off a calculation for the selected saved address so
-      // the customer's retry succeeds instead of being permanently blocked.
-      if (shipping_requests_pending === 0 && !shipping_calculated_flag && !free_shipping_active) {
-        var selected_text = $("#address_id option:selected").text();
-        if (selected_text) {
-          var district_from_dropdown = selected_text.split(',').pop().trim();
-          calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
+  // Resolves once no shipping calculation is in flight. Bounded (default 10s)
+  // so a hung request can never brick the checkout: after the timeout we
+  // proceed with whatever is on screen (pre-guard behavior) rather than
+  // blocking the sale.
+  function wait_for_shipping_settled(max_ms) {
+    return new Promise(function(resolve) {
+      if (shipping_requests_pending === 0) { resolve(); return; }
+      var waited = 0;
+      var iv = setInterval(function() {
+        waited += 150;
+        if (shipping_requests_pending === 0 || waited >= (max_ms || 10000)) {
+          clearInterval(iv);
+          resolve();
         }
-      }
-      Swal({
-        type: 'info',
-        title: "<%= j(session[:locale] == 'es-PE' ? 'Un momento' : 'One moment') %>",
-        text: "<%= j(session[:locale] == 'es-PE' ? 'Estamos calculando el costo de envío. Por favor espere un momento y vuelva a intentar.' : 'We are calculating the shipping cost. Please wait a moment and try again.') %>"
-      });
-      return;
+      }, 150);
+    });
+  }
+
+  $('#pay-now-button').on('click', async function(e) {
+    // Shipping-race guard, transparent version: instead of blocking the user
+    // with a dialog, quietly make sure shipping is resolved and then continue
+    // the payment automatically.
+    // 1. A calculation is in flight → wait for it.
+    if (shipping_requests_pending > 0) {
+      await wait_for_shipping_settled();
     }
+    // 2. Never calculated and a saved address is selected → calculate now and
+    //    continue. (No saved address = guest/new-address flow: process_payment
+    //    saves the address and awaits its own shipping calculation.)
+    if (!(shipping_calculated_flag || free_shipping_active) && $('#address_id').val()) {
+      var selected_text = $("#address_id option:selected").text();
+      if (selected_text) {
+        try {
+          await calculate_shipping($("#address_street").val(), selected_text.split(',').pop().trim(), 'save_address');
+        } catch (err) {
+          // Shipping endpoint failed; don't strand the customer — proceed with
+          // the on-screen total, as the pre-guard code always did.
+          console.log('calculate_shipping failed before payment:', err);
+        }
+        await wait_for_shipping_settled();
+      }
+    }
+    // Amounts are re-frozen from the DOM inside process_payment.
     $.ajax({
       url: "checkout/check_stock_cart_js_from_checkout",
       dataType: "json",
@@ -810,8 +831,17 @@ $( document ).ready(function() {
             $('#address_id').append(newOption);
             // Explicitly set the value to ensure it's selected
             $('#address_id').val(saveResult.address.id);
-            // Calculate shipping for the new address
-            calculate_shipping(streetVal, districtVal, 'save_address');
+            // Calculate shipping for the new address, and AWAIT it: its success
+            // handler runs recalculate_checkout_totals(), so by the time we
+            // build the Culqi order below the amount includes shipping. Firing
+            // this without awaiting was the guest-flow variant of the
+            // shipping-omitted undercharge.
+            try {
+              await calculate_shipping(streetVal, districtVal, 'save_address');
+            } catch (shipErr) {
+              console.log('calculate_shipping failed after address save:', shipErr);
+            }
+            await wait_for_shipping_settled();
           } else {
             errors_present = true;
             Swal({
