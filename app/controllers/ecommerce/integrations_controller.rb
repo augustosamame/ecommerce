@@ -13,42 +13,19 @@ module Ecommerce
       raise "missing parameters" unless params[:address] && params[:district]
       case Ecommerce.shipping_integrator
       when "Urbaner"
-        shipping_province = params[:district].split("-")[0].try(:strip)
-        shipping_district = params[:district].split("-")[1].try(:strip)
-        province = Ecommerce::Province.find_by(province: shipping_province, district: shipping_district) || Ecommerce::Province.find_by(delivery_zone: "lima_metropolitana") #if not found, use lima_metropolitana
+        # Delegates to Ecommerce::Province.shipping_quote_usd, the single shared
+        # implementation also used by the mobile API, so the two surfaces can
+        # never drift apart again.
+        province = Ecommerce::Province.find_for_district(params[:district])
         Rails.logger.info "params district: #{params[:district]}"
-        Rails.logger.info "shipping_district: #{shipping_district}"
-        Rails.logger.info "shipping_province: #{shipping_province}"
         Rails.logger.info "calculated_province: #{province.inspect}"
-        puts "params district: #{params[:district]}"
-        puts "shipping_district: #{shipping_district}"
-        puts "shipping_province: #{shipping_province}"
-        puts "calculated_province: #{province}"
-        case province.delivery_zone
-        when "lima_metropolitana"
-          cutoff_price = Ecommerce::Control.get_control_value("flat_shipping_cutoff_amount")
-          if @cart.get_totals(current_user)[:tot_acum].to_f < cutoff_price
-            response = {:amount => Ecommerce::Control.get_control_value("flat_shipping_under_cutoff_rate")}
-          #when @cart.get_totals(current_user)[:tot_acum].to_f < 100
-            #response = {:amount => 7.00}
-          else
-            response = {:amount => Ecommerce::Control.get_control_value("flat_shipping_over_cutoff_rate")}
-          end
-        when "provincias"
-          #calculate shipping cost per kg here
-          total_kgs = @cart.get_totals(current_user)[:tot_kgs]
-          if total_kgs <= 1
-            first_kg = 1
-            extra_kgs = 0
-          else
-            first_kg = 1
-            extra_kgs = ((total_kgs - 1).ceil).to_f
-          end
-          total_shipping_cost = ((first_kg * province.cost_first_kilo_cents.to_f) + (extra_kgs * province.cost_per_kilo_cents.to_f)) / 100
-          response = {:amount => total_shipping_cost.to_f}
-        else
-          response = {:amount => 0.00}
-        end
+        response = {
+          :amount => Ecommerce::Province.shipping_quote_usd(
+            district: params[:district],
+            cart: @cart,
+            user: current_user
+          )
+        }
         response[:currency] = session[:currency] || "usd"
         respond_to do |format|
           format.json { render json: response.to_json }
