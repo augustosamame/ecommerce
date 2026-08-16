@@ -28,6 +28,7 @@ module Ecommerce
     after_commit :set_stock_and_stage, on: [:create, :update], if: :saved_change_to_payment_status?
     after_commit :generate_discount_calculation, on: :create
     after_commit :revert_unpaid_cancellation_credits, on: :update, if: :saved_change_to_stage?
+    after_commit :void_new_flow_einvoice, on: :update, if: :saved_change_to_stage?
 
     attr_accessor :product_line_1, :product_line_2, :product_line_3, :product_line_4
 
@@ -224,6 +225,21 @@ module Ecommerce
 
     def billing_address
       Address.find_by(id: self.billing_address_id)
+    end
+
+    # When the ORDER is voided (stage → stage_void), void its comprobante in
+    # the NEW invoicing platform (→ Nubefact anulación). Gated to the new
+    # flow only (NEW_INVOICING or the DUAL_INVOICING_TEST parallel run); the
+    # legacy production processor flow is deliberately untouched. Idempotent:
+    # fires only on the first non-void → stage_void transition, and only when
+    # a comprobante was actually emitted.
+    def void_new_flow_einvoice
+      return unless self.stage_void?
+      prior_stage = saved_change_to_stage&.first
+      return if prior_stage == 'stage_void'
+      return if self.efact_number.blank?
+      return unless ENV['NEW_INVOICING'] == 'true' || ENV['DUAL_INVOICING_TEST'] == 'true'
+      VoidEinvoiceWorker.perform_async(self.id)
     end
 
     # SUNAT observations for website comprobantes (B001/F001): customer name +
