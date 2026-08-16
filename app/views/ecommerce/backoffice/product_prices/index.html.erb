@@ -1,10 +1,21 @@
 <div class="page-header">
-  <%= link_to new_backoffice_product_price_path, class: 'btn btn-primary' do %>
+  <%= link_to new_backoffice_product_price_path(pricelist_id: @selected_pricelist&.id), class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-plus"></span>
     <%= t('.new_product_price') %>
   <% end %>
   <h1><%= t('.listing_product_prices') %></h1>
 </div>
+
+<%= form_tag backoffice_product_prices_path, method: :get, class: "form-inline", style: "margin-bottom: 15px;" do %>
+  <label style="margin-right: 8px;">Price List:</label>
+  <%= select_tag :pricelist_id,
+        options_from_collection_for_select(@pricelists, :id, :name, @selected_pricelist&.id),
+        include_blank: "— Choose a price list —", class: "form-control", onchange: "this.form.submit();" %>
+<% end %>
+
+<% unless @selected_pricelist %>
+  <p class="text-muted">Choose a price list to see and manage only the products included on it.</p>
+<% end %>
 
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">

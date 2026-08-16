@@ -16,39 +16,67 @@
 
   <dt>Status:</dt>
   <dd><%= @pricelist.status %></dd>
-
 </dl>
 
-<h2>Price List Products (leave blank for default price)</h2>
+<h2>Products on this Price List</h2>
+<p class="text-muted">Only products added here get a custom price on this list — everything else sells at the default store price. Click a price cell to edit it in place. Amounts are in cents (e.g. 890 = $8.90).</p>
+
+<div class="well" style="max-width: 900px;">
+  <%= form_tag add_product_backoffice_pricelist_path(@pricelist), method: :post, class: "form-inline" do %>
+    <div class="form-group" style="min-width: 320px; margin-right: 10px;">
+      <%= select_tag :product_id,
+            options_from_collection_for_select(@addable_products, :id, :permalink),
+            include_blank: "— Choose a product —", id: "add-product-select", style: "width: 100%;" %>
+    </div>
+    <div class="form-group" style="margin-right: 10px;">
+      <%= number_field_tag :price_cents, nil, class: "form-control", placeholder: "Price (cents)", min: 1, required: true, style: "width: 140px;" %>
+    </div>
+    <div class="form-group" style="margin-right: 10px;">
+      <%= number_field_tag :discounted_price_cents, nil, class: "form-control", placeholder: "Discounted (optional)", min: 0, style: "width: 170px;" %>
+    </div>
+    <%= submit_tag "Add Product", class: "btn btn-primary" %>
+  <% end %>
+</div>
+
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
-        <th>Name</th>
+        <th>Product</th>
         <th>Category</th>
-        <th>Description</th>
         <th>Default Price</th>
-        <th>Default Discounted Price</th>
         <th>Pricelist Price</th>
-        <th>Tot Quantity</th>
-        <th>Image</th>
+        <th>Pricelist Discounted Price</th>
+        <th>Remove</th>
       </tr>
     </thead>
-
     <tbody>
-      <%= content_tag_for(:tr, @product_prices) do |product| %>
-        <% product.temp_product_price = product.product_prices.find_by(product_id: product.id, pricelist_id: @pricelist.id).try(:price_cents) %>
-        <td><%= product.name %></td>
-        <td><%= product.category_list.to_s %></td>
-        <td><%= product.description %></td>
-        <td><%= product.price_cents %></td>
-        <td><%= product.discounted_price_cents %></td>
-
-        <td style="width: 60px"><%= best_in_place product, :temp_product_price, :as => :input, :url => backoffice_update_product_price_path(product_id: product.id, pricelist_id: @pricelist.id), :method => :put, :place_holder => "Click Here" %></td>
-
-        <td><%= product.total_quantity %></td>
-        <td><%= image_tag product.image_url(:thumb_100), width: 100 %></td>
+      <% @product_prices.each do |pp| %>
+        <tr>
+          <td><%= pp.product.name %></td>
+          <td><%= pp.product.category_list.to_s %></td>
+          <td><%= pp.product.price_cents %></td>
+          <td style="width: 120px"><%= best_in_place pp, :price_cents, as: :input, url: backoffice_product_price_path(pp), place_holder: "Click Here" %></td>
+          <td style="width: 120px"><%= best_in_place pp, :discounted_price_cents, as: :input, url: backoffice_product_price_path(pp), place_holder: "Click Here" %></td>
+          <td>
+            <%= link_to "<i class='material-icons'>delete</i>".html_safe,
+                  remove_product_backoffice_pricelist_path(@pricelist, product_price_id: pp.id),
+                  method: :delete,
+                  data: { confirm: "Remove #{pp.product.name} from this pricelist? It will sell at the default price." } %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @product_prices.empty? %>
+        <tr><td colspan="6" class="text-muted">No products on this price list yet — every product sells at the default store price. Add the ones that need a custom price above.</td></tr>
       <% end %>
     </tbody>
   </table>
 </div>
+
+<script>
+  $(document).ready(function () {
+    $("#add-product-select").select2({ width: '320px' });
+    /* best_in_place needs (re)binding for the inline price cells */
+    if ($.fn.best_in_place) { $(".best_in_place").best_in_place(); }
+  });
+</script>

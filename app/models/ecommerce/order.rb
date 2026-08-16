@@ -226,6 +226,16 @@ module Ecommerce
       Address.find_by(id: self.billing_address_id)
     end
 
+    # SUNAT observations for website comprobantes (B001/F001): customer name +
+    # phone + the order's special delivery instructions. Previously boletas
+    # sent only the comments and the factura string had an unclosed paren.
+    def einvoice_observation
+      parts = []
+      parts << "#{self.user.first_name} #{self.user.last_name} (#{self.user.username.to_s.gsub(/:\d+$/, '')})".strip
+      parts << self.delivery_comments if self.delivery_comments.present?
+      parts.join(" - ")
+    end
+
     def smart_date_invoice
       if (Time.now - 5.hours).hour < 8
         return (Time.now - 5.hours - 1.day).to_s[0..9]
@@ -293,7 +303,7 @@ module Ecommerce
                 amount_total: total_order_amount,
                 discount_total: discount_total,
                 weight: weight,
-                observation: self.delivery_comments,
+                observation: einvoice_observation,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,
@@ -325,7 +335,7 @@ module Ecommerce
                 amount_total: total_order_amount,
                 discount_total: discount_total,
                 weight: weight,
-                observation: "#{self.user.first_name} #{self.user.last_name} (#{self.user.username.to_s.gsub(/:\d+$/, '')} - #{self.delivery_comments}",
+                observation: einvoice_observation,
                 company_id_zip: 33,
                 partner_shipping_id: "shipping_id",
                 company_id_vat: Ecommerce.company_vat,

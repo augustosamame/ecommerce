@@ -39,7 +39,12 @@ Ecommerce::Engine.routes.draw do
     resources :discount_groups do
       member { post :apply_discount }
     end
-    resources :pricelists
+    resources :pricelists do
+      member do
+        post :add_product
+        delete :remove_product
+      end
+    end
     resources :product_prices
     put 'update_product_price', :to => "product_prices#bp_update", as: 'update_product_price'
     resources :campaigns

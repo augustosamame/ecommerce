@@ -7,7 +7,16 @@ module Ecommerce
 
     # GET /product_prices
     def index
-      @product_prices = ProductPrice.all
+      # Blank-until-filtered: pick a pricelist and only ITS rows render, then
+      # add the products you want on it one by one — instead of dumping every
+      # product price for every list (unusable at catalog size).
+      @pricelists = Pricelist.all.order(:name)
+      @selected_pricelist = Pricelist.find_by(id: params[:pricelist_id])
+      @product_prices = if @selected_pricelist
+        ProductPrice.where(pricelist_id: @selected_pricelist.id).includes(product: :translations)
+      else
+        ProductPrice.none
+      end
     end
 
     # GET /product_prices/1
@@ -16,7 +25,8 @@ module Ecommerce
 
     # GET /product_prices/new
     def new
-      @product_price = ProductPrice.new
+      # Pre-select the pricelist when coming from the filtered index.
+      @product_price = ProductPrice.new(pricelist_id: params[:pricelist_id])
     end
 
     # GET /product_prices/1/edit

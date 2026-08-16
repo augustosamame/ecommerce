@@ -7,7 +7,11 @@
   </div>
 </section>
 <!-- products -->
-<main>
+<%# .pre-checkout-page scopes the cross-sell card fixes in checkout-page/checkout.css
+    to this screen only. Do not remove this class: without it the shared product
+    card styles (24px prices, button width reserved for +/- qty controls) clip the
+    "Agregar" button and blow up the prices on mobile. %>
+<main class="pre-checkout-page">
   <section class="products product-recommendation section-background">
     <div class="container">
       <div class="pagination list-center" style="display:none;">

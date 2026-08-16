@@ -376,3 +376,81 @@
   padding: 35px 40px 20px;
   margin-bottom: 15px;
 }
+/* ============================================================================
+   PRE-CHECKOUT (CROSS-SELL) PRODUCT CARDS — RECURRING MOBILE BUG, READ THIS
+   ============================================================================
+   Symptom (mobile, half-width cards): the struck-through regular price and the
+   discounted price render at the shared 24px size and collide, and the
+   "Agregar" button is clipped because the shared .container-cart-button width
+   reserves 126px for the +/- qty controls that this screen does not render.
+
+   Why it "keeps coming back" (root cause found 2026-08): the fix was applied
+   before (custom.scss, commits 24c98dc / 786cca8 / 264a80e, May 2026) and the
+   code in this repo is correct — but production kept serving a stylesheet
+   bundle compiled on 2025-12-20. The host app (expatshop) deploys with
+   capistrano-faster-assets, which SKIPS assets:precompile unless files in the
+   HOST repo (app/assets, lib/assets, vendor/assets, Gemfile.lock,
+   config/routes.rb) differ between the last two releases. This engine's
+   stylesheets live inside the gem checkout (vendor/bundle, a linked dir that
+   is never diffed), so engine-only CSS changes ship code but not compiled CSS,
+   and the stale bundle without the fix "regenerates" the bug on every deploy.
+   Remedy for the pipeline: after changing engine assets, bump the ecommerce
+   pin in expatshop/Gemfile.lock AND force a recompile (touch a host asset or
+   run `bundle exec rake assets:precompile`/clobber on deploy).
+
+   The rules below are additionally scoped to .pre-checkout-page (set on the
+   <main> element of checkout/pre_checkout.html.erb) so they survive churn in
+   the shared product-card styles and do not leak into any other screen. They
+   intentionally do NOT depend only on .pre-checkout-product, so they keep
+   working even if the shared partial loses that per-card class again.
+   ========================================================================= */
+
+/* Prices: shrink from the shared 24px so regular + discounted fit side by
+   side in a half-width card; let them wrap/stack instead of colliding. */
+.pre-checkout-page .price-inner-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  -webkit-box-pack: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.pre-checkout-page .product-info-price,
+.pre-checkout-page .product-info-price-regular,
+.pre-checkout-page .product-info-price-discounted {
+  font-size: 14px !important;
+  width: auto !important;
+  max-width: 100%;
+  margin: 0 4px !important;
+  overflow-wrap: break-word;
+}
+
+/* Add-to-cart row: no +/- qty controls on this screen, so the button takes
+   the full row. If the qty controls ever reappear here, flex-wrap + min-width
+   keep the button label visible instead of clipping it to "Agr". */
+.pre-checkout-page .add-to-cart-btn-container {
+  flex-wrap: wrap;
+  height: auto;
+  min-height: 42px;
+}
+.pre-checkout-page .container-cart-button {
+  width: 100% !important;
+  flex: 1 1 auto !important;
+  min-width: 60%;
+  height: auto;
+  min-height: 42px;
+  white-space: normal;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+@media (max-width: 480px) {
+  .pre-checkout-page .product-info-price,
+  .pre-checkout-page .product-info-price-regular,
+  .pre-checkout-page .product-info-price-discounted {
+    font-size: 12px !important;
+  }
+  .pre-checkout-page .container-cart-button {
+    font-size: 13px;
+  }
+}
