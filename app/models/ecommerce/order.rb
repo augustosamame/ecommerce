@@ -456,6 +456,10 @@ module Ecommerce
       request.body = invoice_hash.to_json
       self.update_columns(efact_sent_text: invoice_hash.to_json)
       response = http.request(request)
+      # TEMPORARY parallel-run gate (efact-supplier migration): mirrors the
+      # payload to the new invoicing platform → Nubefact sandbox. Never
+      # affects the legal flow below. See PROD_INVOICING_SETUP.md §Dual mode.
+      post_shadow_einvoice_to_new_invoicing(invoice_hash)
       if response.code == "200"
         response_body = JSON.parse(response.read_body)
         if response.read_body && response_body["response_text"] == "OK"
@@ -478,6 +482,42 @@ module Ecommerce
         AdminMailer.einvoice_error_email(self).deliver! #unless Rails.env == "development"
         return response.read_body
       end
+    end
+
+    # TEMPORARY (efact-supplier migration parallel-run): while
+    # DUAL_INVOICING_TEST=true and NEW_INVOICING is not yet enabled, every
+    # einvoice payload (boleta/factura/NC/anulación) is ALSO posted to the new
+    # invoicing platform gateway, which forwards to the Nubefact sandbox and
+    # auto-generates the guía de remisión — a full shadow of the production
+    # flow for validation. Strictly non-fatal: any failure here is logged and
+    # swallowed so the legal comprobante path (current production processor)
+    # is never affected. Remove this method and the call site together with
+    # the DUAL_INVOICING_TEST env var at cutover (NEW_INVOICING=true).
+    def post_shadow_einvoice_to_new_invoicing(invoice_hash)
+      return unless ENV["DUAL_INVOICING_TEST"] == "true"
+      return if ENV["NEW_INVOICING"] == "true" # already routed to the platform
+
+      shadow_url   = ENV.fetch("NEW_INVOICING_URL")   { Ecommerce::Control.find_by(name: "new_invoicing_url")&.text_value }
+      shadow_token = ENV.fetch("NEW_INVOICING_TOKEN") { Ecommerce::Control.find_by(name: "new_invoicing_token")&.text_value }
+      if shadow_url.blank? || shadow_token.blank?
+        Rails.logger.warn("[DualInvoicingTest] order #{self.id}: new_invoicing_url/token not configured; shadow skipped")
+        return
+      end
+
+      url = URI(shadow_url)
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true if url.scheme == "https"
+      http.open_timeout = 10
+      http.read_timeout = 90
+      shadow_request = Net::HTTP::Post.new(url)
+      shadow_request["Content-Type"] = "application/json"
+      shadow_request["Authorization"] = "Bearer #{shadow_token}"
+      shadow_request.body = invoice_hash.to_json
+      shadow_response = http.request(shadow_request)
+      Rails.logger.info("[DualInvoicingTest] order #{self.id} #{invoice_hash[:number]}: #{shadow_response.code} #{shadow_response.body.to_s[0, 200]}")
+    rescue => e
+      Rails.logger.error("[DualInvoicingTest] order #{self.id}: #{e.class}: #{e.message}")
+      Rollbar.warning(e, order_id: self.id) if defined?(Rollbar)
     end
 
     def normalize_district_for_einvoice(order_billing_address)
