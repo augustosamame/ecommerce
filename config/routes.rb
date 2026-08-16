@@ -36,6 +36,9 @@ Ecommerce::Engine.routes.draw do
     resources :coupons
     get '/dynamic_coupon_index', :to => "coupons#dynamic_index"
     resources :combo_discounts
+    resources :discount_groups do
+      member { post :apply_discount }
+    end
     resources :pricelists
     resources :product_prices
     put 'update_product_price', :to => "product_prices#bp_update", as: 'update_product_price'

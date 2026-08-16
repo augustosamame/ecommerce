@@ -1,0 +1,97 @@
+<div class="page-header">
+  <h1>Discount Group: <%= @discount_group.name %></h1>
+</div>
+
+<p><strong>Status:</strong> <%= @discount_group.status %></p>
+<p><strong>Current Discount:</strong>
+  <% if @discount_group.discount_active %>
+    <%= number_with_precision(@discount_group.discount_percentage, precision: 2) %>% (active)
+  <% else %>
+    none
+  <% end %>
+</p>
+<p><strong>Last Applied:</strong> <%= @discount_group.last_applied_at&.strftime("%d-%b-%Y %H:%M") || "Never" %></p>
+
+<p>
+  <button id="toggle-apply-form" type="button" class="btn btn-primary">Apply Discount</button>
+  <%= link_to 'Edit', edit_backoffice_discount_group_path(@discount_group), class: 'btn btn-default' %>
+  <%= link_to 'Back', backoffice_discount_groups_path, class: 'btn btn-default' %>
+</p>
+
+<div id="apply-discount-form" class="well" style="display: none; max-width: 480px;">
+  <%= form_tag apply_discount_backoffice_discount_group_path(@discount_group), method: :post do %>
+    <div class="form-group">
+      <label for="discount-percentage">Discount %</label>
+      <input type="number" name="percentage" id="discount-percentage" class="form-control"
+             step="0.01" min="0.01" max="99.99"
+             value="<%= number_with_precision(@discount_group.discount_percentage, precision: 2) %>">
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= check_box_tag :active, "1", @discount_group.discount_active, id: "discount-active" %>
+        Active <small>(uncheck and apply to remove the discounts)</small>
+      </label>
+    </div>
+    <%= submit_tag "Apply Now", class: "btn btn-danger",
+          data: { confirm: "Apply to all #{@products.size} products in this group?" } %>
+  <% end %>
+</div>
+
+<h3>Products in this Group (<%= @products.size %>)</h3>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Current Discounted Price</th>
+        <th>New Price (preview)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td><%= product.id %></td>
+          <td><%= link_to (product.name.presence || product.permalink), edit_backoffice_product_path(product) %></td>
+          <td>$ <%= number_with_precision(product.price_cents / 100.0, precision: 2) %></td>
+          <td>
+            <% if product.discounted? %>
+              $ <%= number_with_precision(product.discounted_price_cents / 100.0, precision: 2) %>
+            <% else %>
+              &mdash;
+            <% end %>
+          </td>
+          <td class="new-price" data-price-cents="<%= product.price_cents %>">&mdash;</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#toggle-apply-form').on('click', function () {
+      $('#apply-discount-form').toggle();
+      refreshPreview();
+    });
+
+    // Live preview: recompute the "New Price" column from the % field and the
+    // active checkbox. Unchecked active means "remove discounts" → new price
+    // is the full price. Mirrors DiscountGroup#apply_discount! rounding
+    // (cents * (1 - pct/100), rounded to the nearest cent).
+    function refreshPreview() {
+      var pct = parseFloat($('#discount-percentage').val()) || 0;
+      var active = $('#discount-active').is(':checked');
+      $('.new-price').each(function () {
+        var cents = parseInt($(this).data('price-cents'), 10);
+        if (isNaN(cents)) { $(this).text('—'); return; }
+        var newCents = active ? Math.round(cents * (1 - pct / 100)) : cents;
+        $(this).text('$ ' + (newCents / 100).toFixed(2));
+      });
+    }
+
+    $('#discount-percentage').on('input change', refreshPreview);
+    $('#discount-active').on('change', refreshPreview);
+  });
+</script>

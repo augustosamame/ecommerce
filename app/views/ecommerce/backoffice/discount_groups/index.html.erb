@@ -1,0 +1,39 @@
+<div class="page-header">
+  <%= link_to new_backoffice_discount_group_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Discount Group
+  <% end %>
+  <h1>Listing Discount Groups</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Products</th>
+        <th>Discount %</th>
+        <th>Discount Active</th>
+        <th>Last Applied</th>
+        <th>Status</th>
+        <th><%= t('common.show') %></th>
+        <th><%= t('common.edit') %></th>
+        <th><%= t('common.destroy') %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @discount_groups) do |discount_group| %>
+        <td><%= discount_group.name %></td>
+        <td><%= discount_group.products.count %></td>
+        <td><%= number_with_precision(discount_group.discount_percentage, precision: 2) %>%</td>
+        <td><%= discount_group.discount_active ? "Yes" : "No" %></td>
+        <td><%= discount_group.last_applied_at&.strftime("%d-%b-%Y %H:%M") || "Never" %></td>
+        <td><%= discount_group.status %></td>
+        <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_discount_group_path(discount_group) %></td>
+        <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_discount_group_path(discount_group) %></td>
+        <td><%= link_to "<i class='material-icons'>delete</i>".html_safe, backoffice_discount_group_path(discount_group), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

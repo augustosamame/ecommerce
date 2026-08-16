@@ -1,0 +1,12 @@
+<%= simple_form_for([:backoffice, @discount_group]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name, label: "Name" %>
+    <%= f.input :status, label: 'Status', collection: Ecommerce::DiscountGroup.statuses.keys %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Save", class: "btn btn-primary" %>
+  </div>
+<% end %>

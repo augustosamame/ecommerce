@@ -114,6 +114,9 @@
             <li class="<%= class_string({ start: true, active: (controller.controller_name == 'combo_discounts' && controller.action_name == 'index')}) %>">
               <%= link_to t('.combo_discounts'), backoffice_combo_discounts_path %>
             </li>
+            <li class="<%= class_string({ start: true, active: (controller.controller_name == 'discount_groups' && controller.action_name == 'index')}) %>">
+              <%= link_to "Discount Groups", backoffice_discount_groups_path %>
+            </li>
             <li class="<%= class_string({ start: true, active: (controller.controller_name == 'campaigns' && controller.action_name == 'index')}) %>">
               <%= link_to t('.campaigns'), backoffice_campaigns_path %>
             </li>

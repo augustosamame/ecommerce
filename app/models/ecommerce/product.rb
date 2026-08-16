@@ -11,6 +11,7 @@ module Ecommerce
     belongs_to :brand
     belongs_to :supplier
     belongs_to :accounting_code_family, optional: true
+    belongs_to :discount_group, class_name: "Ecommerce::DiscountGroup", optional: true
     #belongs_to :coupon, optional: true
     has_and_belongs_to_many :coupons, join_table: :coupons_products
 
