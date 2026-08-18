@@ -24,7 +24,7 @@ module Ecommerce
       @campaign = campaign
       @coupon_description_en = @campaign.email_coupon_description
       @coupon_description_es = @campaign.email_coupon_description_es
-      coupon_subject = I18n.locale == ':es-PE' ? @campaign.email_subject_es : @campaign.email_subject
+      coupon_subject = I18n.locale.to_s == "es-PE" ? @campaign.email_subject_es : @campaign.email_subject
       track_email(category: :operational, subtype: 'next_order_coupon', user: user, subject: campaign)
       mail(to: @user.email, subject: coupon_subject)
     end
@@ -33,7 +33,7 @@ module Ecommerce
       @user = user
       @coupon = coupon
       @campaign = campaign
-      email_subject = I18n.locale == ':es-PE' ? @campaign.email_subject_es : @campaign.email_subject
+      email_subject = I18n.locale.to_s == "es-PE" ? @campaign.email_subject_es : @campaign.email_subject
       track_email(category: :bulk, subtype: 'campaign', user: user, subject: campaign)
       mail(to: @user.email, subject: email_subject)
     end
