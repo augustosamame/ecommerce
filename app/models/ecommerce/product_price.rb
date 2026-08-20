@@ -12,6 +12,15 @@ module Ecommerce
 
     def set_discounted_price
       self.discounted_price_cents = self.price_cents
+      # Mirror the same "no discount = discounted equals price" convention on
+      # the soles columns used by B2B invoicing.
+      self.pen_discounted_price_cents = pen_price_cents if pen_discounted_price_cents.blank?
+    end
+
+    # Static soles price for B2B invoicing (nil when the row predates the
+    # soles columns or only carries the storefront USD price).
+    def invoicing_pen_cents
+      [pen_price_cents, pen_discounted_price_cents].compact.min
     end
 
   end

@@ -83,7 +83,7 @@ module Ecommerce
 
       # Only allow a trusted parameter "white list" through.
       def product_price_params
-        params.require(:product_price).permit(:product, :product_id, :pricelist, :pricelist_id, :price, :price_cents, :discounted_price, :discounted_price_cents, :usd_price, :usd_price_cents, :usd_discounted_price, :usd_discounted_price_cents)
+        params.require(:product_price).permit(:product, :product_id, :pricelist, :pricelist_id, :price, :price_cents, :discounted_price, :discounted_price_cents, :usd_price, :usd_price_cents, :usd_discounted_price, :usd_discounted_price_cents, :pen_price_cents, :pen_discounted_price_cents)
       end
   end
 end

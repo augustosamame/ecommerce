@@ -29,12 +29,16 @@ module Ecommerce
       product = Product.find_by(id: params[:product_id])
       redirect_to [:backoffice, @pricelist], alert: "Choose a product." and return unless product
 
+      # Soles is the price B2B invoicing uses and the only required one; the
+      # USD cents are optional and only feed the web store.
+      pen_price_cents = params[:pen_price_cents].to_i
+      redirect_to [:backoffice, @pricelist], alert: "Precio S/ (céntimos) must be greater than 0." and return if pen_price_cents <= 0
       price_cents = params[:price_cents].to_i
-      redirect_to [:backoffice, @pricelist], alert: "Price (cents) must be greater than 0." and return if price_cents <= 0
       discounted = params[:discounted_price_cents].to_i
       discounted = price_cents if discounted <= 0 # no discount = discounted == price (Product#discounted? convention)
 
       pp = ProductPrice.find_or_initialize_by(pricelist_id: @pricelist.id, product_id: product.id)
+      pp.pen_price_cents = pen_price_cents
       pp.price_cents = price_cents
       pp.discounted_price_cents = discounted
       if pp.save

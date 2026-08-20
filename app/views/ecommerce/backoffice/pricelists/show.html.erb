@@ -19,7 +19,15 @@
 </dl>
 
 <h2>Products on this Price List</h2>
-<p class="text-muted">Only products added here get a custom price on this list — everything else sells at the default store price. Click a price cell to edit it in place. Amounts are in cents (e.g. 890 = $8.90).</p>
+<p class="text-muted">
+  Only products added here get a custom price on this list — everything else sells at the default store price.
+  Click a price cell to edit it in place. Amounts are in <strong>cents</strong>.
+</p>
+<p class="text-muted">
+  <strong>Precio S/ (soles)</strong> is what B2B invoicing uses: a static amount that is never converted with the
+  exchange rate (e.g. 1250 = S/ 12.50). The USD columns are only used by the web store for logged-in customers
+  assigned to this list.
+</p>
 
 <div class="well" style="max-width: 900px;">
   <%= form_tag add_product_backoffice_pricelist_path(@pricelist), method: :post, class: "form-inline" do %>
@@ -29,10 +37,10 @@
             include_blank: "— Choose a product —", id: "add-product-select", style: "width: 100%;" %>
     </div>
     <div class="form-group" style="margin-right: 10px;">
-      <%= number_field_tag :price_cents, nil, class: "form-control", placeholder: "Price (cents)", min: 1, required: true, style: "width: 140px;" %>
+      <%= number_field_tag :pen_price_cents, nil, class: "form-control", placeholder: "Precio S/ (céntimos)", min: 1, required: true, style: "width: 170px;" %>
     </div>
     <div class="form-group" style="margin-right: 10px;">
-      <%= number_field_tag :discounted_price_cents, nil, class: "form-control", placeholder: "Discounted (optional)", min: 0, style: "width: 170px;" %>
+      <%= number_field_tag :price_cents, nil, class: "form-control", placeholder: "USD cents (opcional)", min: 0, style: "width: 170px;" %>
     </div>
     <%= submit_tag "Add Product", class: "btn btn-primary" %>
   <% end %>
@@ -45,8 +53,9 @@
         <th>Product</th>
         <th>Category</th>
         <th>Default Price</th>
-        <th>Pricelist Price</th>
-        <th>Pricelist Discounted Price</th>
+        <th>Precio S/ (B2B)</th>
+        <th>Pricelist Price (USD)</th>
+        <th>Pricelist Discounted Price (USD)</th>
         <th>Remove</th>
       </tr>
     </thead>
@@ -56,6 +65,7 @@
           <td><%= pp.product.name %></td>
           <td><%= pp.product.category_list.to_s %></td>
           <td><%= pp.product.price_cents %></td>
+          <td style="width: 120px"><%= best_in_place pp, :pen_price_cents, as: :input, url: backoffice_product_price_path(pp), place_holder: "Click Here" %></td>
           <td style="width: 120px"><%= best_in_place pp, :price_cents, as: :input, url: backoffice_product_price_path(pp), place_holder: "Click Here" %></td>
           <td style="width: 120px"><%= best_in_place pp, :discounted_price_cents, as: :input, url: backoffice_product_price_path(pp), place_holder: "Click Here" %></td>
           <td>
@@ -67,7 +77,7 @@
         </tr>
       <% end %>
       <% if @product_prices.empty? %>
-        <tr><td colspan="6" class="text-muted">No products on this price list yet — every product sells at the default store price. Add the ones that need a custom price above.</td></tr>
+        <tr><td colspan="7" class="text-muted">No products on this price list yet — every product sells at the default store price. Add the ones that need a custom price above.</td></tr>
       <% end %>
     </tbody>
   </table>
