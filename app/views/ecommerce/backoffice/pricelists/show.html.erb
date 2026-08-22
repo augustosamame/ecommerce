@@ -21,12 +21,11 @@
 <h2>Products on this Price List</h2>
 <p class="text-muted">
   Only products added here get a custom price on this list — everything else sells at the default store price.
-  Click a price cell to edit it in place. Amounts are in <strong>cents</strong>.
 </p>
 <p class="text-muted">
   <strong>Precio S/ (soles)</strong> is what B2B invoicing uses: a static amount that is never converted with the
-  exchange rate (e.g. 1250 = S/ 12.50). The USD columns are only used by the web store for logged-in customers
-  assigned to this list.
+  exchange rate. Enter it in <strong>soles</strong> with up to <strong>4 decimals</strong> (e.g. <code>12.1668</code>).
+  The USD columns are only used by the web store for logged-in customers assigned to this list, and are optional.
 </p>
 
 <div class="well" style="max-width: 900px;">
@@ -37,7 +36,7 @@
             include_blank: "— Choose a product —", id: "add-product-select", style: "width: 100%;" %>
     </div>
     <div class="form-group" style="margin-right: 10px;">
-      <%= number_field_tag :pen_price_cents, nil, class: "form-control", placeholder: "Precio S/ (céntimos)", min: 1, required: true, style: "width: 170px;" %>
+      <%= number_field_tag :pen_price, nil, class: "form-control", placeholder: "Precio S/ (ej. 12.1668)", step: "0.0001", min: 0, required: true, style: "width: 190px;" %>
     </div>
     <div class="form-group" style="margin-right: 10px;">
       <%= number_field_tag :price_cents, nil, class: "form-control", placeholder: "USD cents (opcional)", min: 0, style: "width: 170px;" %>
@@ -56,22 +55,37 @@
         <th>Precio S/ (B2B)</th>
         <th>Pricelist Price (USD)</th>
         <th>Pricelist Discounted Price (USD)</th>
-        <th>Remove</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <% @product_prices.each do |pp| %>
+        <%# Each row is its own update form: an explicit Save beats the old
+            click-to-edit cells, which gave no visible edit affordance. %>
         <tr>
+          <%= form_tag update_product_backoffice_pricelist_path(@pricelist, product_price_id: pp.id), method: :patch, id: "pp-form-#{pp.id}" do %>
+          <% end %>
           <td><%= pp.product.name %></td>
           <td><%= pp.product.category_list.to_s %></td>
           <td><%= pp.product.price_cents %></td>
-          <td style="width: 120px"><%= best_in_place pp, :pen_price_cents, as: :input, url: backoffice_product_price_path(pp), place_holder: "Click Here" %></td>
-          <td style="width: 120px"><%= best_in_place pp, :price_cents, as: :input, url: backoffice_product_price_path(pp), place_holder: "Click Here" %></td>
-          <td style="width: 120px"><%= best_in_place pp, :discounted_price_cents, as: :input, url: backoffice_product_price_path(pp), place_holder: "Click Here" %></td>
-          <td>
+          <td style="width: 150px">
+            <%= number_field_tag :pen_price, pp.pen_price, form: "pp-form-#{pp.id}",
+                  class: "form-control input-sm", step: "0.0001", min: 0 %>
+          </td>
+          <td style="width: 130px">
+            <%= number_field_tag :price_cents, pp.price_cents, form: "pp-form-#{pp.id}",
+                  class: "form-control input-sm", min: 0 %>
+          </td>
+          <td style="width: 130px">
+            <%= number_field_tag :discounted_price_cents, pp.discounted_price_cents, form: "pp-form-#{pp.id}",
+                  class: "form-control input-sm", min: 0 %>
+          </td>
+          <td style="white-space: nowrap;">
+            <%= submit_tag "Save", form: "pp-form-#{pp.id}", class: "btn btn-primary btn-sm", data: { disable_with: false } %>
             <%= link_to "<i class='material-icons'>delete</i>".html_safe,
                   remove_product_backoffice_pricelist_path(@pricelist, product_price_id: pp.id),
                   method: :delete,
+                  class: "btn btn-default btn-sm",
                   data: { confirm: "Remove #{pp.product.name} from this pricelist? It will sell at the default price." } %>
           </td>
         </tr>
@@ -83,10 +97,16 @@
   </table>
 </div>
 
+<%# One update form per row, kept outside the table so the markup is valid;
+    the row inputs bind to these by id via their form="" attribute. %>
+<% @product_prices.each do |pp| %>
+  <%= form_tag update_product_backoffice_pricelist_path(@pricelist, product_price_id: pp.id),
+        method: :patch, id: "pp-form-#{pp.id}", style: "display:none;" do %>
+  <% end %>
+<% end %>
+
 <script>
   $(document).ready(function () {
     $("#add-product-select").select2({ width: '320px' });
-    /* best_in_place needs (re)binding for the inline price cells */
-    if ($.fn.best_in_place) { $(".best_in_place").best_in_place(); }
   });
 </script>

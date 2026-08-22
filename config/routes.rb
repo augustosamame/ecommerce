@@ -42,6 +42,7 @@ Ecommerce::Engine.routes.draw do
     resources :pricelists do
       member do
         post :add_product
+        patch :update_product
         delete :remove_product
       end
     end

@@ -2,7 +2,7 @@ require_dependency "ecommerce/application_controller"
 
 module Ecommerce
   class Backoffice::PricelistsController < Backoffice::BaseController
-    before_action :set_pricelist, only: [:show, :edit, :update, :destroy, :add_product, :remove_product]
+    before_action :set_pricelist, only: [:show, :edit, :update, :destroy, :add_product, :update_product, :remove_product]
     authorize_resource :class => "Ecommerce::Pricelist"
 
     # GET /pricelists
@@ -31,18 +31,40 @@ module Ecommerce
 
       # Soles is the price B2B invoicing uses and the only required one; the
       # USD cents are optional and only feed the web store.
-      pen_price_cents = params[:pen_price_cents].to_i
-      redirect_to [:backoffice, @pricelist], alert: "Precio S/ (céntimos) must be greater than 0." and return if pen_price_cents <= 0
+      pen_price = params[:pen_price].to_d
+      redirect_to [:backoffice, @pricelist], alert: "Precio S/ must be greater than 0." and return if pen_price <= 0
       price_cents = params[:price_cents].to_i
       discounted = params[:discounted_price_cents].to_i
       discounted = price_cents if discounted <= 0 # no discount = discounted == price (Product#discounted? convention)
 
       pp = ProductPrice.find_or_initialize_by(pricelist_id: @pricelist.id, product_id: product.id)
-      pp.pen_price_cents = pen_price_cents
+      pp.pen_price = pen_price
       pp.price_cents = price_cents
       pp.discounted_price_cents = discounted
       if pp.save
         redirect_to [:backoffice, @pricelist], notice: "#{product.name} added to pricelist."
+      else
+        redirect_to [:backoffice, @pricelist], alert: pp.errors.full_messages.to_sentence
+      end
+    end
+
+    # PATCH /backoffice/pricelists/:id/update_product
+    # Saves one row of the pricelist table (soles price + optional USD cents).
+    def update_product
+      pp = ProductPrice.find_by(id: params[:product_price_id], pricelist_id: @pricelist.id)
+      redirect_to [:backoffice, @pricelist], alert: "Price row not found." and return unless pp
+
+      pen_price = params[:pen_price].to_d
+      redirect_to [:backoffice, @pricelist], alert: "Precio S/ must be greater than 0." and return if pen_price <= 0
+
+      pp.pen_price = pen_price
+      # Re-derived from pen_price by the model unless explicitly set.
+      pp.pen_discounted_price = nil
+      pp.price_cents = params[:price_cents].to_i if params[:price_cents].present?
+      pp.discounted_price_cents = params[:discounted_price_cents].to_i if params[:discounted_price_cents].present?
+
+      if pp.save
+        redirect_to [:backoffice, @pricelist], notice: "#{pp.product.name} price updated."
       else
         redirect_to [:backoffice, @pricelist], alert: pp.errors.full_messages.to_sentence
       end
