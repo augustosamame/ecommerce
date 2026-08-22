@@ -245,6 +245,13 @@ module Ecommerce
     # SUNAT observations for website comprobantes (B001/F001): customer name +
     # phone + the order's special delivery instructions. Previously boletas
     # sent only the comments and the factura string had an unclosed paren.
+    # True once the new invoicing platform is the live processor: it then
+    # owns the correlativo. The dual/parallel run (DUAL_INVOICING_TEST) does
+    # NOT qualify — Sinergia is still the legal issuer and keeps numbering.
+    def new_invoicing_owns_numbering?
+      ENV["NEW_INVOICING"] == "true"
+    end
+
     def einvoice_observation
       parts = []
       parts << "#{self.user.first_name} #{self.user.last_name} (#{self.user.username.to_s.gsub(/:\d+$/, '')})".strip
@@ -459,6 +466,16 @@ module Ecommerce
         einvoice_token = Ecommerce::Control.find_by!(name: "efact_token").text_value
       end
 
+      # Post-cutover the invoicing platform owns the correlativo: send no
+      # number and let it claim one atomically (Series#claim_number!, under a
+      # row lock). The engine's own counter was a stale read-then-write and
+      # could hand the same number to two documents. Pre-cutover (Sinergia /
+      # dual run) nothing changes.
+      if new_invoicing_owns_numbering?
+        invoice_hash = invoice_hash.except(:number)
+        correlativo_to_update_on_200 = nil
+      end
+
       url = URI(einvoice_url)
       puts "invoice_hash: #{invoice_hash.to_json} sent to #{url}"
       Rails.logger.debug "invoice_hash: #{invoice_hash.to_json} sent to #{url}"
@@ -481,11 +498,14 @@ module Ecommerce
         if response.read_body && response_body["response_text"] == "OK"
           case invoice_hash[:einvoice_type]
             when "nota_de_credito"
-              self.update_columns(efact_response_text: "OK", efact_refund_url: response_body["response_url"], efact_refund_number: invoice_hash[:number] )
+              # When the platform assigned the number it comes back in the response.
+              assigned = response_body["number"].presence || invoice_hash[:number]
+              self.update_columns(efact_response_text: "OK", efact_refund_url: response_body["response_url"], efact_refund_number: assigned )
             when "anulacion"
               self.update_columns(efact_response_text: "OK", efact_void_url: response_body["response_url"] )
             else
-              self.update_columns(efact_response_text: "OK", efact_invoice_url: response_body["response_url"], efact_number: invoice_hash[:number] )
+              assigned = response_body["number"].presence || invoice_hash[:number]
+              self.update_columns(efact_response_text: "OK", efact_invoice_url: response_body["response_url"], efact_number: assigned )
           end
           correlativo_to_update_on_200.update_columns(integer_value: correlativo_to_update_on_200.integer_value + 1) if correlativo_to_update_on_200
         else
