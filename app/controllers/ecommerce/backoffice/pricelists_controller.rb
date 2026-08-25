@@ -30,11 +30,12 @@ module Ecommerce
       redirect_to [:backoffice, @pricelist], alert: "Choose a product." and return unless product
 
       # Soles is the price B2B invoicing uses and the only required one; the
-      # USD cents are optional and only feed the web store.
+      # USD price is optional, entered in DOLLARS (decimal), and only feeds
+      # the web store.
       pen_price = params[:pen_price].to_d
       redirect_to [:backoffice, @pricelist], alert: "Precio S/ must be greater than 0." and return if pen_price <= 0
-      price_cents = params[:price_cents].to_i
-      discounted = params[:discounted_price_cents].to_i
+      price_cents = (params[:usd_price].to_d * 100).round
+      discounted = (params[:usd_discounted_price].to_d * 100).round
       discounted = price_cents if discounted <= 0 # no discount = discounted == price (Product#discounted? convention)
 
       pp = ProductPrice.find_or_initialize_by(pricelist_id: @pricelist.id, product_id: product.id)
@@ -49,7 +50,7 @@ module Ecommerce
     end
 
     # PATCH /backoffice/pricelists/:id/update_product
-    # Saves one row of the pricelist table (soles price + optional USD cents).
+    # Saves one row of the pricelist table (soles price + optional USD dollars).
     def update_product
       pp = ProductPrice.find_by(id: params[:product_price_id], pricelist_id: @pricelist.id)
       redirect_to [:backoffice, @pricelist], alert: "Price row not found." and return unless pp
@@ -60,8 +61,9 @@ module Ecommerce
       pp.pen_price = pen_price
       # Re-derived from pen_price by the model unless explicitly set.
       pp.pen_discounted_price = nil
-      pp.price_cents = params[:price_cents].to_i if params[:price_cents].present?
-      pp.discounted_price_cents = params[:discounted_price_cents].to_i if params[:discounted_price_cents].present?
+      # USD amounts arrive in DOLLARS (decimal) and are stored as cents.
+      pp.price_cents = (params[:usd_price].to_d * 100).round if params[:usd_price].present?
+      pp.discounted_price_cents = (params[:usd_discounted_price].to_d * 100).round if params[:usd_discounted_price].present?
 
       if pp.save
         redirect_to [:backoffice, @pricelist], notice: "#{pp.product.name} price updated."

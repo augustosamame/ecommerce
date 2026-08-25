@@ -16,8 +16,13 @@ module Ecommerce
     before_save :set_discounted_price
 
     def set_discounted_price
-      self.discounted_price_cents = self.price_cents
-      # Same "no discount = discounted equals price" convention on the soles side.
+      # "No discount" = discounted equals price (Product#discounted?
+      # convention). Only fill the blanks: the old unconditional overwrite
+      # silently discarded every discounted price ever entered.
+      if discounted_price_cents.blank? || discounted_price_cents.zero? || discounted_price_cents > price_cents
+        self.discounted_price_cents = price_cents
+      end
+      # Same convention on the soles side.
       self.pen_discounted_price = pen_price if pen_discounted_price.blank?
     end
 

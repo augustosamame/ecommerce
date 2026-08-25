@@ -21,11 +21,12 @@
 <h2>Products on this Price List</h2>
 <p class="text-muted">
   Only products added here get a custom price on this list — everything else sells at the default store price.
+  All amounts are entered as <strong>decimal prices</strong> (soles <code>12.1668</code>, dollars <code>8.90</code>) — never cents.
 </p>
 <p class="text-muted">
-  <strong>Precio S/ (soles)</strong> is what B2B invoicing uses: a static amount that is never converted with the
-  exchange rate. Enter it in <strong>soles</strong> with up to <strong>4 decimals</strong> (e.g. <code>12.1668</code>).
-  The USD columns are only used by the web store for logged-in customers assigned to this list, and are optional.
+  <strong>Precio S/ (soles)</strong> is what B2B invoicing uses: a static amount, never converted with the exchange
+  rate, with up to 4 decimals. The USD columns are optional and only used by the web store for logged-in customers
+  assigned to this list.
 </p>
 
 <div class="well" style="max-width: 900px;">
@@ -39,7 +40,7 @@
       <%= number_field_tag :pen_price, nil, class: "form-control", placeholder: "Precio S/ (ej. 12.1668)", step: "0.0001", min: 0, required: true, style: "width: 190px;" %>
     </div>
     <div class="form-group" style="margin-right: 10px;">
-      <%= number_field_tag :price_cents, nil, class: "form-control", placeholder: "USD cents (opcional)", min: 0, style: "width: 170px;" %>
+      <%= number_field_tag :usd_price, nil, class: "form-control", placeholder: "USD $ (opcional, ej. 8.90)", step: "0.01", min: 0, style: "width: 190px;" %>
     </div>
     <%= submit_tag "Add Product", class: "btn btn-primary" %>
   <% end %>
@@ -51,10 +52,10 @@
       <tr>
         <th>Product</th>
         <th>Category</th>
-        <th>Default Price</th>
+        <th>Default Price (USD)</th>
         <th>Precio S/ (B2B)</th>
-        <th>Pricelist Price (USD)</th>
-        <th>Pricelist Discounted Price (USD)</th>
+        <th>Price (USD $)</th>
+        <th>Discounted (USD $)</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -67,18 +68,18 @@
           <% end %>
           <td><%= pp.product.name %></td>
           <td><%= pp.product.category_list.to_s %></td>
-          <td><%= pp.product.price_cents %></td>
+          <td>$ <%= sprintf("%.2f", pp.product.price_cents / 100.0) %></td>
           <td style="width: 150px">
             <%= number_field_tag :pen_price, pp.pen_price, form: "pp-form-#{pp.id}",
                   class: "form-control input-sm", step: "0.0001", min: 0 %>
           </td>
           <td style="width: 130px">
-            <%= number_field_tag :price_cents, pp.price_cents, form: "pp-form-#{pp.id}",
-                  class: "form-control input-sm", min: 0 %>
+            <%= number_field_tag :usd_price, sprintf("%.2f", pp.price_cents / 100.0), form: "pp-form-#{pp.id}",
+                  class: "form-control input-sm", step: "0.01", min: 0 %>
           </td>
           <td style="width: 130px">
-            <%= number_field_tag :discounted_price_cents, pp.discounted_price_cents, form: "pp-form-#{pp.id}",
-                  class: "form-control input-sm", min: 0 %>
+            <%= number_field_tag :usd_discounted_price, sprintf("%.2f", pp.discounted_price_cents / 100.0), form: "pp-form-#{pp.id}",
+                  class: "form-control input-sm", step: "0.01", min: 0 %>
           </td>
           <td style="white-space: nowrap;">
             <%= submit_tag "Save", form: "pp-form-#{pp.id}", class: "btn btn-primary btn-sm", data: { disable_with: false } %>
