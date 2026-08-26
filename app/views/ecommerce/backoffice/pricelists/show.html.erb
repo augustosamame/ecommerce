@@ -32,8 +32,10 @@
 <div class="well" style="max-width: 900px;">
   <%= form_tag add_product_backoffice_pricelist_path(@pricelist), method: :post, class: "form-inline" do %>
     <div class="form-group" style="min-width: 320px; margin-right: 10px;">
+      <%# bilingual_label makes the select2 filter match Spanish AND English
+          regardless of the session locale (labels were permalink-only). %>
       <%= select_tag :product_id,
-            options_from_collection_for_select(@addable_products, :id, :permalink),
+            options_from_collection_for_select(@addable_products, :id, :bilingual_label),
             include_blank: "— Choose a product —", id: "add-product-select", style: "width: 100%;" %>
     </div>
     <div class="form-group" style="margin-right: 10px;">

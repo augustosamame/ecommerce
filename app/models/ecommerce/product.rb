@@ -112,6 +112,19 @@ module Ecommerce
       self.discounted_price_cents < self.price_cents
     end
 
+    # Locale-independent picker label: "Nombre ES · English Name (permalink)".
+    # Admin dropdowns filter client-side against the visible text, so labels
+    # built from the session-locale name (or the permalink alone) made the
+    # other language unsearchable.
+    def bilingual_label
+      tr = translations.index_by { |t| t.locale.to_s }
+      es = tr.keys.grep(/\Aes/).map { |k| tr[k].name }.find(&:present?)
+      en = tr.keys.grep(/\Aen/).map { |k| tr[k].name }.find(&:present?)
+      parts = [es.presence || en.presence || permalink]
+      parts << en if en.present? && en != parts.first
+      "#{parts.join(' · ')} (#{permalink})"
+    end
+
     def pricelist_price_cents(pricelist)
       return ProductPrice.find_by(product_id: self.id, pricelist_id: pricelist.id).try(:price_cents)
     end
