@@ -101,9 +101,13 @@
         if response.code == 200 || response.code == 202
           return response.parsed_response
         else
+          # These events drive the order-confirmation WhatsApps: a silent
+          # failure means customers get no message and nobody notices.
+          Rails.logger.error("[Interakt] create_event #{hash[:event]} user=#{hash[:user_id]} failed: code=#{response.code} body=#{response.body.to_s[0, 300]}")
           return {error: "Code: #{response.code.to_s} - #{response.try(:to_s)}"}
         end
       rescue => exception
+        Rails.logger.error("[Interakt] create_event #{hash[:event]} user=#{hash[:user_id]} raised: #{exception.class}: #{exception}")
         return {error: exception.to_s}
       end
     end
