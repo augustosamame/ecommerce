@@ -38,6 +38,11 @@
               <% if current_user.admin? || current_user.driver? %>
                 <li><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
               <% end %>
+              <%# Accountants have no backoffice access; their workspace is the
+                  (read-only) invoicing platform in the host app. %>
+              <% if current_user.respond_to?(:accountant?) && current_user.accountant? %>
+                <li><%= link_to "Facturación", main_app.invoicing_root_path, style: "color: red;" %></li>
+              <% end %>
               <li class="dropdown dropdown-hover d-flex flex-center">
                 <a class="dropdown-toggle d-flex flex-center" data-toggle="dropdown" href="#">
                   <%= "#{current_user.name}".html_safe %>
@@ -224,6 +229,9 @@
             
             <% if current_user && (current_user.admin? || current_user.driver?) %>
               <li style="border-bottom: 1px solid #ccc;"><%= link_to "Backoffice", Ecommerce::Engine.routes.url_helpers.backoffice_dashboard_path, style: "color: red;" %></li>
+            <% end %>
+            <% if current_user && current_user.respond_to?(:accountant?) && current_user.accountant? %>
+              <li style="border-bottom: 1px solid #ccc;"><%= link_to "Facturación", main_app.invoicing_root_path, style: "color: red;" %></li>
             <% end %>
 
             <li><a href="<%= Ecommerce::Engine.routes.url_helpers.products_path %>" class="<%= active_all_products_category() == 'active' ? 'active' : '' %>" style="padding-top: 7px; padding-bottom: 7px;"><%= t('.all_products') %></a></li>
