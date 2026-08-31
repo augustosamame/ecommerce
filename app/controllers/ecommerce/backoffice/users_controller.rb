@@ -40,7 +40,9 @@ module Ecommerce
     # GET /backoffice/users/new
     def new
       @backoffice_user = User.new
-      @backoffice_user.status = "active"
+      # The host app defines the status enum ("active" is not a value in
+      # Expatshop's [regular, guest]); preselect its first/default value.
+      @backoffice_user.status ||= User.statuses.keys.first
     end
 
     # GET /backoffice/users/1/edit
