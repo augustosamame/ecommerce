@@ -375,6 +375,7 @@ module Ecommerce
               payment_method_id: points_payment_method.id,
               payment_request_id: params[:payment_request_id],
               amount_cents: params[:points_redeemed_amount],
+              currency: "usd", # points are USD-denominated (they offset the USD order total)
               date: Time.now, status: "active"
             )
           end
@@ -477,6 +478,7 @@ module Ecommerce
             payment_method_id: points_payment_method.id,
             payment_request_id: params[:payment_request_id],
             amount_cents: params[:points_redeemed_amount],
+            currency: "usd", # points are USD-denominated (they offset the USD order total)
             date: Time.now, status: "active"
           )
         end
@@ -502,6 +504,7 @@ module Ecommerce
             payment_method_id: points_payment_method.id,
             payment_request_id: params[:payment_request_id],
             amount_cents: params[:points_redeemed_amount],
+            currency: "usd", # points are USD-denominated (they offset the USD order total)
             date: Time.now, status: "active"
           )
         end
@@ -526,6 +529,7 @@ module Ecommerce
             payment_method_id: points_payment_method.id,
             payment_request_id: params[:payment_request_id],
             amount_cents: params[:points_redeemed_amount],
+            currency: "usd", # points are USD-denominated (they offset the USD order total)
             date: Time.now, status: "active"
           )
         end

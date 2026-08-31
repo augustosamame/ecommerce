@@ -126,6 +126,7 @@ module Ecommerce
             new_payment.processor_transaction_id = response["id"]
             new_payment.processor_token = response["reference_code"]
             new_payment.amount_cents = response["amount"]
+            new_payment.currency = currency.to_s.downcase.presence
             new_payment.date = Time.now
             new_payment.status = "active"
             new_payment.order_id = order_id
@@ -185,6 +186,7 @@ module Ecommerce
         new_payment.payment_method_id = PaymentMethod.find_by!(name: "PagoEfectivo").id
         new_payment.processor_transaction_id = culqi_order_id
         new_payment.amount_cents = payment_amount
+        new_payment.currency = currency.to_s.downcase.presence
         new_payment.date = Time.now
         new_payment.status = "pending"
         new_payment.order_id = order_id

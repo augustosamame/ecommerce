@@ -268,6 +268,13 @@ module Ecommerce
     end
 
 
+    # True when the customer's real charge (Culqi / PagoEfectivo) was made in
+    # soles. Points rows are USD-denominated and tagged "usd"; legacy rows
+    # (NULL currency, pre-migration) count as USD.
+    def payments_in_pen?
+      Payment.where(order_id: id).where("LOWER(currency) = 'pen'").exists?
+    end
+
     def generate_einvoice
       order_billing_address = Address.find_by(id: self.billing_address_id)
       invoice_lines_array = Array.new
@@ -275,9 +282,21 @@ module Ecommerce
       weight = 0.0
       total_order_amount = (self.amount).to_f - (self.points_redeemed_amount.to_f / 100)
       discount_total = ((self.discount_amount).to_f.abs + (self.points_redeemed_amount.to_f / 100)) / 1.18
+
+      # Soles-paid orders must be invoiced in soles at the WEBSITE rate they
+      # were actually charged (Culqi/PagoEfectivo charge = USD total x the
+      # Control exchange_rate stamped on the order). The web checkout stores
+      # the order itself in USD, so the paid currency comes from the payment
+      # rows. Dollar-paid orders keep the USD payload (converted downstream
+      # at the SUNAT rate).
+      pen_paid = self.currency.to_s.upcase != "PEN" && payments_in_pen?
+      efact_rate = pen_paid ? (self.exchange_rate.presence || Ecommerce::Control.get_control_value("exchange_rate")).to_f : 1.0
+      efact_currency = pen_paid ? "PEN" : (self.currency.presence || "USD")
+      total_order_amount = (total_order_amount * efact_rate).round(2)
+      discount_total = (discount_total * efact_rate).round(2)
       #since igv amount is taken by certifact as the sum of igv lines, the igv in tax lines need to be reduced based on the discount
       OrderItem.where(order_id: self.id).includes(:product).each do |item|
-        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: (item.price * item.quantity).to_f, price_subtotal: item.price.to_f, weight: (item.quantity * item.product.weight).to_f }
+        invoice_lines_array << {name: item.product.name, quantity: item.quantity, product_id: item.product.id, price_total: ((item.price * item.quantity).to_f * efact_rate).round(2), price_subtotal: (item.price.to_f * efact_rate).round(4), weight: (item.quantity * item.product.weight).to_f }
         igv_found = item.product.product_taxes.find_by(tax_id: Ecommerce::Tax.first.try(:id))
         weight += (item.quantity * item.product.weight).to_f
         if igv_found
@@ -298,7 +317,8 @@ module Ecommerce
         line +=1
       end
       if self.shipping_amount_cents > 0
-        invoice_lines_array << {name: "Costo de envío (shipping)", quantity: 1, product_id: 1000, price_total: shipping_amount.to_i, price_subtotal: shipping_amount.to_i, igv_tax: true, igv_amount: 18 }
+        shipping_in_currency = (shipping_amount.to_f * efact_rate).round(2)
+        invoice_lines_array << {name: "Costo de envío (shipping)", quantity: 1, product_id: 1000, price_total: shipping_in_currency, price_subtotal: shipping_in_currency, igv_tax: true, igv_amount: 18 }
       end
 
       case self.payment_status
@@ -309,7 +329,7 @@ module Ecommerce
               invoice_hash = {
                 einvoice_type: "boleta",
                 number: "B#{Ecommerce.serie_boleta}-#{Ecommerce::Control.find_by!(name: "next_boleta_number").integer_value}",
-                currency_id: self.currency.presence || "USD",
+                currency_id: efact_currency,
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: (self.required_doc.blank? || self.required_doc.try(:strip).try(:length) == 8) ? "1 - DNI" : "4 - CARNET DE EXTRANJERIA",
@@ -341,7 +361,7 @@ module Ecommerce
               invoice_hash = {
                 einvoice_type: "factura",
                 number: "F#{Ecommerce.serie_factura}-#{Ecommerce::Control.find_by!(name: "next_factura_number").integer_value}",
-                currency_id: self.currency.presence || "USD",
+                currency_id: efact_currency,
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: "6 - RUC",
@@ -382,7 +402,7 @@ module Ecommerce
                 einvoice_type: "nota_de_credito",
                 number: "B#{Ecommerce.serie_nota_de_credito}-#{Ecommerce::Control.find_by!(name: "next_nota_de_credito_boleta_number").integer_value}",
                 affected_document: self.efact_number,
-                currency_id: self.currency.presence || "USD",
+                currency_id: efact_currency,
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: (self.required_doc.blank? || self.required_doc.try(:strip).try(:length) == 8) ? "1 - DNI" : "4 - CARNET DE EXTRANJERIA",
@@ -412,7 +432,7 @@ module Ecommerce
                 einvoice_type: "nota_de_credito",
                 number: "F#{Ecommerce.serie_nota_de_credito}-#{Ecommerce::Control.find_by!(name: "next_nota_de_credito_factura_number").integer_value}",
                 affected_document: self.efact_number,
-                currency_id: self.currency.presence || "USD",
+                currency_id: efact_currency,
                 id: self.id,
                 zip: "030101",
                 catalog_06_id: "6 - RUC",

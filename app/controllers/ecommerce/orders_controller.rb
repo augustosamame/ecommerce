@@ -62,6 +62,7 @@ module Ecommerce
               payment_method_id: found_culqi_payment.payment_method_id,
               processor_transaction_id: found_culqi_payment.processor_transaction_id,
               amount_cents: culqi_data["amount"].to_i,
+              currency: (culqi_data["currency_code"].presence || found_culqi_payment.currency).to_s.downcase.presence,
               comment: params[:id],
               date: Time.now,
               status: 'active'
