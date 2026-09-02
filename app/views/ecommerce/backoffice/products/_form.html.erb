@@ -6,7 +6,7 @@
     <%= f.association :brand, :label_method => lambda { |brand| "#{brand.name}" }, label: t('.brand') %>
     <%= f.association :supplier, :label_method => lambda { |supplier| "#{supplier.name}" }, label: t('.supplier')  %>
     <%= f.association :accounting_code_family, :label_method => lambda { |acf| acf.code_and_family }, label: 'Accounting Code / Family', include_blank: true %>
-    <%= f.input :country, label: 'País de origen', input_html: { list: "product-country-options" } %>
+    <%= f.input :country, as: :string, label: 'País de origen', input_html: { list: "product-country-options" } %>
     <datalist id="product-country-options"><% Ecommerce::Product.distinct.pluck(:country).compact.sort.each do |c| %><option value="<%= c %>"></option><% end %></datalist>
     <%= f.input :tipo_producto, collection: %w[IMPORTADOS NACIONALES MIXTO], label: 'Tipo de producto', include_blank: true %>
     <%= f.input :status, collection: Ecommerce::Product.statuses.keys, label: t('.status') %>
