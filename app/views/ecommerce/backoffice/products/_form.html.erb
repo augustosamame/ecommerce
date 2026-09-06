@@ -19,7 +19,7 @@
     <%= f.input :price_cents, :input_html => { :id => 'price-cents' }, label: t('.price') %>
     <%= f.input :discounted_price_cents, :input_html => { :id => 'discounted-price-cents' }, label: t('.discounted_price') %>
     <%= f.input :discount_group_id, as: :select, collection: Ecommerce::DiscountGroup.order(:name), label_method: :name, value_method: :id, include_blank: "None", label: "Discount Group" %>
-    <%= f.input :costo_cents, label: 'Costo (optional)', required: false %>
+    <%= f.input :costo_cents, label: 'Costo (céntimos PEN sin IGV — S/ 12.50 se ingresa 1250)', required: false %>
     <%= f.input :weight, label: t('.item_weight') %>
     <h4>Taxes</h4>
     <div class="well">
