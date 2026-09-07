@@ -56,17 +56,27 @@ module Ecommerce
         if culqi_data["state"] == 'paid'
           found_culqi_payment = Payment.find_by(processor_transaction_id: culqi_data["id"])
           if found_culqi_payment
-            Payment.create(
-              user_id: found_culqi_payment.user_id,
-              order_id: found_culqi_payment.order_id,
-              payment_method_id: found_culqi_payment.payment_method_id,
-              processor_transaction_id: found_culqi_payment.processor_transaction_id,
-              amount_cents: culqi_data["amount"].to_i,
-              currency: (culqi_data["currency_code"].presence || found_culqi_payment.currency).to_s.downcase.presence,
-              comment: params[:id],
-              date: Time.now,
-              status: 'active'
-            )
+            # Culqi delivers the same paid transition as SEVERAL distinct
+            # events (different evt_ ids, same ord_ id) within milliseconds,
+            # hitting concurrent puma workers. Serialize on the order row and
+            # confirm at most one active payment per processor transaction —
+            # otherwise the order is double-paid: points and stock apply
+            # twice and two einvoices are emitted (order 26851, 2026-09-07).
+            (found_culqi_payment.order || found_culqi_payment).with_lock do
+              unless Payment.where(processor_transaction_id: culqi_data["id"], status: :active).exists?
+                Payment.create(
+                  user_id: found_culqi_payment.user_id,
+                  order_id: found_culqi_payment.order_id,
+                  payment_method_id: found_culqi_payment.payment_method_id,
+                  processor_transaction_id: found_culqi_payment.processor_transaction_id,
+                  amount_cents: culqi_data["amount"].to_i,
+                  currency: (culqi_data["currency_code"].presence || found_culqi_payment.currency).to_s.downcase.presence,
+                  comment: params[:id],
+                  date: Time.now,
+                  status: 'active'
+                )
+              end
+            end
           end
         end
       end
