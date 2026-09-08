@@ -4,7 +4,9 @@
           <div class="logo">
             <a href="<%= root_path %>">
               <% if (alt_logo = alternate_host_logo) %>
-                <%= image_tag alt_logo, alt: "#{request.host} Logo", style: "height:63px;width:auto;" %>
+                <%# 72px ≈ the header's content height (search bar + icons),
+                    so the logo fills the band without growing it. %>
+                <%= image_tag alt_logo, alt: "#{request.host} Logo", style: "height:72px;width:auto;" %>
               <% elsif params[:action] == "main" %>
                 <%= image_tag Ecommerce.header_logo, alt: "expatshop.pe Logo" %>
               <% else %>
