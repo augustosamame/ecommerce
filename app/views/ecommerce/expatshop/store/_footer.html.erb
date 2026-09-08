@@ -1,6 +1,10 @@
     <footer class="<%= @hidden_footer ? 'hidden-footer' : ''%> ">
       <div class="container">
-        <%= image_tag Ecommerce.header_logo, alt: "expatshop.pe Logo" %>
+        <% if (alt_logo = alternate_host_logo) %>
+          <%= image_tag alt_logo, alt: "#{request.host} Logo", style: "height:63px;width:auto;" %>
+        <% else %>
+          <%= image_tag Ecommerce.header_logo, alt: "expatshop.pe Logo" %>
+        <% end %>
         <div class="row">
           <div class="col-md-6">
             <p>

@@ -1,6 +1,20 @@
 module Ecommerce
   module ApplicationHelper
 
+    # Several domains (expatshop.pe, globalcanasta.pe) resolve to this same
+    # app, so the storefront logo must follow the REQUESTED host, not a fixed
+    # config. Returns the configured logo for the first matching host
+    # fragment, or nil when the request is for the default brand.
+    def alternate_host_logo
+      logos = Ecommerce.alternate_header_logos
+      return nil if logos.blank?
+      host = request.host.to_s.downcase
+      logos.each do |fragment, logo|
+        return logo if host.include?(fragment.to_s.downcase)
+      end
+      nil
+    end
+
     def friendly_cart_weight(item_weight)
       if item_weight.blank? || item_weight == 0
         return ""
