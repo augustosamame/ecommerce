@@ -1,0 +1,61 @@
+<%# Manual invoicing comprobantes/guías awaiting delivery photos. Rendered
+    for drivers and admins on the same page as recent orders so drivers
+    never need a second platform. %>
+<% docs = @manual_invoices.to_a.map { |i| [i, "invoice"] } + @manual_guias.to_a.map { |g| [g, "guia"] } %>
+<% docs.sort_by! { |d, _| d.created_at }.reverse! %>
+<% if docs.any? %>
+  <div class="page-header" style="margin-top: 30px;">
+    <h1>Entregas Manuales (Facturación)</h1>
+  </div>
+  <% docs.each do |doc, doc_type| %>
+    <% pods = doc.proof_of_delivery_images.to_a %>
+    <% address = doc_type == "guia" ? doc.llegada_direccion : doc.client&.primary_address&.full_line %>
+    <div class="panel panel-default" style="margin-bottom: 10px;">
+      <div class="panel-body" style="padding: 10px;">
+        <div class="row">
+          <div class="col-xs-7 col-sm-8">
+            <strong style="font-size: 16px;">
+              <%= doc_type == "guia" ? "Guía" : doc.comprobante_label %> <%= doc.number %>
+            </strong><br>
+            <span style="font-size: 14px;"><%= doc.client&.razon_social %></span><br>
+            <% if address.present? %>
+              <small class="text-muted"><%= address %></small><br>
+            <% end %>
+            <small class="text-muted"><%= doc.created_at.strftime("%d/%m %H:%M") %></small>
+          </div>
+          <div class="col-xs-5 col-sm-4 text-right">
+            <% if pods.any? %>
+              <span class="label label-success" style="font-size: 11px;">
+                <%= pods.size %> FOTO<%= "S" if pods.size > 1 %>
+              </span>
+            <% else %>
+              <span class="label label-warning" style="font-size: 11px;">SIN FOTO</span>
+            <% end %>
+            <div style="margin-top: 8px;">
+              <%= form_with url: backoffice_manual_delivery_pods_path, method: :post, multipart: true, local: true do %>
+                <input type="hidden" name="doc_type" value="<%= doc_type %>">
+                <input type="hidden" name="doc_id" value="<%= doc.id %>">
+                <label class="btn btn-primary btn-xs" style="margin-bottom: 0;">
+                  SUBIR FOTO
+                  <input type="file" name="proof_of_delivery_image[proof_of_delivery]"
+                         accept="image/*" capture="environment"
+                         style="display: none;" onchange="this.form.submit()">
+                </label>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <% if pods.any? %>
+          <div style="margin-top: 8px;">
+            <% pods.each do |pod| %>
+              <a href="<%= pod.proof_of_delivery.url %>" target="_blank" rel="noopener">
+                <img src="<%= pod.proof_of_delivery.url %>" alt="Foto de entrega"
+                     style="height: 48px; width: 48px; object-fit: cover; border-radius: 4px; margin-right: 4px;">
+              </a>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

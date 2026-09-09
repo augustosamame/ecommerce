@@ -29,6 +29,9 @@ Ecommerce::Engine.routes.draw do
       resources :proof_of_delivery_images, only: [:create]
     end
     resources :recent_orders, only: [:index]
+    # Driver photo uploads for MANUAL invoicing comprobantes/guías (no order
+    # behind them); the docs live in the host app's invoicing platform.
+    post 'manual_deliveries/pods', to: 'manual_delivery_pods#create', as: :manual_delivery_pods
     post '/orders/einvoice'
     resources :payment_methods
     resources :payments, only: [:index]
