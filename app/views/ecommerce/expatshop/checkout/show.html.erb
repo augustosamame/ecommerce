@@ -24,7 +24,7 @@
         <% if @guest_checkout %>
           <%# On mobile this block is relocated under "Pagar en Soles" via JS; %>
           <%# guest-block-home is its desktop position. %>
-          <div id="guest-block-home" class="gc-card gc-card__body gc-form">
+          <div id="guest-block-home">
             <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/guest_form" %>
           </div>
         <% else %>

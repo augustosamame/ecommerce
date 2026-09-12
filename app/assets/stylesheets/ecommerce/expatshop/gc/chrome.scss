@@ -254,7 +254,8 @@ body.gc-drawer-open { overflow: hidden; }
   .gc-header__bar { gap: var(--gc-space-4); padding-top: 14px; padding-bottom: 14px; }
   .gc-header__menu-btn { display: inline-flex; }
   .gc-header__logo-img { height: 36px !important; }
-  .gc-header__selects { display: none; }
+  /* Tablet keeps the currency select; locale moves into the drawer */
+  .gc-header__selects #lang { display: none; }
   .gc-header__actions { gap: 6px; }
   .gc-header__action--wa, .gc-header__action--account { display: none; }
   .gc-header__action-label { display: none; }
@@ -274,6 +275,7 @@ body.gc-drawer-open { overflow: hidden; }
   .gc-header__logo { flex: 1; min-width: 0; }
   .gc-header__logo-img { height: 28px !important; object-fit: contain; object-position: left; }
   .gc-header__search { display: none; }
+  .gc-header__selects { display: none; }
   .gc-header__search-mobile { display: block; padding: 12px 0; }
   .gc-catnav__list { gap: 10px; padding: 0 0 14px; }
   .gc-catnav__link { border: 1px solid var(--gc-sand); border-radius: var(--gc-radius-pill); padding: 9px 14px; background: var(--gc-white); font-size: var(--gc-text-xs); }
