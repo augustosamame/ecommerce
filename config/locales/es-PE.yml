@@ -375,6 +375,14 @@ es-PE:
           my_account: "Mi Cuenta"
           clear_cart: "Vaciar Carrito"
           clear_cart_confirm: "¿Está seguro que desea eliminar todos los productos del carrito?"
+          summary: "Resumen"
+          total: "Total"
+          unit: "unidad"
+          remove: "Quitar"
+          decrease: "Reducir cantidad"
+          increase: "Aumentar cantidad"
+          empty_title: "Tu carrito está vacío"
+          empty_body: "Llénalo con algo de la vitrina."
       wishlist:
         show:
           title: "Lista de Deseos"

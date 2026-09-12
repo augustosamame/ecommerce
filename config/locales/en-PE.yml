@@ -565,6 +565,14 @@ en-PE:
           my_account: "My Account"
           clear_cart: "Clear Cart"
           clear_cart_confirm: "Are you sure you want to remove all items from the cart?"
+          summary: "Summary"
+          total: "Total"
+          unit: "unit"
+          remove: "Remove"
+          decrease: "Decrease quantity"
+          increase: "Increase quantity"
+          empty_title: "Your cart is empty"
+          empty_body: "Fill it with something from the shelf."
     backoffice:
       dashboard:
         main:
