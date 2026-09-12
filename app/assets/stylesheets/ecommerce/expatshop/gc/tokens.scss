@@ -86,8 +86,8 @@
   --gc-block-gap: var(--gc-space-10);
 
   /* ---- Layout ---- */
-  --gc-container: 1280px;
-  --gc-container-wide: 1320px;
+  --gc-container: 1536px;   /* 1280 in the reference, widened ~20% so large screens breathe */
+  --gc-container-wide: 1584px;
   --gc-page-padding: 24px;
   --gc-gutter: 24px;
 
