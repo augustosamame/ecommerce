@@ -1,18 +1,23 @@
 /* GlobalCanasta home page */
 
 /* ---------- Hero ---------- */
+/* Hero and promise band share the page container so no section runs wider
+   than the rest of the page. */
 .gc-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: stretch;
   min-height: 620px;
+  max-width: var(--gc-container);
+  margin: 0 auto;
+  padding: 0 var(--gc-page-padding);
 }
 .gc-hero__copy {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 26px;
-  padding: var(--gc-space-24) var(--gc-space-16);
+  padding: var(--gc-space-16) var(--gc-space-16) var(--gc-space-16) 0;
 }
 .gc-hero__title {
   font-family: var(--gc-font-display);
@@ -41,9 +46,12 @@
 .gc-hero__media {
   position: relative;
   min-height: 620px;
+  margin: var(--gc-space-8) 0;
+  border-radius: var(--gc-radius-xl);
   background: repeating-linear-gradient(135deg, #E8E1D5 0 12px, #EFE9DE 12px 24px);
   overflow: visible;
 }
+.gc-hero__slides, .gc-hero__placeholder { border-radius: var(--gc-radius-xl); }
 .gc-hero__slides, .gc-hero__placeholder { position: absolute; inset: 0; overflow: hidden; }
 .gc-hero__slides--mobile { display: none; }
 .gc-hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 600ms ease; }
@@ -70,14 +78,16 @@
 .gc-hero__quote figcaption { font-size: var(--gc-text-xs); color: var(--gc-ink-muted); margin-top: 8px; }
 
 /* ---------- Promise band ---------- */
-.gc-band { background: var(--gc-surface-band); color: var(--gc-cream); }
+.gc-band { max-width: var(--gc-container); margin: 0 auto; padding: 0 var(--gc-page-padding); }
 .gc-band__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--gc-space-6);
-  padding-top: 22px;
-  padding-bottom: 22px;
+  padding: 22px var(--gc-space-8);
+  border-radius: var(--gc-radius-lg);
+  background: var(--gc-surface-band);
+  color: var(--gc-cream);
   font-size: var(--gc-text-sm);
 }
 .gc-band__item { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
@@ -273,7 +283,8 @@
 /* ---------- Tablet ---------- */
 @media (max-width: 1023px) {
   .gc-hero { grid-template-columns: 1fr; min-height: 0; }
-  .gc-hero__copy { padding: 48px var(--gc-space-10); gap: 18px; }
+  .gc-hero__copy { padding: 48px var(--gc-space-4) 28px; gap: 18px; }
+  .gc-hero__media { margin: 0 0 var(--gc-space-6); }
   .gc-hero__title { font-size: var(--gc-text-hero); }
   .gc-hero__body { font-size: var(--gc-text-body); max-width: 520px; }
   .gc-hero__stats { display: none; }
@@ -292,7 +303,9 @@
 
 /* ---------- Mobile ---------- */
 @media (max-width: 767px) {
-  .gc-hero__copy { padding: 8px var(--gc-page-padding) 28px; gap: 14px; }
+  .gc-hero__copy { padding: 8px 0 24px; gap: 14px; }
+  .gc-hero__media { margin: 0 0 var(--gc-space-4); }
+  .gc-band__inner { padding: 16px; border-radius: var(--gc-radius-md); }
   .gc-hero__body { display: none; }
   .gc-hero__actions .gc-btn { width: 100%; }
   .gc-hero__cta-secondary { display: none; }
