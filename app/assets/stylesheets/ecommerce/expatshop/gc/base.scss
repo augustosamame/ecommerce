@@ -319,6 +319,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   position: relative;
   flex: 1;
   min-width: 0;
+  margin: 0; /* base stylesheet gives every form a 16px bottom margin */
 }
 .gc-search input[type="search"] {
   width: 100%;

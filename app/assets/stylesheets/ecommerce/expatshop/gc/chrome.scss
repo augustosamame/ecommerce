@@ -46,7 +46,7 @@
 .gc-header__menu-btn { display: none; flex: 0 0 auto; border-color: transparent; background: transparent; }
 .gc-header__logo { display: inline-flex; flex: 0 0 auto; }
 .gc-header__logo-img { display: block; }
-.gc-header__search { flex: 1; }
+.gc-header__search { flex: 1 1 320px; max-width: 460px; }
 .gc-header__selects { display: flex; align-items: center; gap: var(--gc-space-2); flex: 0 0 auto; }
 .gc-header__actions { display: flex; align-items: center; gap: 18px; flex: 0 0 auto; }
 .gc-header__action {
