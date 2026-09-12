@@ -16,9 +16,9 @@ module Ecommerce
 
       if params[:search]
         if @banana_permission
-          @products = Product.search_by_name(params[:search]).active.page(params[:page])
+          @products = Product.search_by_name(params[:search]).active.then { |scope| listing_filters(scope) }.page(params[:page])
         else
-          @products = Product.search_by_name(params[:search]).active_not_banana.page(params[:page])
+          @products = Product.search_by_name(params[:search]).active_not_banana.then { |scope| listing_filters(scope) }.page(params[:page])
         end
 
         #FB Conversions API
@@ -36,14 +36,14 @@ module Ecommerce
         @filter = params[:filter]
         case @filter
         when "new_products"
-          #@products = Product.where('created_at > ?', 30.days.ago).includes(:translations).active.order(:product_order).page(params[:page])
+          #@products = Product.where('created_at > ?', 30.days.ago).includes(:translations).active.order(:product_order).then { |scope| listing_filters(scope) }.page(params[:page])
           new_products_category_id = Rails.env.production? ? 47 : 11
           @category = Category.find(new_products_category_id)
           Globalize.with_locale('en-PE') do
-            @products = Product.includes(:translations).tagged_with(@category.name).active.order(:product_order).page(params[:page])
+            @products = Product.includes(:translations).tagged_with(@category.name).active.order(:product_order).then { |scope| listing_filters(scope) }.page(params[:page])
           end
         when "discounted_products"
-          @products = Product.where('ecommerce_products.price_cents != ecommerce_products.discounted_price_cents').includes(:translations).active.order(:product_order).page(params[:page])
+          @products = Product.where('ecommerce_products.price_cents != ecommerce_products.discounted_price_cents').includes(:translations).active.order(:product_order).then { |scope| listing_filters(scope) }.page(params[:page])
         end
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
       end
@@ -60,10 +60,10 @@ module Ecommerce
           Globalize.with_locale(Ecommerce.backoffice_default_locale) do
             if @banana_permission
               @all_products = Product.includes(:translations).tagged_with(@category.name).active.order(:product_order)
-              @products = Product.includes(:translations).tagged_with(@category.name).active.order(:product_order).page(params[:page])
+              @products = Product.includes(:translations).tagged_with(@category.name).active.order(:product_order).then { |scope| listing_filters(scope) }.page(params[:page])
             else
               @all_products = Product.includes(:translations).tagged_with(@category.name).active_not_banana.order(:product_order)
-              @products = Product.includes(:translations).tagged_with(@category.name).active_not_banana.order(:product_order).page(params[:page])
+              @products = Product.includes(:translations).tagged_with(@category.name).active_not_banana.order(:product_order).then { |scope| listing_filters(scope) }.page(params[:page])
             end
           end
           #FB Conversions API
@@ -77,10 +77,10 @@ module Ecommerce
       else
         if @banana_permission
           @all_products = Product.all.includes(:translations).active.order(:product_order)
-          @products = Product.all.includes(:translations).active.order(:product_order).page(params[:page])
+          @products = Product.all.includes(:translations).active.order(:product_order).then { |scope| listing_filters(scope) }.page(params[:page])
         else
           @all_products = Product.all.includes(:translations).active_not_banana.order(:product_order)
-          @products = Product.all.includes(:translations).active_not_banana.order(:product_order).page(params[:page])
+          @products = Product.all.includes(:translations).active_not_banana.order(:product_order).then { |scope| listing_filters(scope) }.page(params[:page])
         end
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       end
@@ -117,7 +117,7 @@ module Ecommerce
 
       if Ecommerce::Order.where(user_id: current_user.id).exists?
         user_orders_items = Ecommerce::OrderItem.where(order_id: current_user.user_orders.pluck(:id)).group(:product_id).order(Arel.sql('COUNT(*) DESC')).select('product_id').pluck(:product_id)
-        @products = Product.where(id: user_orders_items).includes(:translations).order(:product_order).active.page(params[:page])
+        @products = Product.where(id: user_orders_items).includes(:translations).order(:product_order).active.then { |scope| listing_filters(scope) }.page(params[:page])
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index"
       else
         redirect_back fallback_location: root_path
@@ -149,6 +149,38 @@ module Ecommerce
           format.html {redirect_to product_path(@product) }
         end
       end
+    end
+
+
+    # ---- GlobalCanasta listing filters ----------------------------------
+    # Origin / price / availability facets and the sort select on the
+    # listing page. `scope` is the fully built (unpaginated) relation for the
+    # current branch; the pre-filter relation is kept in @listing_base so the
+    # view can render facet counts that don't collapse once a filter is on.
+    LISTING_SORTS = {
+      "popular"    => nil,
+      "price_asc"  => Arel.sql("ecommerce_products.discounted_price_cents ASC"),
+      "price_desc" => Arel.sql("ecommerce_products.discounted_price_cents DESC"),
+      "newest"     => Arel.sql("ecommerce_products.created_at DESC"),
+    }.freeze
+
+    def listing_filters(scope)
+      @listing_base = scope
+      @listing_countries = Array(params[:country]).reject(&:blank?)
+      @listing_availability = params[:availability].presence
+      @listing_price = params[:price].presence
+      @listing_sort = LISTING_SORTS.key?(params[:sort].to_s) ? params[:sort].to_s : "popular"
+
+      scope = scope.where(country: @listing_countries) if @listing_countries.any?
+      scope = scope.where("ecommerce_products.total_quantity > 0") if @listing_availability == "in_stock"
+      if @listing_price && (m = @listing_price.match(/\A(\d*)-(\d*)\z/))
+        column = session[:currency] == "usd" ? "ecommerce_products.usd_discounted_price_cents" : "ecommerce_products.discounted_price_cents"
+        scope = scope.where("#{column} >= ?", m[1].to_i * 100) if m[1].present?
+        scope = scope.where("#{column} < ?", m[2].to_i * 100) if m[2].present?
+      end
+      order = LISTING_SORTS[@listing_sort]
+      scope = scope.reorder(order) if order
+      scope
     end
 
     private

@@ -1,0 +1,162 @@
+/* GlobalCanasta design tokens — direction 1a "The Pantry Editorial".
+   Single source of truth for the storefront. Loaded before every other
+   stylesheet in ecommerce/expatshop.scss. */
+
+:root {
+  /* ---- Brand ---- */
+  --gc-burgundy: #3B1110;
+  --gc-navy: #0C394F;
+  --gc-gold: #C3783D;
+  --gc-red: #A62C21;
+  --gc-green: #334C39;
+  --gc-sand: #D4B59A;
+  --gc-cream: #F8F5EF;
+  --gc-white: #FFFFFF;
+  --gc-text: #251C1A;
+
+  /* ---- Derived neutrals ---- */
+  --gc-ink-soft: #3D3530;
+  --gc-ink-muted: #5B534C;
+  --gc-ink-faint: #8A7F72;
+  --gc-border: #E3DCD0;
+  --gc-surface-alt: #EFE9DE;
+
+  /* ---- Interaction states ---- */
+  --gc-burgundy-hover: #251C1A;
+  --gc-navy-hover: #082939;
+  --gc-gold-hover: #A9642F;
+  --gc-green-hover: #2B4030;
+  --gc-tint-burgundy: rgba(59, 17, 16, .06);
+  --gc-focus-ring: 0 0 0 3px rgba(195, 120, 61, .35);
+
+  /* ---- Semantic roles ---- */
+  --gc-surface-page: var(--gc-cream);
+  --gc-surface-card: var(--gc-white);
+  --gc-surface-inverse: var(--gc-burgundy);
+  --gc-surface-band: var(--gc-navy);
+  --gc-action-primary: var(--gc-burgundy);
+  --gc-action-secondary: var(--gc-navy);
+  --gc-action-accent: var(--gc-gold);
+  --gc-price-sale: var(--gc-red);
+  --gc-state-success: var(--gc-green);
+  --gc-state-error-bg: #FBEDEB;
+  --gc-state-success-bg: #EEF3EF;
+  --gc-link: var(--gc-navy);
+  --gc-link-hover: var(--gc-gold);
+
+  /* ---- Typography ---- */
+  --gc-font-ui: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --gc-font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --gc-font-mono: ui-monospace, Menlo, Consolas, monospace;
+
+  --gc-text-hero: 68px;
+  --gc-text-display: 38px;
+  --gc-text-title: 34px;
+  --gc-text-h2: 26px;
+  --gc-text-h3: 21px;
+  --gc-text-body-lg: 18px;
+  --gc-text-body: 16px;
+  --gc-text-sm: 14px;
+  --gc-text-xs: 13px;
+  --gc-text-2xs: 12px;
+
+  --gc-leading-tight: 1.05;
+  --gc-leading-snug: 1.2;
+  --gc-leading-normal: 1.35;
+  --gc-leading-relaxed: 1.65;
+  --gc-tracking-label: .1em;
+  --gc-tracking-eyebrow: .14em;
+
+  /* ---- Spacing (4px base) ---- */
+  --gc-space-1: 4px;
+  --gc-space-2: 8px;
+  --gc-space-3: 12px;
+  --gc-space-4: 16px;
+  --gc-space-5: 20px;
+  --gc-space-6: 24px;
+  --gc-space-8: 32px;
+  --gc-space-10: 40px;
+  --gc-space-14: 56px;
+  --gc-space-16: 64px;
+  --gc-space-20: 80px;
+  --gc-space-24: 96px;
+
+  /* Section rhythm: between sections / inside / between blocks */
+  --gc-section-gap: var(--gc-space-24);
+  --gc-block-gap: var(--gc-space-10);
+
+  /* ---- Layout ---- */
+  --gc-container: 1280px;
+  --gc-container-wide: 1320px;
+  --gc-page-padding: 24px;
+  --gc-gutter: 24px;
+
+  /* ---- Radius ---- */
+  --gc-radius-xs: 2px;
+  --gc-radius-sm: 4px;
+  --gc-radius-md: 10px;
+  --gc-radius-lg: 12px;
+  --gc-radius-xl: 16px;
+  --gc-radius-pill: 999px;
+
+  /* ---- Elevation ---- */
+  --gc-shadow-card: 0 1px 2px rgba(37, 28, 26, .06);
+  --gc-shadow-raised: 0 8px 24px rgba(37, 28, 26, .10);
+  --gc-shadow-fab: 0 8px 24px rgba(37, 28, 26, .28);
+
+  /* ---- Controls ---- */
+  --gc-control-h: 44px;
+  --gc-control-h-lg: 52px;
+  --gc-control-h-mobile: 48px;
+
+  /* ---- Motion ---- */
+  --gc-ease: cubic-bezier(.2, .6, .3, 1);
+  --gc-duration-fast: 150ms;
+  --gc-duration: 200ms;
+  --gc-duration-slow: 250ms;
+
+  /* ---------- LEGACY → NEW BRIDGE ----------
+     The engine's older page stylesheets (cart-page, checkout-page,
+     orders-page, program-page, order-status-page …) still read these
+     custom properties. Pointing them at the new palette means every
+     page not yet rebuilt inherits GlobalCanasta colours immediately. */
+  --primary-btn-color: var(--gc-burgundy);
+  --secondary-btn-color: var(--gc-navy);
+  --background-color: var(--gc-cream);
+  --white-color: var(--gc-white);
+  --black-color: var(--gc-text);
+  --links-color: var(--gc-surface-alt);
+  --label-color: var(--gc-surface-alt);
+  --form-color: var(--gc-white);
+  --form-border-color: var(--gc-sand);
+  --icons-color: var(--gc-ink-muted);
+  --best-seller-color: var(--gc-green);
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --gc-text-hero: 46px;
+    --gc-text-display: 30px;
+    --gc-text-title: 28px;
+    --gc-page-padding: 20px;
+    --gc-gutter: 20px;
+    --gc-section-gap: var(--gc-space-16);
+    --gc-block-gap: var(--gc-space-6);
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --gc-text-hero: 36px;
+    --gc-text-display: 24px;
+    --gc-text-title: 26px;
+    --gc-page-padding: 16px;
+    --gc-gutter: 16px;
+    --gc-section-gap: var(--gc-space-14);
+    --gc-block-gap: var(--gc-space-6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --gc-duration-fast: 0ms; --gc-duration: 0ms; --gc-duration-slow: 0ms; }
+}

@@ -1,86 +1,91 @@
-<div class="<%= local_assigns[:pre_checkout] ? 'col-md-6 col-sm-6 col-xs-6 pre-checkout-product' : 'col-md-4' %> product" data-availability="<%= item.in_stock? ? 'in_stock' : 'out_of_stock' %>">
-  <div class="featured-product position-relative d-flex">
-    <%= link_to product_path(item) do %>
-      <div class="featured-product-body">
-        <% if item.show_callout %>
-          <div class="callout-label">
-            <p class="callout-label-text"><%= session[:locale] == 'en-PE' ? item.callout_label_en : item.collout_label_es %></p>
-          </div>
-          <div class="callout-discount">
-            <p class="callout-discount-text"><%= session[:locale] == 'en-PE' ? item.callout_discount_label_en : item.callout_discount_label_es %></p>
-          </div>
-        <% end %>
-        <%= image_tag item.image.medium_260.url, class: "img-responsive", alt: item.name %>
-        <div class="featured-product-info d-flex flex-center">
-          <p class="product-title">
-            <%= item.name %>
-          </p>
-          <% if item.in_stock? %>
-            <p class="product-info">
-              <%= item.short_description.gsub("**", "<br>").html_safe if item.short_description %>
-            </p>
-          <% else %>
-            <p class="out_of_stock_p product-info"><span class=""><%= t('.out_of_stock') %></span></p>
-          <% end %>
-          <% if item && (item.price == item.discounted_price) %>
-            <div class="price d-flex flex-center">
-              <p class='product-info-price'><%= product_session_price(item, "current_price") %></p>
-            </div>
-          <% else %>
-            <div class="price d-flex flex-center">
-              <div class="price-inner-wrapper">
-                <p class="product-info-price-regular"><%= product_session_price(item, "price") %></p>
-                <p class="product-info-price-discounted"><%= product_session_price(item, "current_price") %></p>
-              </div>
-            </div>
-          <% end %>
-        </div>
-        <% unless item.in_stock? %>
-          <div class='out_of_stock' style='font-size: 14px;'>
-            <div class='out_of_stock_text_class <%= "out_of_stock_text_#{item.id}" %>' style="float: left;"><%= t('.no_more_stock_available') %></div>
-          </div>
-        <% end %>
-      </div>
+<%# Product card. Rendered on home, listing, search, favourites, related
+    products and pre-checkout. Desktop/tablet: image-on-top column card.
+    Mobile: the same card stacks one per row (see gc/product-card.scss).
+    Hooks kept for the JS responses: form#new_cart_item_<id>, the
+    devtech_quantity_field_<id> input, .cart-form, .stock_alert. %>
+<% compact = local_assigns[:pre_checkout] %>
+<% origin = gc_product_origin(item) %>
+<% pct = gc_discount_pct(item) %>
+<article class="gc-product-card product <%= compact ? 'gc-product-card--compact pre-checkout-product' : '' %>"
+         data-availability="<%= item.in_stock? ? 'in_stock' : 'out_of_stock' %>"
+         data-gc-product="<%= item.id %>">
+  <div class="gc-product-card__media">
+    <%= link_to product_path(item), class: "gc-product-card__img-link", "aria-label": item.name do %>
+      <%= image_tag item.image.medium_400.url, class: "gc-product-card__img", alt: item.name, loading: "lazy" %>
     <% end %>
-    <div class="add-to-cart-btn-group">
-      <% if item.in_stock? %>
-        <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart-form", id: "new_cart_item_#{item.id}" } do |f| %>
-          <div class="add-to-cart-btn-container">
-            <% unless local_assigns[:pre_checkout] %>
-              <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %>>
-                <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles" id=<%= "devtech_minus_a_id#{item.id}_qty#{item.total_quantity}" %>>-</a>
-              </div>
-              <div class="quantity container-qty" id="devtech_quantity">
-                <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners', id: "devtech_quantity_field_#{item.id}", value: "1", size: "4", step: "1", min: "1" } %>
-              </div>
-            <% else %>
-              <%= f.hidden_field :quantity, value: "1" %>
-            <% end %>
-
-            <%= button_tag type: 'submit', class: "btn btn-default index_single_add_to_cart_button button container-cart-button" do %>
-              <%= fa_icon('shopping-cart', style: 'color: white;') %>
-              <%= t('.add_to_cart') %>
-            <% end %>
-
-            <% unless local_assigns[:pre_checkout] %>
-              <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id=<%= "devtech_plus_#{item.id}" %>>
-                <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" id=<%= "devtech_plus_a_id#{item.id}_qty#{item.total_quantity}" %>>+</a>
-              </div>
-            <% end %>
-          </div>
-
-          <%= f.hidden_field :product_id, value: item.id, id: "product_product_id_#{item.id}" %>
-
-          <% if local_assigns[:pre_checkout] %>
-            <%= f.hidden_field :pre_checkout, value: true %>
-          <% end %>
+    <div class="gc-product-card__badges">
+      <% if pct %>
+        <span class="gc-badge gc-badge--discount">−<%= pct %>%</span>
+      <% end %>
+      <% if item.show_callout %>
+        <% callout = session[:locale] == 'en-PE' ? item.callout_label_en : item.collout_label_es %>
+        <% callout_discount = session[:locale] == 'en-PE' ? item.callout_discount_label_en : item.callout_discount_label_es %>
+        <% if callout.present? %><span class="gc-badge gc-badge--new"><%= callout %></span><% end %>
+        <% if callout_discount.present? && !pct %><span class="gc-badge gc-badge--discount"><%= callout_discount %></span><% end %>
+      <% end %>
+      <% unless item.in_stock? %>
+        <span class="gc-badge gc-badge--muted"><%= t('.out_of_stock') %></span>
+      <% end %>
+    </div>
+    <% unless compact %>
+      <% if current_user %>
+        <%= form_tag wishlist_items_path, method: :post, class: "gc-product-card__fav-form" do %>
+          <%= hidden_field_tag "wishlist_item[product_id]", item.id, id: nil %>
+          <%= hidden_field_tag "wishlist_item[quantity]", 1, id: nil %>
+          <button type="submit" class="gc-icon-btn gc-product-card__fav" aria-label="<%= gc_t('.add_to_favourites', 'Add to favourites') %>: <%= item.name %>"><%= gc_icon :heart, size: 15 %></button>
         <% end %>
       <% else %>
-        <%= simple_form_for Ecommerce::StockAlert.new, remote: true, html: { class: "stock_alert", id: "stock_alert_#{item.id}" } do |f| %>
-          <%= f.button :submit, t('.alert_me'), class: "index_single_stock_alert_button button" %>
-          <%= f.hidden_field :product_id, value: item.id, id: "product_product_id_#{item.id}" %>
-        <% end %>
+        <a href="<%= main_app.new_user_session_path %>" class="gc-icon-btn gc-product-card__fav" aria-label="<%= gc_t('.add_to_favourites', 'Add to favourites') %>: <%= item.name %>"><%= gc_icon :heart, size: 15 %></a>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="gc-product-card__body">
+    <% if origin.present? %>
+      <div class="gc-product-card__origin"><%= origin %></div>
+    <% end %>
+    <h3 class="gc-product-card__name"><%= link_to item.name, product_path(item) %></h3>
+    <% if item.in_stock? %>
+      <% if item.short_description.present? %>
+        <div class="gc-product-card__size"><%= item.short_description.gsub("**", " · ") %></div>
+      <% end %>
+    <% else %>
+      <div class="gc-product-card__size gc-product-card__size--out"><%= t('.out_of_stock') %></div>
+    <% end %>
+    <div class="gc-product-card__price-row">
+      <% if item.price == item.discounted_price %>
+        <span class="gc-price gc-product-card__price"><%= product_session_price(item, "current_price") %></span>
+      <% else %>
+        <span class="gc-price gc-product-card__price"><%= product_session_price(item, "current_price") %></span>
+        <span class="gc-price gc-price--was gc-product-card__was"><%= product_session_price(item, "price") %></span>
       <% end %>
     </div>
   </div>
-</div>
+
+  <div class="gc-product-card__actions add-to-cart-btn-group">
+    <% if item.in_stock? %>
+      <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart-form gc-product-card__form", id: "new_cart_item_#{item.id}" } do |f| %>
+        <% if compact %>
+          <%= f.hidden_field :quantity, value: "1" %>
+          <%= f.hidden_field :pre_checkout, value: true %>
+        <% else %>
+          <div class="gc-stepper" data-gc-max="<%= item.total_quantity %>">
+            <button type="button" class="gc-stepper__btn" data-gc-step="-1" aria-label="<%= gc_t('.decrease', 'Decrease quantity') %>">−</button>
+            <%= f.input :quantity, label: false, wrapper_html: { class: "gc-stepper__field" }, input_html: { class: 'gc-stepper__value no-spinners', id: "devtech_quantity_field_#{item.id}", value: "1", step: "1", min: "1", inputmode: "numeric", "aria-label": gc_t('.quantity', 'Quantity') } %>
+            <button type="button" class="gc-stepper__btn" data-gc-step="1" aria-label="<%= gc_t('.increase', 'Increase quantity') %>">+</button>
+          </div>
+        <% end %>
+        <%= button_tag type: 'submit', class: "gc-btn gc-btn--primary gc-product-card__add index_single_add_to_cart_button" do %>
+          <%= t('.add_to_cart') %>
+        <% end %>
+        <%= f.hidden_field :product_id, value: item.id, id: "product_product_id_#{item.id}" %>
+      <% end %>
+      <p class="gc-product-card__stock-msg gc-field__error" data-gc-stock-msg hidden><%= t('.no_more_stock_available') %></p>
+    <% else %>
+      <%= simple_form_for Ecommerce::StockAlert.new, remote: true, html: { class: "stock_alert gc-product-card__form", id: "stock_alert_#{item.id}" } do |f| %>
+        <%= f.button :submit, t('.alert_me'), class: "gc-btn gc-btn--outline gc-btn--block index_single_stock_alert_button" %>
+        <%= f.hidden_field :product_id, value: item.id, id: "product_product_id_#{item.id}" %>
+      <% end %>
+    <% end %>
+  </div>
+</article>

@@ -1,10 +1,6 @@
-<% if browser.device.mobile? %>
-  <a href="https://wa.me/51989080023" class="wa-float" target="_blank">
-    <%= fa_icon 'whatsapp', class: "wa-my-float" %>
-  </a>
-
-  <a id="noo-search" class="wa-search search-button noo-search" href="#">
-    <%= fa_icon 'search', class: "search-my-float" %>
-  </a>
-  
-<% end %>
+<%# WhatsApp: floating 56px green button, bottom-right, mobile & tablet only
+    (desktop has the header link). Hidden via CSS ≥1024. Sits above the
+    sticky PDP bar / footer through .gc-fab--lifted (see gc/chrome.scss). %>
+<a href="<%= gc_whatsapp_url %>" class="gc-fab wa-float" id="gc-whatsapp-fab" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <%= gc_icon :whatsapp, size: 26 %>
+</a>

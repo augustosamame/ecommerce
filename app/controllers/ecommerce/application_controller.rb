@@ -18,6 +18,9 @@ module Ecommerce
     #before_render :set_controller_meta_tags
 
     layout "ecommerce/#{Ecommerce.ecommerce_layout}"
+    # Storefront view helpers for the GlobalCanasta redesign (icons, logo,
+    # discount %). Explicit because isolated engines don't `helper :all`.
+    helper Ecommerce::GlobalcanastaHelper
 
     def store_location_for(resource_or_scope, location)
       # Skip storing if the request is for a JSON response or other background request

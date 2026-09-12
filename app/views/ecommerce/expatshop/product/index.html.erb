@@ -2,135 +2,157 @@
 <%= raw product_list_json_ld(@products).to_json %>
 </script>
 
-<main>
-  <section class="section-background">
-    <div class="container">
-      <div class="pagination list-center" style="display:none;">
-        <%= paginate @products %>
-      </div>
-      <div class="row products product-index-container">
+<%# ---------------------------------------------------------------------
+    Listing (all products, category, new arrivals, offers, search results,
+    frequent buys). Desktop: 248px filter rail + 3-up grid. <1024: the rail
+    becomes a "Filters" button that opens the same form as a bottom sheet.
+    Infinite scroll appends .product cards into .product-index-container.
+    --------------------------------------------------------------------- %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<% base = @listing_base || @products.except(:limit, :offset) %>
+<% facet_countries = base.except(:order, :includes).where.not(country: [nil, ""]).group(:country).count.sort_by { |name, count| [-count, name] } rescue [] %>
+<% country_count = facet_countries.size %>
+<% total_count = (@products.respond_to?(:total_count) ? @products.total_count : @products.size) %>
+<% title =
+     if params[:search].present? then t('.results_for', term: params[:search])
+     elsif action_name == 'favorites' then t('.frequent_buys')
+     elsif @filter == 'new_products' then t('.new_arrivals')
+     elsif @filter == 'discounted_products' then t('.offers')
+     elsif @category then @category.name
+     else t('.all_products') end %>
+<% currency_symbol = session[:currency] == 'usd' ? '$' : 'S/' %>
+<% price_buckets = session[:currency] == 'usd' ? [["-5", "#{t('.under')} $ 5"], ["5-10", "$ 5 – 10"], ["10-20", "$ 10 – 20"], ["20-", "#{t('.over')} $ 20"]] : [["-20", "#{t('.under')} S/ 20"], ["20-40", "S/ 20 – 40"], ["40-70", "S/ 40 – 70"], ["70-", "#{t('.over')} S/ 70"]] %>
+<% keep_params = params.permit(:category_id, :filter, :search).to_h %>
+<% filters_active = (@listing_countries.presence || @listing_price.presence || @listing_availability.presence) %>
 
-        <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item %>        
+<main class="gc-listing gc-container" id="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="gc-breadcrumb">
+      <li><%= link_to t('.home'), main_app.root_path %></li>
+      <li><%= link_to t('.all_products'), engine.products_path, class: (@category || @filter || params[:search].present? || action_name == 'favorites') ? '' : 'is-current' %></li>
+      <% if @category || @filter || params[:search].present? || action_name == 'favorites' %>
+        <li class="is-current"><%= title %></li>
+      <% end %>
+    </ol>
+  </nav>
 
-      </div>
+  <header class="gc-listing__head">
+    <div>
+      <h1 class="gc-listing__title"><%= title %></h1>
+      <p class="gc-listing__meta">
+        <%= t('.products_count', count: total_count) %><% if country_count > 0 %> · <%= t('.countries_count', count: country_count) %><% end %>
+      </p>
     </div>
-  </section>
+    <div class="gc-listing__tools">
+      <button type="button" class="gc-btn gc-btn--outline gc-listing__filter-btn" id="gc-filter-open" aria-controls="gc-filter-sheet" aria-expanded="false">
+        <%= gc_icon :filter, size: 16 %> <%= t('.filters') %><% if filters_active %> <span class="gc-count">•</span><% end %>
+      </button>
+      <form method="get" class="gc-listing__sort" data-gc-autosubmit>
+        <% keep_params.each { |k, v| %><%= hidden_field_tag k, v, id: nil %><% } %>
+        <% Array(@listing_countries).each { |c| %><%= hidden_field_tag "country[]", c, id: nil %><% } %>
+        <%= hidden_field_tag :price, @listing_price, id: nil if @listing_price %>
+        <%= hidden_field_tag :availability, @listing_availability, id: nil if @listing_availability %>
+        <label for="gc-sort" class="gc-sr-only"><%= t('.sort') %></label>
+        <select name="sort" id="gc-sort" class="gc-select" onchange="this.form.submit()">
+          <option value="popular" <%= 'selected' if @listing_sort == 'popular' %>><%= t('.sort_popular') %></option>
+          <option value="price_asc" <%= 'selected' if @listing_sort == 'price_asc' %>><%= t('.sort_price_asc') %></option>
+          <option value="price_desc" <%= 'selected' if @listing_sort == 'price_desc' %>><%= t('.sort_price_desc') %></option>
+          <option value="newest" <%= 'selected' if @listing_sort == 'newest' %>><%= t('.sort_newest') %></option>
+        </select>
+      </form>
+    </div>
+  </header>
+
+  <div class="gc-listing__body">
+    <div class="gc-filters" id="gc-filter-sheet" aria-hidden="true">
+      <div class="gc-filters__scrim" data-gc-sheet-close></div>
+      <form method="get" class="gc-filters__panel" role="region" aria-label="<%= t('.filters') %>">
+        <div class="gc-filters__head">
+          <span class="gc-h3"><%= t('.filters') %></span>
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg" data-gc-sheet-close aria-label="<%= t('.close') %>"><%= gc_icon :close, size: 18 %></button>
+        </div>
+        <% keep_params.each { |k, v| %><%= hidden_field_tag k, v, id: nil %><% } %>
+        <%= hidden_field_tag :sort, @listing_sort, id: nil if @listing_sort && @listing_sort != 'popular' %>
+
+        <% if facet_countries.any? %>
+          <fieldset class="gc-filters__group">
+            <legend class="gc-label"><%= t('.country_of_origin') %></legend>
+            <div class="gc-filters__options">
+              <% facet_countries.first(12).each do |name, count| %>
+                <label class="gc-check">
+                  <input type="checkbox" name="country[]" value="<%= name %>" <%= 'checked' if Array(@listing_countries).include?(name) %>>
+                  <span class="gc-check__label"><%= name %> <span class="gc-faint">(<%= count %>)</span></span>
+                </label>
+              <% end %>
+            </div>
+          </fieldset>
+        <% end %>
+
+        <fieldset class="gc-filters__group">
+          <legend class="gc-label"><%= t('.price') %></legend>
+          <div class="gc-filters__options">
+            <% price_buckets.each do |value, label| %>
+              <label class="gc-check">
+                <input type="radio" name="price" value="<%= value %>" <%= 'checked' if @listing_price == value %>>
+                <span class="gc-check__label"><%= label %></span>
+              </label>
+            <% end %>
+          </div>
+        </fieldset>
+
+        <fieldset class="gc-filters__group">
+          <legend class="gc-label"><%= t('.availability') %></legend>
+          <div class="gc-filters__options">
+            <label class="gc-check">
+              <input type="checkbox" name="availability" value="in_stock" <%= 'checked' if @listing_availability == 'in_stock' %>>
+              <span class="gc-check__label"><%= t('.in_stock') %></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="gc-filters__apply">
+          <a href="<%= url_for(keep_params.merge(only_path: true)) %>" class="gc-btn gc-btn--ghost"><%= t('.clear') %></a>
+          <button type="submit" class="gc-btn gc-btn--primary"><%= t('.apply') %></button>
+        </div>
+      </form>
+    </div>
+
+    <div class="gc-listing__results">
+      <% if @products.any? %>
+        <div class="gc-product-grid gc-product-grid--3 product-index-container">
+          <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item %>
+        </div>
+        <div class="pagination list-center" style="display:none;">
+          <%= paginate @products %>
+        </div>
+        <div class="page-load-status gc-listing__status" aria-live="polite"></div>
+      <% else %>
+        <div class="gc-empty">
+          <div class="gc-empty__icon"><%= gc_icon :box, size: 32 %></div>
+          <h2 class="gc-h3"><%= t('.no_products_title') %></h2>
+          <p class="gc-muted"><%= t('.no_products_body') %></p>
+          <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary"><%= t('.browse_all') %></a>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </main>
 
+<% if @products.any? %>
 <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js"></script>
-<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-
 <script>
 $(document).ready(function(){
-
+  if (!$('nav.pagination a[rel=next]').length) return;
   var $container = $('.product-index-container').infiniteScroll({
-    // options
     path: 'nav.pagination a[rel=next]',
     append: '.product',
     history: 'push',
     status: '.page-load-status',
-    scrollThreshold: 10
+    scrollThreshold: 400
   });
-
-  $container.on( 'request.infiniteScroll', function( event, response, path, items ) {
-    var $loading = $('.spinner').show();
-  });
-
-  $container.on( 'append.infiniteScroll', function( event, response, path, items ) {
-    //console.log("appended infinite scroll");
-    var $loading = $('.spinner').hide();
-    $container.isotope('appended', $(items));
-    $container.imagesLoaded(function() {
-      //console.log('images loaded');
-      $container.isotope('layout');
-      // bindPlusMinusButtons();
-    })
-    //noo_masonry();
-    //noo_masonry2();
-  });
+  $container.on('request.infiniteScroll', function() { $('.spinner').show(); });
+  $container.on('append.infiniteScroll', function() { $('.spinner').hide(); });
+  $container.on('error.infiniteScroll', function() { $('.spinner').hide(); });
 });
-
 </script>
-
-<script>
-  $(document).ready(function(){
-    bindPlusMinusButtons();
-  });
-
-  function bindPlusMinusButtons() {
-    $('body').on('click', ".devtech_plus_class", function(e) {
-      var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
-      var inStockValueElement = $(e.currentTarget).parent().children(".devtech_plus_class").children(".devtech_plus_a_class").attr('id');
-      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
-      var inStockValue = parseInt(inStockValueElement.substr(inStockValueElement.indexOf('_qty') + 4));
-      if (parseInt(quantityElement.val()) < inStockValue ) {
-        quantityElement.val(parseInt(quantityElement.val()) + 1);
-        outOfStockTextElement.hide();
-      } else {
-        outOfStockTextElement.show();
-      }
-      e.preventDefault();
-    });
-
-    $('body').on('click', ".devtech_minus_class", function(e) {
-      var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
-      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
-      outOfStockTextElement.hide();
-      if (parseInt(quantityElement.val()) > 1) {
-        quantityElement.val(parseInt(quantityElement.val()) - 1);
-      }
-      e.preventDefault();
-    });
-  }
-
-  // Parallax zoom effect for product cards
-  function initParallaxZoom() {
-    var ticking = false;
-
-    function updateParallax() {
-      var products = document.querySelectorAll('.products .product .featured-product');
-      var viewportHeight = window.innerHeight;
-      var viewportCenter = viewportHeight / 2;
-
-      products.forEach(function(product) {
-        var rect = product.getBoundingClientRect();
-        var elementCenter = rect.top + (rect.height / 2);
-
-        // Calculate distance from viewport center (0 = center, 1 = edge)
-        var distanceFromCenter = Math.abs(elementCenter - viewportCenter) / viewportCenter;
-
-        // Only apply effect when element is in viewport
-        if (rect.top < viewportHeight && rect.bottom > 0) {
-          // Scale: 1.0 at edges, up to 1.12 at center
-          var scale = 1 + (0.12 * (1 - Math.min(distanceFromCenter, 1)));
-          // Shadow intensity based on scale
-          var shadowIntensity = 0.1 + (0.15 * (1 - Math.min(distanceFromCenter, 1)));
-
-          product.style.transform = 'scale(' + scale + ')';
-          product.style.boxShadow = '0px ' + Math.round(8 * scale) + 'px ' + Math.round(16 * scale) + 'px 0px rgba(0, 0, 0, ' + shadowIntensity + ')';
-        } else {
-          product.style.transform = 'scale(1)';
-          product.style.boxShadow = '';
-        }
-      });
-
-      ticking = false;
-    }
-
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(updateParallax);
-        ticking = true;
-      }
-    }
-
-    // Listen for scroll
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    // Initial call
-    updateParallax();
-  }
-
-  // Initialize parallax effect
-  initParallaxZoom();
-</script>
+<% end %>
