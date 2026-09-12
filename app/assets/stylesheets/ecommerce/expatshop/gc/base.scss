@@ -482,11 +482,11 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 /* ---------- Toasts (flash messages) ---------- */
 #flash, #js_now_flash { position: fixed; left: -9999px; top: 0; width: 1px; height: 1px; overflow: hidden; }
-/* Centred horizontally, just under the sticky header row, so customers
-   can't miss them; stacks downwards. */
+/* Centred horizontally, clear of the header + category row, on inverse
+   (dark) surfaces with cream text so customers can't miss them. */
 .gc-toasts {
   position: fixed;
-  top: 96px;
+  top: 176px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 3000;
@@ -503,14 +503,12 @@ ul { list-style: none; margin: 0; padding: 0; }
   align-items: flex-start;
   gap: 12px;
   padding: 14px 14px 14px 16px;
-  background: var(--gc-white);
-  border: 1px solid var(--gc-border);
-  border-left: 4px solid var(--gc-navy);
+  background: var(--gc-navy);
   border-radius: var(--gc-radius-lg);
-  box-shadow: var(--gc-shadow-raised);
-  font-size: var(--gc-text-sm);
+  box-shadow: var(--gc-shadow-fab);
+  font-size: 15px;
   line-height: 1.5;
-  color: var(--gc-text);
+  color: var(--gc-cream);
   pointer-events: auto;
   opacity: 0;
   transform: translateY(-8px);
@@ -520,29 +518,28 @@ ul { list-style: none; margin: 0; padding: 0; }
 .gc-toast.is-out { opacity: 0; transform: translateY(-8px); }
 .gc-toast__icon {
   flex: 0 0 auto;
-  width: 22px; height: 22px;
+  width: 24px; height: 24px;
   border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
-  font-family: var(--gc-font-display); font-style: italic; font-size: 13px; font-weight: 600;
-  background: var(--gc-surface-alt); color: var(--gc-navy);
+  font-family: var(--gc-font-display); font-style: italic; font-size: 14px; font-weight: 600;
+  background: var(--gc-cream); color: var(--gc-navy);
 }
 .gc-toast__body { flex: 1; min-width: 0; padding-top: 1px; }
 .gc-toast__close {
   flex: 0 0 auto;
   width: 28px; height: 28px; margin: -4px -6px -4px 0;
   border: none; background: transparent; border-radius: var(--gc-radius-pill);
-  color: var(--gc-ink-faint); font-size: 18px; line-height: 1; cursor: pointer;
+  color: rgba(248, 245, 239, .7); font-size: 18px; line-height: 1; cursor: pointer;
 }
-.gc-toast__close:hover { background: var(--gc-surface-alt); color: var(--gc-text); }
-.gc-toast--success { border-left-color: var(--gc-green); }
-.gc-toast--success .gc-toast__icon { background: var(--gc-state-success-bg); color: var(--gc-green); }
-.gc-toast--error { border-left-color: var(--gc-red); }
-.gc-toast--error .gc-toast__icon { background: var(--gc-state-error-bg); color: var(--gc-red); }
-.gc-toast--warning { border-left-color: var(--gc-gold); }
-.gc-toast--warning .gc-toast__icon { background: rgba(195, 120, 61, .14); color: var(--gc-gold-hover); }
-@media (max-width: 767px) {
-  .gc-toasts { top: 80px; }
-}
+.gc-toast__close:hover { background: rgba(248, 245, 239, .15); color: var(--gc-cream); }
+.gc-toast--success { background: var(--gc-green); }
+.gc-toast--success .gc-toast__icon { color: var(--gc-green); }
+.gc-toast--error { background: var(--gc-red); }
+.gc-toast--error .gc-toast__icon { color: var(--gc-red); }
+.gc-toast--warning { background: var(--gc-burgundy); }
+.gc-toast--warning .gc-toast__icon { color: var(--gc-burgundy); }
+@media (max-width: 1023px) { .gc-toasts { top: 150px; } }
+@media (max-width: 767px) { .gc-toasts { top: 200px; } .gc-toast { font-size: 14px; } }
 @media (prefers-reduced-motion: reduce) { .gc-toast { transition: none; } }
 
 /* ---------- SweetAlert2 (remaining programmatic dialogs) ---------- */
