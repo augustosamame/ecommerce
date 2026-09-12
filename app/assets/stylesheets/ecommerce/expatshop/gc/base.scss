@@ -482,18 +482,23 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 /* ---------- Toasts (flash messages) ---------- */
 #flash, #js_now_flash { position: fixed; left: -9999px; top: 0; width: 1px; height: 1px; overflow: hidden; }
+/* Centred horizontally, just under the sticky header row, so customers
+   can't miss them; stacks downwards. */
 .gc-toasts {
   position: fixed;
-  top: 16px;
-  right: 16px;
+  top: 96px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 3000;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
-  width: min(380px, calc(100vw - 32px));
+  width: min(480px, calc(100vw - 32px));
   pointer-events: none;
 }
 .gc-toast {
+  width: 100%;
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -536,8 +541,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .gc-toast--warning { border-left-color: var(--gc-gold); }
 .gc-toast--warning .gc-toast__icon { background: rgba(195, 120, 61, .14); color: var(--gc-gold-hover); }
 @media (max-width: 767px) {
-  .gc-toasts { top: auto; bottom: calc(88px + env(safe-area-inset-bottom, 0px)); right: 16px; left: 16px; width: auto; }
-  .gc-toast { transform: translateY(8px); }
+  .gc-toasts { top: 80px; }
 }
 @media (prefers-reduced-motion: reduce) { .gc-toast { transition: none; } }
 
