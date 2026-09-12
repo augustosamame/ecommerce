@@ -145,7 +145,109 @@
     });
   }
 
+  // ----- Toasts (flash messages) -----
+  // Server flashes (#flash) and JS-response flashes (#js_now_flash, rendered
+  // with the NOW_FLASH_ prefix by cart_items / stock_alert responses) are
+  // turned into stacked toasts that slide in top-right and auto-dismiss.
+  var toastRoot = null;
+  function ensureToastRoot() {
+    if (!toastRoot || !document.body.contains(toastRoot)) {
+      toastRoot = document.createElement('div');
+      toastRoot.className = 'gc-toasts';
+      toastRoot.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toastRoot);
+    }
+    return toastRoot;
+  }
+
+  function gcToast(message, type, opts) {
+    opts = opts || {};
+    var root = ensureToastRoot();
+    var toast = document.createElement('div');
+    toast.className = 'gc-toast gc-toast--' + (type || 'info');
+    toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+    var icon = { success: '✓', error: '!', warning: '!', info: 'i' }[type] || 'i';
+    toast.innerHTML =
+      '<span class="gc-toast__icon" aria-hidden="true">' + icon + '</span>' +
+      '<div class="gc-toast__body"></div>' +
+      '<button type="button" class="gc-toast__close" aria-label="Close">&times;</button>';
+    toast.querySelector('.gc-toast__body').textContent = message;
+    root.appendChild(toast);
+    // next frame → transition in
+    requestAnimationFrame(function () { requestAnimationFrame(function () { toast.classList.add('is-in'); }); });
+
+    var timer = null;
+    function dismiss() {
+      if (!toast.parentNode) return;
+      clearTimeout(timer);
+      toast.classList.remove('is-in');
+      toast.classList.add('is-out');
+      setTimeout(function () { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
+    }
+    toast.querySelector('.gc-toast__close').addEventListener('click', dismiss);
+    toast.addEventListener('mouseenter', function () { clearTimeout(timer); });
+    toast.addEventListener('mouseleave', function () { timer = setTimeout(dismiss, 2500); });
+    timer = setTimeout(dismiss, opts.duration || 6000);
+    return toast;
+  }
+  window.gcToast = gcToast;
+
+  function toastTypeFor(el) {
+    var c = el.className || '';
+    if (/alert-success/.test(c)) return 'success';
+    if (/alert-danger/.test(c)) return 'error';
+    if (/alert-warning/.test(c)) return 'warning';
+    return 'info';
+  }
+
+  // Convert Bootstrap .alert boxes inside a container into toasts and hide them.
+  function absorbAlerts(container) {
+    if (!container) return;
+    qsa('.alert', container).forEach(function (el) {
+      if (el.getAttribute('data-gc-toasted')) return;
+      el.setAttribute('data-gc-toasted', '1');
+      var clone = el.cloneNode(true);
+      qsa('button.close, .close', clone).forEach(function (b) { b.parentNode.removeChild(b); });
+      var text = clone.textContent.replace(/\s+/g, ' ').trim();
+      if (text) gcToast(text, toastTypeFor(el));
+      el.style.display = 'none';
+    });
+  }
+
+  function initFlashToasts() {
+    absorbAlerts(qs('#flash'));
+    absorbAlerts(qs('#js_now_flash'));
+    if (!('MutationObserver' in window)) return;
+    // JS responses replace #js_now_flash's innerHTML; the base layout also
+    // removes the container after 8s, so keep an empty one around for later
+    // responses to target.
+    var observer = new MutationObserver(function () {
+      var now = qs('#js_now_flash');
+      if (!now) {
+        now = document.createElement('div');
+        now.id = 'js_now_flash';
+        document.body.appendChild(now);
+      }
+      absorbAlerts(now);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // ----- SweetAlert2 v7 defaults (stock alerts, referral copy, checkout errors) -----
+  function initSwalTheme() {
+    if (typeof window.Swal !== 'function' || typeof window.Swal.setDefaults !== 'function') return;
+    window.Swal.setDefaults({
+      customClass: 'gc-swal',
+      buttonsStyling: false,
+      confirmButtonClass: 'gc-btn gc-btn--primary',
+      cancelButtonClass: 'gc-btn gc-btn--ghost',
+      animation: false
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
+    initSwalTheme();
+    initFlashToasts();
     initDrawer();
     initAccountMenu();
     initStickyShadow();

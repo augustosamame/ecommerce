@@ -89,12 +89,21 @@
 .gc-product-card--compact .gc-product-card__actions { padding: 0 14px 14px; }
 .gc-product-card--compact .gc-product-card__price { font-size: 17px; }
 
-/* Tablet 768–1023 */
+/* Below 1280 (small desktop + tablet) cards are narrow, so tighten the
+   stepper and let the (longer Spanish) Add label wrap instead of clipping. */
+@media (max-width: 1279px) {
+  .gc-product-card__form .gc-stepper__btn { width: 32px; }
+  .gc-product-card__form .gc-stepper__value, .gc-product-card__form .gc-stepper input { width: 24px; }
+  .gc-product-card__add { white-space: normal; line-height: 1.15; font-size: 13px; padding: 0 8px; height: auto; min-height: var(--gc-control-h); }
+}
 @media (max-width: 1023px) {
   .gc-product-card__body { padding: 16px; }
   .gc-product-card__actions { padding: 0 16px 16px; }
   .gc-product-card__name { font-size: 15px; }
   .gc-product-card__price { font-size: 19px; }
+  .gc-product-card__form .gc-stepper__btn { width: 32px; }
+  .gc-product-card__form .gc-stepper__value, .gc-product-card__form .gc-stepper input { width: 24px; }
+  .gc-product-card__add { white-space: normal; line-height: 1.15; font-size: 13px; padding: 0 8px; height: auto; min-height: var(--gc-control-h); }
 }
 
 /* Mobile <768: stacked, one per row */

@@ -40,17 +40,3 @@
 <%= javascript_include_tag "ecommerce/expatshop" %>
 
 <% parent_layout "ecommerce/base" %>
-
-<script>
-$(document).ready(function(){
-  if ($( "#flash" ).length > 0 )
-  {
-    var flash_text = $('#flash .alert').text().split(/\r?\n/).pop()
-    Swal({
-        type: 'info',
-        title: '',
-        text: flash_text
-      });
-  }
-});
-</script>
