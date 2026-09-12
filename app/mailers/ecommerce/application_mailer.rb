@@ -2,7 +2,7 @@ module Ecommerce
   class ApplicationMailer < ActionMailer::Base
     include Ecommerce::EmailTracking
 
-    default from: "ExpatShop.pe <gg@expatshop.pe>"
+    default from: "GlobalCanasta <gg@expatshop.pe>"
     layout 'ecommerce/mailer'
 
     # Mail templates only exist for these locales, several without a

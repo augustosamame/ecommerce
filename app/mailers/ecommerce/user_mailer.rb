@@ -1,7 +1,7 @@
 module Ecommerce
   class UserMailer < ApplicationMailer
     helper Ecommerce::ApplicationHelper
-    default from: "ExpatShop.pe <gg@expatshop.pe>", bcc: ["gg@expatshop.pe", "augusto@devtechperu.com"]
+    default from: "GlobalCanasta <gg@expatshop.pe>", bcc: ["gg@expatshop.pe", "augusto@devtechperu.com"]
 
     def welcome_email(user)
       @user = user
