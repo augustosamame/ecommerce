@@ -152,7 +152,7 @@
 .gc-origin-row__item { flex: 0 0 76px; text-align: center; color: var(--gc-ink-soft); }
 .gc-origin-row__circle { display: block; width: 72px; height: 72px; margin: 0 auto; border-radius: 50%; border: 1px solid var(--gc-border); background: var(--gc-white); overflow: hidden; }
 /* category artwork ships with generous whitespace: zoom it so the icon fills the circle */
-.gc-origin-row__circle img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.45); }
+.gc-origin-row__circle img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.18); }
 .gc-origin-row__label { display: inline-block; font-size: var(--gc-text-2xs); margin-top: 8px; line-height: 1.3; }
 .gc-origin-row__item.is-highlighted .gc-origin-row__circle { border: 3px solid var(--gc-burgundy); }
 .gc-origin-row__item.is-highlighted .gc-origin-row__label { background: var(--gc-burgundy); color: var(--gc-cream); font-weight: 600; padding: 5px 10px; border-radius: var(--gc-radius-md); }
