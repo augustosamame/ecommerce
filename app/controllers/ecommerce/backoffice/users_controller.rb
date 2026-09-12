@@ -7,7 +7,7 @@ module Ecommerce
 
     # GET /backoffice/users
     def index
-      @backoffice_users = User.all.order(id: :desc)
+      @backoffice_users = User.all.order(id: :desc).page(params[:page])
     end
 
     # GET /backoffice/users/autocomplete?term=...

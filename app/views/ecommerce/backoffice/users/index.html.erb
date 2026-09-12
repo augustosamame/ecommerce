@@ -8,6 +8,7 @@
 
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">
+    <%= paginate @backoffice_users %>
     <thead>
       <tr>
         <th><%= t('.id') %></th>
@@ -46,4 +47,5 @@
       <% end %>
     </tbody>
   </table>
+  <%= paginate @backoffice_users %>
 </div>
