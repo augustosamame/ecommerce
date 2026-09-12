@@ -565,7 +565,9 @@
         function setupOverlayInteractions(player, overlay) {
           overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
             productOverlay.addEventListener('click', function(e) {
-              if (e.target.closest('.overlay-add-to-cart') || e.target.closest('.overlay-category-link')) {
+              // Category overlays are real links — let them navigate. Product
+              // overlays add to cart wherever the card is tapped, button included.
+              if (e.target.closest('.overlay-category-link')) {
                 return;
               }
 
@@ -691,8 +693,8 @@
                               </p>
                               ${overlay.overlay_type === 'product' ?
                                 `<p class="overlay-product-price">${overlay.product_price}</p>
-                                 <button class="overlay-add-to-cart">
-                                   <span class="overlay-add-to-cart">${overlay.add_to_cart_label}</span> <i class="fas fa-arrow-right"></i>
+                                 <button type="button" class="overlay-add-to-cart">
+                                   <span class="overlay-add-to-cart__label">${overlay.add_to_cart_label}</span> <span aria-hidden="true">&rsaquo;</span>
                                  </button>` :
                                 `<a href="/store/products?category_id=${overlay.category_id}" class="overlay-category-link">
                                    ${overlay.view_products_label}

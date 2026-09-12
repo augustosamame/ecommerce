@@ -6,7 +6,9 @@ module Ecommerce
     include Ecommerce::ApplicationHelper
 
     skip_before_action :verify_authenticity_token, only: [:mov_to_mp4_success, :mov_to_mp4_error, :new_mov_in_s3]
-    skip_before_action :authenticate_user!, only: [:mov_to_mp4_success, :mov_to_mp4_error, :new_mov_in_s3]
+    # show/overlays feed the public home page player (title + shoppable
+    # overlays); guests must be able to read them too.
+    skip_before_action :authenticate_user!, only: [:mov_to_mp4_success, :mov_to_mp4_error, :new_mov_in_s3, :show, :overlays]
 
     def new_mov_in_s3
       Rails.logger.info("New mov in s3")

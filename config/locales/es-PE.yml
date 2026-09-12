@@ -476,7 +476,7 @@ es-PE:
           testimonials: "Testimoniales"
           all_products: "Todos los Productos"
           favorite_products: 'Mis Compras Frecuentes'
-          new_products: "Novedades"
+          new_products: "Productos nuevos"
           new_products_subtitle: "Los mejores productos del mundo a Perú"
           free_shipping: "Envío gratis en pedidos superiores a $30"
           payment_methods: "Aceptamos Todas las Tarjetas de Crédito y Débito"
@@ -505,7 +505,6 @@ es-PE:
           thailand: "Tailandia"
           all_the_products: "Todos los productos"
           my_frequent_purchases: "Mis compras frecuentes"
-          new_products: "PRODUCTOS NUEVOS"
           offers_and_discounts: "Ofertas"
           main_categories: "Categorías principales"
           categories_eyebrow: "Explora por categoría"
