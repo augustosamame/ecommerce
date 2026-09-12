@@ -71,8 +71,11 @@
   overflow: hidden;
   min-width: 0;
 }
-.gc-hero__slide--split .gc-hero__media { aspect-ratio: 1 / 1; align-self: center; }
-.gc-hero__slide--media .gc-hero__media { aspect-ratio: 21 / 9; }
+/* align-self: center keeps the box sized from its width; stretched to the
+   row height (set by the tallest slide) the aspect ratio would widen it
+   past the track instead. */
+.gc-hero__slide--split .gc-hero__media { aspect-ratio: 1 / 1; width: 100%; align-self: center; }
+.gc-hero__slide--media .gc-hero__media { aspect-ratio: 21 / 9; width: 100%; align-self: center; }
 .gc-hero__slide-link, .gc-hero__placeholder { display: block; position: absolute; inset: 0; }
 .gc-hero__img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .gc-hero__quote {
@@ -309,7 +312,7 @@
   .gc-hero__title { font-size: var(--gc-text-hero); }
   .gc-hero__body { font-size: var(--gc-text-body); max-width: 520px; }
   .gc-hero__stats { display: none; }
-  .gc-hero__slide--split .gc-hero__media, .gc-hero__slide--media .gc-hero__media { aspect-ratio: 16 / 9; align-self: stretch; }
+  .gc-hero__slide--split .gc-hero__media, .gc-hero__slide--media .gc-hero__media { aspect-ratio: 16 / 9; }
   .gc-hero__quote { display: none; }
   .gc-hero__controls .gc-icon-btn { display: none; }
   .gc-band__inner { flex-wrap: wrap; gap: 12px 24px; padding-top: 16px; padding-bottom: 16px; font-size: var(--gc-text-xs); }
