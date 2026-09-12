@@ -222,13 +222,15 @@
 .overlay-product-info { flex: 1; min-width: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
 .overlay-product-title { font-size: 11px; font-weight: 600; color: var(--gc-text); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .overlay-product-price { font-size: 11px; color: var(--gc-ink-muted); margin: 0; }
-.overlay-add-to-cart, .overlay-category-link {
-  font-size: 13px; font-weight: 600; color: var(--gc-burgundy); margin: 0;
+/* .video-js button { color: inherit } (white) outranks a lone class, hence the prefix */
+.video-js .overlay-add-to-cart, .video-js .overlay-category-link, .overlay-add-to-cart, .overlay-category-link {
+  font-size: 13px; font-weight: 600; color: var(--gc-burgundy) !important; margin: 0;
   display: inline-flex; align-items: center; gap: 4px; align-self: flex-start;
   background: none; border: none; border-radius: 4px; cursor: pointer; padding: 2px 0; width: auto;
   font-family: var(--gc-font-ui); line-height: 1.2;
 }
-.overlay-add-to-cart:focus, .overlay-add-to-cart:focus-visible { outline: none; box-shadow: none; text-decoration: underline; text-decoration-color: var(--gc-gold); text-underline-offset: 3px; }
+.video-js .overlay-add-to-cart:hover { color: var(--gc-gold) !important; }
+.video-js .overlay-add-to-cart:focus, .video-js .overlay-add-to-cart:focus-visible { outline: none; box-shadow: none; text-decoration: underline; text-decoration-color: var(--gc-gold); text-underline-offset: 3px; }
 .vjs-title-overlay {
   position: absolute; top: 10px; left: 10px; right: 10px; padding: 8px 10px;
   color: #fff; font-size: 14px; font-weight: 500; text-align: left; z-index: 3;
