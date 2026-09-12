@@ -369,7 +369,7 @@ en-PE:
           quantity: "Quantity"
           home: "Home"
           dispatch_note: "Dispatch next business day from Lima"
-          points_note: "Earn %{points} points on this order"
+          points_note: "Earn points on every order"
           invoice_note: "Boleta or factura issued automatically"
           approx: "≈"
         product:

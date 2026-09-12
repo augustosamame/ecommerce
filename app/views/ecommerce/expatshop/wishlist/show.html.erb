@@ -1,97 +1,67 @@
-  <section class="noo-page-heading eff">
-    <div class="container">
-      <div class="noo-heading-content">
-        <h1 class="page-title eff"><%= t('.title') %></h1>
-        <div class="noo-page-breadcrumb eff">
-          <a href="./" class="home">ExpatShop</a>/<span><%= t('.title') %></span>
-        </div>
-      </div>
+<%# Favourites (wishlist): product rows with add-to-cart and remove. %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<% items = @wishlist.wishlist_items.includes(:product).to_a.select { |i| i.product } %>
+<main class="gc-commerce gc-account gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <div>
+      <div class="gc-eyebrow"><%= t('ecommerce.expatshop.store.header.favourites') %></div>
+      <h1 class="gc-commerce__title"><%= t('.title') %></h1>
     </div>
-  </section>
-  <div class="main">
-    <div class="commerce commerce-page commerce-cart noo-shop-main">
-      <div class="container">
-        <div class="row">
-          <div class="noo-main col-md-12">
-            <table class="shop_table cart">
-              <thead>
-                <tr>
-                  <th class="product-thumbnail"><%= t('.image') %></th>
-                  <th class="product-price"><%= t('.price') %></th>
-                  <th class="product-quantity"><%= t('.quantity') %></th>
-                  <th class="product-subtotal"><%= t('.total') %></th>
-                  <th class="product-remove">&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @wishlist.wishlist_items.each do |item| %>
-                <tr class="cart_item">
-                  <td class="product-thumbnail">
-                    <a href="<%= product_path(item.product) %>">
-                      <%= image_tag item.product.image.thumb_100.url, width: 100, height: 100, alt: "" %>
-                    </a>
-                    <%= link_to item.product.name, product_path(item.product) %>
-                  </td>
-                  <td class="product-price">
-                    <span class="amount"><%= number_to_currency(item.product.current_price(@current_user)) %></span>
-                  </td>
-                  <td class="product-quantity">
-                    <div class="quantity">
-                        <input type="number" step="1" min="0" name="qty" value="<%= item.quantity %>" class="input-text qty text" size="4"/>
-                    </div>
-                  </td>
-                  <td class="product-subtotal">
-                    <span class="amount"><%= number_to_currency(item.line_total(@current_user)) %></span>
-                  </td>
-                  <td class="product-remove">
-                    <a href="#" class="remove">&times;</a>
-                  </td>
-                </tr>
-                <% end %>
-                <tr>
-                  <td colspan="5" class="actions">
-                    <a class="continue" href="shop.html"><%= t('.continue_shopping') %></a>
-                    <div class="coupon">
-                      <label for="coupon_code">Coupon:</label>
-                      <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/>
-                      <input type="submit" class="button" name="apply_coupon" value="Apply Coupon"/>
-                    </div>
-                    <input type="submit" class="button" name="update_cart" value="<%= t('.update_wishlist') %>"/>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="cart-collaterals">
-              <div class="cart_totals">
-                <h2><%= t('.wishlist_totals') %></h2>
-                <table>
-                  <tr class="cart-subtotal">
-                    <th><%= t('.total_items') %></th>
-                    <td><span class="amount" id="qty-subtotal-amount"><%= @wishlist_qty_subtotal %></span></td>
-                  </tr>
-                  <tr class="cart-subtotal">
-                    <th><%= t('.subtotal') %></th>
-                    <td><span class="amount" id="subtotal-amount"><%= number_to_currency(@wishlist_subtotal) %></span></td>
-                  </tr>
-                  <tr class="shipping">
-                    <th><%= t('.shipping') %></th>
-                    <td>
-                      <p><%= t('.shipping_cost_text') %></p>
-                    </td>
-                  </tr>
-                  <tr class="order-total">
-                    <th>Total</th>
-                    <td><strong><span class="amount" id="total-amount"><%= number_to_currency(@wishlist_subtotal) %></span></strong> </td>
-                  </tr>
-                </table>
-                <div class="wc-proceed-to-checkout">
-                  <%= link_to t('.proceed_to_checkout'), checkout_path, class: "checkout-button button alt wc-forward" %>
+    <p class="gc-commerce__meta"><%= t('.total_items') %>: <strong class="gc-num"><%= @wishlist_qty_subtotal %></strong></p>
+  </header>
+
+  <% if items.empty? %>
+    <div class="gc-empty">
+      <div class="gc-empty__icon"><%= gc_icon :heart, size: 32 %></div>
+      <h2 class="gc-h3"><%= t('.empty_title', default: 'No favourites yet') %></h2>
+      <p class="gc-muted"><%= t('.empty_body', default: 'Tap the heart on any product to keep it here.') %></p>
+      <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary"><%= t('.continue_shopping') %></a>
+    </div>
+  <% else %>
+    <div class="gc-commerce__grid">
+      <section class="gc-commerce__main">
+        <ul class="gc-lines">
+          <% items.each do |item| %>
+            <% product = item.product %>
+            <li class="gc-line" data-gc-product="<%= product.id %>">
+              <a href="<%= engine.product_path(product) %>" class="gc-line__thumb"><%= image_tag product.image.thumb_100.url, alt: "" %></a>
+              <div class="gc-line__info">
+                <a href="<%= engine.product_path(product) %>" class="gc-line__name"><%= product.name %></a>
+                <div class="gc-line__meta">
+                  <span class="gc-num"><%= product_session_price(product, "current_price") %></span>
+                  <% unless product.in_stock? %><span class="gc-price--sale"><%= t('ecommerce.expatshop.product.product.out_of_stock') %></span><% end %>
                 </div>
               </div>
-            </div>
-          </div>
+              <div class="gc-line__qty">
+                <% if product.in_stock? %>
+                  <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart-form gc-inline-form", id: "new_cart_item_#{product.id}" } do |f| %>
+                    <%= f.hidden_field :product_id, value: product.id, id: "product_product_id_#{product.id}" %>
+                    <%= f.hidden_field :quantity, value: [item.quantity.to_i, 1].max, id: "devtech_quantity_field_#{product.id}" %>
+                    <%= button_tag t('ecommerce.expatshop.product.product.add_to_cart'), type: 'submit', class: "gc-btn gc-btn--primary gc-btn--sm" %>
+                  <% end %>
+                <% end %>
+              </div>
+              <div class="gc-line__remove">
+                <%= link_to engine.wishlist_item_path(item), method: :delete, class: "gc-icon-btn gc-icon-btn--lg", "aria-label": "#{t('.remove', default: 'Remove')} #{product.name}" do %>
+                  <%= gc_icon :trash, size: 16 %>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+        <div class="gc-commerce__tools">
+          <a href="<%= engine.products_path %>" class="gc-btn gc-btn--ghost"><%= gc_icon :chevron_left, size: 16 %> <%= t('.continue_shopping') %></a>
         </div>
-      </div>
+      </section>
+      <aside class="gc-summary">
+        <h2 class="gc-h3 gc-summary__title"><%= t('.wishlist_totals') %></h2>
+        <dl class="gc-summary__rows">
+          <div><dt><%= t('.total_items') %></dt><dd class="gc-num" id="qty-subtotal-amount"><%= @wishlist_qty_subtotal %></dd></div>
+          <div><dt><%= t('.subtotal') %></dt><dd class="gc-num" id="subtotal-amount"><%= gc_money_pair(@wishlist_subtotal).first %></dd></div>
+          <div><dt><%= t('.shipping') %></dt><dd class="gc-summary__note"><%= t('.shipping_cost_text') %></dd></div>
+        </dl>
+        <a href="<%= engine.cart_path(@cart.id) %>" class="gc-btn gc-btn--secondary gc-btn--lg gc-btn--block"><%= t('ecommerce.expatshop.store.cart.view_cart') %></a>
+      </aside>
     </div>
-
-  </div>
+  <% end %>
+</main>

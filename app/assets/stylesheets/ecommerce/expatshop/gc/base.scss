@@ -473,6 +473,10 @@ ul { list-style: none; margin: 0; padding: 0; }
   .gc-mobile-only { display: initial; }
 }
 
+/* Page shell: clip sideways overflow (cart shake, wide rails) without
+   creating a scroll container, so position: sticky keeps working. */
+.gc-site { overflow-x: clip; }
+
 /* Spinner overlay from the engine shell: keep it out of the flow */
 .spinner { position: fixed; inset: 0; margin: auto; z-index: 2000; }
 

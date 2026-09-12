@@ -1,98 +1,40 @@
-<!-- Content
-============================================= -->
-<section id="content">
-
-	<div class="content-wrap" style= "margin-top: 50px; margin-bottom: 200px;">
-
-		<div class="container clearfix">
-
-			<div class="row clearfix">
-				<div class="col-md-8">
-
-					<h3 style = "margin-bottom: 50px;"><%= t('.send_us_a_message') %></h3>
-
-					<div class="">
-
-						<div class="contact-form-result"></div>
-
-
-							<%= simple_form_for @contact_message, :url => contact_us_path, :method => :post, html: { class: "nobottommargin"} do |f| %>
-
-							<div class="form-process"></div>
-
-							<div class="col_one_third">
-								<label for="template-contactform-name"><%= t('.name') %> <small>*</small></label>
-								<%= f.input :name, label: false, input_html: { class: 'sm-form-control required' } %>
-							</div>
-
-							<div class="col_one_third">
-								<label for="template-contactform-email"><%= t('.email') %> <small>*</small></label>
-								<%= f.input :email, label: false, input_html: { class: 'required email sm-form-control' } %>
-							</div>
-
-							<div class="col_one_third col_last">
-								<label for="template-contactform-phone"><%= t('.phone') %></label>
-								<%= f.input :phone, label: false, input_html: { class: 'sm-form-control' } %>
-							</div>
-
-							<div class="clear"></div>
-
-							<div class="col_full">
-								<label for="template-contactform-message"><%= t('.message') %> <small>*</small></label>
-								<%= f.input :message, label: false, as: :text, input_html: { class: 'required sm-form-control', rows: 6, cols: 30 } %>
-							</div>
-
-							<div class="col_full">
-								<%= f.button :submit, t('.send_message'), class: "button button-3d nomargin contact-button", id: "contact-form" %>
-							</div>
-
-						<% end %>
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-	</div>
-
-</section><!-- #content end -->
+<%# Contact page: intro + WhatsApp card on the left, message form on the right. %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<main class="gc-static gc-container" id="main-content">
+  <div class="gc-static__grid">
+    <div class="gc-prose">
+      <div class="gc-eyebrow"><%= gc_brand_name %></div>
+      <h1><%= t('.send_us_a_message') %></h1>
+      <div class="gc-card gc-card__body gc-static__aside">
+        <p class="gc-small gc-muted" style="margin:0 0 10px;"><%= gc_t('.whatsapp_hint', 'Faster on WhatsApp — we answer between 9 am and 7 pm.') %></p>
+        <a href="<%= gc_whatsapp_url %>" target="_blank" rel="noopener" class="gc-btn gc-btn--whatsapp"><%= gc_icon :whatsapp, size: 18 %> 989 080 023</a>
+      </div>
+    </div>
+    <div class="gc-card gc-card__body gc-form gc-static__form">
+      <%= simple_form_for @contact_message, url: engine.contact_us_path, method: :post, html: { class: "gc-form", id: "new_contact" } do |f| %>
+        <div class="gc-form__row">
+          <%= f.input :name, label: "#{t('.name')} *", input_html: { class: 'gc-input required' } %>
+          <%= f.input :email, label: "#{t('.email')} *", input_html: { class: 'gc-input required' } %>
+        </div>
+        <%= f.input :phone, label: t('.phone'), input_html: { class: 'gc-input' } %>
+        <%= f.input :message, label: "#{t('.message')} *", as: :text, input_html: { class: 'gc-input required', rows: 6 } %>
+        <%= f.button :submit, t('.send_message'), class: "gc-btn gc-btn--primary gc-btn--lg", id: "contact-form" %>
+      <% end %>
+    </div>
+  </div>
+</main>
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function(event) {
-// Gets a reference to the form element, assuming
-// it contains the id attribute "signup-form".
-var form = document.getElementById('new_contact');
-
-// Adds a listener for the "submit" event.
-form.addEventListener('submit', function(event) {
-  // Prevents the browser from submitting the form
-  // and thus unloading the current page.
-  event.preventDefault();
-
-  // Creates a timeout to call `submitForm` after one second.
-  setTimeout(submitForm, 1000);
-
-  // Keeps track of whether or not the form has been submitted.
-  // This prevents the form from being submitted twice in cases
-  // where `hitCallback` fires normally.
-  var formSubmitted = false;
-
-  function submitForm() {
-    if (!formSubmitted) {
-      formSubmitted = true;
-      form.submit();
-    }
-  }
-
-  // Sends the event to Google Analytics and
-  // resubmits the form once the hit is done.
-  ga('send', 'event', 'Contact Form', 'submit', {
-    hitCallback: submitForm
+  var form = document.getElementById('new_contact');
+  if (!form) return;
+  form.addEventListener('submit', function(event) {
+    if (typeof ga !== 'function') return; // no analytics: plain submit
+    event.preventDefault();
+    var formSubmitted = false;
+    function submitForm() { if (!formSubmitted) { formSubmitted = true; form.submit(); } }
+    setTimeout(submitForm, 1000);
+    ga('send', 'event', 'Contact Form', 'submit', { hitCallback: submitForm });
   });
-});
-
 });
 </script>

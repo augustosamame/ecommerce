@@ -1,122 +1,31 @@
-<!-- Content
-============================================= -->
-<section id="content">
-
-	<div class="content-wrap" style= "margin-top: 50px; margin-bottom: 200px;">
-
-		<div class="container clearfix">
-
-			<div class="row clearfix">
-				<div class="col-md-8">
-
-					<h3>Make a Wish!</h3>
-					<h4 style = "margin-bottom: 50px;">Let us know which product, from all over the world, you would like us to carry</h4>
-
-					<div class="">
-
-						<div class="contact-form-result"></div>
-
-
-							<%= simple_form_for @wishlist_message, :url => wishlist_message_path, :method => :post, html: { class: "nobottommargin"} do |f| %>
-
-							<div class="form-process"></div>
-
-							<% unless current_user %>
-
-								<div class="col_one_third">
-									<label for="template-contactform-name">Your Name <small>*</small></label>
-									<%= f.input :name, label: false, input_html: { class: 'sm-form-control required' } %>
-								</div>
-
-								<div class="col_one_third">
-									<label for="template-contactform-name">Your Email <small>*</small></label>
-									<%= f.input :email, label: false, input_html: { class: 'sm-form-control required' } %>
-								</div>
-
-								<div class="col_one_third">
-									<label for="template-contactform-name">Your Phone <small>*</small></label>
-									<%= f.input :phone, label: false, input_html: { class: 'sm-form-control required' } %>
-								</div>
-
-							<% end %>
-
-							<div class="col_one_third">
-								<label for="template-contactform-message">Product Name <small>*</small></label>
-								<%= f.input :product_name, label: false, as: :text, input_html: { class: 'sm-form-control required' } %>
-							</div>
-
-							<div class="col_one_third">
-								<label for="template-contactform-message">Product Brand <small></small></label>
-								<%= f.input :brand, label: false, as: :text, input_html: { class: 'sm-form-control' } %>
-							</div>
-
-							<div class="col_full">
-								<label for="template-contactform-message">Color, Size, Flavor? <small></small></label>
-								<%= f.input :attributes, label: false, as: :text, input_html: { class: 'sm-form-control', rows: 6, cols: 30 } %>
-							</div>
-
-							<div class="col_one_third">
-								<label for="template-contactform-message">Wished Product Country of Origin <small></small></label>
-								<%= f.input :country, label: false, as: :text, input_html: { class: 'sm-form-control' } %>
-							</div>
-
-							<div class="col_full" style="margin-bottom: 40px;">
-								<label for="template-contactform-message">Any additional thoughts about this product <small></small></label>
-								<%= f.input :comment, label: false, as: :text, input_html: { class: 'sm-form-control', rows: 6, cols: 30 } %>
-								<small>(*) Required Fields</small>
-							</div>
-
-							<div class="col_full">
-								<%= f.button :submit, "Send Message", class: "button button-3d nomargin contact-button btn btn-primary", id: "contact-form" %>
-							</div>
-
-						<% end %>
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-	</div>
-
-</section><!-- #content end -->
-
-<script>
-
-document.addEventListener("DOMContentLoaded", function(event) {
-// Gets a reference to the form element, assuming
-// it contains the id attribute "signup-form".
-var form = document.getElementById('new_contact');
-
-// Adds a listener for the "submit" event.
-form.addEventListener('submit', function(event) {
-  // Prevents the browser from submitting the form
-  // and thus unloading the current page.
-  event.preventDefault();
-
-  // Creates a timeout to call `submitForm` after one second.
-  setTimeout(submitForm, 1000);
-
-  // Keeps track of whether or not the form has been submitted.
-  // This prevents the form from being submitted twice in cases
-  // where `hitCallback` fires normally.
-  var formSubmitted = false;
-
-  function submitForm() {
-    if (!formSubmitted) {
-      formSubmitted = true;
-      form.submit();
-    }
-  }
-
-  // Sends the event to Google Analytics and
-  // resubmits the form once the hit is done.
-  ga('send', 'event', 'Contact Form', 'submit', {
-    hitCallback: submitForm
-  });
-});
-
-});
-</script>
+<%# "Make a wish": ask the store to import a product. %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<main class="gc-commerce gc-container gc-static" id="main-content">
+  <div class="gc-static__grid">
+    <div class="gc-prose">
+      <div class="gc-eyebrow"><%= gc_t('.eyebrow', 'Can\'t find it?') %></div>
+      <h1><%= gc_t('.title', 'Make a wish') %></h1>
+      <p><%= gc_t('.intro', 'Let us know which product, from anywhere in the world, you would like us to carry.') %></p>
+    </div>
+    <div class="gc-card gc-card__body gc-form gc-static__form">
+      <%= simple_form_for @wishlist_message, url: engine.wishlist_message_path, method: :post, html: { class: "gc-form", id: "gc-wish-form" } do |f| %>
+        <% unless current_user %>
+          <div class="gc-form__row">
+            <%= f.input :name, label: gc_t('.name', 'Your name') + " *", input_html: { class: 'gc-input' } %>
+            <%= f.input :email, label: gc_t('.email', 'Your email') + " *", input_html: { class: 'gc-input' } %>
+          </div>
+          <%= f.input :phone, label: gc_t('.phone', 'Your phone') + " *", input_html: { class: 'gc-input' } %>
+        <% end %>
+        <div class="gc-form__row">
+          <%= f.input :product_name, label: gc_t('.product_name', 'Product name') + " *", as: :string, input_html: { class: 'gc-input' } %>
+          <%= f.input :brand, label: gc_t('.brand', 'Brand'), as: :string, input_html: { class: 'gc-input' } %>
+        </div>
+        <%= f.input :attributes, label: gc_t('.attributes', 'Colour, size, flavour?'), as: :text, input_html: { class: 'gc-input', rows: 3 } %>
+        <%= f.input :country, label: gc_t('.country', 'Country of origin'), as: :string, input_html: { class: 'gc-input' } %>
+        <%= f.input :comment, label: gc_t('.comment', 'Anything else about this product'), as: :text, input_html: { class: 'gc-input', rows: 4 } %>
+        <p class="gc-field__hint">(*) <%= gc_t('.required', 'Required fields') %></p>
+        <%= f.button :submit, gc_t('.send', 'Send my wish'), class: "gc-btn gc-btn--primary gc-btn--lg", id: "contact-form" %>
+      <% end %>
+    </div>
+  </div>
+</main>

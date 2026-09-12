@@ -1,0 +1,17 @@
+<%# Category tile grid shared by categories_mobile / sub_categories_mobile /
+    houses_mobile / category#index. `tiles` = [{ name:, image:, url: }]. %>
+<main class="gc-commerce gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <div>
+      <% if local_assigns[:eyebrow].present? %><div class="gc-eyebrow"><%= eyebrow %></div><% end %>
+      <h1 class="gc-commerce__title"><%= title %></h1>
+    </div>
+  </header>
+  <div class="gc-mosaic gc-mosaic--tiles">
+    <% tiles.each do |tile| %>
+      <a href="<%= tile[:url] %>" class="gc-mosaic__tile" style="background-image:url('<%= tile[:image] %>')">
+        <span class="gc-mosaic__caption"><span class="gc-mosaic__name"><%= tile[:name] %></span></span>
+      </a>
+    <% end %>
+  </div>
+</main>

@@ -155,6 +155,10 @@
 /* Category nav (row 2) */
 .gc-header__row2 { background: var(--gc-cream); }
 .gc-header__search-mobile { display: none; }
+/* The category row never wraps; with many backoffice categories it scrolls
+   sideways (scrollbar hidden) instead of pushing the page wider. */
+.gc-catnav { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.gc-catnav::-webkit-scrollbar { display: none; }
 .gc-catnav__list {
   display: flex;
   align-items: center;
@@ -162,6 +166,8 @@
   padding: 0 0 14px;
   font-size: var(--gc-text-sm);
   font-weight: 500;
+  width: max-content;
+  min-width: 100%;
 }
 .gc-catnav__spacer { flex: 1; }
 .gc-catnav__link {
@@ -257,9 +263,8 @@ body.gc-drawer-open { overflow: hidden; }
   .gc-minicart__label { display: none; }
   .gc-minicart__count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; font-size: 11px; }
   .gc-minicart__drawer { display: none !important; }
-  .gc-catnav { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin: 0 calc(-1 * var(--gc-page-padding)); padding: 0 var(--gc-page-padding); }
-  .gc-catnav::-webkit-scrollbar { display: none; }
-  .gc-catnav__list { gap: 18px; padding: 10px 0 12px; width: max-content; min-width: 100%; }
+  .gc-catnav { margin: 0 calc(-1 * var(--gc-page-padding)); padding: 0 var(--gc-page-padding); }
+  .gc-catnav__list { gap: 18px; padding: 10px 0 12px; }
   .gc-catnav__spacer { display: none; }
 }
 

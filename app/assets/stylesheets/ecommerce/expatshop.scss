@@ -8,12 +8,8 @@
 *= require 'ecommerce/expatshop/gc/tokens'
 *= require 'ecommerce/expatshop/slick'
 *= require 'ecommerce/expatshop/slick-theme'
-*= require 'ecommerce/expatshop/checkout-page/checkout'
-*= require 'ecommerce/expatshop/checkout-page/media'
 *= require 'ecommerce/expatshop/delete-address-page/delete-address'
 *= require 'ecommerce/expatshop/delete-address-page/media'
-*= require 'ecommerce/expatshop/order-status-page/order-status'
-*= require 'ecommerce/expatshop/order-status-page/media'
 *= require 'ecommerce/expatshop/gc/base'
 *= require 'ecommerce/expatshop/gc/chrome'
 *= require 'ecommerce/expatshop/gc/product-card'
@@ -22,4 +18,5 @@
 *= require 'ecommerce/expatshop/gc/pdp'
 *= require 'ecommerce/expatshop/gc/commerce'
 *= require 'ecommerce/expatshop/gc/account'
+*= require 'ecommerce/expatshop/gc/auth'
 */

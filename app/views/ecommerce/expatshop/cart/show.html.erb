@@ -1,292 +1,116 @@
-<main>
-  <!-- cart label -->
-  <section class="recommendation-label">
-    <div>
-      <h3 style="text-decoration: uppercase;"><%= t('.cart_title') %></h3>
+<%# ---------------------------------------------------------------------
+    Cart. One responsive layout: line items (white cards) + summary panel
+    in --gc-surface-alt. Quantity changes submit the per-item form (kept
+    from the old view); combo-injected lines stay locked.
+    --------------------------------------------------------------------- %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<% items = @cart.cart_items.order(:id).sort_by { |item| cart_item_locked?(item) ? 1 : 0 } %>
+<% subtotal_after = (@cart_subtotal_after_discount || @cart_subtotal) %>
+
+<main class="gc-commerce gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <h1 class="gc-commerce__title"><%= t('.cart_title') %></h1>
+    <% if items.any? %>
+      <p class="gc-commerce__meta"><%= t('.total_items') %>: <strong class="gc-num"><%= @cart_qty_subtotal %></strong></p>
+    <% end %>
+  </header>
+
+  <% if items.empty? %>
+    <div class="gc-empty">
+      <div class="gc-empty__icon"><%= gc_icon :bag, size: 32 %></div>
+      <h2 class="gc-h3"><%= t('.empty_title', default: 'Your cart is empty') %></h2>
+      <p class="gc-muted"><%= t('.empty_body', default: 'Fill it with something from the shelf.') %></p>
+      <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary"><%= t('.continue_shopping') %></a>
     </div>
-  </section>
-  <!-- cart -->
-  <section class="cart-page">
-    <div class="container-fluid">
-      <!-- cart table for desktops -->
-      <% unless browser.device.mobile? %>
-        <table class="hidden-xs">
-          <thead>
-            <tr>
-              <th><%= t('.product_column_title') %></th>
-              <th><%= t('.price_column_title') %></th>
-              <th><%= t('.qty_column_title') %></th>
-              <th><%= t('.total_column_title') %></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% unless @friendly_combo_discount_array.blank? %>
-              <tr>
-                <td colspan="5" style="background-color: #fff3cd; padding: 10px;">
-                  <p style="color: red; font-weight: 600; margin: 0; font-size: 14px;">
-                    <%= t('.combo_discount') %>:
-                    <% @friendly_combo_discount_array.each_with_index do |combo_discount, index| %>
-                      <%= combo_discount[:product_name] %> (- <%= session_currency(combo_discount[:discount_amount]) %>)<%= index < @friendly_combo_discount_array.length - 1 ? ' | ' : '' %>
-                    <% end %>
-                  </p>
-                </td>
-              </tr>
-            <% end %>
-            <% if @cart.cart_items.count == 0 %>
-
-            <% else %>
-              <% @cart.cart_items.order(:id).sort_by { |item| cart_item_locked?(item) ? 1 : 0 }.each do |item| %>
-                <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
-                  <tr>
-                    <th class="cart-desktop-table-product-row">
-                      <div class="row">
-                        <div class="col-md-3">
-                          <%= image_tag item.product.image.thumb_100.url, alt: "", class: "img-responsive" %>
-                        </div>
-                        <div class="col-md-8">
-                          <p><%= item.product.name %></p>
-                          <% if item.product.weight == 0 %>
-                            <span></span>
-                          <% else %>
-                            <span><%= number_with_precision(item.product.weight, precision: 0) %> gr</span>
-                          <% end %>
-                        </div>
-                      </div>
-                    </th>
-                    <th class="cart-desktop-table-other-row">
-                      <div>
-                        <%# unit_price returns the free-product override ($0.01) for free lines, %>
-                        <%# the normal current_price otherwise — so free products read $0.01 here too. %>
-                        <p><%= number_to_currency((item.unit_price(@current_user) * @exchange_rate), unit: "S/.") %></p>
-                        <p><%= session_price(item.unit_price(@current_user)) %></p>
-                      </div>
-                    </th>
-                    <th class="cart-desktop-table-other-row">
-                      <div class="quantity-btn d-flex flex-center">
-                        <% combo_injected = cart_item_locked?(item) %>
-                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %> <%= 'style="pointer-events: none; opacity: 0.3;"'.html_safe if combo_injected %>>
-                          <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.quantity}" %>>-</a>
-                        </div>
-                        <div class="quantity container-qty" id="devtech_quantity">
-                          <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();', disabled: combo_injected } %>
-                        </div>
-
-                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %> <%= 'style="pointer-events: none; opacity: 0.3;"'.html_safe if combo_injected %>>
-                          <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.quantity}" %>>+</a>
-                        </div>
-
-                      </div>
-                    </th>
-                    <th class="cart-desktop-table-other-row">
-                      <p><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/.") %></p>
-                      <p><%= session_price(item.line_total(@current_user)) %></p>
-                    </th>
-
-                    <th class="cart-desktop-table-delete-row">
-                      <% if cart_item_locked?(item) %>
-                        <span class="remove combo-injected-item" data-toggle="tooltip" data-placement="top" title="<%= t('combo_discounts.combo_injected_tooltip') %>">
-                          <%= fa_icon 'trash', class: 'cursor-pointer remove', style: 'opacity: 0.3; cursor: not-allowed;' %>
-                        </span>
-                      <% else %>
-                        <% delete_cart_item_data = { controller: 'cart_items', action: 'destroy', id: item.id } %>
-                        <%= link_to delete_cart_item_data, method: :delete, class: "remove" do %>
-                          <%= fa_icon 'trash', class: 'cursor-pointer remove' %>
-                        <% end %>
-                      <% end %>
-                    </th>
-                    
-                  </tr>
-                <% end %>
-              <% end %>
-            <% end %>
-
-          </tbody>
-        </table>
-        <% if @cart.cart_items.any? %>
-          <div style="margin-top: 10px; text-align: right;">
-            <%= button_to clear_cart_path(@cart), method: :delete, data: { confirm: t('.clear_cart_confirm') }, class: "btn", style: "color: red; font-size: 18px;" do %>
-              <%= fa_icon('times') %> <%= t('.clear_cart') %>
+  <% else %>
+    <div class="gc-commerce__grid">
+      <section class="gc-commerce__main" aria-label="<%= t('.cart_title') %>">
+        <% unless @friendly_combo_discount_array.blank? %>
+          <div class="gc-flash gc-flash--success gc-combo-note">
+            <strong><%= t('.combo_discount') %>:</strong>
+            <% @friendly_combo_discount_array.each_with_index do |combo_discount, index| %>
+              <%= combo_discount[:product_name] %> (− <%= session_currency(combo_discount[:discount_amount]) %>)<%= index < @friendly_combo_discount_array.length - 1 ? ' · ' : '' %>
             <% end %>
           </div>
         <% end %>
-      <% end %>
-      <!-- cart table for mobiles -->
-      <div class="cart-desktop visible-xs">
-        <% if browser.device.mobile? %>
+
+        <ul class="gc-lines">
+          <% items.each do |item| %>
+            <% locked = cart_item_locked?(item) %>
+            <li class="gc-line <%= locked ? 'is-locked' : '' %>">
+              <%= simple_form_for(item, url: engine.cart_item_path(item), html: { class: "gc-line__form" }) do |f| %>
+                <a href="<%= engine.product_path(item.product) %>" class="gc-line__thumb">
+                  <%= image_tag item.product.image.thumb_100.url, alt: "" %>
+                </a>
+                <div class="gc-line__info">
+                  <a href="<%= engine.product_path(item.product) %>" class="gc-line__name"><%= item.product.name %></a>
+                  <div class="gc-line__meta">
+                    <% if item.product.weight.to_f > 0 %><span><%= friendly_cart_weight(item.product.weight) %></span><% end %>
+                    <span class="gc-num"><%= gc_money_pair(item.unit_price(@current_user)).first %> <span class="gc-faint">/ <%= t('.unit', default: 'unit') %></span></span>
+                  </div>
+                  <% if locked %>
+                    <span class="gc-badge gc-badge--new gc-line__locked" title="<%= t('combo_discounts.combo_injected_tooltip') %>"><%= t('combo_discounts.combo_injected_tooltip') %></span>
+                  <% end %>
+                </div>
+                <div class="gc-line__qty">
+                  <div class="gc-stepper <%= locked ? 'is-disabled' : '' %>">
+                    <button type="button" class="gc-stepper__btn" data-gc-step="-1" aria-label="<%= t('.decrease', default: 'Decrease quantity') %>" <%= 'disabled' if locked %>>−</button>
+                    <%= f.input :quantity, label: false, wrapper_html: { class: "gc-stepper__field" }, input_html: { class: 'gc-stepper__value no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();', disabled: locked, min: 1, inputmode: "numeric", "aria-label": t('.qty_column_title') } %>
+                    <button type="button" class="gc-stepper__btn" data-gc-step="1" aria-label="<%= t('.increase', default: 'Increase quantity') %>" <%= 'disabled' if locked %>>+</button>
+                  </div>
+                </div>
+                <% line_pair = gc_money_pair(item.line_total(@current_user)) %>
+                <div class="gc-line__total">
+                  <span class="gc-price gc-num"><%= line_pair.first %></span>
+                  <span class="gc-small gc-muted gc-num"><%= line_pair.last %></span>
+                </div>
+                <div class="gc-line__remove">
+                  <% if locked %>
+                    <span class="gc-icon-btn gc-icon-btn--lg is-disabled" aria-hidden="true"><%= gc_icon :trash, size: 16 %></span>
+                  <% else %>
+                    <%= link_to engine.cart_item_path(item), method: :delete, class: "gc-icon-btn gc-icon-btn--lg", "aria-label": "#{t('.remove', default: 'Remove')} #{item.product.name}" do %>
+                      <%= gc_icon :trash, size: 16 %>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+
+        <div class="gc-commerce__tools">
+          <a href="<%= engine.products_path %>" class="gc-btn gc-btn--ghost"><%= gc_icon :chevron_left, size: 16 %> <%= t('.continue_shopping') %></a>
+          <%= button_to engine.clear_cart_path(@cart), method: :delete, data: { confirm: t('.clear_cart_confirm') }, class: "gc-btn gc-btn--ghost gc-btn--danger", form_class: "gc-inline-form" do %>
+            <%= gc_icon :trash, size: 16 %> <%= t('.clear_cart') %>
+          <% end %>
+        </div>
+      </section>
+
+      <aside class="gc-summary" aria-label="<%= t('.subtotal_in_dollars') %>">
+        <h2 class="gc-h3 gc-summary__title"><%= t('.summary', default: 'Summary') %></h2>
+        <dl class="gc-summary__rows">
+          <div><dt><%= t('.total_items') %></dt><dd class="gc-num"><%= @cart_qty_subtotal %></dd></div>
+          <div><dt><%= t('.subtotal_in_soles') %></dt><dd class="gc-num">S/ <%= number_with_precision(@cart_subtotal * @exchange_rate, precision: 2, delimiter: ',') %></dd></div>
+          <div><dt><%= t('.subtotal_in_dollars') %></dt><dd class="gc-num"><%= session_price(@cart_subtotal) %></dd></div>
           <% unless @friendly_combo_discount_array.blank? %>
-            <div style="background-color: #fff3cd; padding: 10px; margin-bottom: 10px;">
-              <p style="color: red; font-weight: 600; margin: 0; font-size: 14px;">
-                <%= t('.combo_discount') %>:
-                <% @friendly_combo_discount_array.each_with_index do |combo_discount, index| %>
-                  <%= combo_discount[:product_name] %> (- <%= session_currency(combo_discount[:discount_amount]) %>)<%= index < @friendly_combo_discount_array.length - 1 ? ' | ' : '' %>
-                <% end %>
-              </p>
-            </div>
-          <% end %>
-
-          <% if @cart.cart_items.count == 0 %>
-
-          <% else %>
-            <% @cart.cart_items.order(:id).sort_by { |item| cart_item_locked?(item) ? 1 : 0 }.each do |item| %>
-
-              <%= simple_form_for(item, url: cart_item_path(item)) do |f| %>
-                <div class="row mobile-cart-row">
-                  <div class="col-xs-3">
-                    <%= image_tag item.product.image.medium_400.url, alt: "", class: "img-responsive" %>
-                  </div>
-                  <div class="col-xs-8 mobile-cart-product-name">
-                    <p><%= item.product.name %></p>
-                  </div>
-
-                  
-
-                  <div class="cart-mobile-table-delete-row">
-                    <% if cart_item_locked?(item) %>
-                      <span class="remove combo-injected-item" data-toggle="tooltip" data-placement="top" title="<%= t('combo_discounts.combo_injected_tooltip') %>">
-                        <%= fa_icon 'trash 2x', class: 'cursor-pointer remove', style: 'opacity: 0.3; cursor: not-allowed;' %>
-                      </span>
-                    <% else %>
-                      <% delete_cart_item_data = { controller: 'cart_items', action: 'destroy', id: item.id } %>
-                      <%= link_to delete_cart_item_data, method: :delete, class: "remove" do %>
-                        <%= fa_icon 'trash 2x', class: 'cursor-pointer remove' %>
-                      <% end %>
-                    <% end %>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-xs-8 col-xs-offset-3">
-                      <div class="quantity-btn d-flex flex-center">
-                        <% combo_injected_mobile = cart_item_locked?(item) %>
-                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id=<%= "devtech_minus_#{item.id}" %> <%= 'style="pointer-events: none; opacity: 0.3;"'.html_safe if combo_injected_mobile %>>
-                          <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles"  id= <%= "devtech_minus_a_id#{item.id}_qty#{item.quantity}" %>>-</a>
-                        </div>
-                        <div class="quantity container-qty" id="devtech_quantity">
-                          <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();', disabled: combo_injected_mobile } %>
-                        </div>
-
-                        <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id= <%= "devtech_plus_#{item.id}" %> <%= 'style="pointer-events: none; opacity: 0.3;"'.html_safe if combo_injected_mobile %>>
-                          <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" id= <%= "devtech_plus_a_id#{item.id}_qty#{item.quantity}" %>>+</a>
-                        </div>
-
-                      </div>
-
-                      <p class="mobile-cart-product-totals"><span style="font-weight: 600;">Total: </span><span><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/. ") %></span> <span style="margin-left: 20px;"><%= session_price(item.line_total(@current_user)) %></span></p>
-                    </div>
-                  </div>
-                  <hr class="mobile-cart-separator"></hr>
-                </div>
-              <% end %>
-
+            <% @friendly_combo_discount_array.each do |combo_discount| %>
+              <div class="gc-summary__discount"><dt><%= combo_discount[:product_name] %></dt><dd class="gc-num">− <%= session_currency(combo_discount[:discount_amount]) %></dd></div>
             <% end %>
           <% end %>
-        <% end %>
-
-        <% if @cart.cart_items.any? %>
-          <div style="margin-top: -20px; margin-bottom: 15px; text-align: right;">
-            <%= button_to clear_cart_path(@cart), method: :delete, data: { confirm: t('.clear_cart_confirm') }, class: "btn", style: "color: red;" do %>
-              <%= fa_icon('times') %> <%= t('.clear_cart') %>
-            <% end %>
-          </div>
-        <% end %>
-
-      </div>
-
-
-      <div class="cart-info-container">
-        <div class="cart-info-btn hidden-xs">
-          <button onclick="window.location.href='<%= main_app.root_path %>'"><%= fa_icon('arrow-left') %><%= t('.continue_shopping') %></button
-          ><button onclick="window.location.href='<%= orders_path %>'">
-            <%= fa_icon('shopping-cart') %><%= t('.my_orders') %></button>
+          <div><dt><%= t('.shipping') %></dt><dd class="gc-summary__note"><%= t('.shipping_costs_text') %></dd></div>
+        </dl>
+        <% total_pair = gc_money_pair(subtotal_after) %>
+        <div class="gc-summary__total">
+          <div><dt><%= t('.total', default: 'Total') %></dt><dd class="gc-price gc-num"><%= total_pair.first %></dd></div>
+          <div class="gc-summary__total-alt"><dt></dt><dd class="gc-num gc-muted"><%= total_pair.last %></dd></div>
         </div>
-        <div>
-          <div class="cart-info">
-            <div class="cart-num">
-              <p><%= t('.total_items') %></p>
-              <p><%= @cart_qty_subtotal %></p>
-            </div>
-            <div class="cart-subtotal">
-              <p><span><%= t('.subtotal_in_dollars') %></span><span><%= session_price(@cart_subtotal) %></span></p>
-              <p><span><%= t('.subtotal_in_soles') %></span> <span>S/. <%= @cart_subtotal * @exchange_rate %></span></p>
-            </div>
-            <% unless @friendly_combo_discount_array.blank? %>
-              <div class="combo-discount-cart-section">
-                <p><%= t('.combo_discount') %></p>
-                <% @friendly_combo_discount_array.each do |combo_discount| %>
-                <div class="combo-discount-cart-section-table">
-                  <p class="combo-discount-cart-section-p"><%= combo_discount[:product_name] %></p>
-                  <p class="combo-discount-cart-section-p">- <%= session_currency(combo_discount[:discount_amount]) %></p>
-                </div>
-                <% end %>
-              </div>
-              <% end %>
-            <div class="shipping-cost">
-              <p><%= t('.shipping') %></p>
-              <p>
-                <%= t('.shipping_costs_text') %>
-              </p>
-            </div>
-            <div class="cart-total">
-              <p><span><%= t('.subtotal_in_dollars') %></span><span><%= session_price((@cart_subtotal_after_discount || @cart_subtotal)) %></span></p>
-              <p><span><%= t('.subtotal_in_soles') %></span> <span>S/. <%= (@cart_subtotal_after_discount || @cart_subtotal) * @exchange_rate %></span></p>
-            </div>
-          </div>
-          <%= button_to t('.proceed_to_checkout'), checkout_path, method: :get, class: "checkout-btn main-btn" %>
+        <%= button_to t('.proceed_to_checkout'), engine.checkout_path, method: :get, class: "gc-btn gc-btn--secondary gc-btn--lg gc-btn--block checkout-btn", form_class: "gc-summary__cta" %>
+        <a href="<%= engine.orders_path %>" class="gc-btn gc-btn--ghost gc-btn--block gc-summary__link"><%= t('.my_orders') %></a>
+        <div class="gc-summary__promises">
+          <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('ecommerce.expatshop.store.main.promise_2') %></div>
+          <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('ecommerce.expatshop.store.main.promise_4') %></div>
         </div>
-      </div>
+      </aside>
     </div>
-  </section>
+  <% end %>
 </main>
-
-
-<script>
-  $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-    bindPlusMinusButtons();
-  });
-
-  function extractStringAfter(originalString, searchString) {
-    var startIndex = originalString.indexOf(searchString);
-    if (startIndex !== -1) {
-      return originalString.substring(startIndex + searchString.length);
-    }
-    return "";
-  }
-
-  function bindPlusMinusButtons() {
-
-    $('body').on('click', ".devtech_plus_class", function(e) {
-      var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
-      var inStockValueElement = $(e.currentTarget).parent().children(".devtech_plus_class").children(".devtech_plus_a_class").attr('id');
-      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
-      var inStockValue = parseInt(inStockValueElement.substr(inStockValueElement.indexOf('_qty') + 4));
-      var id_of_clicked_element = $(e.currentTarget).attr('id')
-      var numeric_id_of_element = extractStringAfter(id_of_clicked_element, 'devtech_plus_');
-      var parentForm = $(`#edit_cart_item_${numeric_id_of_element}`);
-
-      //if (parseInt(quantityElement.val()) < inStockValue ) {
-        quantityElement.val(parseInt(quantityElement.val()) + 1);
-        parentForm.submit();
-        outOfStockTextElement.hide();
-      //} else {
-      //  outOfStockTextElement.show();
-      //}
-      e.preventDefault();
-    });
-
-    $('body').on('click', ".devtech_minus_class", function(e) {
-      var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
-      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
-      var id_of_clicked_element = $(e.currentTarget).attr('id')
-      var numeric_id_of_element = extractStringAfter(id_of_clicked_element, 'devtech_minus_');
-      var parentForm = $(`#edit_cart_item_${numeric_id_of_element}`);
-      outOfStockTextElement.hide();
-      if (parseInt(quantityElement.val()) > 1) {
-        quantityElement.val(parseInt(quantityElement.val()) - 1);
-        console.log(parentForm)
-        parentForm.submit();
-      }
-      e.preventDefault();
-    });
-  }
-</script>

@@ -21,7 +21,7 @@
               <div class="gc-minicart__info">
                 <div class="gc-minicart__name"><%= item.product.name %></div>
                 <div class="gc-minicart__meta"><%= friendly_cart_weight(item.product.weight) %></div>
-                <div class="gc-minicart__price gc-num"><%= session_price(item.product, "current_price") %> <span class="gc-faint">× <%= item.quantity %></span></div>
+                <div class="gc-minicart__price gc-num"><%= product_session_price(item.product, "current_price") %> <span class="gc-faint">× <%= item.quantity %></span></div>
               </div>
               <% if cart_item_locked?(item) %>
                 <span class="gc-minicart__remove is-locked" title="<%= t('combo_discounts.combo_injected_tooltip') %>" aria-label="<%= t('combo_discounts.combo_injected_tooltip') %>"><%= gc_icon :trash, size: 16 %></span>
@@ -33,13 +33,12 @@
             </li>
           <% end %>
         </ul>
+        <% sub_pair = gc_money_pair(totals[:tot_acum]) %>
         <div class="gc-minicart__subtotal">
           <span class="gc-label"><%= t('.subtotal', default: 'Subtotal') %></span>
-          <span class="gc-price gc-num"><%= session_price(totals[:tot_acum]) %></span>
+          <span class="gc-price gc-num"><%= sub_pair.first %></span>
         </div>
-        <% if session[:currency] == "usd" %>
-          <div class="gc-minicart__conversion gc-small gc-muted gc-num">≈ S/ <%= number_with_precision(totals[:tot_acum] * @exchange_rate, precision: 2) %></div>
-        <% end %>
+        <div class="gc-minicart__conversion gc-small gc-muted gc-num">≈ <%= sub_pair.last %></div>
         <div class="gc-minicart__actions">
           <a href="<%= engine.cart_path(@cart.id) %>" class="gc-btn gc-btn--outline gc-btn--block"><%= t('.view_cart') %></a>
           <a href="<%= engine.checkout_path %>" class="gc-btn gc-btn--secondary gc-btn--block"><%= t('.checkout') %></a>

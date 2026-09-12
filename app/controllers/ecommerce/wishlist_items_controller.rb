@@ -38,6 +38,13 @@ module Ecommerce
       render "ecommerce/#{Ecommerce.ecommerce_layout}/product/show"
     end
 
+    # Remove a favourite (heart) from the user's wishlist page.
+    def destroy
+      item = @wishlist && @wishlist.wishlist_items.find_by(id: params[:id])
+      item.destroy if item
+      redirect_back fallback_location: (@wishlist ? wishlist_path(@wishlist) : root_path)
+    end
+
     def index
       head :ok
     end

@@ -199,7 +199,7 @@ es-PE:
           quantity: "Cantidad"
           home: "Inicio"
           dispatch_note: "Despacho el siguiente día hábil desde Lima"
-          points_note: "Ganas %{points} puntos con este pedido"
+          points_note: "Acumulas puntos en cada pedido"
           invoice_note: "Boleta o factura emitida automáticamente"
           approx: "≈"
         product:

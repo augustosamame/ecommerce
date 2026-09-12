@@ -69,6 +69,16 @@ module Ecommerce
       "https://wa.me/51989080023"
     end
 
+    # Cart/order amounts are stored in USD. Returns [primary, secondary]
+    # formatted strings following the session currency (PEN first by default).
+    def gc_money_pair(usd_value)
+      rate = (@exchange_rate || Ecommerce::Control.get_control_value("exchange_rate") || 3.8).to_f
+      usd = usd_value.to_f
+      pen_str = "S/ #{number_with_precision(usd * rate, precision: 2, delimiter: ',')}"
+      usd_str = "USD $ #{number_with_precision(usd, precision: 2, delimiter: ',')}"
+      session[:currency] == "usd" ? [usd_str, pen_str] : [pen_str, usd_str]
+    end
+
     # Localised text without falling back to the translation-missing span
     def gc_t(key, default)
       t(key, default: default)

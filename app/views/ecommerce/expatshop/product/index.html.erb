@@ -22,7 +22,7 @@
      else t('.all_products') end %>
 <% currency_symbol = session[:currency] == 'usd' ? '$' : 'S/' %>
 <% price_buckets = session[:currency] == 'usd' ? [["-5", "#{t('.under')} $ 5"], ["5-10", "$ 5 – 10"], ["10-20", "$ 10 – 20"], ["20-", "#{t('.over')} $ 20"]] : [["-20", "#{t('.under')} S/ 20"], ["20-40", "S/ 20 – 40"], ["40-70", "S/ 40 – 70"], ["70-", "#{t('.over')} S/ 70"]] %>
-<% keep_params = params.permit(:category_id, :filter, :search).to_h %>
+<% keep_params = { category_id: params[:category_id], filter: params[:filter], search: params[:search] }.compact %>
 <% filters_active = (@listing_countries.presence || @listing_price.presence || @listing_availability.presence) %>
 
 <main class="gc-listing gc-container" id="main-content">

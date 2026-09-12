@@ -1,178 +1,134 @@
-<main>
-<!-- ordere status label -->
-<section class="recommendation-label">
-  <div>
-    <h3><%= t('.order') %> # <%= @order.id %></h3>
-  </div>
-</section>
-<section class="order-status">
-  <div class="container">
-    <div class="order-status-details"> 
-      <p class="order-status-label"><%= t('.order_status') %></p>
-      <p class="d-flex space-between">
-        <%= t('.order_total') %>
-        <span>
-          <span class="amount" style="display: inline;"><%= @order.amount.currency.symbol %></span>
-          <span class="amount" style="display: inline;" id="payment-amount"><%= @order.amount %></span>
-        </span>
-      </p>
-      <p class="d-flex space-between"><%= t('.points_won') %><span><%= PointsTransaction.find_by(tx_type: 'purchase', tx_id: @order.id).try(:points) || 0 %></span></p>
-      <p class="d-flex space-between"><%= t('.payment') %><span><%= friendly_order_status(@order) %></span></p>
-
-      <% if @order.process_comments == "PagoEfectivo" %>
-
-        <p class="d-flex space-between">
-          <%= t('.payment_method') %>
-          <span>
-            PagoEfectivo
-          </span>
-        </p>
-
-        <% end %>
-
-      <p class="d-flex space-between">
-        <%= t('.shipping') %> <span><%= t('.not_yet_shipped') %></span>
-      </p>
-      <p class="d-flex space-between">
-        <% if @order.efact_invoice_url %>
-          <%= t('.invoice') %> <span><%= link_to t('.see_invoice'), @order.efact_invoice_url, target: "blank" %></span>
-        <% else %>
-          <%= t('.invoice') %> <span><%= t('.not_yet_invoiced') %></span>
-        <% end %>
-      </p>
+<%# ---------------------------------------------------------------------
+    Order status page. Hooks kept for the retry-payment JS below:
+    #payment-amount, #payment-amount-in-soles, #pay_in_dollars, #pay_in_soles,
+    #retry-pay-now-button.
+    --------------------------------------------------------------------- %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<% points_won = PointsTransaction.find_by(tx_type: 'purchase', tx_id: @order.id).try(:points) || 0 %>
+<main class="gc-commerce gc-account gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <div>
+      <div class="gc-eyebrow"><%= @order.created_at.localtime.strftime("%d %b %Y · %H:%M") %></div>
+      <h1 class="gc-commerce__title"><%= t('.order') %> <span class="gc-mono gc-commerce__title-id">#<%= @order.id %></span></h1>
     </div>
+    <a href="<%= engine.orders_path %>" class="gc-btn gc-btn--ghost"><%= gc_icon :chevron_left, size: 16 %> <%= t('.my_orders') %></a>
+  </header>
 
-    <% if @order.payment_status == "unpaid" && @order.stage != "stage_void" %>
-      <div style="margin: 12px 0; text-align: right;">
+  <div class="gc-commerce__grid gc-commerce__grid--order">
+    <section class="gc-commerce__main">
+      <div class="gc-card">
+        <div class="gc-card__body">
+          <h2 class="gc-h3"><%= t('.order_details') %></h2>
+        </div>
+        <ul class="gc-lines gc-lines--flush">
+          <% @order.order_items.each do |item| %>
+            <li class="gc-line">
+              <span class="gc-line__thumb"><%= image_tag item.product.image.thumb_100.url, alt: "" %></span>
+              <div class="gc-line__info">
+                <span class="gc-line__name"><%= item.product.name %></span>
+                <div class="gc-line__meta">
+                  <% if item.product.weight.to_f > 0 %><span><%= friendly_cart_weight(item.product.weight) %></span><% end %>
+                  <span class="gc-num"><%= number_to_currency(item.price) %> <span class="gc-faint">× <%= item.quantity %></span></span>
+                </div>
+              </div>
+              <div class="gc-line__total">
+                <span class="gc-price gc-num">S/ <%= number_with_precision(item.line_total(@current_user) * @exchange_rate, precision: 2, delimiter: ',') %></span>
+                <span class="gc-small gc-muted gc-num"><%= number_to_currency(item.line_total(@current_user)) %></span>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+
+      <% if @order.payment_status == "unpaid" && @order.stage != "stage_void" %>
+        <% if @order.process_comments == "PagoEfectivo" %>
+          <div class="gc-card gc-card__body gc-order__pagoefectivo">
+            <h2 class="gc-h3">Instrucciones para pagar con PagoEfectivo</h2>
+            <p><strong>Fecha límite de pago:</strong> <%= Time.at(@order.pagoefectivo_exp_date.to_i).strftime("%d %b %H:%M") %></p>
+            <p class="gc-order__cip"><span class="gc-eyebrow">Código CIP</span><span class="gc-order__cip-code gc-mono"><%= @order.pagoefectivo_cip %></span></p>
+            <p>Realiza tu pago desde:</p>
+            <% if @order.pagoefectivo_qr_code.present? %>
+              <p><strong>Desde tu app de pagos utilizando este QR:</strong></p>
+              <div class="gc-text-center"><%= image_tag @order.pagoefectivo_qr_code, height: 200, width: 200, alt: "QR PagoEfectivo" %></div>
+            <% end %>
+            <p><strong>Banca móvil o por Internet:</strong></p>
+            <ol class="gc-order__steps">
+              <li>Ingresa a tu banca desde web o móvil dentro de la fecha límite de pago.</li>
+              <li>Selecciona pago de servicio, elige PagoEfectivo e ingresa número CIP.</li>
+              <li>Antes de pagar, verifica que los datos coincidan con los de esta orden de pago.</li>
+              <li>Realiza el pago de servicio por el monto total.</li>
+              <li>Conserva el comprobante de pago para cualquier aclaración.</li>
+            </ol>
+            <%= image_tag "https://expatshop-prod.s3.amazonaws.com/logos_pagoefectivo.png", alt: "Bancos afiliados" %>
+            <p><strong>Agentes y Bodegas:</strong></p>
+            <ol class="gc-order__steps">
+              <li>Acércate al agente o agencia autorizada dentro de la fecha límite de pago.</li>
+              <li>Indica a la persona de caja que realizarás un pago de servicio a PagoEfectivo (moneda), indica el código CIP y el importe a pagar.</li>
+              <li>Antes de pagar, verifica que los datos coincidan con los de esta orden de pago.</li>
+              <li>Realiza el pago en efectivo por el total a pagar.</li>
+              <li>Conserva el comprobante de pago para cualquier aclaración.</li>
+            </ol>
+            <%= image_tag "https://expatshop-prod.s3.amazonaws.com/logos_pagoefectivo_agentes.png", alt: "Agentes afiliados" %>
+          </div>
+        <% else %>
+          <form action="" class="gc-card gc-card__body gc-order__retry">
+            <h2 class="gc-h3"><%= t('.try_to_pay_now') %></h2>
+            <label class="gc-pay-option" for="pay_in_dollars">
+              <input type="radio" name="payment_curency" id="pay_in_dollars" />
+              <span class="gc-pay-option__body gc-pay-option__body--row">
+                <span class="gc-pay-option__label"><%= t('.pay_in_dollars') %></span>
+                <span class="gc-num">$ <%= @order.amount %></span>
+              </span>
+            </label>
+            <label class="gc-pay-option" for="pay_in_soles">
+              <input type="radio" name="payment_curency" id="pay_in_soles" />
+              <span class="gc-pay-option__body gc-pay-option__body--row">
+                <span class="gc-pay-option__label"><%= t('.pay_in_soles') %></span>
+                <span class="gc-num">S/ <span id="payment-amount-in-soles"><%= @order.amount * @exchange_rate %></span></span>
+              </span>
+            </label>
+            <button id="retry-pay-now-button" class="gc-btn gc-btn--secondary gc-btn--lg gc-btn--block"><%= t('.try_to_pay_now') %></button>
+          </form>
+        <% end %>
+      <% end %>
+    </section>
+
+    <aside class="gc-summary">
+      <h2 class="gc-h3 gc-summary__title"><%= t('.order_status') %></h2>
+      <dl class="gc-summary__rows">
+        <div><dt><%= t('.payment') %></dt><dd><span class="gc-badge gc-badge--origin"><%= friendly_order_status(@order) %></span></dd></div>
+        <% if @order.process_comments == "PagoEfectivo" %>
+          <div><dt><%= t('.payment_method') %></dt><dd>PagoEfectivo</dd></div>
+        <% end %>
+        <div><dt><%= t('.points_won') %></dt><dd class="gc-num"><%= points_won %></dd></div>
+        <div><dt><%= t('.shipping') %></dt><dd><%= t('.not_yet_shipped') %></dd></div>
+        <div>
+          <dt><%= t('.invoice') %></dt>
+          <dd>
+            <% if @order.efact_invoice_url %>
+              <%= link_to t('.see_invoice'), @order.efact_invoice_url, target: "blank", class: "gc-link-underline" %>
+            <% else %>
+              <%= t('.not_yet_invoiced') %>
+            <% end %>
+          </dd>
+        </div>
+      </dl>
+      <div class="gc-summary__total">
+        <div><dt><%= t('.order_total') %></dt><dd class="gc-price gc-num"><span class="amount"><%= @order.amount.currency.symbol %></span> <span class="amount" id="payment-amount"><%= @order.amount %></span></dd></div>
+      </div>
+      <% if @order.payment_status == "unpaid" && @order.stage != "stage_void" %>
         <%= button_to t('ecommerce.expatshop.order.index.cancel'),
-                      cancel_order_path(@order),
+                      engine.cancel_order_path(@order),
                       method: :post,
                       data: { confirm: t('ecommerce.expatshop.order.show.cancel_confirm',
                                          default: '¿Estás seguro? Esta acción anulará el pedido y no se puede deshacer.') },
-                      class: "main-btn",
-                      style: "background: #c33;" %>
-      </div>
-
-      <% if @order.process_comments == "PagoEfectivo" %>
-
-        <div class="order-status-payment d-flex well" style="flex-direction: column;">
-          <p style="font-weight: bold; font-size: 22px; align-self: center;">Instrucciones para pagar con PagoEfectivo</p>
-          <p style="font-weight: bold; font-size: 22px; align-self: center;">Fecha límite de pago: <%= Time.at(@order.pagoefectivo_exp_date.to_i).strftime("%d %b %H:%M") %></p>
-          <p style="font-weight: bold; font-size: 22px; align-self: center; color: red;">Código CIP: <%= @order.pagoefectivo_cip %></p>
-          <p>Realiza tu pago desde:</p>
-          <% if @order.pagoefectivo_qr_code.present? %>
-            <p style="font-weight: bold; margin-top: 20px;">Desde tu app de pagos utilizando este QR:</p>
-            <div style="text-align: center;">
-              <%= image_tag @order.pagoefectivo_qr_code, height: 200, width: 200 %>
-            </div>
-          <% end %>
-          <p style="font-weight: bold; margin-top: 20px;">Banca móvil o por Internet:</p>
-          <p>1. Ingresa a tu banca desde web o móvil dentro de la fecha límite de pago.</p>
-          <p>2. Selecciona pago de servicio, elige PagoEfectivo e ingresa número CIP.</p>
-          <p>3. Antes de pagar, verifica que los datos coincidan con los de esta orden de pago.</p>
-          <p>4. Realiza el pago de servicio por el monto total.</p>
-          <p>5. Conserva el comprobante de pago para cualquier aclaración.</p>
-          <%= image_tag "https://expatshop-prod.s3.amazonaws.com/logos_pagoefectivo.png" %>
-          <p style="font-weight: bold; margin-top: 20px;">Agentes y Bodegas:</p>
-          <p>1. Acércate al agente o agencia autorizada dentro de la fecha límite de pago</p>
-          <p>2. Indica a la persona de caja que realizarás un pago de servicio a PagoEfectivo (moneda), indica el código CIP y el importe a pagar.</p>
-          <p>3. Antes de pagar, verifica que los datos coincidan con los de esta orden de pago.</p>
-          <p>4. Realiza el pago en efectivo por el total a pagar.</p>
-          <p>5. Conserva el comprobante de pago para cualquier aclaración.</p>
-          <%= image_tag "https://expatshop-prod.s3.amazonaws.com/logos_pagoefectivo_agentes.png" %>
-        </div>
-
-
-      <% else %>
-
-        <form action="">
-          <div class="order-status-payment d-flex">
-            <input type="radio" name="payment_curency" id="pay_in_dollars" />
-            <div class="order-status-payment-details">
-              <p class="d-flex space-between">
-                <%= t('.pay_in_dollars') %> <span>$ <%= @order.amount %></span>
-              </p>
-            </div>
-          </div>
-          <div class="order-status-payment d-flex">
-            <input type="radio" name="payment_curency" id="pay_in_soles" />
-            <div class="order-status-payment-details">
-              <p class="d-flex space-between">
-                <%= t('.pay_in_soles') %>
-                <span>
-                  <span>S/. </span>
-                  <span id="payment-amount-in-soles"><%= @order.amount * @exchange_rate %>
-                  </span>
-                </span>
-              </p>
-            </div>
-          </div>
-          <button id="retry-pay-now-button"><%= t('.try_to_pay_now') %></button>
-        </form>
-      
+                      class: "gc-btn gc-btn--ghost gc-btn--danger gc-btn--block",
+                      form_class: "gc-summary__cta" %>
       <% end %>
-    <% end %>
-
-
+    </aside>
   </div>
-</section>
-<section class="order-status-order-details cart-page">
-  <div class="container-fluid">
-    <h3><%= t('.order_details') %></h3>
-    <table style="width: 100%;">
-      <thead>
-        <tr>
-          <th><%= t('.product') %></th>
-          <th><%= t('.price') %></th>
-          <th><%= t('.quantity') %></th>
-          <th><%= t('.total') %></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @order.order_items.each do |item| %>
-          <tr>
-            <th>
-              <div class="row">
-                <div class="col-md-3 hidden-xs">
-                  <%= image_tag item.product.image.thumb_100.url, class:"img-responsive", alt: "" %>
-                </div>
-                <div class="col-md-8 col-xs-12">
-                  <p><%= item.product.name %></p>
-                  <span class="hidden-xs"><%= item.product.weight %>g</span>
-                </div>
-              </div>
-            </th>
-            <th>
-              <div>
-                <p><%= number_to_currency((item.price * @exchange_rate), unit: "S/. ") %></p>
-                <p><%= number_to_currency((item.price)) %></p>
-              </div>
-            </th>
-            <th>
-              <div class="quantity-btn d-flex flex-center">
-                <span><%= item.quantity %></span>
-              </div>
-            </th>
-            <th>
-              <p><%= number_to_currency((item.line_total(@current_user) * @exchange_rate), unit: "S/. ") %></p>
-              <p><%= number_to_currency(item.line_total(@current_user)) %></p>
-            </th>
-            <th><i class="fa-solid fa-trash-can cursor-pointer"></i></th>
-          </tr>
-
-        <% end %>
-
-      </tbody>
-    </table>
-
-    <%= button_to "", orders_path, class: "main-btn order-status-order-details-button", method: :get do %>
-      <%= fa_icon 'shopping-cart' %>
-      <%= t('.my_orders') %>
-    <% end %>
-  </div>
-</section>
 </main>
+
 
 <!-- Incluyendo .js de Culqi Checkout-->
 <!-- <script src="https://checkout.culqi.com/v2"></script> -->

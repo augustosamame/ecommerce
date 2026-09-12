@@ -174,9 +174,11 @@ module Ecommerce
       scope = scope.where(country: @listing_countries) if @listing_countries.any?
       scope = scope.where("ecommerce_products.total_quantity > 0") if @listing_availability == "in_stock"
       if @listing_price && (m = @listing_price.match(/\A(\d*)-(\d*)\z/))
-        column = session[:currency] == "usd" ? "ecommerce_products.usd_discounted_price_cents" : "ecommerce_products.discounted_price_cents"
-        scope = scope.where("#{column} >= ?", m[1].to_i * 100) if m[1].present?
-        scope = scope.where("#{column} < ?", m[2].to_i * 100) if m[2].present?
+        # Product prices are stored in USD; bucket bounds arrive in the
+        # session currency, so convert soles back through the exchange rate.
+        rate = session[:currency] == "usd" ? 1.0 : (Ecommerce::Control.get_control_value("exchange_rate") || 3.8).to_f
+        scope = scope.where("ecommerce_products.discounted_price_cents >= ?", (m[1].to_f / rate * 100).round) if m[1].present?
+        scope = scope.where("ecommerce_products.discounted_price_cents < ?", (m[2].to_f / rate * 100).round) if m[2].present?
       end
       order = LISTING_SORTS[@listing_sort]
       scope = scope.reorder(order) if order
