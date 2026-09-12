@@ -17,8 +17,8 @@
     footer. Mobile web: chip row + origin circles between hero and products.
     --------------------------------------------------------------------- %>
 <% engine = Ecommerce::Engine.routes.url_helpers %>
-<% hero_slides = Ecommerce::Slider.where(slider_view: 'DESKTOP').order(:slider_order).to_a %>
-<% hero_slides_mobile = Ecommerce::Slider.where(slider_view: 'MOBILE').order(:slider_order).to_a %>
+<% hero_slides = Ecommerce::Slider.active.for_view('DESKTOP').to_a %>
+<% hero_slides_mobile = Ecommerce::Slider.active.for_view('MOBILE').to_a %>
 <% hero_testimonial = Ecommerce::Testimonial.where(status: "active").order(:priority).first %>
 <% mosaic_categories = Ecommerce::Category.where(mosaic_show: true).active.order(:category_order).to_a %>
 <% shopping_videos = Ecommerce::ShoppingVideo.active.order(:priority).to_a %>
@@ -32,61 +32,95 @@
 
 <main class="gc-home" id="main-content">
 
-  <%# ---------- Hero ---------- %>
-  <section class="gc-hero" aria-labelledby="gc-hero-title">
-    <div class="gc-hero__copy">
-      <div class="gc-eyebrow"><%= t('.hero_eyebrow') %></div>
-      <h1 class="gc-hero__title" id="gc-hero-title"><%= t('.hero_title_1') %><br><em><%= t('.hero_title_2') %></em></h1>
-      <p class="gc-hero__body"><%= t('.hero_body') %></p>
-      <div class="gc-hero__actions">
-        <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary gc-hero__cta"><%= t('.hero_cta_primary') %></a>
-        <a href="#gc-origins" class="gc-btn gc-btn--outline gc-hero__cta-secondary"><%= t('.hero_cta_secondary') %></a>
-      </div>
-      <dl class="gc-hero__stats">
-        <div><dt><%= product_count_label %></dt><dd><%= t('.stat_products') %></dd></div>
-        <div><dt><%= country_count %></dt><dd><%= t('.stat_countries') %></dd></div>
-        <div><dt>24 h</dt><dd><%= t('.stat_dispatch') %></dd></div>
-      </dl>
-    </div>
-
-    <div class="gc-hero__media" id="gc-hero-media" data-gc-hero>
-      <% desktop_or_mobile = ->(slides) { slides.each_with_index.map { |s, i| { url: s.slider_image.url, link: s.slider_link, text: s.slider_text, video: s.slider_image.url.to_s.end_with?('mp4'), index: i } } } %>
-      <% [[desktop_or_mobile.call(hero_slides), 'gc-hero__slides--desktop'], [desktop_or_mobile.call(hero_slides_mobile), 'gc-hero__slides--mobile']].each do |slides, css| %>
-        <% next if slides.empty? %>
-        <ul class="gc-hero__slides <%= css %>" data-gc-hero-slides>
-          <% slides.each do |slide| %>
-            <li class="gc-hero__slide <%= slide[:index] == 0 ? 'is-active' : '' %>" data-gc-hero-slide>
-              <% tag_open = slide[:link].present? ? %(<a href="#{ERB::Util.html_escape(slide[:link])}" class="gc-hero__slide-link">) : '<div class="gc-hero__slide-link">' %>
-              <% tag_close = slide[:link].present? ? '</a>' : '</div>' %>
-              <%= raw tag_open %>
-                <% if slide[:video] %>
-                  <video class="gc-hero__img" src="<%= slide[:url] %>" muted playsinline autoplay loop title="<%= slide[:text] %>"></video>
-                <% else %>
-                  <img class="gc-hero__img" src="<%= slide[:url] %>" alt="<%= slide[:text] %>" <%= slide[:index] == 0 ? '' : 'loading="lazy"' %>>
+  <%# ---------- Hero carousel ----------
+      Slide 1 is fixed: copy from the locale files, media from the first
+      backoffice banner of the current view. Slides 2+ are the remaining
+      banners; each shows copy + square media when any editorial field is
+      set, otherwise its media alone, full width (wide crop). Desktop and
+      mobile banner sets render as two tracks toggled by CSS. %>
+  <% hero_sets = [[hero_slides, 'gc-hero--desktop'], [hero_slides_mobile, 'gc-hero--mobile']].reject { |set, _| set.empty? } %>
+  <% hero_sets = [[[], 'gc-hero--desktop']] if hero_sets.empty? %>
+  <% hero_sets.each_with_index do |(set, css), set_index| %>
+    <% locale = session[:locale] || I18n.locale.to_s %>
+    <% slides = [] %>
+    <% slides << { fixed: true, record: set.first } %>
+    <% set.drop(1).each { |r| slides << { fixed: false, record: r } } %>
+    <section class="gc-hero <%= css %> <%= slides.size > 1 ? 'gc-hero--multi' : '' %>" aria-roledescription="carousel" aria-label="<%= t('.hero_slides') %>" data-gc-hero>
+      <div class="gc-hero__track" data-gc-hero-track>
+        <% slides.each_with_index do |slide, i| %>
+          <% record = slide[:record] %>
+          <% if slide[:fixed] %>
+            <% copy = { pre: t('.hero_eyebrow'), title_1: t('.hero_title_1'), title_2: t('.hero_title_2'), body: t('.hero_body'),
+                        cta1: [t('.hero_cta_primary'), engine.products_path], cta2: [t('.hero_cta_secondary'), '#gc-origins'] } %>
+          <% elsif record.editorial? %>
+            <% copy = { pre: record.localized(:pre_header, locale), title_1: record.localized(:title, locale), title_2: nil, body: record.localized(:description, locale),
+                        cta1: [record.localized(:cta1_text, locale), record.cta1_url], cta2: [record.localized(:cta2_text, locale), record.cta2_url] } %>
+          <% else %>
+            <% copy = nil %>
+          <% end %>
+          <article class="gc-hero__slide <%= copy ? 'gc-hero__slide--split' : 'gc-hero__slide--media' %>" data-gc-hero-slide aria-roledescription="slide" aria-label="<%= i + 1 %> / <%= slides.size %>">
+            <% if copy %>
+              <div class="gc-hero__copy">
+                <% if copy[:pre].present? %><div class="gc-eyebrow"><%= copy[:pre] %></div><% end %>
+                <% if copy[:title_1].present? %>
+                  <% heading_tag = (set_index == 0 && i == 0) ? 'h1' : 'h2' %>
+                  <<%= heading_tag %> class="gc-hero__title" <%= raw('id="gc-hero-title"') if heading_tag == 'h1' %>><%= copy[:title_1] %><% if copy[:title_2].present? %><br><em><%= copy[:title_2] %></em><% end %></<%= heading_tag %>>
                 <% end %>
-              <%= raw tag_close %>
-            </li>
-          <% end %>
-        </ul>
-      <% end %>
-      <% if hero_slides.empty? && hero_slides_mobile.empty? %>
-        <div class="gc-hero__placeholder" aria-hidden="true"></div>
-      <% end %>
-      <% if (hero_slides.size > 1) %>
-        <div class="gc-hero__dots" role="tablist" aria-label="<%= t('.hero_slides') %>">
-          <% hero_slides.each_with_index do |_, i| %>
-            <button type="button" class="gc-hero__dot <%= i == 0 ? 'is-active' : '' %>" data-gc-hero-dot="<%= i %>" aria-label="<%= i + 1 %>"></button>
-          <% end %>
+                <% if copy[:body].present? %><p class="gc-hero__body"><%= copy[:body] %></p><% end %>
+                <% ctas = [copy[:cta1], copy[:cta2]].select { |text, url| text.present? && url.present? } %>
+                <% if ctas.any? %>
+                  <div class="gc-hero__actions">
+                    <% ctas.each_with_index do |(text, url), k| %>
+                      <a href="<%= url %>" class="gc-btn <%= k == 0 ? 'gc-btn--primary gc-hero__cta' : 'gc-btn--outline gc-hero__cta-secondary' %>"><%= text %></a>
+                    <% end %>
+                  </div>
+                <% end %>
+                <% if slide[:fixed] %>
+                  <dl class="gc-hero__stats">
+                    <div><dt><%= product_count_label %></dt><dd><%= t('.stat_products') %></dd></div>
+                    <div><dt><%= country_count %></dt><dd><%= t('.stat_countries') %></dd></div>
+                    <div><dt>24 h</dt><dd><%= t('.stat_dispatch') %></dd></div>
+                  </dl>
+                <% end %>
+              </div>
+            <% end %>
+            <div class="gc-hero__media">
+              <% if record %>
+                <% link = (!copy && record.slider_link.present?) ? record.slider_link : nil %>
+                <% tag_open = link ? %(<a href="#{ERB::Util.html_escape(link)}" class="gc-hero__slide-link">) : '<div class="gc-hero__slide-link">' %>
+                <%= raw tag_open %>
+                  <% if record.video? %>
+                    <video class="gc-hero__img" src="<%= record.slider_image.url %>" muted playsinline autoplay loop title="<%= record.slider_text %>"></video>
+                  <% else %>
+                    <img class="gc-hero__img" src="<%= record.slider_image.url %>" alt="<%= record.slider_text %>" <%= i == 0 ? '' : 'loading="lazy"' %>>
+                  <% end %>
+                <%= raw(link ? '</a>' : '</div>') %>
+              <% else %>
+                <div class="gc-hero__placeholder" aria-hidden="true"></div>
+              <% end %>
+              <% if slide[:fixed] && hero_testimonial %>
+                <figure class="gc-hero__quote">
+                  <blockquote>“<%= hero_testimonial.product_name %>”</blockquote>
+                  <figcaption><%= hero_testimonial.user_fullname %> · <%= hero_testimonial.user_title %></figcaption>
+                </figure>
+              <% end %>
+            </div>
+          </article>
+        <% end %>
+      </div>
+      <% if slides.size > 1 %>
+        <div class="gc-hero__controls">
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-hero-prev aria-label="<%= t('.previous') %>"><%= gc_icon :chevron_left, size: 18 %></button>
+          <div class="gc-hero__dots" role="tablist">
+            <% slides.each_with_index do |_, i| %>
+              <button type="button" class="gc-hero__dot <%= i == 0 ? 'is-active' : '' %>" data-gc-hero-dot="<%= i %>" role="tab" aria-label="<%= i + 1 %>"></button>
+            <% end %>
+          </div>
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-hero-next aria-label="<%= t('.next') %>"><%= gc_icon :chevron_right, size: 18 %></button>
         </div>
       <% end %>
-      <% if hero_testimonial %>
-        <figure class="gc-hero__quote">
-          <blockquote>“<%= hero_testimonial.product_name %>”</blockquote>
-          <figcaption><%= hero_testimonial.user_fullname %> · <%= hero_testimonial.user_title %></figcaption>
-        </figure>
-      <% end %>
-    </div>
-  </section>
+    </section>
+  <% end %>
 
   <%# ---------- Promise band ---------- %>
   <div class="gc-band" role="list">
@@ -246,26 +280,37 @@
 </main>
 
 <script>
-  // Hero slides: gentle auto-advance with dots (replaces the bxSlider hero).
+  // Hero carousel: scroll-snap track (swipeable), arrows, dots, gentle
+  // auto-advance that pauses on hover/focus and respects reduced motion.
   document.addEventListener('DOMContentLoaded', function () {
-    var lists = document.querySelectorAll('[data-gc-hero-slides]');
-    var dots = document.querySelectorAll('[data-gc-hero-dot]');
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    lists.forEach(function (list) {
-      var slides = list.querySelectorAll('[data-gc-hero-slide]');
+    document.querySelectorAll('[data-gc-hero]').forEach(function (hero) {
+      var track = hero.querySelector('[data-gc-hero-track]');
+      var slides = Array.prototype.slice.call(hero.querySelectorAll('[data-gc-hero-slide]'));
+      var dots = Array.prototype.slice.call(hero.querySelectorAll('[data-gc-hero-dot]'));
       if (slides.length < 2) return;
-      var i = 0, timer;
-      function show(n) {
-        slides[i].classList.remove('is-active');
-        i = (n + slides.length) % slides.length;
-        slides[i].classList.add('is-active');
-        dots.forEach(function (d, k) { d.classList.toggle('is-active', k === i); });
+      var index = 0, timer = null, paused = false;
+
+      function go(n, smooth) {
+        index = (n + slides.length) % slides.length;
+        track.scrollTo({ left: slides[index].offsetLeft, behavior: smooth === false || reduce ? 'auto' : 'smooth' });
       }
-      function start() { if (!reduce) timer = setInterval(function () { show(i + 1); }, 6000); }
+      function sync() {
+        var i = Math.round(track.scrollLeft / track.clientWidth);
+        if (i !== index && i >= 0 && i < slides.length) index = i;
+        dots.forEach(function (d, k) { d.classList.toggle('is-active', k === index); });
+      }
+      function start() { if (reduce) return; stop(); timer = setInterval(function () { if (!paused && !hero.matches(':hover')) go(index + 1); }, 7000); }
+      function stop() { if (timer) clearInterval(timer); timer = null; }
+
+      track.addEventListener('scroll', function () { window.requestAnimationFrame(sync); }, { passive: true });
+      hero.querySelector('[data-gc-hero-prev]').addEventListener('click', function () { go(index - 1); start(); });
+      hero.querySelector('[data-gc-hero-next]').addEventListener('click', function () { go(index + 1); start(); });
+      dots.forEach(function (d) { d.addEventListener('click', function () { go(parseInt(d.getAttribute('data-gc-hero-dot'), 10)); start(); }); });
+      hero.addEventListener('focusin', function () { paused = true; });
+      hero.addEventListener('focusout', function () { paused = false; });
+      window.addEventListener('resize', function () { go(index, false); });
       start();
-      dots.forEach(function (d) {
-        d.addEventListener('click', function () { clearInterval(timer); show(parseInt(d.getAttribute('data-gc-hero-dot'), 10)); start(); });
-      });
     });
   });
 </script>

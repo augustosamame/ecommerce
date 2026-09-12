@@ -11,7 +11,7 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Text</th>
+        <th>Text / hero copy</th>
         <th>View</th>
         <th>Order</th>
         <th>Link</th>
@@ -26,7 +26,12 @@
     <tbody>
       <%= content_tag_for(:tr, @backoffice_sliders) do |backoffice_slider| %>
             <td><%= backoffice_slider.slider_name %></td>
-            <td><%= backoffice_slider.slider_text %></td>
+            <td>
+              <%= backoffice_slider.slider_text %>
+              <% if backoffice_slider.editorial? %>
+                <br><span class="label label-info">Hero copy</span> <%= backoffice_slider.localized(:title, "es-PE") %>
+              <% end %>
+            </td>
             <td><%= backoffice_slider.slider_view %></td>
             <td><%= best_in_place backoffice_slider, :slider_order, :as => :input, :url => "sliders_in_place/#{backoffice_slider.id}", :method => :put %></td>
             <td><%= backoffice_slider.slider_link %></td>

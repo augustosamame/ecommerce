@@ -1,23 +1,44 @@
 /* GlobalCanasta home page */
 
-/* ---------- Hero ---------- */
-/* Hero and promise band share the page container so no section runs wider
-   than the rest of the page. */
+/* ---------- Hero carousel ---------- */
+/* The whole hero (copy + media) is one slide; slides sit in a scroll-snap
+   track so they are swipeable and the JS only drives arrows/dots/autoplay.
+   Media keeps its own ratio via object-fit: cover — a square crop beside
+   copy, a wide 21:9 crop when the slide is media-only. */
 .gc-hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: stretch;
-  min-height: 620px;
+  position: relative;
   max-width: var(--gc-container);
   margin: 0 auto;
-  padding: 0 var(--gc-page-padding);
+  padding: var(--gc-space-8) var(--gc-page-padding) 0;
 }
+.gc-hero--mobile { display: none; }
+.gc-hero__track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--gc-radius-xl);
+}
+.gc-hero__track::-webkit-scrollbar { display: none; }
+.gc-hero__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: grid;
+  align-items: stretch;
+  min-width: 0;
+}
+.gc-hero__slide--split { grid-template-columns: 1fr 1fr; gap: var(--gc-space-10); }
+.gc-hero__slide--media { grid-template-columns: 1fr; }
 .gc-hero__copy {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 26px;
-  padding: var(--gc-space-16) var(--gc-space-16) var(--gc-space-16) 0;
+  padding: var(--gc-space-10) 0;
+  min-width: 0;
 }
 .gc-hero__title {
   font-family: var(--gc-font-display);
@@ -45,27 +66,21 @@
 
 .gc-hero__media {
   position: relative;
-  min-height: 620px;
-  margin: var(--gc-space-8) 0;
   border-radius: var(--gc-radius-xl);
   background: repeating-linear-gradient(135deg, #E8E1D5 0 12px, #EFE9DE 12px 24px);
-  overflow: visible;
+  overflow: hidden;
+  min-width: 0;
 }
-.gc-hero__slides, .gc-hero__placeholder { border-radius: var(--gc-radius-xl); }
-.gc-hero__slides, .gc-hero__placeholder { position: absolute; inset: 0; overflow: hidden; }
-.gc-hero__slides--mobile { display: none; }
-.gc-hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 600ms ease; }
-.gc-hero__slide.is-active { opacity: 1; }
-.gc-hero__slide-link { display: block; width: 100%; height: 100%; }
+.gc-hero__slide--split .gc-hero__media { aspect-ratio: 1 / 1; align-self: center; }
+.gc-hero__slide--media .gc-hero__media { aspect-ratio: 21 / 9; }
+.gc-hero__slide-link, .gc-hero__placeholder { display: block; position: absolute; inset: 0; }
 .gc-hero__img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.gc-hero__dots { position: absolute; right: 20px; bottom: 20px; display: flex; gap: 8px; z-index: 2; }
-.gc-hero__dot { width: 10px; height: 10px; padding: 0; border-radius: 50%; border: 1px solid var(--gc-cream); background: transparent; cursor: pointer; }
-.gc-hero__dot.is-active { background: var(--gc-cream); }
 .gc-hero__quote {
   position: absolute;
-  left: -56px;
-  bottom: 64px;
+  left: 20px;
+  bottom: 20px;
   width: 280px;
+  max-width: calc(100% - 40px);
   margin: 0;
   padding: 18px 22px;
   background: var(--gc-cream);
@@ -76,6 +91,11 @@
 }
 .gc-hero__quote blockquote { margin: 0; padding: 0; border: none; font-family: var(--gc-font-display); font-style: italic; font-size: 17px; line-height: 1.4; color: var(--gc-burgundy); }
 .gc-hero__quote figcaption { font-size: var(--gc-text-xs); color: var(--gc-ink-muted); margin-top: 8px; }
+
+.gc-hero__controls { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 14px 0 0; }
+.gc-hero__dots { display: flex; justify-content: center; gap: 8px; }
+.gc-hero__dot { width: 10px; height: 10px; padding: 0; border-radius: 50%; border: 1px solid var(--gc-burgundy); background: transparent; cursor: pointer; transition: background-color var(--gc-duration-fast) var(--gc-ease); }
+.gc-hero__dot.is-active { background: var(--gc-burgundy); }
 
 /* ---------- Promise band ---------- */
 .gc-band { max-width: var(--gc-container); margin: 0 auto; padding: 0 var(--gc-page-padding); }
@@ -282,14 +302,15 @@
 
 /* ---------- Tablet ---------- */
 @media (max-width: 1023px) {
-  .gc-hero { grid-template-columns: 1fr; min-height: 0; }
-  .gc-hero__copy { padding: 48px var(--gc-space-4) 28px; gap: 18px; }
-  .gc-hero__media { margin: 0 0 var(--gc-space-6); }
+  .gc-hero { padding-top: var(--gc-space-6); }
+  .gc-hero__slide--split { grid-template-columns: 1fr; gap: var(--gc-space-5); }
+  .gc-hero__copy { padding: 28px 0 8px; gap: 18px; }
   .gc-hero__title { font-size: var(--gc-text-hero); }
   .gc-hero__body { font-size: var(--gc-text-body); max-width: 520px; }
   .gc-hero__stats { display: none; }
-  .gc-hero__media { min-height: 300px; height: 300px; }
+  .gc-hero__slide--split .gc-hero__media, .gc-hero__slide--media .gc-hero__media { aspect-ratio: 16 / 9; align-self: stretch; }
   .gc-hero__quote { display: none; }
+  .gc-hero__controls .gc-icon-btn { display: none; }
   .gc-band__inner { flex-wrap: wrap; gap: 12px 24px; padding-top: 16px; padding-bottom: 16px; font-size: var(--gc-text-xs); }
   .gc-band__item { flex: 1 1 40%; }
   .gc-videos { grid-template-columns: 1fr; gap: var(--gc-space-8); padding: var(--gc-space-8); }
@@ -303,16 +324,15 @@
 
 /* ---------- Mobile ---------- */
 @media (max-width: 767px) {
-  .gc-hero__copy { padding: 8px 0 24px; gap: 14px; }
-  .gc-hero__media { margin: 0 0 var(--gc-space-4); }
+  .gc-hero__copy { padding: 8px 0 20px; gap: 14px; }
   .gc-band__inner { padding: 16px; border-radius: var(--gc-radius-md); }
   .gc-hero__body { display: none; }
   .gc-hero__actions .gc-btn { width: 100%; }
   .gc-hero__cta-secondary { display: none; }
-  .gc-hero__media { min-height: 220px; height: 220px; }
-  .gc-hero__slides--desktop { display: none; }
-  .gc-hero__slides--mobile { display: block; }
-  .gc-hero__slides--desktop:only-child { display: block; }
+  .gc-hero__slide--split .gc-hero__media, .gc-hero__slide--media .gc-hero__media { aspect-ratio: 390 / 220; }
+  /* Mobile banner set replaces the desktop one when the backoffice has one */
+  .gc-hero--desktop:has(+ .gc-hero--mobile) { display: none; }
+  .gc-hero--mobile { display: block; }
   .gc-band__inner { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; justify-content: flex-start; gap: 20px; }
   .gc-band__inner::-webkit-scrollbar { display: none; }
   .gc-band__item { flex: 0 0 auto; }

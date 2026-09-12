@@ -22,6 +22,40 @@
     <%= f.input :status, collection: Ecommerce::Slider.statuses.keys, label: "Status" %>
   </div>
 
+  <div class="panel panel-default" style="margin-top: 20px;">
+    <div class="panel-heading">
+      <strong>Hero carousel copy (optional)</strong>
+      <p class="help-block" style="margin: 6px 0 0;">
+        Leave everything blank to show the image/video full width. Fill any field to show it beside a square crop of the media.
+        <br><strong>Banner 1</strong> (the lowest order for each view) only uses its image/video — its pre-header, title, description and buttons are fixed in the storefront and these fields are ignored for it.
+      </p>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6"><%= f.input :pre_header_es, label: "Pre-header (ES)", placeholder: "Importando desde el 2018 · Lima, Perú" %></div>
+        <div class="col-md-6"><%= f.input :pre_header_en, label: "Pre-header (EN)", placeholder: "Importing since 2018 · Lima, Perú" %></div>
+      </div>
+      <div class="row">
+        <div class="col-md-6"><%= f.input :title_es, label: "Title (ES)", placeholder: "Lo mejor del mundo, ahora en Perú." %></div>
+        <div class="col-md-6"><%= f.input :title_en, label: "Title (EN)", placeholder: "The world's best, now in Perú." %></div>
+      </div>
+      <div class="row">
+        <div class="col-md-6"><%= f.input :description_es, label: "Description (ES)", as: :text, input_html: { rows: 3 } %></div>
+        <div class="col-md-6"><%= f.input :description_en, label: "Description (EN)", as: :text, input_html: { rows: 3 } %></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4"><%= f.input :cta1_text_es, label: "Button 1 text (ES)", placeholder: "Ver la despensa" %></div>
+        <div class="col-md-4"><%= f.input :cta1_text_en, label: "Button 1 text (EN)", placeholder: "Shop the pantry" %></div>
+        <div class="col-md-4"><%= f.input :cta1_url, label: "Button 1 URL", placeholder: "/store/products" %></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4"><%= f.input :cta2_text_es, label: "Button 2 text (ES)", placeholder: "Explorar por país" %></div>
+        <div class="col-md-4"><%= f.input :cta2_text_en, label: "Button 2 text (EN)", placeholder: "Browse by country" %></div>
+        <div class="col-md-4"><%= f.input :cta2_url, label: "Button 2 URL", placeholder: "/#gc-origins" %></div>
+      </div>
+    </div>
+  </div>
+
   <div class="form-actions">
     <%= f.button :submit, class: "btn btn-primary" %>
   </div>
