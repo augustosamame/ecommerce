@@ -7,6 +7,7 @@
       <div class="gc-footer__brand">
         <a href="<%= root_path %>" class="gc-footer__logo-wrap"><%= gc_logo(height: 40, css: "gc-footer__logo") %></a>
         <div class="gc-footer__legal">
+          <p class="gc-footer__slogan"><%= t('.slogan_1') %></p>
           <%= Ecommerce.company_legal_name %> · RUC <%= Ecommerce.company_vat %><br>
           <%= t('.slogan_2') %><br>
           <span class="gc-footer__note"><%= t('.slogan_3') %></span>
@@ -64,11 +65,11 @@
 
     <div class="gc-footer__bottom">
       <span class="gc-footer__copy">© <%= Date.current.year %> <%= gc_brand_name %> · Importados para el Perú</span>
-      <ul class="gc-footer__payments" aria-label="<%= gc_t('.payment_methods', 'Payment methods') %>">
-        <% %w[VISA MASTERCARD AMEX DINERS PAGOEFECTIVO YAPE].each do |mark| %>
-          <li class="gc-footer__payment"><%= mark %></li>
-        <% end %>
-      </ul>
+      <div class="gc-footer__payments">
+        <%= image_tag "ecommerce/img/expatshop/credit_card_icons.png", alt: gc_t('.payment_methods', 'Payment methods'), class: "gc-footer__cards" %>
+        <span class="gc-footer__payment">PAGOEFECTIVO</span>
+        <span class="gc-footer__payment">YAPE</span>
+      </div>
     </div>
   </div>
 </footer>

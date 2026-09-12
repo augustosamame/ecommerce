@@ -136,11 +136,22 @@
 }
 .gc-origin-row { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding: 16px var(--gc-page-padding) 8px; }
 .gc-origin-row::-webkit-scrollbar { display: none; }
+.gc-mobile-cats { padding-top: var(--gc-space-8); }
+.gc-section-header--tight { margin-bottom: var(--gc-space-4); }
+.gc-origin-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 12px; justify-items: center; }
+.gc-origin-grid .gc-origin-row__item { width: 100%; max-width: 110px; }
+.gc-origin-grid .gc-origin-row__circle { width: 84px; height: 84px; }
 .gc-origin-row__item { flex: 0 0 76px; text-align: center; color: var(--gc-ink-soft); }
 .gc-origin-row__circle { display: block; width: 72px; height: 72px; margin: 0 auto; border-radius: 50%; border: 1px solid var(--gc-border); background: var(--gc-surface-alt); overflow: hidden; }
 .gc-origin-row__circle img { width: 100%; height: 100%; object-fit: cover; }
 .gc-origin-row__item.is-highlighted .gc-origin-row__circle { border: 2px solid var(--gc-gold); }
 .gc-origin-row__label { display: block; font-size: var(--gc-text-2xs); margin-top: 8px; line-height: 1.3; }
+
+/* Featured rail: 4-up desktop, 3-up small desktop/tablet, 1-up mobile */
+.gc-section-header__tools { display: flex; align-items: center; gap: var(--gc-space-4); }
+.gc-rail__track--featured > * { flex-basis: calc((100% - 3 * var(--gc-gutter)) / 4); }
+@media (max-width: 1279px) { .gc-rail__track--featured > * { flex-basis: calc((100% - 2 * var(--gc-gutter)) / 3); } }
+@media (max-width: 767px) { .gc-rail__track--featured > * { flex-basis: 86%; } .gc-section-header__tools .gc-rail__nav { display: none; } }
 
 /* ---------- Shoppable videos ---------- */
 .gc-videos {
@@ -330,9 +341,9 @@
 @media (max-width: 767px) {
   .gc-hero__copy { padding: 8px 0 20px; gap: 14px; }
   .gc-band__inner { padding: 16px; border-radius: var(--gc-radius-md); }
-  .gc-hero__body { display: none; }
-  .gc-hero__actions .gc-btn { width: 100%; }
-  .gc-hero__cta-secondary { display: none; }
+  .gc-hero__body { font-size: 15px; line-height: 1.55; }
+  .gc-hero__actions { gap: 10px; }
+  .gc-hero__actions .gc-btn { flex: 1 1 calc(50% - 5px); padding: 0 12px; font-size: 14px; }
   .gc-hero__slide--split .gc-hero__media, .gc-hero__slide--media .gc-hero__media { aspect-ratio: 390 / 220; }
   /* Mobile banner set replaces the desktop one when the backoffice has one */
   .gc-hero--desktop:has(+ .gc-hero--mobile) { display: none; }

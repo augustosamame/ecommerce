@@ -136,7 +136,10 @@
     qsa('[data-gc-scroller]').forEach(function (wrap) {
       var track = qs('[data-gc-scroller-track]', wrap);
       if (!track) return;
-      qsa('[data-gc-scroller-prev], [data-gc-scroller-next]', wrap).forEach(function (btn) {
+      // arrows may sit in the section header (outside the rail): the nearest
+      // section owns both, so look there too
+      var scope = wrap.closest('section') || wrap;
+      qsa('[data-gc-scroller-prev], [data-gc-scroller-next]', scope).forEach(function (btn) {
         btn.addEventListener('click', function () {
           var dir = btn.hasAttribute('data-gc-scroller-prev') ? -1 : 1;
           track.scrollBy({ left: dir * Math.round(track.clientWidth * 0.8), behavior: 'smooth' });

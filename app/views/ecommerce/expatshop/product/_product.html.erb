@@ -14,15 +14,15 @@
       <%= image_tag item.image.medium_400.url, class: "gc-product-card__img", alt: item.name, loading: "lazy" %>
     <% end %>
     <div class="gc-product-card__badges">
-      <% if pct %>
+      <% callout = item.show_callout ? (session[:locale] == 'en-PE' ? item.callout_label_en : item.collout_label_es) : nil %>
+      <% callout_discount = item.show_callout ? (session[:locale] == 'en-PE' ? item.callout_discount_label_en : item.callout_discount_label_es) : nil %>
+      <%# Backoffice callouts win; the computed −N% only fills in when no discount callout is set %>
+      <% if callout_discount.present? %>
+        <span class="gc-badge gc-badge--discount"><%= callout_discount %></span>
+      <% elsif pct %>
         <span class="gc-badge gc-badge--discount">−<%= pct %>%</span>
       <% end %>
-      <% if item.show_callout %>
-        <% callout = session[:locale] == 'en-PE' ? item.callout_label_en : item.collout_label_es %>
-        <% callout_discount = session[:locale] == 'en-PE' ? item.callout_discount_label_en : item.callout_discount_label_es %>
-        <% if callout.present? %><span class="gc-badge gc-badge--new"><%= callout %></span><% end %>
-        <% if callout_discount.present? && !pct %><span class="gc-badge gc-badge--discount"><%= callout_discount %></span><% end %>
-      <% end %>
+      <% if callout.present? %><span class="gc-badge gc-badge--new"><%= callout %></span><% end %>
       <% unless item.in_stock? %>
         <span class="gc-badge gc-badge--muted"><%= t('.out_of_stock') %></span>
       <% end %>

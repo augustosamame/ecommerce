@@ -26,8 +26,8 @@
 <% testimonials = Ecommerce::Testimonial.where(status: "active").order(:priority).to_a %>
 <% product_count = Ecommerce::Product.active.count %>
 <% country_count = [Ecommerce::Product.active.where.not(country: [nil, ""]).distinct.count(:country), mosaic_categories.size].max %>
-<% featured_grid = @featured_products.to_a.first(8) %>
-<% featured_grid = Ecommerce::Product.includes(:translations).active.order(created_at: :desc).limit(8).to_a if featured_grid.empty? %>
+<% featured_grid = @featured_products.to_a %>
+<% featured_grid = Ecommerce::Product.includes(:translations).active.order(created_at: :desc).limit(12).to_a if featured_grid.empty? %>
 <% product_count_label = product_count >= 100 ? "#{number_with_delimiter((product_count / 100) * 100)}+" : product_count.to_s %>
 
 <main class="gc-home" id="main-content">
@@ -131,36 +131,55 @@
     </div>
   </div>
 
-  <%# ---------- Mobile chips + origin circles (mobile web only) ---------- %>
+  <%# ---------- Mobile quick links + main categories (mobile web only) ---------- %>
   <section class="gc-mobile-quick gc-mobile-only" aria-label="<%= t('.quick_links') %>">
     <div class="gc-chips">
+      <a href="<%= engine.products_path %>" class="gc-chip"><%= t('.all_the_products') %></a>
+      <% if current_user %><a href="<%= engine.favorites_path %>" class="gc-chip"><%= t('.my_frequent_purchases') %></a><% end %>
       <a href="<%= engine.products_path(filter: 'new_products') %>" class="gc-chip"><%= t('.new_products') %></a>
       <a href="<%= engine.products_path(filter: 'discounted_products') %>" class="gc-chip"><%= t('.offers_and_discounts') %></a>
-      <% if current_user %><a href="<%= engine.favorites_path %>" class="gc-chip"><%= t('.my_frequent_purchases') %></a><% end %>
       <a href="#gc-videos" class="gc-chip"><%= t('.shopping_videos') %></a>
-      <a href="<%= engine.products_path %>" class="gc-chip"><%= t('.all_the_products') %></a>
     </div>
-    <div class="gc-origin-row">
-      <% @primary_menu_categories.reject { |c| c.id == 64 || c.id == 47 || (c.id == 30 && !@banana_permission) }.each do |category| %>
-        <a href="<%= engine.products_path(category_id: category.id) %>" class="gc-origin-row__item <%= category.highlighted? ? 'is-highlighted' : '' %>">
-          <span class="gc-origin-row__circle"><img src="<%= category.image.medium_400.url %>" alt="" loading="lazy"></span>
-          <span class="gc-origin-row__label"><%= category.name %></span>
-        </a>
-      <% end %>
-    </div>
+    <% mobile_categories = @primary_menu_categories.reject { |c| c.id == 64 || c.id == 47 || (c.id == 30 && !@banana_permission) } %>
+    <% if mobile_categories.any? %>
+      <div class="gc-container gc-mobile-cats">
+        <div class="gc-section-header gc-section-header--tight">
+          <div>
+            <div class="gc-eyebrow"><%= t('.categories_eyebrow') %></div>
+            <h2 class="gc-display"><%= t('.main_categories') %></h2>
+          </div>
+        </div>
+        <div class="gc-origin-grid">
+          <% mobile_categories.each do |category| %>
+            <a href="<%= engine.products_path(category_id: category.id) %>" class="gc-origin-row__item <%= category.highlighted? ? 'is-highlighted' : '' %>">
+              <span class="gc-origin-row__circle"><img src="<%= category.image.medium_400.url %>" alt="" loading="lazy"></span>
+              <span class="gc-origin-row__label"><%= category.name %></span>
+            </a>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </section>
 
-  <%# ---------- Featured products ---------- %>
+  <%# ---------- Featured products (every featured product, as a rail) ---------- %>
   <section class="gc-section gc-container" aria-labelledby="gc-featured-title">
     <div class="gc-section-header">
       <div>
         <div class="gc-eyebrow"><%= t('.featured_eyebrow') %></div>
         <h2 class="gc-display" id="gc-featured-title"><%= t('.featured_products') %></h2>
       </div>
-      <a href="<%= engine.products_path %>" class="gc-link-underline"><%= t('.see_all', count: product_count_label) %></a>
+      <div class="gc-section-header__tools">
+        <a href="<%= engine.products_path %>" class="gc-link-underline"><%= t('.see_all', count: product_count_label) %></a>
+        <div class="gc-rail__nav" data-gc-featured-nav>
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-scroller-prev aria-label="<%= t('.previous') %>"><%= gc_icon :chevron_left, size: 18 %></button>
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-scroller-next aria-label="<%= t('.next') %>"><%= gc_icon :chevron_right, size: 18 %></button>
+        </div>
+      </div>
     </div>
-    <div class="gc-product-grid">
-      <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: featured_grid, as: :item %>
+    <div class="gc-rail" data-gc-scroller>
+      <div class="gc-rail__track gc-rail__track--featured" data-gc-scroller-track>
+        <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: featured_grid, as: :item %>
+      </div>
     </div>
   </section>
 
