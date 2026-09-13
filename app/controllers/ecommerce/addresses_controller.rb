@@ -18,8 +18,10 @@ module Ecommerce
     # GET /addresses
     # GET /addresses.json
     def index
-      @addresses = Address.where(user: current_user)
+      @addresses = Address.where(user: current_user).order(created_at: :desc)
       #authorize! :read, @addresses
+      themed = "ecommerce/#{Ecommerce.ecommerce_layout}/addresses/index"
+      render themed if lookup_context.exists?(themed)
     end
 
     # GET /addresses/1

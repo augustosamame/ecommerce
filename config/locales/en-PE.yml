@@ -11,6 +11,14 @@ en-PE:
     combo_discount_message: "⚠️ The combo of the product has been added. You will see an additional line item and an equal discount below."
     combo_injected_tooltip: "This product was added for free as part of a combo promotion and cannot be removed."
   activerecord:
+    attributes:
+      ecommerce/address:
+        address_types:
+          home: 'Home'
+          doorman: 'Doorman'
+          office: 'Office'
+          warehouse: 'Warehouse'
+          other: 'Other'
     errors:
       models:
         ecommerce/coupon:
@@ -138,13 +146,20 @@ en-PE:
         error_cart_already_placed: 'You have tried to place an order again when order has already been placed. Please review your orders below'
     addresses:
       index:
-        title: "My Addresses"
+        title: "My addresses"
         date: "Date"
         name: "Type"
         street: "Address"
         show: "Show"
-        delete: "Delete"
-        are_you_sure: "Are you sure?"
+        delete: "Remove address"
+        are_you_sure: "Remove this address?"
+        count:
+          one: "1 saved address"
+          other: "%{count} saved addresses"
+        empty_title: "No saved addresses yet"
+        empty_body: "Addresses you use at checkout will be kept here."
+        added_on: "Added on %{date}"
+        authorized_person: "Authorised person"
       create:
         address_was_successfully_created: 'Address was successfully created.'
     processor:

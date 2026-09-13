@@ -1,0 +1,46 @@
+<%# Saved addresses: one card per address with type, street lines and remove. %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<main class="gc-commerce gc-account gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <div>
+      <div class="gc-eyebrow"><%= t('ecommerce.expatshop.store.header.my_account') %></div>
+      <h1 class="gc-commerce__title"><%= t('ecommerce.addresses.index.title') %></h1>
+    </div>
+    <p class="gc-commerce__meta"><%= t('ecommerce.addresses.index.count', count: @addresses.size) %></p>
+  </header>
+
+  <% if @addresses.blank? %>
+    <div class="gc-empty">
+      <div class="gc-empty__icon"><%= gc_icon :map_pin, size: 32 %></div>
+      <h2 class="gc-h3"><%= t('ecommerce.addresses.index.empty_title') %></h2>
+      <p class="gc-muted"><%= t('ecommerce.addresses.index.empty_body') %></p>
+      <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary"><%= t('ecommerce.expatshop.store.main.hero_cta_primary') %></a>
+    </div>
+  <% else %>
+    <ul class="gc-addresses">
+      <% @addresses.each do |address| %>
+        <% type_label = t("activerecord.attributes.ecommerce/address.address_types.#{address.address_type}", default: address.address_type.to_s.humanize) %>
+        <li class="gc-address gc-card">
+          <div class="gc-address__icon"><%= gc_icon :map_pin, size: 20 %></div>
+          <div class="gc-address__body">
+            <div class="gc-address__top">
+              <span class="gc-badge gc-badge--origin"><%= type_label %></span>
+              <span class="gc-address__id gc-mono">#<%= address.id %></span>
+            </div>
+            <p class="gc-address__street"><%= address.street %></p>
+            <% detail = [address.street2, address.district, address.city].map(&:presence).compact.join(", ") %>
+            <% if detail.present? %><p class="gc-address__detail"><%= detail %></p><% end %>
+            <% if address.authorized_person.present? %>
+              <p class="gc-address__detail"><%= t('ecommerce.addresses.index.authorized_person') %>: <%= address.authorized_person %></p>
+            <% end %>
+            <p class="gc-address__date"><%= t('ecommerce.addresses.index.added_on', date: address.created_at.localtime.strftime("%d %b %Y")) %></p>
+          </div>
+          <%= link_to engine.address_path(address), method: :delete, class: "gc-icon-btn gc-icon-btn--lg gc-address__delete",
+                data: { confirm: t('ecommerce.addresses.index.are_you_sure') }, "aria-label": "#{t('ecommerce.addresses.index.delete')} ##{address.id}", title: t('ecommerce.addresses.index.delete') do %>
+            <%= gc_icon :trash, size: 16 %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</main>
