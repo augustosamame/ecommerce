@@ -218,7 +218,7 @@
   overflow: hidden;
   cursor: pointer;
 }
-.overlay-product-image { width: 28px; height: 28px; object-fit: cover; border-radius: 4px; background: var(--gc-border); flex: 0 0 auto; padding: 0; }
+.overlay-product-image { width: 28px; height: 28px; object-fit: contain; background: var(--gc-white); border-radius: 4px; background: var(--gc-border); flex: 0 0 auto; padding: 0; }
 .overlay-product-info { flex: 1; min-width: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
 .overlay-product-title { font-size: 11px; font-weight: 600; color: var(--gc-text); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .overlay-product-price { font-size: 11px; color: var(--gc-ink-muted); margin: 0; }

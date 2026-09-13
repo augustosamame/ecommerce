@@ -31,11 +31,13 @@
 .gc-product-card__media {
   position: relative;
   aspect-ratio: 1 / 1;
-  background: var(--gc-surface-alt);
+  background: var(--gc-white);
   overflow: hidden;
 }
+/* Product shots are mostly tall (bottles, packs): never crop them —
+   letterbox on white, matching production. */
 .gc-product-card__img-link { display: block; width: 100%; height: 100%; }
-.gc-product-card__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gc-product-card__img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; padding: 10px; box-sizing: border-box; }
 .gc-product-card[data-availability="out_of_stock"] .gc-product-card__img { opacity: .55; filter: grayscale(.4); }
 .gc-product-card__badges { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .gc-product-card__fav-form { position: absolute; top: 10px; right: 10px; margin: 0; }
@@ -108,7 +110,7 @@
 
 /* Mobile <768: stacked, one per row */
 @media (max-width: 767px) {
-  .gc-product-card__media { aspect-ratio: auto; height: 220px; }
+  .gc-product-card__media { aspect-ratio: auto; height: 280px; }
   .gc-product-card__body { padding: 16px; gap: 6px; }
   .gc-product-card__origin { font-size: 11px; }
   .gc-product-card__name { font-size: 17px; line-height: 1.3; }

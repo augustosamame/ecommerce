@@ -25,15 +25,15 @@
         </thead>
         <tbody>
           <% @orders.each do |order| %>
-            <tr>
-              <td data-label="ID" class="gc-mono">#<%= order.id %></td>
-              <td data-label="<%= t('.date') %>"><%= order.created_at.localtime.strftime("%d %b %Y") %></td>
-              <td data-label="<%= t('.status') %>"><span class="gc-badge gc-badge--origin"><%= friendly_order_status(order) %></span></td>
-              <td data-label="<%= t('.total') %>" class="gc-num">
+            <tr class="gc-order-row">
+              <td data-label="ID" class="gc-mono gc-order-row__id"><span class="gc-order-row__eyebrow"><%= t('.order', default: 'Order') %></span>#<%= order.id %></td>
+              <td data-label="<%= t('.date') %>" class="gc-order-row__date"><%= order.created_at.localtime.strftime("%d %b %Y") %></td>
+              <td data-label="<%= t('.status') %>" class="gc-order-row__status"><span class="gc-badge <%= order.payment_status.to_s == 'paid' ? 'gc-badge--stock' : 'gc-badge--origin' %>"><%= friendly_order_status(order) %></span></td>
+              <td data-label="<%= t('.total') %>" class="gc-num gc-order-row__total">
                 <strong>S/ <%= number_with_precision(order.amount * @exchange_rate, precision: 2, delimiter: ',') %></strong>
                 <span class="gc-small gc-faint"><%= number_to_currency(order.amount) %></span>
               </td>
-              <td class="gc-table__action"><%= link_to t('.my_order'), engine.order_path(order), class: "gc-btn gc-btn--outline gc-btn--sm" %></td>
+              <td class="gc-table__action gc-order-row__action"><%= link_to t('.my_order'), engine.order_path(order), class: "gc-btn gc-btn--outline gc-btn--sm" %></td>
             </tr>
           <% end %>
         </tbody>

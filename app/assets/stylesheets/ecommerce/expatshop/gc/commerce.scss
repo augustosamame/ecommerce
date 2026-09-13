@@ -46,8 +46,8 @@
 .gc-line, .gc-line__form { display: flex; align-items: center; gap: 16px; margin: 0; }
 .gc-line__form { width: 100%; }
 .gc-line.is-locked { background: var(--gc-surface-alt); }
-.gc-line__thumb { width: 72px; height: 72px; flex: 0 0 auto; border-radius: var(--gc-radius-md); background: var(--gc-surface-alt); overflow: hidden; display: block; }
-.gc-line__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.gc-line__thumb { width: 72px; height: 72px; flex: 0 0 auto; border-radius: var(--gc-radius-md); background: var(--gc-white); border: 1px solid var(--gc-border); overflow: hidden; display: block; }
+.gc-line__thumb img { width: 100%; height: 100%; object-fit: contain; padding: 4px; box-sizing: border-box; }
 .gc-line__info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .gc-line__name { font-size: 15px; font-weight: 500; color: var(--gc-text); line-height: 1.35; }
 .gc-line__name:hover { color: var(--gc-burgundy); }
@@ -55,7 +55,7 @@
 .gc-line__locked { align-self: flex-start; white-space: normal; }
 .gc-line__qty { flex: 0 0 auto; }
 .gc-line__qty .gc-stepper__field, .gc-line__qty .form-group { margin: 0; }
-.gc-line__total { flex: 0 0 auto; min-width: 120px; text-align: right; display: flex; flex-direction: column; gap: 2px; }
+.gc-line__total { flex: 0 0 auto; min-width: 120px; text-align: right; display: flex; flex-direction: column; gap: 2px; white-space: nowrap; }
 .gc-line__total .gc-price { font-size: 18px; }
 .gc-line__remove { flex: 0 0 auto; }
 .gc-line__remove .is-disabled { opacity: .35; cursor: not-allowed; }
@@ -167,6 +167,7 @@
 .gc-table--orders td { vertical-align: middle; }
 .gc-table--orders .gc-num strong { display: block; }
 .gc-table__action { text-align: right; }
+.gc-order-row__eyebrow { display: none; }
 .gc-order__cip { display: flex; flex-direction: column; gap: 2px; margin: 12px 0; }
 .gc-order__cip-code { font-size: 28px; font-weight: 700; color: var(--gc-red); letter-spacing: .04em; }
 .gc-order__steps { padding-left: 20px; margin: 0 0 12px; font-size: var(--gc-text-sm); color: var(--gc-ink-soft); }
@@ -195,7 +196,7 @@
   .gc-line__thumb { width: 64px; height: 64px; }
   .gc-line__info { flex-basis: calc(100% - 80px); }
   .gc-line__qty { order: 3; }
-  .gc-line__total { order: 4; flex: 1; min-width: 0; align-items: flex-end; }
+  .gc-line__total { order: 4; flex: 1; min-width: 0; align-items: flex-end; white-space: nowrap; }
   .gc-line__total .gc-price { font-size: 17px; }
   .gc-line__remove { order: 5; }
   .gc-line__qty .gc-stepper__btn { height: var(--gc-control-h-mobile); width: 44px; }
@@ -203,11 +204,27 @@
   .gc-summary { padding: var(--gc-space-4); }
   .gc-summary__rows dd.gc-summary__note { flex-basis: 55%; }
   .gc-commerce__cta-row .gc-btn { width: 100%; }
+  /* Orders as cards: "Pedido #10 · date" with the status pill top-right,
+     a prominent total row, then a full-width button */
   .gc-table--orders thead { display: none; }
-  .gc-table--orders tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; padding: 14px; border-bottom: 1px solid var(--gc-border); }
+  .gc-table--orders tr {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "id status" "date status" "total total" "action action";
+    gap: 4px 12px;
+    padding: 16px;
+    border-bottom: 1px solid var(--gc-border);
+  }
   .gc-table--orders td { padding: 0; border: none; }
-  .gc-table--orders td::before { content: attr(data-label); display: block; font-size: 11px; letter-spacing: var(--gc-tracking-label); text-transform: uppercase; color: var(--gc-ink-faint); margin-bottom: 2px; }
-  .gc-table--orders td.gc-table__action { grid-column: 1 / -1; text-align: left; }
-  .gc-table--orders td.gc-table__action::before { content: none; }
-  .gc-table--orders td.gc-table__action .gc-btn { width: 100%; }
+  .gc-table--orders td::before { content: none; }
+  .gc-order-row__id { grid-area: id; font-family: var(--gc-font-ui); font-size: 17px; font-weight: 600; color: var(--gc-text); }
+  .gc-order-row__eyebrow { display: block; font-size: 11px; letter-spacing: var(--gc-tracking-label); text-transform: uppercase; color: var(--gc-ink-faint); font-weight: 500; margin-bottom: 2px; }
+  .gc-order-row__date { grid-area: date; font-size: var(--gc-text-sm); color: var(--gc-ink-muted); }
+  .gc-order-row__status { grid-area: status; align-self: start; justify-self: end; }
+  .gc-order-row__total { grid-area: total; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gc-border); }
+  .gc-order-row__total::before { content: attr(data-label); font-size: var(--gc-text-sm); color: var(--gc-ink-muted); }
+  .gc-order-row__total strong { display: inline; font-size: 20px; color: var(--gc-burgundy); }
+  .gc-order-row__total .gc-small { margin-left: auto; }
+  .gc-order-row__action { grid-area: action; margin-top: 10px; }
+  .gc-table--orders td.gc-table__action .gc-btn { width: 100%; height: var(--gc-control-h); }
 }

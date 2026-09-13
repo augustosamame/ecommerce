@@ -524,7 +524,8 @@ en-PE:
           total: "Total"
           show: "Show"
           cancel: "Cancel"
-          my_order: "My Order"
+          my_order: "View Order"
+          order: "Order"
       wishlist:
         show:
           title: "Wishlist"

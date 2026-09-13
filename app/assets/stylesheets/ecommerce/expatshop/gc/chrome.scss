@@ -277,8 +277,10 @@ body.gc-drawer-open { overflow: hidden; }
   .gc-header__search { display: none; }
   .gc-header__selects { display: none; }
   .gc-header__search-mobile { display: block; padding: 12px 0; }
-  .gc-catnav__list { gap: 10px; padding: 0 0 14px; }
-  .gc-catnav__link { border: 1px solid var(--gc-sand); border-radius: var(--gc-radius-pill); padding: 9px 14px; background: var(--gc-white); font-size: var(--gc-text-xs); }
+  /* pills wrap into rows rather than scrolling off-screen */
+  .gc-catnav { overflow: visible; margin: 0; padding: 0; }
+  .gc-catnav__list { flex-wrap: wrap; gap: 8px; padding: 0 0 14px; width: auto; min-width: 0; }
+  .gc-catnav__link { border: 1px solid var(--gc-sand); border-radius: var(--gc-radius-pill); padding: 8px 12px; background: var(--gc-white); font-size: var(--gc-text-xs); line-height: 1.2; }
   .gc-catnav__link.is-active { border-color: var(--gc-burgundy); background: var(--gc-burgundy); color: var(--gc-cream); }
 }
 

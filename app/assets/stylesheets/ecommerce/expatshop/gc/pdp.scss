@@ -30,7 +30,7 @@
   display: inline-flex; align-items: center; justify-content: center;
   color: var(--gc-burgundy);
 }
-.gc-pdp__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.gc-pdp__thumb img { width: 100%; height: 100%; object-fit: contain; background: var(--gc-white); padding: 4px; box-sizing: border-box; }
 .gc-pdp__thumb.is-active { border: 1.5px solid var(--gc-burgundy); }
 .gc-pdp__thumb-video { display: inline-flex; }
 

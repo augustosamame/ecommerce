@@ -349,7 +349,8 @@ es-PE:
           total: "Total"
           show: "Ver"
           cancel: "Anular"
-          my_order: "Mi Pedido"
+          my_order: "Ver Pedido"
+          order: "Pedido"
       cart:
         show:
           cart_title: "Carrito de Compras"
