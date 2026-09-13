@@ -23,12 +23,12 @@
         <ul class="gc-lines">
           <% items.each do |item| %>
             <% product = item.product %>
-            <li class="gc-line" data-gc-product="<%= product.id %>">
+            <li class="gc-line gc-line--wish" data-gc-product="<%= product.id %>">
               <a href="<%= engine.product_path(product) %>" class="gc-line__thumb"><%= image_tag product.image.thumb_100.url, alt: "" %></a>
               <div class="gc-line__info">
                 <a href="<%= engine.product_path(product) %>" class="gc-line__name"><%= product.name %></a>
                 <div class="gc-line__meta">
-                  <span class="gc-num"><%= product_session_price(product, "current_price") %></span>
+                  <span class="gc-price gc-num"><%= product_session_price(product, "current_price") %></span>
                   <% unless product.in_stock? %><span class="gc-price--sale"><%= t('ecommerce.expatshop.product.product.out_of_stock') %></span><% end %>
                 </div>
               </div>

@@ -542,7 +542,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .gc-toast--warning { background: var(--gc-burgundy); }
 .gc-toast--warning .gc-toast__icon { color: var(--gc-burgundy); }
 @media (max-width: 1023px) { .gc-toasts { top: 150px; } }
-@media (max-width: 767px) { .gc-toasts { top: 200px; } .gc-toast { font-size: 14px; } }
+@media (max-width: 767px) { .gc-toasts { top: calc(env(safe-area-inset-top, 0px) + 16px); } .gc-toast { font-size: 14px; } }
 @media (prefers-reduced-motion: reduce) { .gc-toast { transition: none; } }
 
 /* ---------- SweetAlert2 (remaining programmatic dialogs) ---------- */

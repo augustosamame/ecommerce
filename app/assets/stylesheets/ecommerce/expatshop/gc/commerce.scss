@@ -59,6 +59,10 @@
 .gc-line__total .gc-price { font-size: 18px; }
 .gc-line__remove { flex: 0 0 auto; }
 .gc-line__remove .is-disabled { opacity: .35; cursor: not-allowed; }
+/* Wishlist rows: bigger thumb, price as the hero, actions on their own row on mobile */
+.gc-line--wish .gc-line__thumb { width: 84px; height: 84px; }
+.gc-line--wish .gc-line__meta { align-items: baseline; margin-top: 2px; }
+.gc-line--wish .gc-line__meta .gc-price { font-size: 17px; }
 
 /* Summary panel */
 .gc-summary {
@@ -193,6 +197,14 @@
 @media (max-width: 767px) {
   .gc-commerce__title { font-size: 24px; }
   .gc-line__form { flex-wrap: wrap; }
+  .gc-line--wish { flex-wrap: wrap; row-gap: 14px; }
+  .gc-line--wish .gc-line__thumb { width: 76px; height: 76px; }
+  .gc-line--wish .gc-line__info { flex-basis: calc(100% - 92px); }
+  .gc-line--wish .gc-line__qty { order: 3; flex: 1 1 auto; }
+  .gc-line--wish .gc-line__qty .gc-inline-form { display: block; }
+  .gc-line--wish .gc-line__qty .gc-btn { width: 100%; }
+  .gc-line--wish .gc-line__qty .gc-btn { height: var(--gc-control-h-mobile); }
+  .gc-line--wish .gc-line__remove { order: 4; }
   .gc-line__thumb { width: 64px; height: 64px; }
   .gc-line__info { flex-basis: calc(100% - 80px); }
   .gc-line__qty { order: 3; }
