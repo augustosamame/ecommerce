@@ -1,0 +1,4 @@
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<%= render "ecommerce/globalcanasta/store/category_tiles",
+      title: t('ecommerce.globalcanasta.store.header.categories'),
+      tiles: @secondary_menu_categories.map { |c| { name: c.image_popular_homepage_overlay_text.presence || gc_category_name(c), image: c.image.url, url: engine.sub_categories_m_path(parent_category: c.id) } } %>

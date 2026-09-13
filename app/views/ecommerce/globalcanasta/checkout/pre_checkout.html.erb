@@ -1,0 +1,41 @@
+<%# Cross-sell step between cart and checkout: compact product cards
+    (no stepper, "Add" only) plus a proceed button. %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<main class="gc-commerce gc-container pre-checkout-page" id="main-content">
+  <header class="gc-commerce__head gc-commerce__head--stack">
+    <div>
+      <div class="gc-eyebrow"><%= t('.you_might_also_like') %></div>
+      <h1 class="gc-commerce__title"><%= t('.you_might_also_like_reccomendations') %></h1>
+    </div>
+    <%= button_to t('.not_interested_proceed_to_checkout'), engine.checkout_path, method: :get, class: "gc-btn gc-btn--secondary continue-checkout-button", form_class: "gc-inline-form" %>
+  </header>
+
+  <div class="pagination list-center" style="display:none;">
+    <%= paginate @products %>
+  </div>
+  <div class="gc-product-grid product-index-container">
+    <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item, locals: { pre_checkout: true } %>
+  </div>
+  <div class="page-load-status gc-listing__status" aria-live="polite"></div>
+
+  <div class="gc-commerce__cta-row">
+    <%= button_to t('.not_interested_proceed_to_checkout'), engine.checkout_path, method: :get, class: "gc-btn gc-btn--secondary gc-btn--lg continue-checkout-button", form_class: "gc-inline-form" %>
+  </div>
+</main>
+
+<script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js"></script>
+<script>
+$(document).ready(function(){
+  if (!$('nav.pagination a[rel=next]').length) return;
+  var $container = $('.product-index-container').infiniteScroll({
+    path: 'nav.pagination a[rel=next]',
+    append: '.product',
+    history: 'push',
+    status: '.page-load-status',
+    scrollThreshold: 400
+  });
+  $container.on('request.infiniteScroll', function() { $('.spinner').show(); });
+  $container.on('append.infiniteScroll', function() { $('.spinner').hide(); });
+  $container.on('error.infiniteScroll', function() { $('.spinner').hide(); });
+});
+</script>

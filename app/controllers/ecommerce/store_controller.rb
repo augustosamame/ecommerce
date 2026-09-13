@@ -126,11 +126,11 @@ module Ecommerce
       def set_main_meta_tags
         base_url = request.base_url
         set_meta_tags title: "Home",
-                      description: "GlobalCanasta - imported products from around the world at origin price. Delivered next-day in Lima, Perú.",
+                      description: Ecommerce.meta_tags_store_main_description,
                       canonical: base_url,
                       og: {
                         title: :full_title,
-                        description: "GlobalCanasta - imported international products delivered next-day in Lima.",
+                        description: "#{Ecommerce.site_name} - imported international products delivered next-day in Lima.",
                         image: Ecommerce.logo,
                         url: base_url,
                         type: "website"
@@ -138,7 +138,7 @@ module Ecommerce
                       twitter: {
                         card: "summary",
                         title: :full_title,
-                        description: "GlobalCanasta - imported international products delivered next-day in Lima.",
+                        description: "#{Ecommerce.site_name} - imported international products delivered next-day in Lima.",
                         image: Ecommerce.logo
                       },
                       alternate: {

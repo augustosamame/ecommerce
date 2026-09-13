@@ -1,0 +1,67 @@
+<%# Favourites (wishlist): product rows with add-to-cart and remove. %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<% items = @wishlist.wishlist_items.includes(:product).to_a.select { |i| i.product } %>
+<main class="gc-commerce gc-account gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <div>
+      <div class="gc-eyebrow"><%= t('ecommerce.globalcanasta.store.header.favourites') %></div>
+      <h1 class="gc-commerce__title"><%= t('.title') %></h1>
+    </div>
+    <p class="gc-commerce__meta"><%= t('.total_items') %>: <strong class="gc-num"><%= @wishlist_qty_subtotal %></strong></p>
+  </header>
+
+  <% if items.empty? %>
+    <div class="gc-empty">
+      <div class="gc-empty__icon"><%= gc_icon :heart, size: 32 %></div>
+      <h2 class="gc-h3"><%= t('.empty_title', default: 'No favourites yet') %></h2>
+      <p class="gc-muted"><%= t('.empty_body', default: 'Tap the heart on any product to keep it here.') %></p>
+      <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary"><%= t('.continue_shopping') %></a>
+    </div>
+  <% else %>
+    <div class="gc-commerce__grid">
+      <section class="gc-commerce__main">
+        <ul class="gc-lines">
+          <% items.each do |item| %>
+            <% product = item.product %>
+            <li class="gc-line gc-line--wish" data-gc-product="<%= product.id %>">
+              <a href="<%= engine.product_path(product) %>" class="gc-line__thumb"><%= image_tag product.image.thumb_100.url, alt: "" %></a>
+              <div class="gc-line__info">
+                <a href="<%= engine.product_path(product) %>" class="gc-line__name"><%= product.name %></a>
+                <div class="gc-line__meta">
+                  <span class="gc-price gc-num"><%= product_session_price(product, "current_price") %></span>
+                  <% unless product.in_stock? %><span class="gc-price--sale"><%= t('ecommerce.globalcanasta.product.product.out_of_stock') %></span><% end %>
+                </div>
+              </div>
+              <div class="gc-line__qty">
+                <% if product.in_stock? %>
+                  <%= simple_form_for Ecommerce::CartItem.new, remote: true, html: { class: "cart-form gc-inline-form", id: "new_cart_item_#{product.id}" } do |f| %>
+                    <%= f.hidden_field :product_id, value: product.id, id: "product_product_id_#{product.id}" %>
+                    <%= f.hidden_field :quantity, value: [item.quantity.to_i, 1].max, id: "devtech_quantity_field_#{product.id}" %>
+                    <%= button_tag t('ecommerce.globalcanasta.product.product.add_to_cart'), type: 'submit', class: "gc-btn gc-btn--primary gc-btn--sm" %>
+                  <% end %>
+                <% end %>
+              </div>
+              <div class="gc-line__remove">
+                <%= link_to engine.wishlist_item_path(item), method: :delete, class: "gc-icon-btn gc-icon-btn--lg", "aria-label": "#{t('.remove', default: 'Remove')} #{product.name}" do %>
+                  <%= gc_icon :trash, size: 16 %>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+        <div class="gc-commerce__tools">
+          <a href="<%= engine.products_path %>" class="gc-btn gc-btn--ghost"><%= gc_icon :chevron_left, size: 16 %> <%= t('.continue_shopping') %></a>
+        </div>
+      </section>
+      <aside class="gc-summary">
+        <h2 class="gc-h3 gc-summary__title"><%= t('.wishlist_totals') %></h2>
+        <dl class="gc-summary__rows">
+          <div><dt><%= t('.total_items') %></dt><dd class="gc-num" id="qty-subtotal-amount"><%= @wishlist_qty_subtotal %></dd></div>
+          <div><dt><%= t('.subtotal') %></dt><dd class="gc-num" id="subtotal-amount"><%= gc_money_pair(@wishlist_subtotal).first %></dd></div>
+          <div><dt><%= t('.shipping') %></dt><dd class="gc-summary__note"><%= t('.shipping_cost_text') %></dd></div>
+        </dl>
+        <a href="<%= engine.cart_path(@cart.id) %>" class="gc-btn gc-btn--secondary gc-btn--lg gc-btn--block"><%= t('ecommerce.globalcanasta.store.cart.view_cart') %></a>
+      </aside>
+    </div>
+  <% end %>
+</main>

@@ -1,0 +1,1171 @@
+<%# ---------------------------------------------------------------------
+    Checkout. Left: address (or guest form). Right: order summary panel,
+    payment options, delivery notes, place-order. Every id / class the
+    checkout JS (below) reads is preserved: #subtotal, #shipping-amount,
+    #combo-discount-amount, #coupon-amount, #payment-amount, #pay_in_soles,
+    #pay_in_points, #points-amount, #payment-amount-in-soles, #dni-required,
+    #coupon-code/.coupon-apply/#coupon-error, #factura-*, #radio_form,
+    input[name=payment_method], #delivery-instructions, #accept_marketing,
+    #pay-now-button, #guest-block-home, #pay-in-soles-section,
+    #new-address-button/#delete-address-button/#new-address-container,
+    .direction-btn, .combo-subtotal-hidden, .coupon-subtotal-hidden.
+    --------------------------------------------------------------------- %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<main class="gc-commerce gc-checkout gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <h1 class="gc-commerce__title"><%= t('.checkout_title', default: 'Checkout') %></h1>
+    <a href="<%= engine.cart_path(@cart.id) %>" class="gc-btn gc-btn--ghost"><%= gc_icon :chevron_left, size: 16 %> <%= t('.back_to_cart', default: 'Back to cart') %></a>
+  </header>
+
+  <section class="checkout">
+    <div class="gc-checkout__grid checkout-row">
+      <%# ---------- Left: address / guest ---------- %>
+      <div class="gc-checkout__left checkout-left-col">
+        <% if @guest_checkout %>
+          <%# On mobile this block is relocated under "Pagar en Soles" via JS; %>
+          <%# guest-block-home is its desktop position. %>
+          <div id="guest-block-home">
+            <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/guest_form" %>
+          </div>
+        <% else %>
+          <div class="gc-card gc-card__body gc-form gc-checkout__address">
+            <h2 class="gc-h3"><%= t('.shipping_address') %></h2>
+            <div class="have-address">
+              <p class="gc-small gc-muted"><%= t('.pick_address') %></p>
+              <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
+            </div>
+            <div class="direction-btn gc-checkout__address-btns">
+              <button id="new-address-button" class="gc-btn gc-btn--outline checkout-address-button"><%= t('.new_address') %></button>
+              <button id="delete-address-button" class="gc-btn gc-btn--ghost checkout-address-button"><%= t('.delete_address') %></button>
+            </div>
+            <div id="new-address-container" style="display: none;">
+              <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="gc-panel gc-panel--list gc-checkout__promises gc-desktop-only">
+          <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('ecommerce.globalcanasta.store.main.promise_2') %></div>
+          <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('ecommerce.globalcanasta.store.main.promise_3') %></div>
+          <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('ecommerce.globalcanasta.store.main.promise_4') %></div>
+        </div>
+      </div>
+
+      <%# ---------- Right: order + payment ---------- %>
+      <div class="gc-checkout__right checkout-right-col">
+        <div class="gc-summary mini-cart">
+          <h2 class="gc-h3 gc-summary__title"><%= t('.your_order') %></h2>
+          <div class="mini-cart-title gc-summary__cols">
+            <span class="gc-label"><%= t('.products') %></span>
+            <span class="gc-label">Total</span>
+          </div>
+          <ul class="mini-car-items-container gc-summary__items">
+            <% @cart.cart_items.each do |item| %>
+              <li class="mini-cart-items gc-summary__item">
+                <div class="mini-cart-item gc-summary__item-info">
+                  <span class="gc-summary__item-name"><%= item.product.name %> <span class="gc-faint">× <%= item.quantity %></span></span>
+                  <% if item.product.weight.to_f > 0 %><span class="checkout-weight-p gc-small gc-faint"><%= friendly_cart_weight(item.product.weight) %></span><% end %>
+                </div>
+                <span class="cart-price-p gc-num"><%= session_price(item.line_total(@current_user)) %></span>
+              </li>
+            <% end %>
+          </ul>
+
+          <dl class="gc-summary__rows">
+            <div class="checkout-p-text checkout-p-text-mobile">
+              <dt><%= t('.subtotal_dollars') %></dt>
+              <dd class="gc-num"><span><%= session_currency_symbol %></span> <span id="subtotal"><%= @cart_subtotal %></span></dd>
+            </div>
+            <div class="checkout-p-text checkout-p-text-mobile">
+              <dt><%= t('.shipping') %> <span id="free-shipping-text" class="amount gc-badge gc-badge--stock" style="display: none;"><%= t('.free_shipping') %></span></dt>
+              <dd class="gc-num"><span><%= session_currency_symbol %></span> <span id="shipping-amount">0.00</span></dd>
+            </div>
+            <div class="checkout-p-text checkout-p-text-mobile gc-summary__discount <%= (@combo_total_discount_usd && @combo_total_discount_usd > 0) ? '' : 'combo-subtotal-hidden' %>" id="combo-discount-subtotal-id">
+              <dt><%= t('.combo_discount_line') %></dt>
+              <dd class="gc-num"><span><%= session_currency_symbol %></span> <span id="combo-discount-amount">-<%= @combo_total_discount_usd ? sprintf('%.2f', @combo_total_discount_usd) : '0.00' %></span></dd>
+            </div>
+            <div class="checkout-p-text checkout-p-text-mobile gc-summary__discount coupon-subtotal-hidden" id="coupon-subtotal-id">
+              <dt><%= t('.coupon_line') %></dt>
+              <dd class="gc-num"><span><%= session_currency_symbol %></span> <span id="coupon-amount">0.00</span></dd>
+            </div>
+          </dl>
+          <div class="gc-summary__total checkout-p-text checkout-p-text-mobile">
+            <div><dt><%= t('.total_dollars') %></dt><dd class="gc-price gc-num"><span><%= session_currency_symbol %></span> <span id="payment-amount"><%= @cart_subtotal_after_discount %></span></dd></div>
+          </div>
+
+          <% if current_user && current_user.points.to_i > 0 %>
+            <label class="gc-check gc-checkout__option checkout-pay-in-points-p" for="pay_in_points">
+              <%= check_box_tag("pay_in_points", "0", false, class: "pay_in_points_checkbox") %>
+              <span><%= t('.pay_in_points') %> <span class="gc-faint">(<span id="points-amount"><%= current_user.try(:points) %></span> pts)</span></span>
+            </label>
+          <% end %>
+        </div>
+
+        <div id="pay-in-soles-section" class="pay-in-soles gc-checkout__soles checkout-p-text-mobile">
+          <label class="gc-check checkout-pay-in-soles-p" for="pay_in_soles">
+            <%= check_box_tag("pay_in_soles", "0", false, class: "pay_in_soles_checkbox") %>
+            <span><%= t('.pay_in_soles') %></span>
+          </label>
+          <div class="checkout-pay-in-soles-p gc-num gc-checkout__soles-amount">
+            <span>S/</span> <span id="payment-amount-in-soles"><%= @cart_subtotal_after_discount * @exchange_rate %></span>
+          </div>
+        </div>
+
+        <%# DNI: for guests this lives in the guest form (left column); logged-in %>
+        <%# users keep it here so they can edit their stored doc_id. %>
+        <% if @dni_required && !@guest_checkout %>
+          <div class="commerce-checkout-payment gc-card gc-card__body gc-form gc-checkout__block">
+            <ul class="payment_methods">
+              <li class="wc_payment_method payment_method_card">
+                <p class="over-700-text gc-small gc-muted"><%= t('.text_over_700') %></p>
+                <div class="payment_box payment_method_cheque gc-field">
+                  <label class="gc-field__label" for="dni-required"><%= t('.docs_over_700') %></label>
+                  <input type="text" name="dni_required" id="dni-required" class="gc-input" value="<%= @current_doc_id %>" />
+                </div>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+
+        <% if @coupons_active %>
+          <div class="coupon gc-card gc-card__body gc-form gc-checkout__block checkout-p-text-mobile">
+            <p class="gc-checkout__block-title"><%= gc_icon :gift, size: 16 %> <%= t('.enter_coupon_1') %></p>
+            <form action="" class="gc-checkout__coupon">
+              <label for="coupon-code" class="gc-field__label"><%= t('.enter_coupon_2') %></label>
+              <div class="gc-checkout__coupon-row">
+                <% if @always_on_coupon_redeemable %>
+                  <input type="text" id="coupon-code" class="gc-input gc-mono" value="<%= @always_on_coupon.coupon_code %>" readonly style="text-transform: uppercase;" />
+                <% else %>
+                  <input type="text" name="" id="coupon-code" class="gc-input gc-mono" style="text-transform: uppercase;" />
+                  <button class="coupon-apply gc-btn gc-btn--outline"><%= t('.apply_coupon') %></button>
+                <% end %>
+              </div>
+            </form>
+            <label id="coupon-error" class="gc-field__error" style="display: block; margin-top: 8px;"></label>
+          </div>
+        <% end %>
+
+        <%# Factura (electronic invoice) is a session/account feature: a guest has %>
+        <%# no saved factura record and no signed-in context to enter one, so the %>
+        <%# whole block is hidden for guests (they receive a boleta). %>
+        <% unless @guest_checkout %>
+          <div class="pay-in-soles gc-card gc-card__body gc-checkout__block checkout-p-text-mobile">
+            <div class="checkout-receipt-div">
+              <label class="checkout-receipt-div-inner gc-check" for="factura-checkbox">
+                <%= check_box_tag("pay_in_soles", "0", false, class: "factura_checkbox", id: "factura-checkbox") %>
+                <span><%= t('.i_need_a_factura') %></span>
+              </label>
+              <div id="factura-info-display" class="gc-checkout__factura">
+                <div id="factura-info-saved" class="gc-small gc-muted" style="<%= @info_factura_available ? '' : 'display: none;' %>">
+                  <p>RUC: <span id="factura-vat-display" class="gc-mono"><%= @factura_vat %></span></p>
+                  <p>Razón Social: <span id="factura-razon-social-display"><%= @factura_razon_social %></span></p>
+                  <p><%= t('.address') %>: <span id="factura-address-display"><%= @factura_address %></span>, <span id="factura-city-display"><%= @factura_city %></span></p>
+                  <button type="button" class="checkout-receipt-button gc-btn gc-btn--ghost" id="factura-edit-button"><%= t('.click_here_to_setup_factura_info') %></button>
+                </div>
+                <button type="button" class="checkout-receipt-button gc-btn gc-btn--ghost" id="factura-setup-button" style="<%= @info_factura_available ? 'display: none;' : '' %>"><%= t('.click_here_to_setup_factura_info') %></button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <form id="radio_form" class="gc-checkout__payment">
+          <div class="payment gc-card gc-card__body">
+            <h2 class="gc-h3 gc-checkout__block-title"><%= t('.select_payment') %></h2>
+
+            <label class="payment-method gc-pay-option">
+              <input type="radio" name="payment_method" value="card" id="payment_method_card" />
+              <span class="gc-pay-option__body">
+                <span class="gc-pay-option__label"><%= t('.credit_debit_card') %></span>
+                <span class="payment-img gc-pay-option__marks"><%= image_tag "ecommerce/img/expatshop/credit_card_icons.png", alt: "Visa, Mastercard, Amex, Diners" %></span>
+              </span>
+            </label>
+
+            <label class="payment-method gc-pay-option">
+              <input type="radio" name="payment_method" value="yape" id="payment_method_yape" />
+              <span class="gc-pay-option__body">
+                <span class="gc-pay-option__label"><%= t('.yape') %></span>
+                <span class="payment-img gc-pay-option__marks gc-pay-option__marks--sm"><%= image_tag "ecommerce/img/expatshop/yape.png", alt: "Yape", class: "yape-img" %></span>
+              </span>
+            </label>
+
+            <label class="payment-method gc-pay-option">
+              <input type="radio" name="payment_method" value="mobile_banking" id="payment_method_mobile_banking" />
+              <span class="gc-pay-option__body">
+                <span class="gc-pay-option__label"><%= t('.mobile_banking') %></span>
+                <span class="payment-img gc-pay-option__marks"><%= image_tag "ecommerce/img/expatshop/bancos.png", alt: "" %></span>
+                <span class="payment-img gc-pay-option__marks gc-pay-option__marks--sm"><%= image_tag "ecommerce/img/expatshop/via_pagoefectivo.png", alt: "PagoEfectivo" %></span>
+              </span>
+            </label>
+
+            <label class="internal-process gc-pay-option">
+              <input type="radio" name="payment_method" id="payment_method_manual" value="manual" />
+              <span class="gc-pay-option__body">
+                <span class="gc-pay-option__label"><%= t('.manual_payment') %></span>
+                <span class="gc-small gc-muted"><%= @payment_manual.pre_message %></span>
+              </span>
+            </label>
+
+            <div class="instructions gc-field gc-checkout__instructions">
+              <label class="gc-field__label" for="delivery-instructions"><%= t('.delivery_instructions') %></label>
+              <textarea name="" id="delivery-instructions" rows="4" class="gc-input gc-checkout__textarea"></textarea>
+            </div>
+            <label class="receive-sms gc-check gc-checkout__option" for="accept_marketing">
+              <input type="checkbox" name="" checked id="accept_marketing" />
+              <span><%= t('.accept_marketing') %></span>
+            </label>
+          </div>
+          <button id="pay-now-button" class="gc-btn gc-btn--secondary gc-btn--lg gc-btn--block gc-checkout__pay" onclick="return gtag_report_conversion()"><%= t('.place_order') %></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="factura-modal-backdrop" class="gc-modal__scrim" style="display: none;"></div>
+  <div id="factura-modal" class="gc-modal gc-form" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="gc-factura-title">
+    <h2 class="gc-h3" id="gc-factura-title"><%= I18n.t('devise.registrations.edit.invoice_information', default: 'Información para Factura') %></h2>
+    <p class="gc-small gc-muted"><%= I18n.t('devise.registrations.edit.fill_in_all_fields', default: 'Llene todos los campos') %></p>
+    <div id="factura-modal-error" class="gc-flash gc-flash--error" style="display: none;"></div>
+    <div class="form-group">
+      <label for="factura-vat">RUC</label>
+      <input type="text" id="factura-vat" class="form-control gc-input gc-mono" value="<%= @factura_vat %>" maxlength="11" />
+    </div>
+    <div class="form-group">
+      <label for="factura-razon-social">Razón Social</label>
+      <input type="text" id="factura-razon-social" class="form-control gc-input" value="<%= @factura_razon_social %>" />
+    </div>
+    <div class="form-group">
+      <label for="factura-address"><%= t('.address') %></label>
+      <input type="text" id="factura-address" class="form-control gc-input" value="<%= @factura_address %>" />
+    </div>
+    <div class="form-group">
+      <label for="factura-city">Ciudad</label>
+      <input type="text" id="factura-city" class="form-control gc-input" value="<%= @factura_city %>" />
+    </div>
+    <div class="gc-modal__actions">
+      <button type="button" id="factura-modal-cancel" class="gc-btn gc-btn--ghost">Cancelar</button>
+      <button type="button" id="factura-modal-save" class="gc-btn gc-btn--primary">Guardar</button>
+    </div>
+  </div>
+</main>
+
+
+<!-- Incluyendo .js de Culqi Checkout-->
+<!--<script src="https://checkout.culqi.com/v2"></script> -->
+<!--<script src="https://checkout.culqi.com/js/v3"></script> -->
+<script src="https://3ds.culqi.com"></script>
+
+<script src="https://checkout.culqi.com/js/v4"></script>
+
+<script>
+  Culqi3DS.publicKey = "<%= Culqi.public_key %>";
+</script>
+
+<script>
+
+$( document ).ready(function() {
+
+  Culqi3DS.reset();
+
+  // applied_coupon is initialized below alongside the other checkout-state
+  // variables; if there is an always-on coupon and this user can still redeem
+  // it, kick off the auto-apply now so the discount lands before submit.
+  <% if @always_on_coupon_redeemable %>
+    calculate_coupon("<%= @always_on_coupon.coupon_code %>");
+  <% end %>
+
+
+  $('#accept_marketing').change(function(event) {
+    if (!this.checked) {
+      $('#accept_marketing').prop('checked', true);
+      event.preventDefault();
+    }
+  });
+
+
+  $('#new-address-button').click(function(){
+    $('#new-address-container').show();
+    $('.direction-btn').hide();
+  });
+
+    $('#delete-address-button').click(function(){
+      window.location.href = "<%= Ecommerce::Engine.routes.url_helpers.addresses_path %>";
+    
+  });
+
+  $('#radio_form').change(function() {
+    selected_value = $("input[name = 'payment_method']:checked").val();
+    if (selected_value === 'yape') {
+      console.log('clicked yape');
+      $('#pay_in_soles').prop('checked', true);
+      recalculate_checkout_totals();
+    }
+    })
+
+  if (<%= !@not_in_stock_array.blank? %>) {
+    Swal({
+        type: 'error',
+        title: '<%= session[:locale] == 'es-PE' ? 'Algunos de los productos de su carrito no están disponibles' : 'Some of the products in your cart are not available' %>',
+        text: "<%= session[:locale] == 'es-PE' ? @not_in_stock_alert_es : @not_in_stock_alert_en %>"
+      });
+  }
+
+  if ($("#address_id").get(0)) {
+    var address_option_length = $('#address_id > option').length;
+    $("#address_id").get(0).selectedIndex = address_option_length - 1;
+    if ($("#address_id option:selected").text().split(',')[2]) {
+      var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
+      calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
+    }
+  }
+
+  function openFacturaModal() {
+    $('#factura-modal-error').hide().text('');
+    $('#factura-modal-backdrop').show();
+    $('#factura-modal').show();
+  }
+  function closeFacturaModal() {
+    $('#factura-modal-backdrop').hide();
+    $('#factura-modal').hide();
+  }
+  $('#factura-setup-button, #factura-edit-button').on('click', openFacturaModal);
+  $('#factura-modal-cancel, #factura-modal-backdrop').on('click', closeFacturaModal);
+
+  $('#factura-modal-save').on('click', function() {
+    var vat = $.trim($('#factura-vat').val());
+    var razon_social = $.trim($('#factura-razon-social').val());
+    var address = $.trim($('#factura-address').val());
+    var city = $.trim($('#factura-city').val());
+
+    if (!vat || !razon_social || !address || !city) {
+      $('#factura-modal-error').text('<%= j(t('.you_must_enter_factura_info')) %>').show();
+      return;
+    }
+    if (!/^\d{11}$/.test(vat)) {
+      $('#factura-modal-error').text('RUC debe tener 11 dígitos').show();
+      return;
+    }
+
+    $('#factura-modal-save').prop('disabled', true);
+    $.ajax({
+      url: '<%= Ecommerce::Engine.routes.url_helpers.save_factura_info_path %>',
+      type: 'POST',
+      dataType: 'json',
+      data: { vat: vat, razon_social: razon_social, address: address, city: city },
+      headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+      success: function(data) {
+        if (data && data.success) {
+          $('#factura-vat-display').text(data.vat);
+          $('#factura-razon-social-display').text(data.razon_social);
+          $('#factura-address-display').text(data.address);
+          $('#factura-city-display').text(data.city);
+          $('#factura-info-saved').show();
+          $('#factura-setup-button').hide();
+          info_factura_blank = false;
+          closeFacturaModal();
+        } else {
+          $('#factura-modal-error').text((data && data.errors) ? data.errors.join(', ') : 'Error').show();
+        }
+      },
+      error: function(xhr) {
+        var msg = 'Error';
+        try {
+          var resp = JSON.parse(xhr.responseText);
+          if (resp.errors) msg = resp.errors.join(', ');
+        } catch (e) {}
+        $('#factura-modal-error').text(msg).show();
+      },
+      complete: function() {
+        $('#factura-modal-save').prop('disabled', false);
+      }
+    });
+  });
+
+});
+
+
+
+</script>
+
+<script>
+
+  var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+  var culqi_payment_amount = Number(($('#payment-amount').html() * 100).toFixed(2));
+
+  // Guest checkout state. When the visitor has no session the disguised
+  // "Comprar como Invitado" form collects their identity + address; on submit
+  // we create+sign-in a guest user (guest_register) and these client_* values
+  // are filled from the server response so the Culqi popup gets real data.
+  var is_guest_checkout = <%= @guest_checkout ? 'true' : 'false' %>;
+  var client_first_name = '<%= j(@current_user_first_name.to_s) %>';
+  var client_last_name = '<%= j(@current_user_last_name.to_s) %>';
+  var client_email = '<%= j(@current_user_email.to_s) %>';
+  var client_phone = '<%= j(@current_user_phone.to_s) %>';
+
+  var shipping_calculated_flag = false
+  // Number of in-flight calculate_shipping() AJAX calls. The Pay button is
+  // blocked while this is > 0 (and until shipping has been calculated at least
+  // once) so the amount sent to Culqi/PagoEfectivo can never be frozen before
+  // shipping has been folded into the total. Without this the charge could omit
+  // shipping while the stored order still recorded the full total.
+  var shipping_requests_pending = 0
+  var exchange_rate = <%= @exchange_rate %>
+  var info_factura_blank = <%= @info_factura_available.blank? %>
+  var address_saved_flag = false
+  var culqi_order_id = ''
+  var applied_coupon = '<%= @always_on_coupon_redeemable ? @always_on_coupon.coupon_code : "" %>'
+  // True when the applied coupon grants free shipping. Seeded server-side so the
+  // page-load shipping calculation can't overwrite a free-shipping coupon: the
+  // auto-apply coupon AJAX and the address shipping AJAX used to race, and
+  // whichever returned last won the #shipping-amount value (so shipping was
+  // charged at random). calculate_shipping() now respects this flag, and
+  // calculate_coupon() keeps it in sync.
+  var free_shipping_active = <%= (@always_on_coupon_redeemable && @always_on_coupon&.free_shipping?) ? 'true' : 'false' %>;
+
+  // calculate and update shipping html tag when shipping address is created
+  $("#save-address-button").click(function() {
+    calculate_shipping($("#address_street").val(), $("#address_district").val(), 'save_address');
+  });
+  // calculate coupon and recalculate_checkout_totals
+  $(".coupon-apply").click(function() {
+    calculate_coupon( $("#coupon-code").val() );
+    event.preventDefault();
+  });
+  // calculate and update shipping html tag when shipping address is picked
+  $('#address_id').on('change', function() {
+    if ( this.value ) {
+      var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
+      calculate_shipping($("#address_street").val(), district_from_dropdown, 'save_address');
+    } else {
+      var my_zero = 0
+      $("#shipping-amount").html(my_zero.toFixed(2))
+      $("#free-shipping-text").hide()
+      shipping_calculated_flag = false
+    }
+  })
+  // recalculate totals (basically for culqi) when pay_in_soles checkbox changes
+  $('#pay_in_soles').on('change', function() {
+    recalculate_checkout_totals();
+  })
+
+  // recalculate totals (basically for culqi) when pay_in_points checkbox changes
+  $('#pay_in_points').on('change', function() {
+    recalculate_checkout_totals();
+  })
+
+  function extract_address_and_district() {
+    var address_and_district = $('#address_id').val().split('|');
+    var address = address_and_district[0];
+    var district = address_and_district[1];
+    return [address, district]
+  }
+
+  function calculate_shipping(street, district, origin) {
+    shipping_requests_pending++;
+    // Returns the jqXHR (thenable) so callers can await the calculation
+    // instead of racing it — the amount sent to Culqi/PagoEfectivo must never
+    // be frozen before shipping is folded into the total.
+    return $.ajax({
+      url: "calculate_shipping",
+      dataType: "json",
+      method: "POST",
+      data: { address: street, district: district },
+      success: function(data){
+        if (data.currency == "pen") { cur_sym = "S/. " } else { cur_sym = "$ " }
+        // Don't overwrite free shipping granted by an applied coupon.
+        if (free_shipping_active) {
+          $("#shipping-amount").html(0)
+        } else {
+          $("#shipping-amount").html(data.amount.toFixed(2))
+        }
+        //$("#free-shipping-text").show()
+        recalculate_checkout_totals();
+        shipping_calculated_flag = true
+        if (origin == 'save_address') {
+          address_saved_flag = true
+        }
+      },
+      complete: function(){
+        shipping_requests_pending--;
+        if (shipping_requests_pending < 0) { shipping_requests_pending = 0; }
+      }
+    });
+  }
+
+  function calculate_coupon(coupon_code) {
+    $.ajax({
+      url: "calculate_coupon",
+      dataType: "json",
+      method: "POST",
+      data: { coupon_code: coupon_code.toUpperCase(), cart_id: "<%= @cart.id %>" },
+      success: function(data){
+        if (data.result == "ok") {
+          $("#coupon-amount").html(Number(data.discount).toFixed(2));
+          $("#coupon-subtotal-id").removeClass('coupon-subtotal-hidden');
+          $("#coupon-error").html("");
+          applied_coupon = coupon_code
+          if (data.free_shipping == true) {
+            free_shipping_active = true
+            $("#shipping-amount").html(0)
+            $("#free-shipping-text").hide()
+          } else {
+            free_shipping_active = false
+            if ($("#address_id option:selected").text().split(',')[2]) {
+              var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
+              calculate_shipping($("#address_street").val(), district_from_dropdown, 'coupon');
+            }
+          }
+          recalculate_checkout_totals();
+        }
+        else {
+          // Coupon not redeemable — never leave free shipping on (the flag may
+          // have been seeded true for an always-on coupon), and restore the
+          // real shipping cost.
+          free_shipping_active = false
+          $("#coupon-error").html(data.error_message);
+          if ($("#address_id option:selected").text().split(',')[2]) {
+            var district_from_dropdown = $("#address_id option:selected").text().split(',').pop().trim();
+            calculate_shipping($("#address_street").val(), district_from_dropdown, 'coupon');
+          }
+        }
+      }
+    });
+  }
+
+  // Validate the guest identity fields before we try to register. Returns an
+  // error message string, or null when everything looks good.
+  function validateGuestFields() {
+    var firstName = $.trim($('#guest_first_name').val());
+    var lastName = $.trim($('#guest_last_name').val());
+    var phone = $.trim($('#guest_username').val());
+    var email = $.trim($('#guest_email').val());
+
+    if (!firstName || !lastName || !phone || !email) {
+      return "<%= j(t('.you_must_pick_or_save_an_address')) %>";
+    }
+    if (!/^\d{9}$/.test(phone)) {
+      return '<%= j(I18n.t("activerecord.errors.models.user.attributes.username.wrong_length", default: "El celular debe tener 9 dígitos")) %>';
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      return '<%= j(I18n.t("errors.messages.invalid", default: "Correo electrónico inválido")) %>';
+    }
+    return null;
+  }
+
+  // Auto-save address via AJAX (returns a Promise). For guests this hits
+  // guest_register (create+sign-in+address) instead of the addresses endpoint;
+  // both return the same { success, address: {id, display} } shape so the
+  // caller is identical.
+  function tryAutoSaveAddress() {
+    return new Promise(function(resolve, reject) {
+      var url, data;
+
+      if (is_guest_checkout) {
+        url = "<%= Ecommerce::Engine.routes.url_helpers.checkout_guest_register_path %>";
+        data = {
+          first_name: $('#guest_first_name').val(),
+          last_name: $('#guest_last_name').val(),
+          username: $('#guest_username').val(),
+          email: $('#guest_email').val(),
+          address_name: $('#address_name').val() || 'Home',
+          street: $('#address_street').val(),
+          district: $('#address_district').val(),
+          latitude: $('#address_latitude').val(),
+          longitude: $('#address_longitude').val(),
+          raw_address: $('#address_raw_address').val()
+        };
+      } else {
+        url = "<%= Ecommerce::Engine.routes.url_helpers.addresses_path %>";
+        data = {
+          address: {
+            name: $('#address_name').val() || 'Home',
+            street: $('#address_street').val(),
+            district: $('#address_district').val(),
+            city: 'Lima',
+            state: 'Lima',
+            country: 'Peru',
+            shipping_or_billing: 'shipping',
+            latitude: $('#address_latitude').val(),
+            longitude: $('#address_longitude').val(),
+            raw_address: $('#address_raw_address').val()
+          }
+        };
+      }
+
+      $.ajax({
+        url: url,
+        type: 'POST',
+        dataType: 'json',
+        data: data,
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(resp) {
+          if (is_guest_checkout && resp && resp.success) {
+            // Devise rotates the CSRF token on sign-in; adopt the fresh one so
+            // the follow-up payment POSTs (which read this meta tag) succeed.
+            if (resp.csrf_token) {
+              $('meta[name="csrf-token"]').attr('content', resp.csrf_token);
+            }
+            if (resp.client_details) {
+              client_first_name = resp.client_details.first_name || client_first_name;
+              client_last_name = resp.client_details.last_name || client_last_name;
+              client_email = resp.client_details.email || client_email;
+              client_phone = resp.client_details.phone || client_phone;
+            }
+          }
+          resolve(resp);
+        },
+        error: function(xhr) {
+          try {
+            var errorData = JSON.parse(xhr.responseText);
+            resolve(errorData);
+          } catch (e) {
+            reject(new Error('Failed to save address'));
+          }
+        }
+      });
+    });
+  }
+
+  function recalculate_checkout_totals() {
+    Culqi.publicKey = "<%= Culqi.public_key %>";
+    // console.log('Culqi.publicKey: ',Culqi.publicKey)
+
+    var total_amount = (
+      Number($("#coupon-amount").html()) +
+      Number($("#shipping-amount").html()) +
+      Number($("#subtotal").html()) +
+      Number($("#combo-discount-amount").html())
+    ).toFixed(2);
+
+    $('#payment-amount').html(total_amount)
+    $('#payment-amount-in-soles').html((total_amount * exchange_rate).toFixed(2));
+    payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
+    culqi_payment_amount = ($('#pay_in_soles').prop('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
+
+    var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
+
+    if (points_to_redeem > 0) {
+      total_amount = (Number(total_amount) - (points_to_redeem / 100)).toFixed(2)
+      $('#payment-amount').html(total_amount)
+      $('#payment-amount-in-soles').html((total_amount * exchange_rate).toFixed(2));
+      payment_amount = (Number($('#payment-amount').html()) * 100).toFixed(2);
+      culqi_payment_amount = ($('#pay_in_soles').prop('checked')) ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : (Number($('#payment-amount').html()) * 100).toFixed(2);
+    }
+
+    // console.log('recalculate_checkout_totals')
+
+
+  }
+
+  // Resolves once no shipping calculation is in flight. Bounded (default 10s)
+  // so a hung request can never brick the checkout: after the timeout we
+  // proceed with whatever is on screen (pre-guard behavior) rather than
+  // blocking the sale.
+  function wait_for_shipping_settled(max_ms) {
+    return new Promise(function(resolve) {
+      if (shipping_requests_pending === 0) { resolve(); return; }
+      var waited = 0;
+      var iv = setInterval(function() {
+        waited += 150;
+        if (shipping_requests_pending === 0 || waited >= (max_ms || 10000)) {
+          clearInterval(iv);
+          resolve();
+        }
+      }, 150);
+    });
+  }
+
+  $('#pay-now-button').on('click', async function(e) {
+    // Shipping-race guard, transparent version: instead of blocking the user
+    // with a dialog, quietly make sure shipping is resolved and then continue
+    // the payment automatically.
+    // 1. A calculation is in flight → wait for it.
+    if (shipping_requests_pending > 0) {
+      await wait_for_shipping_settled();
+    }
+    // 2. Never calculated and a saved address is selected → calculate now and
+    //    continue. (No saved address = guest/new-address flow: process_payment
+    //    saves the address and awaits its own shipping calculation.)
+    if (!(shipping_calculated_flag || free_shipping_active) && $('#address_id').val()) {
+      var selected_text = $("#address_id option:selected").text();
+      if (selected_text) {
+        try {
+          await calculate_shipping($("#address_street").val(), selected_text.split(',').pop().trim(), 'save_address');
+        } catch (err) {
+          // Shipping endpoint failed; don't strand the customer — proceed with
+          // the on-screen total, as the pre-guard code always did.
+          console.log('calculate_shipping failed before payment:', err);
+        }
+        await wait_for_shipping_settled();
+      }
+    }
+    // Amounts are re-frozen from the DOM inside process_payment.
+    $.ajax({
+      url: "checkout/check_stock_cart_js_from_checkout",
+      dataType: "json",
+      success: function(data) {
+        if (data.in_stock) {
+          process_payment(e)
+        } else {
+          window.location.replace("<%= checkout_path %>");
+        }
+      }
+    });
+   });
+
+
+  async function process_payment(e) {
+    var errors_present = false
+    // Re-freeze the payment globals from the current DOM right before we send the
+    // amount to Culqi/PagoEfectivo. The Pay button is already gated on shipping
+    // being resolved, and this guarantees culqi_payment_amount reflects the
+    // latest #shipping-amount (incl. any late recalc) rather than a stale value.
+    recalculate_checkout_totals();
+    // Abre el formulario con las opciones de Culqi.settings
+    if (!$('input[name=payment_method]:checked').val()) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_select_payment_method') %>"
+        });
+    }
+
+    var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+    if ((payment_amount * exchange_rate) >= 700 && !$('#factura-checkbox').is(':checked') && typeof $('#dni-required').val() != "undefined" && !$.isNumeric( $('#dni-required').val() ) ) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_enter_doc') %>"
+        });
+      }
+    if (typeof $('#dni-required').val() != "undefined" && !$('#factura-checkbox').is(':checked') && $('#dni-required').val().length > 12) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_enter_doc') %>"
+        });
+      }
+    // Auto-save address if not saved but form fields are filled
+    if (!address_saved_flag && !$('#address_id').val()) {
+      var streetVal = $('#address_street').val();
+      var districtVal = $('#address_district').val();
+
+      // For guests, the address form doubles as a sign-up form: validate the
+      // identity fields before attempting to register + save the address.
+      var guestFieldError = is_guest_checkout ? validateGuestFields() : null;
+
+      if (guestFieldError) {
+        errors_present = true;
+        Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: guestFieldError
+        });
+      } else if (streetVal && streetVal.trim() !== '' && districtVal && districtVal.trim() !== '') {
+        // Try to auto-save the address
+        try {
+          var saveResult = await tryAutoSaveAddress();
+          if (saveResult.success) {
+            // Address saved successfully, update the flag and dropdown
+            address_saved_flag = true;
+            // Add the new address to the dropdown and select it
+            var newOption = new Option(saveResult.address.display, saveResult.address.id, true, true);
+            $('#address_id').append(newOption);
+            // Explicitly set the value to ensure it's selected
+            $('#address_id').val(saveResult.address.id);
+            // Calculate shipping for the new address, and AWAIT it: its success
+            // handler runs recalculate_checkout_totals(), so by the time we
+            // build the Culqi order below the amount includes shipping. Firing
+            // this without awaiting was the guest-flow variant of the
+            // shipping-omitted undercharge.
+            try {
+              await calculate_shipping(streetVal, districtVal, 'save_address');
+            } catch (shipErr) {
+              console.log('calculate_shipping failed after address save:', shipErr);
+            }
+            await wait_for_shipping_settled();
+          } else {
+            errors_present = true;
+            Swal({
+              type: 'error',
+              title: '<%= t('.order_not_placed') %>',
+              text: saveResult.errors ? saveResult.errors.join(', ') : "<%= t('.you_must_pick_or_save_an_address') %>"
+            });
+          }
+        } catch (error) {
+          errors_present = true;
+          Swal({
+            type: 'error',
+            title: '<%= t('.order_not_placed') %>',
+            text: "<%= t('.you_must_pick_or_save_an_address') %>"
+          });
+        }
+      } else {
+        // Form fields are empty, show error
+        errors_present = true;
+        Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_pick_or_save_an_address') %>"
+        });
+      }
+    }
+    if ($('#factura-checkbox').is(':checked') && info_factura_blank) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_enter_factura_info') %>"
+        });
+      }
+
+    if (!($('#accept_marketing').is(':checked'))) {
+      errors_present = true ;
+      Swal({
+          type: 'error',
+          title: '<%= t('.order_not_placed') %>',
+          text: "<%= t('.you_must_check_marketing') %>"
+        });
+      }
+
+    if (!errors_present) {
+      if (($('input[name=payment_method]:checked').val() == "card") || 
+          ($('input[name=payment_method]:checked').val() == "yape") || 
+          ($('input[name=payment_method]:checked').val() == "mobile_banking")) {
+
+        const data_to_send = {
+          amount: Number(culqi_payment_amount),
+          currency_code: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+          cart_id: '<%= @cart.id %>',
+          client_details: {
+            first_name: client_first_name,
+            last_name: client_last_name,
+            email: client_email,
+            phone_number: client_phone
+          }
+        };
+
+        $.ajax({
+          url: "<%= create_culqi_order_backoffice_orders_path %>",
+          dataType: "json",
+          method: "POST",
+          data: data_to_send,
+          headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function(data) {
+            console.log(data.id, '<= Culqi Order Id');
+            culqi_order_id = data.id;
+            // Always (re-)assign the public key right before opening the popup.
+            // The Culqi v4 SDK can lose its internal state after the popup is
+            // closed once (e.g. user dismissed, validation Swal interrupts a
+            // retry), and recalculate_checkout_totals isn't guaranteed to run
+            // again before the second click. Without this we would hit
+            // "No ha ingresado la llave pública del comercio o no es válida".
+            Culqi.publicKey = "<%= Culqi.public_key %>";
+            Culqi3DS.publicKey = "<%= Culqi.public_key %>";
+            Culqi.settings({
+              title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
+              amount: Number(culqi_payment_amount),
+              currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+              description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
+              order: data.id
+            });
+
+            Culqi3DS.settings = {
+              charge: {
+                totalAmount: Number(culqi_payment_amount),
+                returnUrl: "<%= ENV["ROLLBAR_ENV"] == 'production' ? 'https://expatshop.pe/store/checkout' : 'http://localhost:3000/store/checkout' %>",
+              },
+              card: {
+                email: client_email,
+              },
+            };
+
+            Culqi.options({
+              lang: "auto",
+              installments: false, // Habilitar o deshabilitar el campo de cuotas
+              paymentMethods: {
+                tarjeta: $('input[name=payment_method]:checked').val() === 'card',
+                yape: $('input[name=payment_method]:checked').val() === 'yape', 
+                bancaMovil: $('input[name=payment_method]:checked').val() === 'mobile_banking',
+                agente: $('input[name=payment_method]:checked').val() === 'mobile_banking',
+                billetera: $('input[name=payment_method]:checked').val() === 'mobile_banking',
+              },
+              style: {
+                logo: '<%= request.base_url %>/images/globalcanasta-logo.png'
+              },
+              appearance: {
+                menuType: 'sliderTop'
+              }
+            });
+
+            Culqi.open();
+            e.preventDefault();
+          },
+          error: function(xhr, status, error) {
+            console.error('Error creating Culqi order:', error);
+            Swal({
+              type: 'error',
+              title: '<%= t('.order_creation_failed') %>',
+              text: error
+            });
+          }
+        });
+      }
+      else if ($('input[name=payment_method]:checked').val() == "manual") {
+        manual_payment();
+        e.preventDefault();
+      }
+    }
+  }
+
+  window.culqi = async function () {
+
+    // console.log('function Culqi just ran')
+
+    if(Culqi.token) { // ¡Token creado exitosamente!
+        // Get the token ID:
+        // console.log('token created!');
+        Culqi.close();
+        var token = Culqi.token;
+        window.token = token
+        var picked_shipping_address_id = $('#address_id').val();
+        var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
+        var culqi_payment_amount = Number(($('#pay_in_soles').prop('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
+        // var discount_amount = (Number($('#coupon-amount').html() * 100).toFixed(2)) + (Number($('#combo-discount-amount').html() * 100).toFixed(2));
+
+        var discount_amount = Number($('#coupon-amount').html()) * 100 + Number($('#combo-discount-amount').html()) * 100;
+        discount_amount = discount_amount.toFixed(2);
+
+        //var payment_amount = $('#payment_amount').html() * 100;
+        var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
+
+        Culqi3DS.settings = {
+          charge: {
+              totalAmount: Number(culqi_payment_amount),
+              returnUrl: "<%= ENV["ROLLBAR_ENV"] == 'production' ? 'https://expatshop.pe/store/checkout' : 'http://localhost:3000/store/checkout' %>",
+            },
+            card: {
+              email: "<%= @current_user_email %>",
+            },
+        };
+
+        const deviceFingerPrintId = await Culqi3DS.generateDevice();
+        window.deviceFingerPrintId = deviceFingerPrintId
+
+        if (deviceFingerPrintId) {
+            // console.log('Fingerpint Id Generated', deviceFingerPrintId)
+        } else {
+            console.log('Error generating deviceFingerPrintId')
+        }
+
+        $.post(
+          "checkout/pay_order_culqi_checkout",
+          {
+          culqi_token: token,
+          amount: payment_amount,
+          culqi_payment_amount: culqi_payment_amount,
+          shipping_amount: shipping_amount,
+          picked_shipping_address_id: picked_shipping_address_id,
+          cart_id: '<%= "#{@cart.id}" if @cart %>',
+          want_factura: $('#factura-checkbox').is(":checked"),
+          required_doc: $('#dni-required').val(),
+          delivery_instructions: $('#delivery-instructions').val(),
+          applied_coupon: applied_coupon,
+          discount_amount: discount_amount,
+          points_redeemed_amount: points_to_redeem,
+          currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+          device_finger_print_id: deviceFingerPrintId
+          },
+          function(data) {
+            // console.log('data response from checkout/pay_order_culqi_checkout: ', data)
+            if (data.result && data.result == "3ds_required") {
+              // A real 3DS challenge is starting: from here a `response.error`
+              // message means the authentication genuinely failed.
+              window.threeDSInProgress = true;
+              Culqi3DS.initAuthentication(token.id);
+
+            } else {
+              // Non-3DS flow (e.g. Yape) already settled server-side. The
+              // Culqi3DS SDK can still emit a spurious `error` message here, so
+              // make sure the message listener will ignore it.
+              window.threeDSInProgress = false;
+              Culqi3DS.reset();
+              window.deviceFingerPrintId = null
+              window.token = null
+            }
+
+          }
+       );
+       //alert('Se ha creado un token:' + token);
+
+    }else{ // ¡Hubo algún problema!
+      // Here is Pagoefectivo
+      // console.log('token NOT created! Pagoefectivo?');
+        // Mostramos JSON de objeto error en consola
+        if (Culqi.order) {
+          // async payment successfull (got ID via event webhook?)
+          var picked_shipping_address_id = $('#address_id').val();
+          var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
+          var culqi_payment_amount = Number(($('#pay_in_soles').prop('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2));
+          // var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2) + ($('#combo-discount-amount').html() * 100).toFixed(2);
+
+          var discount_amount = Number($('#coupon-amount').html()) * 100 + Number($('#combo-discount-amount').html()) * 100;
+          discount_amount = discount_amount.toFixed(2);
+
+
+          var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
+          // console.log('Order exists but no Token = Pagoefectivo');
+          // console.log(Culqi.order)
+          $.post(
+            "checkout/pay_order_pagoefectivo_checkout",
+            {
+            culqi_order_id: culqi_order_id,
+            amount: payment_amount,
+            culqi_payment_amount: culqi_payment_amount,
+            shipping_amount: shipping_amount,
+            picked_shipping_address_id: picked_shipping_address_id,
+            cart_id: '<%= "#{@cart.id}" if @cart %>',
+            want_factura: $('#factura-checkbox').is(":checked"),
+            required_doc: $('#dni-required').val(),
+            delivery_instructions: $('#delivery-instructions').val(),
+            applied_coupon: applied_coupon,
+            discount_amount: discount_amount,
+            points_redeemed_amount: points_to_redeem,
+            currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+            pagoefectivo_payment_code: Culqi.order.payment_code,
+            pagoefectivo_exp_date: Culqi.order.expiration_date,
+            pagoefectivo_qr_code: Culqi.order.qr
+            },
+            function(data) {
+            })
+        } else {
+          console.log('order key is null');
+          console.log('Checkout closed by user without choosing payment option');
+          //Swal({
+          //    type: 'error',
+          //    title: '<%= t('.token_not_returned') %>',
+          //    text: Culqi.error
+          //  });
+
+        }
+
+        console.log(Culqi.error);
+
+    }
+  };
+
+  function manual_payment() {
+    var picked_shipping_address_id = $('#address_id').val();
+
+    var shipping_amount = ($('#shipping-amount').html() * 100).toFixed(2);
+    var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
+    // var discount_amount = ($('#coupon-amount').html() * 100).toFixed(2) + ($('#combo-discount-amount').html() * 100).toFixed(2);
+
+    var discount_amount = Number($('#coupon-amount').html()) * 100 + Number($('#combo-discount-amount').html()) * 100;
+    discount_amount = discount_amount.toFixed(2);
+
+    var points_to_redeem = ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0
+
+    //var payment_amount = $('#payment_amount').html() * 100;
+    $.post(
+      "checkout/pay_order_manual",
+      {
+      amount: payment_amount,
+      shipping_amount: shipping_amount,
+      picked_shipping_address_id: picked_shipping_address_id,
+      cart_id: '<%= "#{@cart.id}" if @cart %>',
+      want_factura: $('#factura-checkbox').is(":checked"),
+      required_doc: $('#dni-required').val(),
+      delivery_instructions: $('#delivery-instructions').val(),
+      applied_coupon: applied_coupon,
+      discount_amount: discount_amount,
+      points_redeemed_amount: points_to_redeem
+      },
+      function(data) {
+      }
+   );
+
+  }
+
+</script>
+
+<!-- Event snippet for Purchase conversion page In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+<script>
+  function gtag_report_conversion(url) { var callback = function () { if (typeof(url) != 'undefined') { window.location = url; } }; gtag('event', 'conversion', { 'send_to': 'AW-670036400/O8dpCK38rPYBELDjv78C', 'transaction_id': '<%= "#{@cart.id}" if @cart %>', 'value': payment_amount, 'currency': ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD", 'event_callback': callback }); return false; }
+</script>
+
+<script>
+  window.addEventListener("message", function(event) {
+    const windowOrigin = window.location.origin;
+    const eventOriginUrl = new URL(event.origin);
+    const windowOriginUrl = new URL(windowOrigin);
+    
+    // if (eventOriginUrl.hostname === windowOriginUrl.hostname || 
+    //     eventOriginUrl.hostname === windowOriginUrl.hostname.replace('www.', '') ||
+    //     eventOriginUrl.hostname === 'www.' + windowOriginUrl.hostname) {
+      const response = event.data;
+
+      if (response.loading) {
+        // Show custom loading
+        // console.log("Loading..."); // Replace this with your actual loading logic
+      } else {
+        // Hide custom loading
+        // console.log("Loading done."); // Replace this with your actual logic to stop loading indication
+      }
+
+      if (response.parameters3DS) {
+        // 3DS authentication completed successfully
+        // console.log("3DS Auth Success:", response.parameters3DS);
+        window.threeDSInProgress = false;
+        $.post(
+          "checkout/pay_order_culqi_checkout_3ds_step",
+          {
+          culqi_token: window.token,
+          amount: ($('#payment-amount').html() * 100).toFixed(2),
+          culqi_payment_amount: Number(($('#pay_in_soles').prop('checked')) ? ($('#payment-amount-in-soles').html() * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)),
+          shipping_amount: ($('#shipping-amount').html() * 100).toFixed(2),
+          picked_shipping_address_id: $('#address_id').val(),
+          cart_id: '<%= "#{@cart.id}" if @cart %>',
+          want_factura: $('#factura-checkbox').is(":checked"),
+          required_doc: $('#dni-required').val(),
+          delivery_instructions: $('#delivery-instructions').val(),
+          applied_coupon: applied_coupon,
+          discount_amount: (Number($('#coupon-amount').html()) * 100 + Number($('#combo-discount-amount').html()) * 100).toFixed(2),
+          points_redeemed_amount: ($('#pay_in_points').is(':checked')) ? (Number($("#points-amount").html()) >= payment_amount ? payment_amount : Number($("#points-amount").html())) : 0,
+          currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+          device_finger_print_id: window.deviceFingerPrintId,
+          authentication_3DS: response.parameters3DS
+          },
+          function(data) {
+            // console.log('data response from checkout/pay_order_culqi_checkout_3ds_step: ', data)
+          }
+        );
+      }
+
+      if (response.error) {
+        if (window.threeDSInProgress) {
+          // A genuine 3DS challenge failed: the charge did NOT go through.
+          console.log("3DS Auth Error:", response.error);
+          window.threeDSInProgress = false;
+          window.location.replace("<%= orders_path %>?error=payment");
+        } else {
+          // Spurious error message from the Culqi3DS SDK on a non-3DS flow
+          // (e.g. Yape). The charge was already resolved server-side, so do
+          // NOT show a payment error. Culqi began emitting this for Yape.
+          console.log("Ignoring non-3DS Culqi message error:", response.error);
+        }
+      }
+    //} else {
+    //  console.log('Message received from unauthorized origin:', event.origin);
+    //  console.log('window.location.origin:', window.location.origin);
+    //  console.log('event.origin:', event.origin);
+    //  alert('Message received from unauthorized origin');
+    // }
+  }, false);
+</script>

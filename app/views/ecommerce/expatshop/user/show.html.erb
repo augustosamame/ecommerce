@@ -1,18 +1,57 @@
-<%# Account hub: quick links to every customer-zone feature. %>
-<% engine = Ecommerce::Engine.routes.url_helpers %>
-<main class="gc-commerce gc-account gc-container" id="main-content">
-  <header class="gc-commerce__head">
-    <div>
-      <div class="gc-eyebrow"><%= current_user.try(:email) %></div>
-      <h1 class="gc-commerce__title"><%= t('ecommerce.expatshop.store.header.my_account') %></h1>
+  <section class="noo-page-heading eff">
+    <div class="container">
+      <div class="noo-heading-content">
+        <h1 class="page-title eff">My Account</h1>
+        <div class="noo-page-breadcrumb eff">
+          <a href="./" class="home">ExpatShop</a>/<span>My Account</span>
+        </div>
+      </div>
     </div>
-  </header>
-  <div class="gc-account__grid">
-    <a href="<%= engine.orders_path %>" class="gc-card gc-account__tile"><%= gc_icon :box, size: 22 %><span><%= t('ecommerce.expatshop.store.header.my_orders') %></span></a>
-    <a href="<%= engine.addresses_path %>" class="gc-card gc-account__tile"><%= gc_icon :map_pin, size: 22 %><span><%= t('ecommerce.expatshop.store.header.my_addresses') %></span></a>
-    <a href="<%= engine.points_path %>" class="gc-card gc-account__tile"><%= gc_icon :star, size: 22 %><span><%= t('ecommerce.expatshop.store.header.my_points') %> <span class="gc-count"><%= current_user.try(:points) %></span></span></a>
-    <a href="<%= engine.referral_path %>" class="gc-card gc-account__tile"><%= gc_icon :gift, size: 22 %><span><%= t('ecommerce.expatshop.store.header.my_referral_program') %></span></a>
-    <a href="<%= engine.favorites_path %>" class="gc-card gc-account__tile"><%= gc_icon :heart, size: 22 %><span><%= t('ecommerce.expatshop.store.header.favorite_products') %></span></a>
-    <a href="<%= main_app.edit_user_registration_path %>" class="gc-card gc-account__tile"><%= gc_icon :settings, size: 22 %><span><%= t('ecommerce.expatshop.store.header.my_account') %></span></a>
+  </section>
+  <div class="main">
+    <div class="commerce commerce-account noo-shop-main">
+      <div class="container">
+        <div class="row">
+          <div class="noo-main col-md-12">
+            <div id="customer_login">
+              <div class="col-md-6">
+                <h2><a href="<%= orders_path %>">My Orders</a></h2>
+                <h2>My Info</h2>
+                <form class="register">
+                  <div class="form-row form-row-wide">
+                    <label for="reg_email">
+                      First Name
+                      <span class="required">*</span>
+                    </label>
+                    <input type="email" class="input-text" name="email" id="reg_email" value="" />
+                  </div>
+                  <div class="form-row form-row-wide">
+                    <label for="reg_password">
+                      Last Name
+                      <span class="required">*</span>
+                    </label>
+                    <input type="password" class="input-text" name="password" id="reg_password" />
+                  </div>
+                  <div class="form-row form-row-wide">
+                    <label for="reg_password">
+                      Mobile Number
+                      <span class="required">*</span>
+                    </label>
+                    <input type="password" class="input-text" name="password" id="reg_password" />
+                  </div>
+                  <div class="form-row">
+                    <input type="submit" class="button" name="update" value="Update" />
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-6">
+                <h2>My Addresses</h2>
+                <h2>My Paymenth Methds</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+     
   </div>
-</main>

@@ -1,0 +1,31 @@
+<%# "Make a wish": ask the store to import a product. %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<main class="gc-commerce gc-container gc-static" id="main-content">
+  <div class="gc-static__grid">
+    <div class="gc-prose">
+      <div class="gc-eyebrow"><%= gc_t('.eyebrow', 'Can\'t find it?') %></div>
+      <h1><%= gc_t('.title', 'Make a wish') %></h1>
+      <p><%= gc_t('.intro', 'Let us know which product, from anywhere in the world, you would like us to carry.') %></p>
+    </div>
+    <div class="gc-card gc-card__body gc-form gc-static__form">
+      <%= simple_form_for @wishlist_message, url: engine.wishlist_message_path, method: :post, html: { class: "gc-form", id: "gc-wish-form" } do |f| %>
+        <% unless current_user %>
+          <div class="gc-form__row">
+            <%= f.input :name, label: gc_t('.name', 'Your name') + " *", input_html: { class: 'gc-input' } %>
+            <%= f.input :email, label: gc_t('.email', 'Your email') + " *", input_html: { class: 'gc-input' } %>
+          </div>
+          <%= f.input :phone, label: gc_t('.phone', 'Your phone') + " *", input_html: { class: 'gc-input' } %>
+        <% end %>
+        <div class="gc-form__row">
+          <%= f.input :product_name, label: gc_t('.product_name', 'Product name') + " *", as: :string, input_html: { class: 'gc-input' } %>
+          <%= f.input :brand, label: gc_t('.brand', 'Brand'), as: :string, input_html: { class: 'gc-input' } %>
+        </div>
+        <%= f.input :attributes, label: gc_t('.attributes', 'Colour, size, flavour?'), as: :text, input_html: { class: 'gc-input', rows: 3 } %>
+        <%= f.input :country, label: gc_t('.country', 'Country of origin'), as: :string, input_html: { class: 'gc-input' } %>
+        <%= f.input :comment, label: gc_t('.comment', 'Anything else about this product'), as: :text, input_html: { class: 'gc-input', rows: 4 } %>
+        <p class="gc-field__hint">(*) <%= gc_t('.required', 'Required fields') %></p>
+        <%= f.button :submit, gc_t('.send', 'Send my wish'), class: "gc-btn gc-btn--primary gc-btn--lg", id: "contact-form" %>
+      <% end %>
+    </div>
+  </div>
+</main>

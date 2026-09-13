@@ -1,0 +1,24 @@
+<%# Promo bar: burgundy strip above the header. Copy comes from the backoffice
+    (AlwaysOnBanner / always-on Coupon) so it is html_safe as before. %>
+<% if @always_on_banner %>
+  <% banner_message = (session[:locale] == 'es-PE' ? @always_on_banner.message_es : @always_on_banner.message_en).to_s %>
+  <% if @always_on_banner.link_url.present? %>
+    <a href="<%= @always_on_banner.link_url %>" class="gc-promo gc-promo--link top_promo_link">
+      <span class="gc-promo__text top_promo"><%= banner_message.html_safe %></span>
+    </a>
+  <% else %>
+    <div class="gc-promo"><span class="gc-promo__text top_promo"><%= banner_message.html_safe %></span></div>
+  <% end %>
+<% end %>
+
+<% if @always_on_coupon %>
+  <div class="gc-promo gc-promo--coupon">
+    <span class="gc-promo__text top_promo">
+      <% if session[:locale] == 'es-PE' %>
+        <%= @always_on_coupon.always_on_message_es.try(:html_safe) %>
+      <% else %>
+        <%= @always_on_coupon.always_on_message_en.try(:html_safe) %>
+      <% end %>
+    </span>
+  </div>
+<% end %>

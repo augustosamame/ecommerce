@@ -1,0 +1,30 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+.orders {
+  padding: 0;
+}
+.orders table {
+  width: 100%;
+  margin: 76px 0 55px;
+  border: 1px solid #dcdcdc;
+}
+.orders table thead {
+  background-color: var(--label-color);
+}
+.orders table th {
+  padding: 20px 0;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+}
+.orders table tbody tr {
+  border-bottom: 1px solid #dcdcdc;
+}
+.orders table tbody tr th a {
+  color: #1100f4;
+}

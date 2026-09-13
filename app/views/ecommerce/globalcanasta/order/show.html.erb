@@ -1,0 +1,326 @@
+<%# ---------------------------------------------------------------------
+    Order status page. Hooks kept for the retry-payment JS below:
+    #payment-amount, #payment-amount-in-soles, #pay_in_dollars, #pay_in_soles,
+    #retry-pay-now-button.
+    --------------------------------------------------------------------- %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<% points_won = PointsTransaction.find_by(tx_type: 'purchase', tx_id: @order.id).try(:points) || 0 %>
+<main class="gc-commerce gc-account gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <div>
+      <div class="gc-eyebrow"><%= @order.created_at.localtime.strftime("%d %b %Y · %H:%M") %></div>
+      <h1 class="gc-commerce__title"><%= t('.order') %> <span class="gc-mono gc-commerce__title-id">#<%= @order.id %></span></h1>
+    </div>
+    <a href="<%= engine.orders_path %>" class="gc-btn gc-btn--ghost"><%= gc_icon :chevron_left, size: 16 %> <%= t('.my_orders') %></a>
+  </header>
+
+  <div class="gc-commerce__grid gc-commerce__grid--order">
+    <section class="gc-commerce__main">
+      <div class="gc-card">
+        <div class="gc-card__body">
+          <h2 class="gc-h3"><%= t('.order_details') %></h2>
+        </div>
+        <ul class="gc-lines gc-lines--flush">
+          <% @order.order_items.each do |item| %>
+            <li class="gc-line">
+              <span class="gc-line__thumb"><%= image_tag item.product.image.thumb_100.url, alt: "" %></span>
+              <div class="gc-line__info">
+                <span class="gc-line__name"><%= item.product.name %></span>
+                <div class="gc-line__meta">
+                  <% if item.product.weight.to_f > 0 %><span><%= friendly_cart_weight(item.product.weight) %></span><% end %>
+                  <span class="gc-num"><%= number_to_currency(item.price) %> <span class="gc-faint">× <%= item.quantity %></span></span>
+                </div>
+              </div>
+              <div class="gc-line__total">
+                <span class="gc-price gc-num">S/ <%= number_with_precision(item.line_total(@current_user) * @exchange_rate, precision: 2, delimiter: ',') %></span>
+                <span class="gc-small gc-muted gc-num"><%= number_to_currency(item.line_total(@current_user)) %></span>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+
+      <% if @order.payment_status == "unpaid" && @order.stage != "stage_void" %>
+        <% if @order.process_comments == "PagoEfectivo" %>
+          <div class="gc-card gc-card__body gc-order__pagoefectivo">
+            <h2 class="gc-h3">Instrucciones para pagar con PagoEfectivo</h2>
+            <p><strong>Fecha límite de pago:</strong> <%= Time.at(@order.pagoefectivo_exp_date.to_i).strftime("%d %b %H:%M") %></p>
+            <p class="gc-order__cip"><span class="gc-eyebrow">Código CIP</span><span class="gc-order__cip-code gc-mono"><%= @order.pagoefectivo_cip %></span></p>
+            <p>Realiza tu pago desde:</p>
+            <% if @order.pagoefectivo_qr_code.present? %>
+              <p><strong>Desde tu app de pagos utilizando este QR:</strong></p>
+              <div class="gc-text-center"><%= image_tag @order.pagoefectivo_qr_code, height: 200, width: 200, alt: "QR PagoEfectivo" %></div>
+            <% end %>
+            <p><strong>Banca móvil o por Internet:</strong></p>
+            <ol class="gc-order__steps">
+              <li>Ingresa a tu banca desde web o móvil dentro de la fecha límite de pago.</li>
+              <li>Selecciona pago de servicio, elige PagoEfectivo e ingresa número CIP.</li>
+              <li>Antes de pagar, verifica que los datos coincidan con los de esta orden de pago.</li>
+              <li>Realiza el pago de servicio por el monto total.</li>
+              <li>Conserva el comprobante de pago para cualquier aclaración.</li>
+            </ol>
+            <%= image_tag "https://expatshop-prod.s3.amazonaws.com/logos_pagoefectivo.png", alt: "Bancos afiliados" %>
+            <p><strong>Agentes y Bodegas:</strong></p>
+            <ol class="gc-order__steps">
+              <li>Acércate al agente o agencia autorizada dentro de la fecha límite de pago.</li>
+              <li>Indica a la persona de caja que realizarás un pago de servicio a PagoEfectivo (moneda), indica el código CIP y el importe a pagar.</li>
+              <li>Antes de pagar, verifica que los datos coincidan con los de esta orden de pago.</li>
+              <li>Realiza el pago en efectivo por el total a pagar.</li>
+              <li>Conserva el comprobante de pago para cualquier aclaración.</li>
+            </ol>
+            <%= image_tag "https://expatshop-prod.s3.amazonaws.com/logos_pagoefectivo_agentes.png", alt: "Agentes afiliados" %>
+          </div>
+        <% else %>
+          <form action="" class="gc-card gc-card__body gc-order__retry">
+            <h2 class="gc-h3"><%= t('.try_to_pay_now') %></h2>
+            <label class="gc-pay-option" for="pay_in_dollars">
+              <input type="radio" name="payment_curency" id="pay_in_dollars" />
+              <span class="gc-pay-option__body gc-pay-option__body--row">
+                <span class="gc-pay-option__label"><%= t('.pay_in_dollars') %></span>
+                <span class="gc-num">$ <%= @order.amount %></span>
+              </span>
+            </label>
+            <label class="gc-pay-option" for="pay_in_soles">
+              <input type="radio" name="payment_curency" id="pay_in_soles" />
+              <span class="gc-pay-option__body gc-pay-option__body--row">
+                <span class="gc-pay-option__label"><%= t('.pay_in_soles') %></span>
+                <span class="gc-num">S/ <span id="payment-amount-in-soles"><%= @order.amount * @exchange_rate %></span></span>
+              </span>
+            </label>
+            <button id="retry-pay-now-button" class="gc-btn gc-btn--secondary gc-btn--lg gc-btn--block"><%= t('.try_to_pay_now') %></button>
+          </form>
+        <% end %>
+      <% end %>
+    </section>
+
+    <aside class="gc-summary">
+      <h2 class="gc-h3 gc-summary__title"><%= t('.order_status') %></h2>
+      <dl class="gc-summary__rows">
+        <div><dt><%= t('.payment') %></dt><dd><span class="gc-badge gc-badge--origin"><%= friendly_order_status(@order) %></span></dd></div>
+        <% if @order.process_comments == "PagoEfectivo" %>
+          <div><dt><%= t('.payment_method') %></dt><dd>PagoEfectivo</dd></div>
+        <% end %>
+        <div><dt><%= t('.points_won') %></dt><dd class="gc-num"><%= points_won %></dd></div>
+        <div><dt><%= t('.shipping') %></dt><dd><%= t('.not_yet_shipped') %></dd></div>
+        <div>
+          <dt><%= t('.invoice') %></dt>
+          <dd>
+            <% if @order.efact_invoice_url %>
+              <%= link_to t('.see_invoice'), @order.efact_invoice_url, target: "blank", class: "gc-link-underline" %>
+            <% else %>
+              <%= t('.not_yet_invoiced') %>
+            <% end %>
+          </dd>
+        </div>
+      </dl>
+      <div class="gc-summary__total">
+        <div><dt><%= t('.order_total') %></dt><dd class="gc-price gc-num"><span class="amount"><%= @order.amount.currency.symbol %></span> <span class="amount" id="payment-amount"><%= @order.amount %></span></dd></div>
+      </div>
+      <% if @order.payment_status == "unpaid" && @order.stage != "stage_void" %>
+        <%= button_to t('ecommerce.globalcanasta.order.index.cancel'),
+                      engine.cancel_order_path(@order),
+                      method: :post,
+                      data: { confirm: t('ecommerce.globalcanasta.order.show.cancel_confirm',
+                                         default: '¿Estás seguro? Esta acción anulará el pedido y no se puede deshacer.') },
+                      class: "gc-btn gc-btn--ghost gc-btn--danger gc-btn--block",
+                      form_class: "gc-summary__cta" %>
+      <% end %>
+    </aside>
+  </div>
+</main>
+
+
+<!-- Incluyendo .js de Culqi Checkout-->
+<!-- <script src="https://checkout.culqi.com/v2"></script> -->
+<!--<script src="https://checkout.culqi.com/js/v3"></script> -->
+<script src="https://3ds.culqi.com"></script>
+<script src="https://checkout.culqi.com/js/v4"></script>
+
+<script>
+  Culqi3DS.publicKey = "<%= Culqi.public_key %>";
+</script>
+
+<script>
+
+Culqi.publicKey = "<%= Culqi.public_key %>";
+var culqi_payment_amount = $('#pay_in_soles').prop('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+
+Culqi.settings({
+  title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
+  currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+  description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@order.id}" %>',
+  amount: Number(culqi_payment_amount),
+  order: '<%= @order.id %>'
+});
+
+$('#retry-pay-now-button').on('click', function(e) {
+  // Abre el formulario con las opciones de Culqi.settings
+  var culqi_payment_amount = $('#pay_in_soles').prop('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+
+  // Always (re-)assign the public key right before opening the popup. The
+  // Culqi v4 SDK can lose its internal state after the popup is closed once,
+  // resulting in "No ha ingresado la llave pública del comercio o no es
+  // válida" on the second attempt.
+  Culqi.publicKey = "<%= Culqi.public_key %>";
+  Culqi3DS.publicKey = "<%= Culqi.public_key %>";
+
+  Culqi.settings({
+    title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
+    currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+    description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@order.id}" %>',
+    amount: Number(culqi_payment_amount)
+  });
+
+  Culqi3DS.settings = {
+    charge: {
+        totalAmount: Number(culqi_payment_amount),
+        returnUrl: "<%= ENV["ROLLBAR_ENV"] == 'production' ? 'https://expatshop.pe/store/checkout' : 'http://localhost:3000/store/checkout' %>",
+    },
+    card: {
+      email: "<%= @current_user_email %>",
+    },
+  };
+
+  Culqi.options({
+              lang: "auto",
+              installments: false, // Habilitar o deshabilitar el campo de cuotas
+              paymentMethods: {
+                tarjeta: true,
+                yape: true, 
+                bancaMovil: true,
+                agente: true,
+                billetera: true,
+                cuotealo: true,
+              },
+              style: {
+                logo: '<%= request.base_url %>/images/globalcanasta-logo.png'
+              },
+            });
+
+
+  Culqi.open();
+  e.preventDefault();
+
+});
+
+window.culqi = async function () {
+
+  if(Culqi.token) { // ¡Token creado exitosamente!
+      // Get the token ID:
+      Culqi.close();
+      var token = Culqi.token;
+      window.token = token;
+      var culqi_payment_amount = $('#pay_in_soles').prop('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+
+      Culqi3DS.settings = {
+        charge: {
+            totalAmount: Number(culqi_payment_amount),
+            returnUrl: "<%= ENV["ROLLBAR_ENV"] == 'production' ? 'https://expatshop.pe/store/checkout' : 'http://localhost:3000/store/checkout' %>",
+          },
+          card: {
+            email: "<%= @current_user_email %>",
+          },
+      };
+
+      const deviceFingerPrintId = await Culqi3DS.generateDevice();
+      window.deviceFingerPrintId = deviceFingerPrintId
+
+      if (deviceFingerPrintId) {
+        // console.log('Fingerpint Id Generated', deviceFingerPrintId)
+      } else {
+        console.log('Error generating deviceFingerPrintId')
+      }
+
+
+      $.post(
+        "checkout/pay_order_culqi_checkout",
+        {
+        culqi_token: token,
+        amount: Number(culqi_payment_amount),
+        culqi_payment_amount: Number(culqi_payment_amount),
+        currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+        order_id: '<%= "#{@order.id}" if @order %>',
+        device_finger_print_id: deviceFingerPrintId
+        },
+        function(data) {
+          // console.log('data response from checkout/pay_order_culqi_checkout: ', data)
+          if (data.result && data.result == "3ds_required") {
+            // A real 3DS challenge is starting: from here a `response.error`
+            // message means the authentication genuinely failed.
+            window.threeDSInProgress = true;
+            Culqi3DS.initAuthentication(token.id);
+
+          } else {
+            // Non-3DS flow (e.g. Yape) already settled server-side. The
+            // Culqi3DS SDK can still emit a spurious `error` message here, so
+            // make sure the message listener will ignore it.
+            window.threeDSInProgress = false;
+            Culqi3DS.reset();
+            window.deviceFingerPrintId = null
+            window.token = null
+          }
+
+        }
+     );
+     //alert('Se ha creado un token:' + token);
+
+  } else { // ¡Hubo algún problema!
+      // Mostramos JSON de objeto error en consola
+      console.log(Culqi.error);
+      // alert(Culqi.error.mensaje);
+  }
+};
+</script>
+
+<script>
+  window.addEventListener("message", function(event) {
+    
+    const response = event.data;
+
+    if (response.loading) {
+      // Show custom loading
+      // console.log("Loading..."); // Replace this with your actual loading logic
+    } else {
+      // Hide custom loading
+      // console.log("Loading done."); // Replace this with your actual logic to stop loading indication
+    }
+
+    if (response.parameters3DS) {
+      // 3DS authentication completed successfully
+      // console.log("3DS Auth Success:", response.parameters3DS);
+      window.threeDSInProgress = false;
+
+      var culqi_payment_amount = $('#pay_in_soles').prop('checked') ? (Number($('#payment-amount-in-soles').html()) * 100).toFixed(2) : ($('#payment-amount').html() * 100).toFixed(2)
+
+      $.post(
+        "checkout/pay_order_culqi_checkout_3ds_step",
+        {
+        culqi_token: window.token,
+        amount: Number(culqi_payment_amount),
+        culqi_payment_amount: culqi_payment_amount,
+        currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+        device_finger_print_id: window.deviceFingerPrintId,
+        authentication_3DS: response.parameters3DS,
+        order_id: "<%= @order.id %>"
+        },
+        function(data) {
+          // console.log('data response from checkout/pay_order_culqi_checkout_3ds_step: ', data)
+        }
+      );
+    }
+
+    if (response.error) {
+      if (window.threeDSInProgress) {
+        // A genuine 3DS challenge failed: the charge did NOT go through.
+        console.log("3DS Auth Error:", response.error);
+        window.threeDSInProgress = false;
+        window.location.replace("<%= orders_path %>?error=payment");
+      } else {
+        // Spurious error message from the Culqi3DS SDK on a non-3DS flow
+        // (e.g. Yape). The charge was already resolved server-side, so do
+        // NOT show a payment error. Culqi began emitting this for Yape.
+        console.log("Ignoring non-3DS Culqi message error:", response.error);
+      }
+    }
+  }, false);
+</script>

@@ -1,0 +1,22 @@
+// GlobalCanasta storefront (globalcanasta theme) stylesheet manifest.
+// Order matters: tokens first, then the legacy page sheets that have not been
+// rebuilt yet (they read the bridged custom properties), then the gc/* layer
+// which owns the redesigned chrome, home, listing, PDP, commerce and account
+// pages and wins the cascade.
+/*
+*= require font-awesome
+*= require 'ecommerce/globalcanasta/gc/tokens'
+*= require 'ecommerce/globalcanasta/slick'
+*= require 'ecommerce/globalcanasta/slick-theme'
+*= require 'ecommerce/globalcanasta/delete-address-page/delete-address'
+*= require 'ecommerce/globalcanasta/delete-address-page/media'
+*= require 'ecommerce/globalcanasta/gc/base'
+*= require 'ecommerce/globalcanasta/gc/chrome'
+*= require 'ecommerce/globalcanasta/gc/product-card'
+*= require 'ecommerce/globalcanasta/gc/home'
+*= require 'ecommerce/globalcanasta/gc/listing'
+*= require 'ecommerce/globalcanasta/gc/pdp'
+*= require 'ecommerce/globalcanasta/gc/commerce'
+*= require 'ecommerce/globalcanasta/gc/account'
+*= require 'ecommerce/globalcanasta/gc/auth'
+*/

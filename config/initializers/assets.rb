@@ -5,3 +5,4 @@ Rails.application.config.assets.precompile += %w( ecommerce/organici.css ecommer
 Rails.application.config.assets.precompile += %w( ecommerce/canvas_shop.css ecommerce/canvas_shop.js ecommerce/banchero.js)
 Rails.application.config.assets.precompile += %w( ecommerce/natural_power.css ecommerce/natural_power.js)
 Rails.application.config.assets.precompile += %w( ecommerce/expatshop.css ecommerce/expatshop.js)
+Rails.application.config.assets.precompile += %w( ecommerce/globalcanasta.css ecommerce/globalcanasta.js)

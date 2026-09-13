@@ -25,6 +25,23 @@ module Ecommerce
   mattr_accessor :ecommerce_layout
   mattr_accessor :site_name
   mattr_accessor :ecommerce_devise_layout
+
+  # Several domains resolve to this one app and each can get its own storefront
+  # theme. Keys are host patterns (String fragment or Regexp), values are the
+  # settings that override the defaults above while a request on that host is
+  # being served, e.g.
+  #
+  #   Ecommerce.host_themes = {
+  #     /(^|\.)globalcanasta\./ => { ecommerce_layout: "globalcanasta",
+  #                                  ecommerce_devise_layout: "devise_globalcanasta",
+  #                                  site_name: "GlobalCanasta" }
+  #   }
+  #
+  # The overrides live in Ecommerce::ThemeContext (reset per request), so the
+  # readers below stay safe across Puma threads.
+  mattr_accessor :host_themes
+  self.host_themes = {}
+
   mattr_accessor :use_main_app_header
   mattr_accessor :use_main_app_footer
   mattr_accessor :use_main_app_javascripts
@@ -84,6 +101,37 @@ module Ecommerce
   mattr_accessor :allow_coupons
   mattr_accessor :meta_tags_store_main_description
   mattr_accessor :secondary_menu_visible
+
+  # Must come after every mattr_accessor above: these readers replace the
+  # generated ones so the host theme can override them per request.
+  HOST_THEME_SETTINGS = %i[ecommerce_layout ecommerce_devise_layout site_name meta_tags_store_main_description].freeze
+
+  HOST_THEME_SETTINGS.each do |setting|
+    define_singleton_method(setting) do
+      overrides = Ecommerce::ThemeContext.theme_settings
+      if overrides && overrides.key?(setting)
+        overrides[setting]
+      else
+        class_variable_get("@@#{setting}")
+      end
+    end
+  end
+
+  # Settings hash for the theme that serves +host+, or nil for the default brand.
+  def self.theme_settings_for_host(host)
+    return nil if host.blank? || host_themes.blank?
+    host = host.to_s.downcase
+    host_themes.each do |pattern, settings|
+      matched = pattern.is_a?(Regexp) ? pattern.match?(host) : host.include?(pattern.to_s.downcase)
+      return settings if matched
+    end
+    nil
+  end
+
+  # Name of the theme currently being served (defaults to ecommerce_layout).
+  def self.current_theme
+    ecommerce_layout
+  end
 
   class << self
 

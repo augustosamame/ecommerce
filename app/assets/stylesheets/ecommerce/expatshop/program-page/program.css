@@ -1,0 +1,21 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+.orders .program-details {
+  margin: 40px 0;
+}
+.orders .program-details p {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+.orders .program-details p a {
+  color: #1100f4;
+  font-weight: 500;
+}
+.orders .program-details p i {
+  margin-left: 40px;
+}

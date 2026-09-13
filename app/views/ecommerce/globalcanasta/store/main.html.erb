@@ -1,0 +1,765 @@
+<script type="application/ld+json">
+<%= raw website_json_ld.to_json %>
+</script>
+<script type="application/ld+json">
+<%= raw organization_json_ld.to_json %>
+</script>
+<% if @featured_products.present? %>
+<script type="application/ld+json">
+<%= raw product_list_json_ld(@featured_products).to_json %>
+</script>
+<% end %>
+
+<%# ---------------------------------------------------------------------
+    GlobalCanasta home — direction 1a "The Pantry Editorial".
+    Sections: hero · promise band · featured products · shoppable videos ·
+    country mosaic · testimonials · press block. Newsletter lives in the
+    footer. Mobile web: chip row + origin circles between hero and products.
+    --------------------------------------------------------------------- %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<% hero_slides = Ecommerce::Slider.active.for_view('DESKTOP').to_a %>
+<% hero_slides_mobile = Ecommerce::Slider.active.for_view('MOBILE').to_a %>
+<% hero_testimonial = Ecommerce::Testimonial.where(status: "active").order(:priority).first %>
+<% mosaic_categories = Ecommerce::Category.where(mosaic_show: true).active.order(:category_order).to_a %>
+<% shopping_videos = Ecommerce::ShoppingVideo.active.order(:priority).to_a %>
+<% lowest_priority_video = shopping_videos.first %>
+<% testimonials = Ecommerce::Testimonial.where(status: "active").order(:priority).to_a %>
+<% product_count = Ecommerce::Product.active.count %>
+<% country_count = [Ecommerce::Product.active.where.not(country: [nil, ""]).distinct.count(:country), mosaic_categories.size].max %>
+<% featured_grid = @featured_products.to_a %>
+<% featured_grid = Ecommerce::Product.includes(:translations).active.order(created_at: :desc).limit(12).to_a if featured_grid.empty? %>
+<% product_count_label = product_count >= 100 ? "#{number_with_delimiter((product_count / 100) * 100)}+" : product_count.to_s %>
+
+<main class="gc-home" id="main-content">
+
+  <%# ---------- Hero carousel ----------
+      Slide 1 is fixed: copy from the locale files, media from the first
+      backoffice banner of the current view. Slides 2+ are the remaining
+      banners; each shows copy + square media when any editorial field is
+      set, otherwise its media alone, full width (wide crop). Desktop and
+      mobile banner sets render as two tracks toggled by CSS. %>
+  <% hero_sets = [[hero_slides, 'gc-hero--desktop'], [hero_slides_mobile, 'gc-hero--mobile']].reject { |set, _| set.empty? } %>
+  <% hero_sets = [[[], 'gc-hero--desktop']] if hero_sets.empty? %>
+  <% hero_sets.each_with_index do |(set, css), set_index| %>
+    <% locale = session[:locale] || I18n.locale.to_s %>
+    <% slides = [] %>
+    <% slides << { fixed: true, record: set.first } %>
+    <% set.drop(1).each { |r| slides << { fixed: false, record: r } } %>
+    <section class="gc-hero <%= css %> <%= slides.size > 1 ? 'gc-hero--multi' : '' %>" aria-roledescription="carousel" aria-label="<%= t('.hero_slides') %>" data-gc-hero>
+      <div class="gc-hero__track" data-gc-hero-track>
+        <% slides.each_with_index do |slide, i| %>
+          <% record = slide[:record] %>
+          <% if slide[:fixed] %>
+            <% copy = { pre: t('.hero_eyebrow'), title_1: t('.hero_title_1'), title_2: t('.hero_title_2'), body: t('.hero_body'),
+                        cta1: [t('.hero_cta_primary'), engine.products_path], cta2: [t('.hero_cta_secondary'), '#gc-origins'] } %>
+          <% elsif record.editorial? %>
+            <% copy = { pre: record.localized(:pre_header, locale), title_1: record.localized(:title, locale), title_2: nil, body: record.localized(:description, locale),
+                        cta1: [record.localized(:cta1_text, locale), record.cta1_url], cta2: [record.localized(:cta2_text, locale), record.cta2_url] } %>
+          <% else %>
+            <% copy = nil %>
+          <% end %>
+          <article class="gc-hero__slide <%= copy ? 'gc-hero__slide--split' : 'gc-hero__slide--media' %>" data-gc-hero-slide aria-roledescription="slide" aria-label="<%= i + 1 %> / <%= slides.size %>">
+            <% if copy %>
+              <div class="gc-hero__copy">
+                <% if copy[:pre].present? %><div class="gc-eyebrow"><%= copy[:pre] %></div><% end %>
+                <% if copy[:title_1].present? %>
+                  <% heading_tag = (set_index == 0 && i == 0) ? 'h1' : 'h2' %>
+                  <<%= heading_tag %> class="gc-hero__title" <%= raw('id="gc-hero-title"') if heading_tag == 'h1' %>><%= copy[:title_1] %><% if copy[:title_2].present? %><br><em><%= copy[:title_2] %></em><% end %></<%= heading_tag %>>
+                <% end %>
+                <% if copy[:body].present? %><p class="gc-hero__body"><%= copy[:body] %></p><% end %>
+                <% ctas = [copy[:cta1], copy[:cta2]].select { |text, url| text.present? && url.present? } %>
+                <% if ctas.any? %>
+                  <div class="gc-hero__actions">
+                    <% ctas.each_with_index do |(text, url), k| %>
+                      <a href="<%= url %>" class="gc-btn <%= k == 0 ? 'gc-btn--primary gc-hero__cta' : 'gc-btn--outline gc-hero__cta-secondary' %>"><%= text %></a>
+                    <% end %>
+                  </div>
+                <% end %>
+                <% if slide[:fixed] %>
+                  <dl class="gc-hero__stats">
+                    <div><dt><%= product_count_label %></dt><dd><%= t('.stat_products') %></dd></div>
+                    <div><dt><%= country_count %></dt><dd><%= t('.stat_countries') %></dd></div>
+                    <div><dt>24 h</dt><dd><%= t('.stat_dispatch') %></dd></div>
+                  </dl>
+                <% end %>
+              </div>
+            <% end %>
+            <div class="gc-hero__media">
+              <% if record %>
+                <% link = (!copy && record.slider_link.present?) ? record.slider_link : nil %>
+                <% tag_open = link ? %(<a href="#{ERB::Util.html_escape(link)}" class="gc-hero__slide-link">) : '<div class="gc-hero__slide-link">' %>
+                <%= raw tag_open %>
+                  <% if record.video? %>
+                    <video class="gc-hero__img" src="<%= record.slider_image.url %>" muted playsinline autoplay loop title="<%= record.slider_text %>"></video>
+                  <% else %>
+                    <img class="gc-hero__img" src="<%= record.slider_image.url %>" alt="<%= record.slider_text %>" <%= i == 0 ? '' : 'loading="lazy"' %>>
+                  <% end %>
+                <%= raw(link ? '</a>' : '</div>') %>
+              <% else %>
+                <div class="gc-hero__placeholder" aria-hidden="true"></div>
+              <% end %>
+              <% if slide[:fixed] && hero_testimonial %>
+                <figure class="gc-hero__quote">
+                  <blockquote>“<%= hero_testimonial.product_name %>”</blockquote>
+                  <figcaption><%= hero_testimonial.user_fullname %> · <%= hero_testimonial.user_title %></figcaption>
+                </figure>
+              <% end %>
+            </div>
+          </article>
+        <% end %>
+      </div>
+      <% if slides.size > 1 %>
+        <div class="gc-hero__controls">
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-hero-prev aria-label="<%= t('.previous') %>"><%= gc_icon :chevron_left, size: 18 %></button>
+          <div class="gc-hero__dots" role="tablist">
+            <% slides.each_with_index do |_, i| %>
+              <button type="button" class="gc-hero__dot <%= i == 0 ? 'is-active' : '' %>" data-gc-hero-dot="<%= i %>" role="tab" aria-label="<%= i + 1 %>"></button>
+            <% end %>
+          </div>
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-hero-next aria-label="<%= t('.next') %>"><%= gc_icon :chevron_right, size: 18 %></button>
+        </div>
+      <% end %>
+    </section>
+  <% end %>
+
+  <%# ---------- Promise band ---------- %>
+  <div class="gc-band" role="list">
+    <div class="gc-container gc-band__inner">
+      <% %w[promise_1 promise_2 promise_3 promise_4].each do |key| %>
+        <div class="gc-band__item" role="listitem"><span class="gc-band__mark" aria-hidden="true">◆</span><%= t(".#{key}") %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# ---------- Mobile quick links + main categories (mobile web only) ---------- %>
+  <section class="gc-mobile-quick gc-mobile-only" aria-label="<%= t('.quick_links') %>">
+    <div class="gc-chips">
+      <a href="<%= engine.products_path %>" class="gc-chip"><%= t('.all_the_products') %></a>
+      <% if current_user %><a href="<%= engine.favorites_path %>" class="gc-chip"><%= t('.my_frequent_purchases') %></a><% end %>
+      <a href="<%= engine.products_path(filter: 'new_products') %>" class="gc-chip"><%= t('.new_products') %></a>
+      <a href="<%= engine.products_path(filter: 'discounted_products') %>" class="gc-chip"><%= t('.offers_and_discounts') %></a>
+      <a href="#gc-videos" class="gc-chip"><%= t('.shopping_videos') %></a>
+    </div>
+    <% mobile_categories = @primary_menu_categories.reject { |c| c.id == 64 || c.id == 47 || (c.id == 30 && !@banana_permission) } %>
+    <% if mobile_categories.any? %>
+      <div class="gc-container gc-mobile-cats">
+        <div class="gc-section-header gc-section-header--tight">
+          <div>
+            <div class="gc-eyebrow"><%= t('.categories_eyebrow') %></div>
+            <h2 class="gc-display"><%= t('.main_categories') %></h2>
+          </div>
+        </div>
+        <div class="gc-origin-grid">
+          <% mobile_categories.each do |category| %>
+            <a href="<%= engine.products_path(category_id: category.id) %>" class="gc-origin-row__item <%= category.highlighted? ? 'is-highlighted' : '' %>">
+              <span class="gc-origin-row__circle"><img src="<%= category.image.medium_400.url %>" alt="" loading="lazy"></span>
+              <span class="gc-origin-row__label"><%= gc_category_name(category) %></span>
+            </a>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </section>
+
+  <%# ---------- Featured products (every featured product, as a rail) ---------- %>
+  <section class="gc-section gc-container" aria-labelledby="gc-featured-title">
+    <div class="gc-section-header">
+      <div>
+        <div class="gc-eyebrow"><%= t('.featured_eyebrow') %></div>
+        <h2 class="gc-display" id="gc-featured-title"><%= t('.featured_products') %></h2>
+      </div>
+      <div class="gc-section-header__tools">
+        <a href="<%= engine.products_path %>" class="gc-link-underline"><%= t('.see_all', count: product_count_label) %></a>
+        <div class="gc-rail__nav" data-gc-featured-nav>
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-scroller-prev aria-label="<%= t('.previous') %>"><%= gc_icon :chevron_left, size: 18 %></button>
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-scroller-next aria-label="<%= t('.next') %>"><%= gc_icon :chevron_right, size: 18 %></button>
+        </div>
+      </div>
+    </div>
+    <div class="gc-rail" data-gc-scroller>
+      <div class="gc-rail__track gc-rail__track--featured" data-gc-scroller-track>
+        <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: featured_grid, as: :item %>
+      </div>
+    </div>
+  </section>
+
+  <%# ---------- Shoppable videos ---------- %>
+  <% if shopping_videos.any? %>
+  <section class="gc-section gc-container" id="gc-videos" aria-labelledby="gc-videos-title">
+    <div class="gc-videos">
+      <div class="gc-videos__copy">
+        <div class="gc-eyebrow"><%= t('.videos_eyebrow') %></div>
+        <h2 class="gc-videos__title" id="gc-videos-title"><%= t('.videos_title') %></h2>
+        <p class="gc-videos__body"><%= t('.videos_body') %></p>
+        <div class="gc-rail__nav gc-videos__nav">
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-scroller-prev aria-label="<%= t('.previous') %>"><%= gc_icon :chevron_left, size: 18 %></button>
+          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-scroller-next aria-label="<%= t('.next') %>"><%= gc_icon :chevron_right, size: 18 %></button>
+        </div>
+      </div>
+      <div class="gc-videos__rail" data-gc-scroller>
+        <div class="gc-videos__track shopping-videos-slider" data-gc-scroller-track>
+          <% shopping_videos.each do |shopping_video| %>
+            <div class="gc-videos__tile video-item">
+              <div class="video-container">
+                <video
+                  id="video-<%= shopping_video.id %>"
+                  class="video-js vjs-fill shopping-video"
+                  controls
+                  preload="metadata"
+                  muted
+                  playsinline
+                  poster="<%= shopping_video.thumbnail %>"
+                  data-shopping-video-id="<%= shopping_video.id %>"
+                  data-shopping-video-should-autoplay="<%= shopping_video == lowest_priority_video ? 'true' : 'false' %>"
+                >
+                  <source src="<%= shopping_video.video %>" type="video/mp4" />
+                  <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                  </p>
+                </video>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+  <% end %>
+
+  <%# ---------- Country / origin mosaic ---------- %>
+  <% if mosaic_categories.any? %>
+  <section class="gc-section gc-container" id="gc-origins" aria-labelledby="gc-origins-title">
+    <div class="gc-section-header">
+      <div>
+        <div class="gc-eyebrow"><%= t('.origins_eyebrow') %></div>
+        <h2 class="gc-display" id="gc-origins-title"><%= t('.products_from_the_world') %></h2>
+      </div>
+      <a href="<%= engine.products_path %>" class="gc-link-underline"><%= t('.all_countries', count: country_count) %></a>
+    </div>
+    <div class="gc-mosaic">
+      <% mosaic_categories.each_with_index do |category, i| %>
+        <% label = session[:locale] == 'en-PE' ? (category.mosaic_label_en.presence || gc_category_name(category)) : (category.mosaic_label_es.presence || category.mosaic_label_en.presence || gc_category_name(category)) %>
+        <a href="<%= engine.products_path(category_id: category.id) %>" class="gc-mosaic__tile <%= i % 5 == 0 ? 'gc-mosaic__tile--wide' : '' %>" style="background-image:url('<%= category.image_popular_homepage.homepage.url %>')">
+          <span class="gc-mosaic__caption">
+            <span class="gc-mosaic__name"><%= label %></span>
+            <span class="gc-mosaic__meta"><%= category.image_popular_homepage_overlay_text.presence || t('.explore') %></span>
+          </span>
+        </a>
+      <% end %>
+    </div>
+  </section>
+  <% end %>
+
+  <%# ---------- Testimonials ---------- %>
+  <% if testimonials.any? %>
+  <section class="gc-section gc-container" aria-labelledby="gc-testimonials-title">
+    <div class="gc-section-header">
+      <div>
+        <div class="gc-eyebrow"><%= t('.testimonials_eyebrow') %></div>
+        <h2 class="gc-display" id="gc-testimonials-title"><%= t('.customer_testimonials') %></h2>
+      </div>
+      <a href="<%= engine.testimonials_path %>" class="gc-link-underline"><%= t('.all_testimonials') %></a>
+    </div>
+    <div class="gc-testimonials">
+      <% testimonials.first(3).each do |testimonial| %>
+        <article class="gc-testimonial">
+          <div class="gc-testimonial__media">
+            <video class="gc-testimonial__video" controls preload="none" poster="<%= testimonial.thumbnail.medium_400.url %>">
+              <source src="<%= testimonial.video.url %>" type="video/mp4">
+            </video>
+          </div>
+          <div class="gc-testimonial__body">
+            <p class="gc-testimonial__quote">“<%= testimonial.product_name %>”</p>
+            <p class="gc-testimonial__who"><%= testimonial.user_fullname %> · <%= testimonial.user_title %></p>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  </section>
+  <% end %>
+
+  <%# ---------- Press / editorial block ---------- %>
+  <section class="gc-section gc-container" aria-labelledby="gc-press-title">
+    <div class="gc-press">
+      <div class="gc-press__copy">
+        <div class="gc-eyebrow gc-press__eyebrow"><%= t('.press_eyebrow') %></div>
+        <h2 class="gc-press__title" id="gc-press-title"><%= t('.press_title') %></h2>
+        <p class="gc-press__body"><%= t('.press_body') %></p>
+        <div class="gc-press__actions">
+          <a href="https://elcomercio.pe/economia/expatshop-la-importadora-de-productos-de-consumo-masivo-que-concentrara-sus-esfuerzos-en-peru-vendiendo-al-precio-de-origen-noticia/" target="_blank" rel="noopener" class="gc-btn gc-btn--accent"><%= t('.read_article') %></a>
+          <a href="<%= engine.about_us_path %>" class="gc-btn gc-btn--outline-light"><%= t('.press') %></a>
+        </div>
+      </div>
+      <div class="gc-press__media">
+        <%= image_tag "ecommerce/img/expatshop/offer.png", alt: "", class: "gc-press__img", loading: "lazy" %>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Hero carousel: scroll-snap track (swipeable), arrows, dots, gentle
+  // auto-advance that pauses on hover/focus and respects reduced motion.
+  document.addEventListener('DOMContentLoaded', function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('[data-gc-hero]').forEach(function (hero) {
+      var track = hero.querySelector('[data-gc-hero-track]');
+      var slides = Array.prototype.slice.call(hero.querySelectorAll('[data-gc-hero-slide]'));
+      var dots = Array.prototype.slice.call(hero.querySelectorAll('[data-gc-hero-dot]'));
+      if (slides.length < 2) return;
+      var index = 0, timer = null, paused = false;
+
+      function go(n, smooth) {
+        index = (n + slides.length) % slides.length;
+        track.scrollTo({ left: slides[index].offsetLeft, behavior: smooth === false || reduce ? 'auto' : 'smooth' });
+      }
+      function sync() {
+        var i = Math.round(track.scrollLeft / track.clientWidth);
+        if (i !== index && i >= 0 && i < slides.length) index = i;
+        dots.forEach(function (d, k) { d.classList.toggle('is-active', k === index); });
+      }
+      function start() { if (reduce) return; stop(); timer = setInterval(function () { if (!paused && !hero.matches(':hover')) go(index + 1); }, 7000); }
+      function stop() { if (timer) clearInterval(timer); timer = null; }
+
+      track.addEventListener('scroll', function () { window.requestAnimationFrame(sync); }, { passive: true });
+      hero.querySelector('[data-gc-hero-prev]').addEventListener('click', function () { go(index - 1); start(); });
+      hero.querySelector('[data-gc-hero-next]').addEventListener('click', function () { go(index + 1); start(); });
+      dots.forEach(function (d) { d.addEventListener('click', function () { go(parseInt(d.getAttribute('data-gc-hero-dot'), 10)); start(); }); });
+      hero.addEventListener('focusin', function () { paused = true; });
+      hero.addEventListener('focusout', function () { paused = false; });
+      window.addEventListener('resize', function () { go(index, false); });
+      start();
+    });
+  });
+</script>
+
+      <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var players = [];
+        var customPipContainer = document.createElement('div');
+        customPipContainer.className = 'custom-pip-container';
+        var closeButton = document.createElement('button');
+        closeButton.className = 'custom-pip-close';
+        closeButton.innerHTML = '×';
+        customPipContainer.appendChild(closeButton);
+        document.body.appendChild(customPipContainer);
+        var activePlayer = null;
+        var isPipActive = false;
+        var pipManuallyClosed = false;
+
+        function setupCustomPipFunctionality(player) {
+          var pipButton = player.controlBar.addChild('button', {
+            clickHandler: function(event) {
+              if (customPipContainer.style.display === 'block') {
+                exitCustomPip();
+              } else {
+                enterCustomPip(player);
+              }
+            }
+          });
+
+          var pipButtonDom = pipButton.el();
+          pipButtonDom.classList.add('vjs-pip-button');
+          pipButtonDom.title = 'Picture in Picture';
+        }
+
+        function enterCustomPip(player) {
+          if (!player || typeof player.el !== 'function') {
+            console.error('Invalid player object');
+            return;
+          }
+
+          customPipContainer.style.display = 'block';
+          
+          try {
+            var pipVideoElement = document.createElement('video');
+            pipVideoElement.className = 'video-js vjs-fill shopping-video';
+            pipVideoElement.id = 'pip-' + player.el().id;
+            customPipContainer.appendChild(pipVideoElement);
+
+            var originalSource = player.currentSource();
+
+            var pipPlayerInstance = videojs(pipVideoElement.id, {
+              muted: player.muted(),
+              autoplay: false,
+              controls: true,
+              playsinline: true,
+              sources: [{ type: originalSource.type, src: originalSource.src }]
+            });
+
+            pipPlayerInstance.ready(function() {
+              console.log('PIP player ready:', pipPlayerInstance.id());
+
+              pipPlayerInstance.load();
+              pipPlayerInstance.currentTime(player.currentTime());
+              pipPlayerInstance.muted(player.muted());
+              pipPlayerInstance.volume(player.volume());
+
+              pipPlayerInstance.on('play', function() {
+                player.pause();
+              });
+
+              player.on('play', function() {
+                pipPlayerInstance.pause();
+              });
+
+              // Start PIP player in the correct state
+              if (player.paused()) {
+                pipPlayerInstance.pause();
+              } else {
+                pipPlayerInstance.play().catch(e => console.error('Failed to play PIP video:', e));
+                player.pause();
+              }
+
+              // Recreate overlays
+              var originalOverlay = player.el().querySelector('.vjs-overlay');
+              if (originalOverlay) {
+                var pipOverlay = originalOverlay.cloneNode(true);
+                pipOverlay.style.transform = 'scale(0.5)';
+                pipOverlay.style.transformOrigin = 'bottom left';
+                pipOverlay.style.bottom = '10px';
+                pipPlayerInstance.el().appendChild(pipOverlay);
+
+                // Recreate overlay interactions
+                setupOverlayInteractions(pipPlayerInstance, pipOverlay);
+
+                // Handle overlay visibility based on video time
+                pipPlayerInstance.on('timeupdate', function() {
+                  var currentTime = pipPlayerInstance.currentTime();
+                  pipOverlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+                    var startTime = parseFloat(productOverlay.dataset.startTime);
+                    var endTime = parseFloat(productOverlay.dataset.endTime);
+                    if (currentTime >= startTime && currentTime <= endTime) {
+                      productOverlay.style.display = 'block';
+                    } else {
+                      productOverlay.style.display = 'none';
+                    }
+                  });
+                });
+              }
+
+              // Recreate title overlay
+              var originalTitleOverlay = player.el().querySelector('.vjs-title-overlay');
+              if (originalTitleOverlay) {
+                var pipTitleOverlay = originalTitleOverlay.cloneNode(true);
+                pipTitleOverlay.style.fontSize = '12px'; // Adjust size for PIP view
+                pipPlayerInstance.el().appendChild(pipTitleOverlay);
+              }
+
+              // Add fullscreen button
+              var fullscreenButton = document.createElement('button');
+              fullscreenButton.className = 'custom-pip-fullscreen';
+              fullscreenButton.title = 'Switch to fullscreen';
+              fullscreenButton.addEventListener('click', function() {
+                var currentTime = pipPlayerInstance.currentTime();
+                var isPlaying = !pipPlayerInstance.paused();
+                exitCustomPip();
+                player.currentTime(currentTime);
+                if (isPlaying) {
+                  player.play().catch(e => console.error('Failed to play main video:', e));
+                }
+                player.requestFullscreen();
+              });
+              pipPlayerInstance.el().appendChild(fullscreenButton);
+
+              // Add mute/unmute button
+              var muteButton = document.createElement('button');
+              muteButton.className = 'custom-pip-mute';
+              muteButton.title = 'Toggle mute';
+              muteButton.classList.toggle('muted', pipPlayerInstance.muted());
+              muteButton.addEventListener('click', function() {
+                pipPlayerInstance.muted(!pipPlayerInstance.muted());
+                muteButton.classList.toggle('muted', pipPlayerInstance.muted());
+                player.muted(pipPlayerInstance.muted()); // Sync mute state with original player
+              });
+              pipPlayerInstance.el().appendChild(muteButton);
+
+              pipPlayerInstance.originalPlayer = player;
+
+            });
+
+            closeButton.addEventListener('click', function() {
+              exitCustomPip();
+              pipManuallyClosed = true;
+            });
+
+          } catch (error) {
+            console.error('Error in enterCustomPip:', error);
+            customPipContainer.style.display = 'none';
+          }
+        }
+
+        function exitCustomPip() {
+          var pipPlayer = customPipContainer.querySelector('.video-js');
+          if (pipPlayer) {
+            try {
+              var pipPlayerInstance = videojs(pipPlayer.id);
+              var originalPlayer = pipPlayerInstance.originalPlayer;
+              
+              if (originalPlayer && typeof originalPlayer.currentTime === 'function') {
+                originalPlayer.currentTime(pipPlayerInstance.currentTime());
+                
+                if (!pipPlayerInstance.paused()) {
+                  originalPlayer.play().catch(e => console.error('Failed to play original video:', e));
+                }
+              }
+
+              pipPlayerInstance.dispose();
+            } catch (error) {
+              console.error('Error in exitCustomPip:', error);
+            }
+          }
+          customPipContainer.style.display = 'none';
+          customPipContainer.innerHTML = '';
+          customPipContainer.appendChild(closeButton);
+          isPipActive = false;
+          activePlayer = null;
+        }
+
+        function checkPlayerVisibility(player) {
+          if (isPipActive || pipManuallyClosed) return;
+
+          var rect = player.el().getBoundingClientRect();
+          var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+          
+          // Calculate how much of the video is above the viewport
+          var visibleTop = Math.max(0, rect.top);
+          var hiddenTop = Math.max(0, -rect.top);
+          
+          // Calculate the percentage of the video that's above the viewport
+          var percentHidden = hiddenTop / rect.height;
+
+          // Only enter PIP mode if more than 80% of the video is above the viewport
+          // and the video is playing
+          if (percentHidden > 0.8 && !player.paused() && player !== activePlayer) {
+            console.log('Entering PIP mode for player:', player.id());
+            enterCustomPip(player);
+            activePlayer = player;
+            isPipActive = true;
+          } else if (percentHidden <= 0.8 && isPipActive && player === activePlayer) {
+            console.log('Exiting PIP mode for player:', player.id());
+            exitCustomPip();
+          }
+        }
+
+        // Debounce function to limit how often the scroll event fires
+        function debounce(func, wait) {
+          let timeout;
+          return function executedFunction(...args) {
+            const later = () => {
+              clearTimeout(timeout);
+              func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+          };
+        }
+
+        // Use the debounce function when adding the scroll event listener
+        window.addEventListener('scroll', debounce(function() {
+          players.forEach(checkPlayerVisibility);
+        }, 100));
+
+        // Helper function to setup overlay interactions
+        function setupOverlayInteractions(player, overlay) {
+          overlay.querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+            productOverlay.addEventListener('click', function(e) {
+              // Category overlays are real links — let them navigate. Product
+              // overlays add to cart wherever the card is tapped, button included.
+              if (e.target.closest('.overlay-category-link')) {
+                return;
+              }
+
+              e.preventDefault();
+              var overlayType = this.dataset.overlayType;
+              var productId = this.dataset.productId;
+              var categoryId = this.dataset.categoryId;
+
+              if (overlayType === 'product' && productId) {
+                fetch('/store/cart_items', {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    cart_item: {
+                      product_id: productId,
+                      quantity: 1
+                    }
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                  },
+                  credentials: 'same-origin'
+                })
+                .then(response => response.text())
+                .then(responseText => {
+                  eval(responseText);
+                })
+                .catch(error => {
+                  console.error('Error adding product to cart:', error);
+                });
+              } else if (overlayType === 'category' && categoryId) {
+                window.location.href = `/store/products?category_id=${categoryId}`;
+              }
+            });
+          });
+        }
+
+        function updateMuteButtonState(player, buttonElement) {
+          if (player.muted() || player.volume() === 0) {
+            buttonElement.classList.add('muted');
+          } else {
+            buttonElement.classList.remove('muted');
+          }
+        }
+
+        function initializeVideoPlayers() {
+          var videoElements = document.querySelectorAll('.shopping-video');
+          videoElements.forEach(function(videoElement, index) {
+            var shoppingVideoId = videoElement.dataset.shoppingVideoId;
+            var shouldAutoplay = videoElement.dataset.shoppingVideoShouldAutoplay === 'true';
+            var player = videojs('video-' + shoppingVideoId, {
+              muted: true,
+              autoplay: false,
+              playsinline: true,
+              controls: true,
+              nativeControlsForTouch: false
+            });
+
+            players.push(player);
+
+            player.on('loadedmetadata', function() {
+              setupCustomPipFunctionality(player);
+
+              // Add custom mute button
+              var customMuteButton = player.addChild('button', {
+                clickHandler: function() {
+                  player.muted(!player.muted());
+                }
+              });
+
+              var customMuteButtonDom = customMuteButton.el();
+              customMuteButtonDom.classList.add('custom-mute-button');
+              customMuteButtonDom.innerHTML = '<span aria-hidden="true" class="vjs-icon-placeholder"></span>';
+              player.el().appendChild(customMuteButtonDom);
+
+              updateMuteButtonState(player, customMuteButtonDom);
+
+              // Update custom mute button state
+              player.on('volumechange', function() {
+                updateMuteButtonState(player, customMuteButtonDom);
+              });
+
+              // Add title overlay
+              fetch(`/store/shopping_videos/${shoppingVideoId}`)
+                .then(response => response.json())
+                .then(videoData => {
+                  var titleOverlayContent = `
+                    <div class="vjs-title-overlay">
+                      ${videoData.title}
+                    </div>
+                  `;
+
+                  var titleOverlay = player.addChild('component', {
+                    el: player.addChild('component').el()
+                  });
+                  titleOverlay.el().innerHTML = titleOverlayContent;
+                })
+                .catch(error => {
+                  console.error('Error fetching video title:', shoppingVideoId, error);
+                });
+
+              // Product and category overlay code
+              fetch(`/store/shopping_videos/${shoppingVideoId}/overlays`)
+                .then(response => response.json())
+                .then(overlays => {
+                  var overlayContent = `
+                    <div class="vjs-overlay">
+                      ${overlays.map(overlay => `
+                        <div class="overlay-product-overlay mx-2" 
+                             data-overlay-type="${overlay.overlay_type}"
+                             data-product-id="${overlay.overlay_type === 'product' ? overlay.product_id : ''}" 
+                             data-category-id="${overlay.overlay_type === 'category' ? overlay.category_id : ''}"
+                             data-start-time="${overlay.start_time}" 
+                             data-end-time="${overlay.end_time}">
+                          <div class="overlay-product-card">
+                            <img src="${overlay.overlay_type === 'product' ? overlay.product_image_url : overlay.category_image_url}" 
+                                 class="overlay-product-image" 
+                                 alt="${overlay.overlay_type === 'product' ? overlay.product_name : overlay.category_name}">
+                            <div class="overlay-product-info">
+                              <p class="overlay-product-title">
+                                ${(overlay.overlay_type === 'product' ? overlay.product_name : overlay.category_name).substring(0, 20)}
+                              </p>
+                              ${overlay.overlay_type === 'product' ?
+                                `<p class="overlay-product-price">${overlay.product_price}</p>
+                                 <button type="button" class="overlay-add-to-cart">
+                                   <span class="overlay-add-to-cart__label">${overlay.add_to_cart_label}</span> <span aria-hidden="true">&rsaquo;</span>
+                                 </button>` :
+                                `<a href="/store/products?category_id=${overlay.category_id}" class="overlay-category-link">
+                                   ${overlay.view_products_label}
+                                 </a>`
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      `).join('')}
+                    </div>
+                  `;
+
+                  var overlay = player.addChild('component', {
+                    el: player.addChild('component').el()
+                  });
+                  overlay.el().innerHTML = overlayContent;
+
+                  setupOverlayInteractions(player, overlay.el());
+
+                  player.on('timeupdate', function() {
+                    var currentTime = player.currentTime();
+                    overlay.el().querySelectorAll('.overlay-product-overlay').forEach(function(productOverlay) {
+                      var startTime = parseFloat(productOverlay.dataset.startTime);
+                      var endTime = parseFloat(productOverlay.dataset.endTime);
+                      if (currentTime >= startTime && currentTime <= endTime) {
+                        productOverlay.style.display = 'block';
+                      } else {
+                        productOverlay.style.display = 'none';
+                      }
+                    });
+                  });
+                })
+                .catch(error => {
+                  console.error('Error fetching overlays for video:', shoppingVideoId, error);
+                });
+
+              if (shouldAutoplay) {
+                console.log('Attempting autoplay for video', shoppingVideoId);
+                player.muted(true); // Ensure the video is muted for autoplay
+                var playPromise = player.play();
+                
+                if (playPromise !== undefined) {
+                  playPromise.then(() => {
+                    console.log('Autoplay started for video', shoppingVideoId);
+                  }).catch(error => {
+                    console.log('Autoplay prevented for video', shoppingVideoId, error);
+                    // Autoplay was prevented, show poster and play button
+                    if (player.posterImage) player.posterImage.show();
+                    if (player.bigPlayButton) player.bigPlayButton.show();
+                  });
+                } else {
+                  console.log('Play promise is undefined for video', shoppingVideoId);
+                }
+              } else {
+                console.log('Autoplay not attempted for video', shoppingVideoId);
+                // For non-autoplay videos, ensure the poster and play button are visible
+                if (player.posterImage) player.posterImage.show();
+                if (player.bigPlayButton) player.bigPlayButton.show();
+              }
+
+
+            });
+          });
+        }
+
+        initializeVideoPlayers();
+      });
+      </script>

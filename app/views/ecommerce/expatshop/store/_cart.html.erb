@@ -1,55 +1,85 @@
-<%# Header cart control. Re-rendered into #cart-line by cart_items/show.js.erb
-    after every add-to-cart, so it must be self-contained: button + count +
-    mini-cart drawer. On <768 the drawer is hidden and the button links to the
-    cart page. %>
-<% engine = Ecommerce::Engine.routes.url_helpers %>
 <% if @cart && @cart.id %>
-  <% totals = @cart.get_totals(@current_user) %>
-  <div class="gc-minicart" id="gc-minicart">
-    <a href="<%= engine.cart_path(@cart.id) %>" class="gc-minicart__btn gc-btn gc-btn--primary" id="dLabel" aria-label="<%= t('.cart', default: 'Cart') %>, <%= totals[:tot_qty] %> <%= t('.items') %>">
-      <span class="gc-minicart__icon"><%= gc_icon :bag, size: 18 %></span>
-      <span class="gc-minicart__label"><%= t('.cart', default: 'Cart') %></span>
-      <span class="gc-count gc-minicart__count"><%= totals[:tot_qty] %></span>
+  <% if browser.device.mobile? %>
+    <a href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
+      <p class="text-uppercase d-flex">
+        Checkout
+        <%= fa_icon 'shopping-cart' %>
+        (<%= @cart.get_totals(@current_user)[:tot_qty] %>)
+      </p>
     </a>
+  <% else %>
+    <div class="cart position-relative">
+      <div class="dropdown">
+        <button
+          id="dLabel"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          class="dropdown-toggle"
+          onclick="redirectToCart()"
+        >
+          <%= fa_icon('shopping-cart 3x', style: 'color: #67696C;', class: 'icon-color cursor-pointer') %>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dLabel">
+          <div class="container-fluid">   
+            <div class="item">
 
-    <div class="gc-minicart__drawer" aria-label="<%= t('.cart', default: 'Cart') %>">
-      <% if @cart.cart_items.any? %>
-        <ul class="gc-minicart__items">
-          <% @cart.cart_items.sort_by { |item| cart_item_locked?(item) ? 1 : 0 }.each do |item| %>
-            <li class="gc-minicart__item">
-              <img src="<%= item.product.image.thumb_100.url %>" alt="" class="gc-minicart__thumb" loading="lazy">
-              <div class="gc-minicart__info">
-                <div class="gc-minicart__name"><%= item.product.name %></div>
-                <div class="gc-minicart__meta"><%= friendly_cart_weight(item.product.weight) %></div>
-                <div class="gc-minicart__price gc-num"><%= product_session_price(item.product, "current_price") %> <span class="gc-faint">× <%= item.quantity %></span></div>
-              </div>
-              <% if cart_item_locked?(item) %>
-                <span class="gc-minicart__remove is-locked" title="<%= t('combo_discounts.combo_injected_tooltip') %>" aria-label="<%= t('combo_discounts.combo_injected_tooltip') %>"><%= gc_icon :trash, size: 16 %></span>
-              <% else %>
-                <%= link_to cart_item_path(item.id), method: :delete, remote: true, class: "gc-minicart__remove", "aria-label": "#{t('.remove', default: 'Remove')} #{item.product.name}" do %>
-                  <%= gc_icon :trash, size: 16 %>
-                <% end %>
+              <% @cart.cart_items.sort_by { |item| cart_item_locked?(item) ? 1 : 0 }.each do |item| %>
+
+                <div class="row d-flex flex-center">
+                  <div class="col-md-3">
+                    <img
+                      src="<%= item.product.image.thumb_100.url %>"
+                      class="img-responsive"
+                      alt=""
+                    />
+                  </div>
+                  <div class="col-md-7">
+                    <p><%= item.product.name %></p>
+                    <span><%= friendly_cart_weight(item.product.weight) %></span>
+                    <p><%= session_price(item.product, "current_price") %><span> (x<%= item.quantity %>)</span></p>
+                  </div>
+                  <div class="col-md-2">
+                    <% if cart_item_locked?(item) %>
+                      <span class="remove combo-injected-item" data-toggle="tooltip" data-placement="top" title="<%= t('combo_discounts.combo_injected_tooltip') %>">
+                        <%= fa_icon('trash 2x', style: 'color: #67696C; opacity: 0.3; cursor: not-allowed;', class: 'icon-color') %>
+                      </span>
+                    <% else %>
+                      <%= link_to cart_item_path(item.id), method: :delete, remote: true, class: "remove" do %>
+                        <%= fa_icon('trash 2x', style: 'color: #67696C;', class: 'icon-color cursor-pointer') %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+
               <% end %>
-            </li>
-          <% end %>
+
+              <div class="subtotal d-flex space-between">
+                <p>SUBTOTAL</p>
+                <p><%= session_price(@cart.get_totals(@current_user)[:tot_acum]) %></p>
+              </div>
+              <% if session[:currency] != "xxx" %>
+                <div class="subtotal d-flex space-between" style="margin-top: -25px;">
+                  <p></p>
+                  <p>S/. <%= @cart.get_totals(@current_user)[:tot_acum] * @exchange_rate %></p>
+                </div>
+              <% end %>
+              <div class="cart-btn-group text-center">
+                <a href="<%= Ecommerce::Engine.routes.url_helpers.cart_path(@cart.id) %>">
+                  <button class="secondary-btn"><%= t('.view_cart') %></button>
+                </a>
+                <!--
+                <a href="<%= Ecommerce::Engine.routes.url_helpers.checkout_path %>">
+                  <button class="main-btn"><%= t('.checkout') %></button>
+                </a>
+                -->
+              </div>
+            </div>
+          </div>
         </ul>
-        <% sub_pair = gc_money_pair(totals[:tot_acum]) %>
-        <div class="gc-minicart__subtotal">
-          <span class="gc-label"><%= t('.subtotal', default: 'Subtotal') %></span>
-          <span class="gc-price gc-num"><%= sub_pair.first %></span>
-        </div>
-        <div class="gc-minicart__conversion gc-small gc-muted gc-num">≈ <%= sub_pair.last %></div>
-        <div class="gc-minicart__actions">
-          <a href="<%= engine.cart_path(@cart.id) %>" class="gc-btn gc-btn--outline gc-btn--block"><%= t('.view_cart') %></a>
-          <a href="<%= engine.checkout_path %>" class="gc-btn gc-btn--secondary gc-btn--block"><%= t('.checkout') %></a>
-        </div>
-      <% else %>
-        <div class="gc-minicart__empty">
-          <div class="gc-minicart__empty-icon"><%= gc_icon :bag, size: 28 %></div>
-          <p class="gc-small gc-muted"><%= t('.empty', default: 'Your cart is empty.') %></p>
-          <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary gc-btn--sm"><%= t('.start_shopping', default: 'Start shopping') %></a>
-        </div>
-      <% end %>
+      </div>
+      <span class="cart-count d-flex flex-center cursor-pointer"><%= @cart.get_totals(@current_user)[:tot_qty] %></span>
     </div>
-  </div>
+  <% end %>
 <% end %>

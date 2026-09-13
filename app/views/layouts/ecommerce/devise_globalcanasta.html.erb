@@ -1,6 +1,6 @@
 <%# GlobalCanasta auth shell (Devise + change-password): cream page, small
     logo header, centred card, one-line footer. Used by the host app via
-    Ecommerce.ecommerce_devise_layout = "devise_expatshop". %>
+    Ecommerce.ecommerce_devise_layout = "devise_globalcanasta". %>
 <!DOCTYPE html>
 <html lang="<%= I18n.locale.to_s.split('-').first %>">
 <head>
@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <%= stylesheet_link_tag 'ecommerce/application', media: 'all' %>
-  <%= stylesheet_link_tag "ecommerce/expatshop", media: "all" %>
+  <%= stylesheet_link_tag "ecommerce/globalcanasta", media: "all" %>
   <%= javascript_include_tag 'ecommerce/application' %>
   <%= csrf_meta_tags %>
 </head>
@@ -24,7 +24,7 @@
   <div class="gc-site gc-auth-shell">
     <header class="gc-auth-shell__head">
       <a href="<%= main_app.root_path %>" aria-label="<%= gc_brand_name %>"><%= gc_logo(height: 36) %></a>
-      <a href="<%= main_app.root_path %>" class="gc-btn gc-btn--ghost"><%= gc_icon :chevron_left, size: 16 %> <%= t('ecommerce.expatshop.store.header.home', default: 'Home') %></a>
+      <a href="<%= main_app.root_path %>" class="gc-btn gc-btn--ghost"><%= gc_icon :chevron_left, size: 16 %> <%= t('ecommerce.globalcanasta.store.header.home', default: 'Home') %></a>
     </header>
 
     <main class="gc-auth-shell__main" id="main-content">

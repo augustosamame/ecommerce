@@ -1,9 +1,5 @@
-// Legacy helpers still called from server-rendered JS responses
-// (cart_items/show.js.erb, product/stock_alert*.js.erb) and the header.
-// Sliders, ddslick, Mosaic and the search overlay were retired with the
-// GlobalCanasta redesign (see gc.js for the replacements).
-
 function fly_to_cart() {
+  //console.log ("function fly_to_cart fired!");
   $('#cart-line').shake({
     interval: 100,
     distance: 20,
@@ -44,6 +40,12 @@ function show_stock_alert_signed_out(lang) {
 };
 
 function add_to_cart_no_stock() {
+  //console.log ("function fly_to_cart fired!");
+  //$('#shopping-cart').shake({
+  //    interval: 100,
+  //    distance: 20,
+  //    times: 5
+  //});
   alert("Product is Out of Stock");
 };
 
@@ -72,7 +74,6 @@ $.fn.shake = function (settings) {
 
   $(this).animate({ left: 0 }, settings.interval, settings.complete);
 };
-
 $.fn.bounce = function (settings) {
   if (typeof settings.interval == 'undefined') {
     settings.interval = 100;
@@ -98,22 +99,326 @@ $.fn.bounce = function (settings) {
 
   $(this).animate({ top: 0 }, settings.interval, settings.complete);
 };
+var _ddlLangLoaded = false;
+$("#langMobile").ddslick({
+  width: "100%",
+  imagePosition: "left",
+  // defaultSelectedIndex: 2,
+  onSelected: function (data) {
+    // console.log(data.selectedData.value);
+    var url = window.location.pathname + window.location.search
+    if (_ddlLangLoaded === false) {
+      _ddlLangLoaded = true;
+    }
+    else {
+      if (data.selectedData.value == 0) {
+        if (url.indexOf('?') == -1) {
+          window.location.href = url + "?lang=en-PE"
+        } else {
+          window.location.href = url + "&lang=en-PE"
+        }
+      } else {
+        if (url.indexOf('?') == -1) {
+          window.location.href = url + "?lang=es-PE"
+        } else {
+          window.location.href = url + "&lang=es-PE"
+        }
+      }
+    }
+  }
+});
 
-// Currency / locale switchers (desktop header selects). The mobile drawer
-// uses #usd-currency / #pen-currency / #en-lang / #es-lang, handled in the
-// base layout.
-function gcAppendParam(param, value) {
-  var url = window.location.pathname + window.location.search;
-  var sep = url.indexOf('?') == -1 ? '?' : '&';
-  window.location.href = url + sep + param + '=' + value;
-}
+var _ddlCurrencyLoaded = false;
+$("#currencyMobile").ddslick({
+  width: "100%",
+  // defaultSelectedIndex: 'pen',
+  onSelected: function (data) {
+    // console.log(data.selectedData.value);
+    var url = window.location.pathname + window.location.search
+    if (_ddlCurrencyLoaded === false) {
+      _ddlCurrencyLoaded = true;
+    }
+    else {
+      if (data.selectedData.value == 'usd') {
+        if (url.indexOf('?') == -1) {
+          window.location.href = url + "?currency=usd"
+        } else {
+          window.location.href = url + "&currency=usd"
+        }
+      } else {
+        if (url.indexOf('?') == -1) {
+          window.location.href = url + "?currency=pen"
+        } else {
+          window.location.href = url + "&currency=pen"
+        }
+      }
+    }  
+  }
+});
+
+// brand slider
+$(function () {
+  $(".brand-slider").slick({
+    dots: false,
+    infinite: true,
+    arrows: true,
+    speed: 300,
+    slidesToShow: 5,
+    slidesToScroll: 5,
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: false,
+          arrows: true,
+        },
+      },
+    ],
+  });
+});
+
+// featured products slider
+$(function () {
+  $(".featured-product-slider").slick({
+    dots: false,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+    customPaging: function (slider, i) {
+      var thumb = $(slider.$slides[i]).data('thumb');
+      // console.log('thumb', thumb)
+      return "<button><img src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'></button>";
+    },
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+    ],
+  });
+});
+
+$(function () {
+  $(".featured-product-slider-mobile").slick({
+    dots: false,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    centerMode: true,
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+    customPaging: function (slider, i) {
+      var thumb = $(slider.$slides[i]).data('thumb');
+      // console.log('thumb', thumb)
+      return "<button><img src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'></button>";
+    },
+  });
+});
+
+// testimonial slider
+$(function () {
+  $(".testimonial-slider").slick({
+    dots: false,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+    nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 4,
+          infinite: true,
+          dots: false,
+          pager: false,
+        },
+      },
+    ],
+  });
+ 
+  
+});
 
 $(document).ready(function () {
+
+  $('#country-mosaic').Mosaic({
+    maxRowHeight: 333,
+    maxRowHeightPolicy: 'tail',
+    defaultAspectRatio: 1.5,
+    innerGap: 15,
+  });
+
+  //$('#country-mosaic').justifiedGallery({
+  //  rowHeight: 333,
+  //  lastRow: 'justify',
+  //  margins: 15,
+  //  captions: false,
+  //  randomize: false,
+  // });
+
+  console.log("Setting up search button handler, .noo-search elements found:", $(".noo-search").length);
+  console.log(".search-header5 elements found:", $(".search-header5").length);
+
+  $(document).on("click", ".noo-search", function (e) {
+    console.log("Search button clicked!");
+    console.log("Event target:", e.target);
+    console.log("Current target:", e.currentTarget);
+    e.preventDefault();
+    e.stopPropagation();
+    var searchHeader = $(".search-header5");
+    console.log("search-header5 found:", searchHeader.length);
+    searchHeader.fadeIn(1).addClass("search-header-eff");
+    searchHeader.find('input[type="search"]').val("").attr("placeholder", "").select();
+    console.log("Search header should now be visible");
+    return false;
+  });
+
+  $(document).on("click", ".remove-form", function () {
+    console.log("Remove form clicked, hiding search");
+    $(".search-header5").fadeOut(1).removeClass("search-header-eff");
+  });
+
+  // Also try binding directly to the element with id
+  $(document).on("click", "#noo-search", function (e) {
+    console.log("Search button clicked via #noo-search ID!");
+    e.preventDefault();
+    e.stopPropagation();
+    $(".search-header5").fadeIn(1).addClass("search-header-eff");
+    $(".search-header5").find('input[type="search"]').val("").attr("placeholder", "").select();
+    return false;
+  });
+
+
   $('#currency').on('change', function () {
-    gcAppendParam('currency', $(this).val() == 'usd' ? 'usd' : 'pen');
+    var url = window.location.pathname + window.location.search
+    var selectedValue = $(this).val();
+    // console.log('Selected value:', selectedValue);
+    if (selectedValue == 'usd') {
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?currency=usd"
+      } else {
+        window.location.href = url + "&currency=usd"
+      }
+    } else {
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?currency=pen"
+      } else {
+        window.location.href = url + "&currency=pen"
+      }
+    }
   });
 
   $('#lang').on('change', function () {
-    gcAppendParam('lang', $(this).val() == 'english' ? 'en-PE' : 'es-PE');
+    var url = window.location.pathname + window.location.search
+    var selectedValue = $(this).val();
+    // console.log('Selected value:', selectedValue);
+    if (selectedValue == 'english') {
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?lang=en-PE"
+      } else {
+        window.location.href = url + "&lang=en-PE"
+      }
+    } else {
+      if (url.indexOf('?') == -1) {
+        window.location.href = url + "?lang=es-PE"
+      } else {
+        window.location.href = url + "&lang=es-PE"
+      }
+    }
   });
+
+  // related products slider
+  $(function () {
+    $(".related-product-slider").slick({
+      dots: false,
+      infinite: true,
+      speed: 300,
+      slidesToShow: 3,
+      slidesToScroll: 3,
+      prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+      nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+      responsive: [
+        {
+          breakpoint: 1200,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+          },
+        },
+        {
+          breakpoint: 768,
+          settings: {
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            speed: 300,
+            centerMode: true,
+          },
+        },
+      ],
+    });
+  });
+
+  $(function () {
+    $(".shopping-videos-slider").slick({
+      dots: false,
+      infinite: false,
+      speed: 300,
+      slidesToShow: 3,
+      slidesToScroll: 3,
+      // infinite: true,
+      // centerMode: true,
+      prevArrow: "<img class='a-left control-c prev slick-prev' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-left.png'>",
+      nextArrow: "<img class='a-right control-c next slick-next' src='https://v1-devtechperu-expatshop-dev.s3.amazonaws.com/static/images/chevron-right.png'>",
+      responsive: [
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: false,
+            pager: false,
+            centerMode: true,
+            infinite: true,
+          },
+        },
+      ],
+    });
+
+    // Add margin to slides
+    $(".shopping-videos-slider").slick('slickSetOption', 'margin', 20, true);
+
+    // Adjust slide width to account for margin
+    $(".shopping-videos-slider .slick-slide").css({
+      'margin-right': '10px',
+      'margin-left': '10px'
+    });
+
+
+  });
+
+
 });

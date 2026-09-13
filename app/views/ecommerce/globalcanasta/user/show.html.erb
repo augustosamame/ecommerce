@@ -1,0 +1,18 @@
+<%# Account hub: quick links to every customer-zone feature. %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<main class="gc-commerce gc-account gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <div>
+      <div class="gc-eyebrow"><%= current_user.try(:email) %></div>
+      <h1 class="gc-commerce__title"><%= t('ecommerce.globalcanasta.store.header.my_account') %></h1>
+    </div>
+  </header>
+  <div class="gc-account__grid">
+    <a href="<%= engine.orders_path %>" class="gc-card gc-account__tile"><%= gc_icon :box, size: 22 %><span><%= t('ecommerce.globalcanasta.store.header.my_orders') %></span></a>
+    <a href="<%= engine.addresses_path %>" class="gc-card gc-account__tile"><%= gc_icon :map_pin, size: 22 %><span><%= t('ecommerce.globalcanasta.store.header.my_addresses') %></span></a>
+    <a href="<%= engine.points_path %>" class="gc-card gc-account__tile"><%= gc_icon :star, size: 22 %><span><%= t('ecommerce.globalcanasta.store.header.my_points') %> <span class="gc-count"><%= current_user.try(:points) %></span></span></a>
+    <a href="<%= engine.referral_path %>" class="gc-card gc-account__tile"><%= gc_icon :gift, size: 22 %><span><%= t('ecommerce.globalcanasta.store.header.my_referral_program') %></span></a>
+    <a href="<%= engine.favorites_path %>" class="gc-card gc-account__tile"><%= gc_icon :heart, size: 22 %><span><%= t('ecommerce.globalcanasta.store.header.favorite_products') %></span></a>
+    <a href="<%= main_app.edit_user_registration_path %>" class="gc-card gc-account__tile"><%= gc_icon :settings, size: 22 %><span><%= t('ecommerce.globalcanasta.store.header.my_account') %></span></a>
+  </div>
+</main>

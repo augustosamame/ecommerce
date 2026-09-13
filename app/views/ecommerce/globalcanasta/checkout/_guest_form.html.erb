@@ -1,0 +1,131 @@
+<div class="new-address guest-checkout-form gc-card gc-card__body gc-form" id="guest-checkout-block">
+
+  <%# Collapsed by default (desktop + mobile): two buttons; tapping "Comprar como %>
+  <%# Invitado" reveals the form and pushes the login button to the bottom. %>
+  <button type="button" id="guest-reveal-form-btn" class="gc-btn gc-btn--primary gc-btn--lg gc-btn--block checkout-address-button guest-cta-btn">
+    <%= t('.buy_as_guest') %>
+  </button>
+
+  <button type="button" id="guest-login-link" class="gc-btn gc-btn--outline gc-btn--lg gc-btn--block checkout-address-button guest-cta-btn"
+          onclick="window.location.href='<%= main_app.new_user_session_path(origin: 'checkout') %>'">
+    <%= t('.already_a_customer_log_in') %>
+  </button>
+
+  <div id="guest-form-fields">
+    <%= simple_form_for(@address, url: "#", html: { id: "guest-checkout-simple-form", onsubmit: "return false;" }) do |f| %>
+
+      <div class="form-group">
+        <label for="guest_first_name"><%= t('.first_name') %> *</label>
+        <%= text_field_tag :guest_first_name, nil, id: "guest_first_name", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <label for="guest_last_name"><%= t('.last_name') %> *</label>
+        <%= text_field_tag :guest_last_name, nil, id: "guest_last_name", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <label for="guest_username"><%= t('.phone') %> *</label>
+        <small class="guest-field-note"><%= t('.phone_note') %></small>
+        <%= telephone_field_tag :guest_username, nil, id: "guest_username", maxlength: 9, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <label for="guest_email"><%= t('.email') %> *</label>
+        <%= email_field_tag :guest_email, nil, id: "guest_email", class: "form-control" %>
+      </div>
+
+      <% if @dni_required %>
+        <div class="form-group">
+          <label for="dni-required"><%= t('.dni') %> *</label>
+          <small class="guest-field-note"><%= t('.dni_note') %></small>
+          <%= text_field_tag :dni_required, @current_doc_id, id: "dni-required", maxlength: 12, class: "form-control" %>
+        </div>
+      <% end %>
+
+      <%= f.input :street, input_html: { maxlength: 85 }, label: "#{t('.street')} *" %>
+
+      <%= f.input :district, collection: @districts, prompt: t('.select_district'), label: "#{t('.district')} *" %>
+
+      <%= f.input :name, as: :hidden, input_html: { value: "Home" } %>
+      <%= f.input :city, as: :hidden, input_html: { value: "Lima" } %>
+      <%= f.input :state, as: :hidden, input_html: { value: "Lima" } %>
+      <%= f.input :country, as: :hidden, input_html: { value: "Peru" } %>
+      <%= f.input :shipping_or_billing, as: :hidden, input_html: { value: "shipping" } %>
+
+      <div id="map_partial">
+        <%= render :partial => "ecommerce/addresses/google_map" %>
+      </div>
+
+      <div style="display: none;">
+        <%= f.text_field :raw_address %>
+        <%= f.text_field :latitude %>
+        <%= f.text_field :longitude %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Hidden, empty address select so the shared checkout JS (which appends the %>
+  <%# newly-created address here after guest_register) has its expected target. %>
+  <select id="address_id" style="display: none;"></select>
+</div>
+
+<style>
+  .guest-field-note { display: block; color: var(--gc-ink-faint); font-size: 12px; margin: 2px 0 6px; }
+
+  /* CTA buttons: the gc-btn classes carry the look; keep them stacked. */
+  .guest-cta-btn { margin: 0 0 12px; white-space: normal; height: auto; min-height: var(--gc-control-h-lg); }
+
+  /* Collapsed state (all viewports): show buttons, hide the form until revealed. */
+  #guest-checkout-block { display: flex; flex-direction: column; }
+  #guest-reveal-form-btn { order: 1; }
+  #guest-login-link      { order: 2; }
+  #guest-form-fields     { order: 3; display: none; }
+  #guest-checkout-block.guest-revealed #guest-form-fields { display: block; }
+  #guest-checkout-block.guest-revealed #guest-reveal-form-btn { display: none !important; }
+  #guest-checkout-block.guest-revealed #guest-login-link { order: 4; } /* push to bottom */
+</style>
+
+<script>
+  // Reveal the form (and push the login button to the bottom).
+  $("#guest-reveal-form-btn").on("click", function(){
+    $("#guest-checkout-block").addClass("guest-revealed");
+  });
+
+  // Mobile: relocate the guest block under "Pagar en Soles" (and above the
+  // coupon section). Desktop: keep it in its left-column home.
+  function placeGuestBlock() {
+    var block = document.getElementById("guest-checkout-block");
+    var home  = document.getElementById("guest-block-home");
+    var anchor = document.getElementById("pay-in-soles-section");
+    if (!block) return;
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      if (anchor && block !== anchor.nextElementSibling) {
+        anchor.parentNode.insertBefore(block, anchor.nextElementSibling);
+      }
+    } else if (home && block.parentNode !== home) {
+      home.appendChild(block);
+    }
+  }
+  $(placeGuestBlock);
+  $(window).on("resize", placeGuestBlock);
+
+  // Live-refresh the static map preview as the guest types their street /
+  // picks a district (mirrors _new_address_form). update_map only geocodes,
+  // so it works before the guest has a session.
+  $("#address_street, #address_district").on("change", function(){
+    $.ajax({
+      url: '<%= "addresses/update_map" %>',
+      type: 'PATCH',
+      dataType: 'script',
+      data: $.param({
+        address: {
+          street: $("#address_street").val(),
+          district: $("#address_district").val()
+        }
+      }),
+      success: function(data){},
+      error: function(data){}
+    });
+  });
+</script>

@@ -1,6 +1,6 @@
 module Ecommerce
   class AdminMailer < ApplicationMailer
-    default from: "GlobalCanasta <gg@expatshop.pe>", cc: "gg@expatshop.pe", bcc: "augusto@devtechperu.com"
+    default from: "ExpatShop.pe <gg@expatshop.pe>", cc: "gg@expatshop.pe", bcc: "augusto@devtechperu.com"
 
     def new_user_email(user, order)
       @user = user

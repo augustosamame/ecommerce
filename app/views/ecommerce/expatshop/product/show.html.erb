@@ -14,224 +14,233 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
-<%# ---------------------------------------------------------------------
-    Product detail. Two columns ≥1024 (gallery / details); stacked below.
-    On mobile the add-to-cart row is duplicated into a sticky bottom bar
-    (#gc-sticky-bar) that submits the same form. Hooks kept for the JS
-    responses: form.cart-form, #devtech_quantity_field, .stock_alert.
-    --------------------------------------------------------------------- %>
-<% engine = Ecommerce::Engine.routes.url_helpers %>
-<% origin = gc_product_origin(@product) %>
-<% pct = gc_discount_pct(@product) %>
-<% first_category = @product.translated_category_list.first %>
-<% first_category_record = first_category ? Ecommerce::Category.find_by("lower(name) = ?", first_category.downcase) : nil %>
-<% rate = (Ecommerce::Control.get_control_value("exchange_rate") || 3.8).to_f %>
-<% usd_value = @product.current_price(current_user).to_f %>
-<% conversion = session[:currency] == 'usd' ? "≈ S/ #{number_with_precision(usd_value * rate, precision: 2, delimiter: ',')}" : "≈ USD $ #{number_with_precision(usd_value, precision: 2, delimiter: ',')}" %>
-<% gallery = ([{ type: 'image', url: @product.image.url, thumb: @product.image.try(:thumb_100).try(:url) || @product.image.url }] +
-             @product.media.order(:position, :id).map do |m|
-               next nil if m.file.blank?
-               if m.image?
-                 { type: 'image', url: m.file.url, thumb: m.file.try(:thumb_100).try(:url) || m.file.url }
-               else
-                 { type: 'video', url: m.file.url, thumb: nil }
-               end
-             end.compact).reject { |g| g[:url].blank? } %>
-
-<main class="gc-pdp gc-container product-details-main" id="main-content" data-availability="<%= @product.in_stock? ? 'in_stock' : 'out_of_stock' %>">
-  <nav aria-label="breadcrumb" class="gc-pdp__crumbs">
-    <ol class="gc-breadcrumb">
-      <li><%= link_to t('.home'), main_app.root_path %></li>
-      <li><%= link_to t('.all_products'), engine.products_path %></li>
-      <% if first_category_record %>
-        <li><%= link_to first_category, engine.products_path(category_id: first_category_record.id) %></li>
-      <% end %>
-      <li class="is-current" aria-current="page"><%= @product.name %></li>
-    </ol>
-  </nav>
-
-  <div class="gc-pdp__grid">
-    <%# ---------- Gallery ---------- %>
-    <div class="gc-pdp__gallery" id="product-gallery">
-      <div class="gc-pdp__main">
-        <%= image_tag gallery.first[:url], class: "gc-pdp__main-img", id: "product-gallery-main-img", alt: @product.name %>
-        <video src="" controls class="gc-pdp__main-video" id="product-gallery-main-video" style="display:none;"></video>
-        <% if pct %><span class="gc-badge gc-badge--discount gc-pdp__main-badge">−<%= pct %>%</span><% end %>
-      </div>
-      <% if gallery.size > 1 %>
-        <div class="gc-pdp__thumbs" role="list">
-          <% gallery.each_with_index do |item, idx| %>
-            <a href="#" class="gc-pdp__thumb product-gallery-thumb <%= 'is-active' if idx == 0 %>" role="listitem"
-               data-type="<%= item[:type] %>" data-url="<%= item[:url] %>" aria-label="<%= t('.view_media', default: 'View media') %> <%= idx + 1 %>">
-              <% if item[:type] == 'image' %>
-                <%= image_tag item[:thumb] || item[:url], alt: "" %>
-              <% else %>
-                <span class="gc-pdp__thumb-video"><%= gc_icon :play, size: 18 %></span>
-              <% end %>
-            </a>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-
-    <%# ---------- Details ---------- %>
-    <div class="gc-pdp__details">
-      <div class="gc-pdp__badges">
-        <% if origin.present? %><span class="gc-badge gc-badge--origin"><%= origin %></span><% end %>
-        <% if @product.in_stock? %>
-          <span class="gc-badge gc-badge--stock"><%= @product.total_quantity.to_i > 0 && @product.total_quantity.to_i < 50 ? "#{@product.total_quantity} #{t('.in_stock').downcase}" : t('.in_stock') %></span>
-        <% else %>
-          <span class="gc-badge gc-badge--muted"><%= t('.out_of_stock') %></span>
-        <% end %>
-      </div>
-
-      <h1 class="gc-pdp__title"><%= @product.name %></h1>
-
-      <% if @product.description.present? %>
-        <div class="gc-pdp__desc"><%= @product.description.gsub("**", "<br>").html_safe %></div>
-      <% end %>
-
-      <div class="gc-pdp__price">
-        <span class="gc-price gc-pdp__price-now" id="gc-pdp-price"><%= product_session_price(@product, "current_price") %></span>
-        <% if @product.price != @product.discounted_price %>
-          <span class="gc-price gc-price--was gc-pdp__price-was"><%= product_session_price(@product, "price") %></span>
-          <% if pct %><span class="gc-badge gc-badge--discount">−<%= pct %>%</span><% end %>
-        <% end %>
-        <span class="gc-pdp__conversion gc-num"><%= conversion %></span>
-      </div>
-
-      <div class="gc-pdp__actions add-to-cart-btn-group">
-        <% if @product.in_stock? %>
-          <%= simple_form_for @cart_item, remote: true, html: { class: "cart-form gc-pdp__form", id: "gc-pdp-form" } do |f| %>
-            <div class="gc-stepper gc-stepper--lg" data-gc-max="<%= @product.total_quantity %>">
-              <button type="button" class="gc-stepper__btn" data-gc-step="-1" id="devtech_minus" aria-label="<%= t('.decrease') %>">−</button>
-              <%= f.input :quantity, label: false, wrapper_html: { class: "gc-stepper__field" }, input_html: { class: 'gc-stepper__value no-spinners', id: "devtech_quantity_field", value: "1", step: "1", min: "1", inputmode: "numeric", "aria-label": t('.quantity') } %>
-              <button type="button" class="gc-stepper__btn" data-gc-step="1" id="devtech_plus" aria-label="<%= t('.increase') %>">+</button>
-            </div>
-            <%= button_tag type: 'submit', class: "gc-btn gc-btn--primary gc-btn--lg gc-pdp__add single_add_to_cart_button" do %>
-              <%= t('.add_to_cart') %>
+<main class="product-details-main" data-availability="<%= @product.in_stock? ? 'in_stock' : 'out_of_stock' %>">
+  <section class="product-details">
+    <div class="container-fluid">
+      <!-- Breadcrumb navigation -->
+      <nav aria-label="breadcrumb" style="margin-bottom: 15px;">
+        <ol class="breadcrumb" style="background: transparent; padding: 0; margin: 0; font-size: 13px;">
+          <li class="breadcrumb-item"><%= link_to "Home", main_app.root_path %></li>
+          <li class="breadcrumb-item"><%= link_to t('.all_products', default: 'Products'), products_path %></li>
+          <% first_category = @product.translated_category_list.first %>
+          <% if first_category %>
+            <% cat = Ecommerce::Category.find_by("lower(name) = ?", first_category.downcase) %>
+            <% if cat %>
+              <li class="breadcrumb-item"><%= link_to first_category, products_path(category_id: cat.id) %></li>
             <% end %>
-            <%= f.hidden_field :product_id, value: @product.id, id: "product_product_id_#{@product.id}" %>
           <% end %>
-          <% if current_user %>
-            <%= form_tag engine.wishlist_items_path, method: :post, class: "gc-pdp__fav-form" do %>
-              <%= hidden_field_tag "wishlist_item[product_id]", @product.id, id: nil %>
-              <%= hidden_field_tag "wishlist_item[quantity]", 1, id: nil %>
-              <button type="submit" class="gc-btn gc-btn--outline gc-btn--lg gc-pdp__fav" aria-label="<%= t('.add_to_favourites') %>"><%= gc_icon :heart, size: 18 %></button>
+          <li class="breadcrumb-item active" aria-current="page"><%= @product.name %></li>
+        </ol>
+      </nav>
+      <div class="row">
+        <div class="col-md-5">
+          <% gallery = ([{ type: 'image', url: @product.image.url, thumb: @product.image.try(:thumb_100).try(:url) || @product.image.url }] +
+                       @product.media.order(:position, :id).map do |m|
+                         next nil if m.file.blank?
+                         if m.image?
+                           { type: 'image', url: m.file.url, thumb: m.file.try(:thumb_100).try(:url) || m.file.url }
+                         else
+                           { type: 'video', url: m.file.url, thumb: nil }
+                         end
+                       end.compact).reject { |g| g[:url].blank? } %>
+
+          <% if gallery.size <= 1 %>
+            <%= link_to @product.image.url do %>
+              <%= image_tag @product.image.url, class: "img-responsive desktop-500", alt: @product.name %>
             <% end %>
           <% else %>
-            <a href="<%= main_app.new_user_session_path %>" class="gc-btn gc-btn--outline gc-btn--lg gc-pdp__fav" aria-label="<%= t('.add_to_favourites') %>"><%= gc_icon :heart, size: 18 %></a>
-          <% end %>
-        <% else %>
-          <%= simple_form_for Ecommerce::StockAlert.new, remote: true, html: { class: "stock_alert gc-pdp__form", id: "stock_alert_#{@product.id}" } do |f| %>
-            <%= f.button :submit, t('.alert_me'), class: "gc-btn gc-btn--outline gc-btn--lg gc-btn--block index_single_stock_alert_button" %>
-            <%= f.hidden_field :product_id, value: @product.id, id: "product_product_id_#{@product.id}" %>
-          <% end %>
-        <% end %>
-      </div>
-      <p class="gc-field__error out_of_stock" id="gc-pdp-stock-msg" data-gc-stock-msg hidden><span id="out_of_stock_text"><%= t('.no_more_stock_available') %></span></p>
+            <div class="product-gallery" id="product-gallery">
+              <div class="product-gallery-main"
+                   style="position: relative; width: 100%; aspect-ratio: 1 / 1; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <%= image_tag gallery.first[:url],
+                              class: "product-gallery-main-img",
+                              id: "product-gallery-main-img",
+                              alt: @product.name,
+                              style: "max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;" %>
+                <video src="" controls
+                       style="display:none; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; background: #000;"
+                       id="product-gallery-main-video"></video>
+              </div>
+              <div class="product-gallery-thumbs" style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+                <% gallery.each_with_index do |item, idx| %>
+                  <a href="#" class="product-gallery-thumb <%= 'active' if idx == 0 %>"
+                     data-type="<%= item[:type] %>"
+                     data-url="<%= item[:url] %>"
+                     style="border:<%= idx == 0 ? '2px solid #c33' : '1px solid #ddd' %>; padding:2px; display:inline-block;">
+                    <% if item[:type] == 'image' %>
+                      <%= image_tag item[:thumb] || item[:url], style: "width:60px; height:60px; object-fit:cover;", alt: "" %>
+                    <% else %>
+                      <span style="display:inline-block; width:60px; height:60px; background:#000; color:#fff; text-align:center; line-height:60px;">▶</span>
+                    <% end %>
+                  </a>
+                <% end %>
+              </div>
+            </div>
 
-      <div class="gc-panel gc-panel--list gc-pdp__info">
-        <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('.dispatch_note') %></div>
-        <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('.points_note') %></div>
-        <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('.invoice_note') %></div>
-      </div>
-
-      <% if @product.translated_category_list.any? %>
-        <div class="gc-pdp__cats gc-small gc-muted">
-          <%= t('.categories') %>
-          <% @product.translated_category_list.each do |cl| %>
-            <% cat = Ecommerce::Category.find_by("lower(name) = ?", cl.downcase) %>
-            <%= link_to cl, engine.products_path(category_id: cat.try(:id)), class: "gc-pdp__cat" %>
+            <script>
+              (function() {
+                var $main = document.getElementById('product-gallery-main-img');
+                var $video = document.getElementById('product-gallery-main-video');
+                var thumbs = document.querySelectorAll('.product-gallery-thumb');
+                thumbs.forEach(function(t) {
+                  t.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    thumbs.forEach(function(x) { x.style.borderColor = '#ddd'; x.style.borderWidth = '1px'; });
+                    t.style.borderColor = '#c33'; t.style.borderWidth = '2px';
+                    var type = t.getAttribute('data-type');
+                    var url = t.getAttribute('data-url');
+                    if (type === 'video') {
+                      $main.style.display = 'none';
+                      $video.style.display = 'block';
+                      $video.src = url;
+                      $video.play();
+                    } else {
+                      $video.pause();
+                      $video.style.display = 'none';
+                      $video.src = '';
+                      $main.style.display = '';
+                      $main.src = url;
+                    }
+                  });
+                });
+              })();
+            </script>
           <% end %>
         </div>
-      <% end %>
+        <div class="col-md-7">
+          <h3><%= @product.name %></h3>
+          <% if @product.price == @product.discounted_price %>
+            <div class="price d-flex hidden-xs">
+              <p class="product-info-price single-30"><%= product_session_price(@product, "current_price") %></p>
+            </div>
+          <% else %>
+            <div class="price d-flex hidden-xs">
+              <p class="product-info-price-regular single-30"><%= product_session_price(@product, "price") %></p>
+              <p class="product-info-price-discounted single-30"><%= product_session_price(@product, "current_price") %></p>
+            </div>
+          <% end %>
+          <!-- Product facts (hidden, for LLM/SEO use) -->
+          <div class="product-facts" style="display: none;">
+            <% if @product.brand&.name.present? %>
+              <p><strong><%= t('.brand', default: 'Brand') %>:</strong> <%= @product.brand.name %></p>
+            <% end %>
+            <p><strong>SKU:</strong> <%= @product.id %></p>
+            <p><strong><%= t('.availability', default: 'Availability') %>:</strong>
+              <% if @product.in_stock? %>
+                <span><%= t('.in_stock', default: 'In Stock') %></span>
+              <% else %>
+                <span><%= t('.out_of_stock') %></span>
+              <% end %>
+            </p>
+            <% if @product.weight.present? && @product.weight > 0 %>
+              <p><strong><%= t('.weight', default: 'Weight') %>:</strong> <%= friendly_cart_weight(@product.weight) %></p>
+            <% end %>
+          </div>
+          <p>
+            <%= @product.description.gsub("**","<br>").html_safe if @product.description %>
+          </p>
+          <p class="hidden-xs">
+            <%= t('.categories') %>
+            <span>
+              <% @product.translated_category_list.each do |cl| %>
+              <span>
+                <%= link_to cl, products_path(category_id: Ecommerce::Category.find_by("lower(name) = ?", cl.downcase).try(:id)), style: "" %>
+              </span>
+              <% end %>
+            </span>
+          </p>
+          <% if @product.price == @product.discounted_price %>
+            <div class="visible-xs">
+              <div class="price d-flex">
+                <p class="product-info-price"><%= product_session_price(@product, "current_price") %></p>
+              </div>
+            </div>
+          <% else %>
+            <div class="visible-xs">
+              <div class="price d-flex">
+                <div class="price-inner-wrapper">
+                  <p class="product-info-price-regular"><%= product_session_price(@product, "price") %></p>
+                  <p class="product-info-price-discounted"><%= product_session_price(@product, "current_price") %></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <div>
+            <p class="out_of_stock" aria-hidden="true"><span class="" id="out_of_stock_text"></span></p>
+          </div>
+          <div class="add-to-cart-btn-group max-360">
+            <% if @product.in_stock? %>
+              <%= simple_form_for @cart_item, remote: true, html: { class: "cart-form" } do |f| %>
+                <div class="add-to-cart-btn-container">
 
-      <!-- Product facts (hidden, for LLM/SEO use) -->
-      <div class="product-facts gc-sr-only">
-        <% if @product.brand&.name.present? %>
-          <p><strong><%= t('.brand', default: 'Brand') %>:</strong> <%= @product.brand.name %></p>
-        <% end %>
-        <p><strong>SKU:</strong> <%= @product.id %></p>
-        <p><strong><%= t('.availability', default: 'Availability') %>:</strong>
-          <%= @product.in_stock? ? t('.in_stock', default: 'In Stock') : t('.out_of_stock') %>
-        </p>
-        <% if @product.weight.present? && @product.weight > 0 %>
-          <p><strong><%= t('.weight', default: 'Weight') %>:</strong> <%= friendly_cart_weight(@product.weight) %></p>
-        <% end %>
+                  <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_minus_class container-minus-plus" id="devtech_minus">
+                    <a href="#" class="add_to_wishlist devtech_minus_a_class no-click-styles" %>-</a>
+                  </div>
+                  <div class="quantity container-qty" id="devtech_quantity">
+                    <%= f.input :quantity, label: false, input_html: { class: 'input-text qty text no-spinners', id: "devtech_quantity_field", value: "1", size: "4", step: "1", min: "1" } %>
+                  </div>
+
+                  <%= button_tag type: 'submit', class: "btn btn-default index_single_add_to_cart_button button container-cart-button single_add_to_cart_button" do %>
+                    <%= fa_icon('shopping-cart', style: 'color: white;') %>
+                    <%= t('.add_to_cart') %>
+                  <% end %>
+
+                  <div class="yith-wcwl-add-to-wishlist yith-wcwl-add-to-wishlist_index devtech_plus_class container-minus-plus" id="devtech_plus">
+                    <a href="#" class="add_to_wishlist devtech_plus_a_class no-click-styles" >+</a>
+                  </div>
+
+
+                </div>
+
+                  <%= f.hidden_field :product_id, value: @product.id, id: "product_product_id_#{@product.id}" %>
+                <% end %>
+
+
+            <% else %>
+              <%= simple_form_for Ecommerce::StockAlert.new, remote: true, html: { class: "stock_alert", id: "stock_alert_#{@product.id}" } do |f| %>
+                <%= f.button :submit, t('.alert_me'), class: "index_single_stock_alert_button button" %>
+                <%= f.hidden_field :product_id, value: @product.id, id: "product_product_id_#{@product.id}" %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <%# ---------- Related products ---------- %>
-  <% related = @related_products.reject { |p| p.id == @product.id } %>
-  <% if related.any? %>
-    <section class="gc-section gc-pdp__related" aria-labelledby="gc-related-title">
-      <div class="gc-section-header">
-        <div>
-          <div class="gc-eyebrow"><%= t('.related_eyebrow', default: 'Goes well with') %></div>
-          <h2 class="gc-display" id="gc-related-title"><%= t('.related_products') %></h2>
-        </div>
-        <div class="gc-rail__nav">
-          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-scroller-prev aria-label="<%= t('.previous', default: 'Previous') %>"><%= gc_icon :chevron_left, size: 18 %></button>
-          <button type="button" class="gc-icon-btn gc-icon-btn--lg gc-icon-btn--white" data-gc-scroller-next aria-label="<%= t('.next', default: 'Next') %>"><%= gc_icon :chevron_right, size: 18 %></button>
-        </div>
+
+
+  <section class="related-products">
+    <h3 style="text-transform: uppercase;"><%= t('.related_products') %></h3>
+    <div class="container">
+      <div class="row related-product-slider">
+
+        <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @related_products, as: :item %>
+
       </div>
-      <div class="gc-rail" data-gc-scroller>
-        <div class="gc-rail__track related-product-slider" data-gc-scroller-track>
-          <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: related.first(12), as: :item %>
-        </div>
-      </div>
-    </section>
-  <% end %>
+    </div>
+  </section>
 </main>
 
-<%# ---------- Mobile sticky add-to-cart bar ---------- %>
-<% if @product.in_stock? %>
-  <div class="gc-sticky-bar" id="gc-sticky-bar">
-    <div class="gc-sticky-bar__price">
-      <span class="gc-price gc-num"><%= product_session_price(@product, "current_price") %></span>
-      <% if @product.price != @product.discounted_price %><span class="gc-price gc-price--was gc-small"><%= product_session_price(@product, "price") %></span><% end %>
-    </div>
-    <button type="button" class="gc-btn gc-btn--primary gc-sticky-bar__btn" data-gc-submit="#gc-pdp-form"><%= t('.add_to_cart') %></button>
-  </div>
-<% end %>
-
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Gallery thumbs → main image / video
-    var mainImg = document.getElementById('product-gallery-main-img');
-    var mainVideo = document.getElementById('product-gallery-main-video');
-    var thumbs = document.querySelectorAll('.product-gallery-thumb');
-    thumbs.forEach(function (t) {
-      t.addEventListener('click', function (e) {
-        e.preventDefault();
-        thumbs.forEach(function (x) { x.classList.remove('is-active'); });
-        t.classList.add('is-active');
-        var type = t.getAttribute('data-type');
-        var url = t.getAttribute('data-url');
-        if (type === 'video') {
-          mainImg.style.display = 'none';
-          mainVideo.style.display = 'block';
-          mainVideo.src = url;
-          mainVideo.play();
-        } else {
-          mainVideo.pause();
-          mainVideo.style.display = 'none';
-          mainVideo.src = '';
-          mainImg.style.display = '';
-          mainImg.src = url;
-        }
-      });
-    });
-
-    // Sticky bar submits the main form (jQuery UJS handles remote: true)
-    var sticky = document.querySelector('[data-gc-submit]');
-    if (sticky) {
-      sticky.addEventListener('click', function () {
-        var form = document.querySelector(sticky.getAttribute('data-gc-submit'));
-        if (form) $(form).trigger('submit.rails');
-      });
+  var outOfStockMsg = "<%= j t('.no_more_stock_available') %>";
+  $("#devtech_plus").click(function(e) {
+    if ($("#devtech_quantity_field").val() < <%= @product.total_quantity %>) {
+      $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) + 1);
+    } else {
+      $("#out_of_stock_text").text(outOfStockMsg);
+      $(".out_of_stock").show();
+      console.log("out of stock");
     }
+    e.preventDefault();
   });
+  $("#devtech_minus").click(function(e) {
+    if (parseInt($("#devtech_quantity_field").val()) > 1) {
+      $("#devtech_quantity_field").val(parseInt($("#devtech_quantity_field").val()) - 1);
+    }
+    $(".out_of_stock").hide();
+    console.log("in stock");
+    e.preventDefault();
+  });
+
 </script>

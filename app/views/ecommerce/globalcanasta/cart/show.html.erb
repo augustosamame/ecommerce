@@ -1,0 +1,116 @@
+<%# ---------------------------------------------------------------------
+    Cart. One responsive layout: line items (white cards) + summary panel
+    in --gc-surface-alt. Quantity changes submit the per-item form (kept
+    from the old view); combo-injected lines stay locked.
+    --------------------------------------------------------------------- %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<% items = @cart.cart_items.order(:id).sort_by { |item| cart_item_locked?(item) ? 1 : 0 } %>
+<% subtotal_after = (@cart_subtotal_after_discount || @cart_subtotal) %>
+
+<main class="gc-commerce gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <h1 class="gc-commerce__title"><%= t('.cart_title') %></h1>
+    <% if items.any? %>
+      <p class="gc-commerce__meta"><%= t('.total_items') %>: <strong class="gc-num"><%= @cart_qty_subtotal %></strong></p>
+    <% end %>
+  </header>
+
+  <% if items.empty? %>
+    <div class="gc-empty">
+      <div class="gc-empty__icon"><%= gc_icon :bag, size: 32 %></div>
+      <h2 class="gc-h3"><%= t('.empty_title', default: 'Your cart is empty') %></h2>
+      <p class="gc-muted"><%= t('.empty_body', default: 'Fill it with something from the shelf.') %></p>
+      <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary"><%= t('.continue_shopping') %></a>
+    </div>
+  <% else %>
+    <div class="gc-commerce__grid">
+      <section class="gc-commerce__main" aria-label="<%= t('.cart_title') %>">
+        <% unless @friendly_combo_discount_array.blank? %>
+          <div class="gc-flash gc-flash--success gc-combo-note">
+            <strong><%= t('.combo_discount') %>:</strong>
+            <% @friendly_combo_discount_array.each_with_index do |combo_discount, index| %>
+              <%= combo_discount[:product_name] %> (− <%= session_currency(combo_discount[:discount_amount]) %>)<%= index < @friendly_combo_discount_array.length - 1 ? ' · ' : '' %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <ul class="gc-lines">
+          <% items.each do |item| %>
+            <% locked = cart_item_locked?(item) %>
+            <li class="gc-line <%= locked ? 'is-locked' : '' %>">
+              <%= simple_form_for(item, url: engine.cart_item_path(item), html: { class: "gc-line__form" }) do |f| %>
+                <a href="<%= engine.product_path(item.product) %>" class="gc-line__thumb">
+                  <%= image_tag item.product.image.thumb_100.url, alt: "" %>
+                </a>
+                <div class="gc-line__info">
+                  <a href="<%= engine.product_path(item.product) %>" class="gc-line__name"><%= item.product.name %></a>
+                  <div class="gc-line__meta">
+                    <% if item.product.weight.to_f > 0 %><span><%= friendly_cart_weight(item.product.weight) %></span><% end %>
+                    <span class="gc-num"><%= gc_money_pair(item.unit_price(@current_user)).first %> <span class="gc-faint">/ <%= t('.unit', default: 'unit') %></span></span>
+                  </div>
+                  <% if locked %>
+                    <span class="gc-badge gc-badge--new gc-line__locked" title="<%= t('combo_discounts.combo_injected_tooltip') %>"><%= t('combo_discounts.combo_injected_tooltip') %></span>
+                  <% end %>
+                </div>
+                <div class="gc-line__qty">
+                  <div class="gc-stepper <%= locked ? 'is-disabled' : '' %>">
+                    <button type="button" class="gc-stepper__btn" data-gc-step="-1" aria-label="<%= t('.decrease', default: 'Decrease quantity') %>" <%= 'disabled' if locked %>>−</button>
+                    <%= f.input :quantity, label: false, wrapper_html: { class: "gc-stepper__field" }, input_html: { class: 'gc-stepper__value no-spinners cart-page-item-quantity', id: "devtech_quantity_field_#{item.id}", onchange: 'this.form.submit();', disabled: locked, min: 1, inputmode: "numeric", "aria-label": t('.qty_column_title') } %>
+                    <button type="button" class="gc-stepper__btn" data-gc-step="1" aria-label="<%= t('.increase', default: 'Increase quantity') %>" <%= 'disabled' if locked %>>+</button>
+                  </div>
+                </div>
+                <% line_pair = gc_money_pair(item.line_total(@current_user)) %>
+                <div class="gc-line__total">
+                  <span class="gc-price gc-num"><%= line_pair.first %></span>
+                  <span class="gc-small gc-muted gc-num"><%= line_pair.last %></span>
+                </div>
+                <div class="gc-line__remove">
+                  <% if locked %>
+                    <span class="gc-icon-btn gc-icon-btn--lg is-disabled" aria-hidden="true"><%= gc_icon :trash, size: 16 %></span>
+                  <% else %>
+                    <%= link_to engine.cart_item_path(item), method: :delete, class: "gc-icon-btn gc-icon-btn--lg", "aria-label": "#{t('.remove', default: 'Remove')} #{item.product.name}" do %>
+                      <%= gc_icon :trash, size: 16 %>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+
+        <div class="gc-commerce__tools">
+          <a href="<%= engine.products_path %>" class="gc-btn gc-btn--ghost"><%= gc_icon :chevron_left, size: 16 %> <%= t('.continue_shopping') %></a>
+          <%= button_to engine.clear_cart_path(@cart), method: :delete, data: { confirm: t('.clear_cart_confirm') }, class: "gc-btn gc-btn--ghost gc-btn--danger", form_class: "gc-inline-form" do %>
+            <%= gc_icon :trash, size: 16 %> <%= t('.clear_cart') %>
+          <% end %>
+        </div>
+      </section>
+
+      <aside class="gc-summary" aria-label="<%= t('.subtotal_in_dollars') %>">
+        <h2 class="gc-h3 gc-summary__title"><%= t('.summary', default: 'Summary') %></h2>
+        <dl class="gc-summary__rows">
+          <div><dt><%= t('.total_items') %></dt><dd class="gc-num"><%= @cart_qty_subtotal %></dd></div>
+          <div><dt><%= t('.subtotal_in_soles') %></dt><dd class="gc-num">S/ <%= number_with_precision(@cart_subtotal * @exchange_rate, precision: 2, delimiter: ',') %></dd></div>
+          <div><dt><%= t('.subtotal_in_dollars') %></dt><dd class="gc-num"><%= session_price(@cart_subtotal) %></dd></div>
+          <% unless @friendly_combo_discount_array.blank? %>
+            <% @friendly_combo_discount_array.each do |combo_discount| %>
+              <div class="gc-summary__discount"><dt><%= combo_discount[:product_name] %></dt><dd class="gc-num">− <%= session_currency(combo_discount[:discount_amount]) %></dd></div>
+            <% end %>
+          <% end %>
+          <div><dt><%= t('.shipping') %></dt><dd class="gc-summary__note"><%= t('.shipping_costs_text') %></dd></div>
+        </dl>
+        <% total_pair = gc_money_pair(subtotal_after) %>
+        <div class="gc-summary__total">
+          <div><dt><%= t('.total', default: 'Total') %></dt><dd class="gc-price gc-num"><%= total_pair.first %></dd></div>
+          <div class="gc-summary__total-alt"><dt></dt><dd class="gc-num gc-muted"><%= total_pair.last %></dd></div>
+        </div>
+        <%= button_to t('.proceed_to_checkout'), engine.checkout_path, method: :get, class: "gc-btn gc-btn--secondary gc-btn--lg gc-btn--block checkout-btn", form_class: "gc-summary__cta" %>
+        <a href="<%= engine.orders_path %>" class="gc-btn gc-btn--ghost gc-btn--block gc-summary__link"><%= t('.my_orders') %></a>
+        <div class="gc-summary__promises">
+          <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('ecommerce.globalcanasta.store.main.promise_2') %></div>
+          <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('ecommerce.globalcanasta.store.main.promise_4') %></div>
+        </div>
+      </aside>
+    </div>
+  <% end %>
+</main>

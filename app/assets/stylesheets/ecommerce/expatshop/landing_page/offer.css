@@ -1,0 +1,42 @@
+.offer {
+  background: linear-gradient(to right, #d8e8f7, #f5e4e5);
+  color: var(--black-color);
+  padding: 50px 0;
+}
+.offer p:first-of-type {
+  font-weight: 700;
+  font-size: 2rem;
+}
+.offer p span {
+  font-weight: 400;
+}
+.offer h3 {
+  font-size: 4rem;
+  font-weight: 700;
+}
+.offer .pe {
+  font-size: 7.566rem;
+  position: absolute;
+  right: 0;
+  top: 65%;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+}
+.offer .btn-group {
+  position: relative;
+  top: -50px;
+  right: -18px;
+}
+.offer .btn-group .main-btn {
+  font-size: 19px;
+  padding: 8px 28px;
+}
+.offer p:last-of-type {
+  margin: 15px 0;
+}
+.white {
+  background-color: var(--white-color) !important;
+  color: var(--black-color) !important;
+  padding-left: 50px !important;
+  padding-right: 50px !important;
+}

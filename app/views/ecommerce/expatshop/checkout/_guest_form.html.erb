@@ -1,12 +1,12 @@
-<div class="new-address guest-checkout-form gc-card gc-card__body gc-form" id="guest-checkout-block">
+<div class="new-address guest-checkout-form" id="guest-checkout-block">
 
   <%# Collapsed by default (desktop + mobile): two buttons; tapping "Comprar como %>
   <%# Invitado" reveals the form and pushes the login button to the bottom. %>
-  <button type="button" id="guest-reveal-form-btn" class="gc-btn gc-btn--primary gc-btn--lg gc-btn--block checkout-address-button guest-cta-btn">
+  <button type="button" id="guest-reveal-form-btn" class="checkout-address-button guest-cta-btn">
     <%= t('.buy_as_guest') %>
   </button>
 
-  <button type="button" id="guest-login-link" class="gc-btn gc-btn--outline gc-btn--lg gc-btn--block checkout-address-button guest-cta-btn"
+  <button type="button" id="guest-login-link" class="checkout-address-button guest-cta-btn"
           onclick="window.location.href='<%= main_app.new_user_session_path(origin: 'checkout') %>'">
     <%= t('.already_a_customer_log_in') %>
   </button>
@@ -16,36 +16,36 @@
 
       <div class="form-group">
         <label for="guest_first_name"><%= t('.first_name') %> *</label>
-        <%= text_field_tag :guest_first_name, nil, id: "guest_first_name", class: "form-control" %>
+        <%= text_field_tag :guest_first_name, nil, id: "guest_first_name", class: "form-control", style: "height: 54px; border-color: #8e8b8b;" %>
       </div>
 
       <div class="form-group">
         <label for="guest_last_name"><%= t('.last_name') %> *</label>
-        <%= text_field_tag :guest_last_name, nil, id: "guest_last_name", class: "form-control" %>
+        <%= text_field_tag :guest_last_name, nil, id: "guest_last_name", class: "form-control", style: "height: 54px; border-color: #8e8b8b;" %>
       </div>
 
       <div class="form-group">
         <label for="guest_username"><%= t('.phone') %> *</label>
         <small class="guest-field-note"><%= t('.phone_note') %></small>
-        <%= telephone_field_tag :guest_username, nil, id: "guest_username", maxlength: 9, class: "form-control" %>
+        <%= telephone_field_tag :guest_username, nil, id: "guest_username", maxlength: 9, class: "form-control", style: "height: 54px; border-color: #8e8b8b;" %>
       </div>
 
       <div class="form-group">
         <label for="guest_email"><%= t('.email') %> *</label>
-        <%= email_field_tag :guest_email, nil, id: "guest_email", class: "form-control" %>
+        <%= email_field_tag :guest_email, nil, id: "guest_email", class: "form-control", style: "height: 54px; border-color: #8e8b8b;" %>
       </div>
 
       <% if @dni_required %>
         <div class="form-group">
           <label for="dni-required"><%= t('.dni') %> *</label>
           <small class="guest-field-note"><%= t('.dni_note') %></small>
-          <%= text_field_tag :dni_required, @current_doc_id, id: "dni-required", maxlength: 12, class: "form-control" %>
+          <%= text_field_tag :dni_required, @current_doc_id, id: "dni-required", maxlength: 12, class: "form-control", style: "height: 54px; border-color: #8e8b8b;" %>
         </div>
       <% end %>
 
-      <%= f.input :street, input_html: { maxlength: 85 }, label: "#{t('.street')} *" %>
+      <%= f.input :street, input_html: { maxlength: 85, style: 'height: 54px; border-color: #8e8b8b; font-size: 24px;' }, label: "#{t('.street')} *" %>
 
-      <%= f.input :district, collection: @districts, prompt: t('.select_district'), label: "#{t('.district')} *" %>
+      <%= f.input :district, collection: @districts, prompt: t('.select_district'), input_html: { style: 'height: 54px; border-color: #8e8b8b;' }, label: "#{t('.district')} *" %>
 
       <%= f.input :name, as: :hidden, input_html: { value: "Home" } %>
       <%= f.input :city, as: :hidden, input_html: { value: "Lima" } %>
@@ -71,16 +71,26 @@
 </div>
 
 <style>
-  .guest-field-note { display: block; color: var(--gc-ink-faint); font-size: 12px; margin: 2px 0 6px; }
+  .guest-field-note { display: block; color: #666; font-size: 14px; margin: 2px 0 6px; }
 
-  /* CTA buttons: the gc-btn classes carry the look; keep them stacked. */
-  .guest-cta-btn { margin: 0 0 12px; white-space: normal; height: auto; min-height: var(--gc-control-h-lg); }
+  /* Compact CTA buttons (the theme defaults were oversized). */
+  .guest-cta-btn {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    padding: 12px 16px !important;
+    margin: 0 0 12px !important;
+    white-space: normal;
+    height: auto !important;
+  }
 
   /* Collapsed state (all viewports): show buttons, hide the form until revealed. */
   #guest-checkout-block { display: flex; flex-direction: column; }
   #guest-reveal-form-btn { order: 1; }
   #guest-login-link      { order: 2; }
-  #guest-form-fields     { order: 3; display: none; }
+  #guest-form-fields     { order: 3; display: none; padding-left: 15px; padding-right: 15px; }
   #guest-checkout-block.guest-revealed #guest-form-fields { display: block; }
   #guest-checkout-block.guest-revealed #guest-reveal-form-btn { display: none !important; }
   #guest-checkout-block.guest-revealed #guest-login-link { order: 4; } /* push to bottom */

@@ -1,0 +1,58 @@
+<%# Loyalty points balance + transaction history. %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<main class="gc-commerce gc-account gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <div>
+      <div class="gc-eyebrow"><%= t('.my_points') %></div>
+      <h1 class="gc-commerce__title"><%= t('.title') %></h1>
+    </div>
+  </header>
+
+  <div class="gc-account__hero">
+    <div class="gc-account__balance">
+      <span class="gc-eyebrow"><%= t('.my_points') %></span>
+      <span class="gc-account__balance-num gc-num"><%= current_user.points %></span>
+      <span class="gc-small gc-muted"><%= t('ecommerce.globalcanasta.store.main.promise_3') %></span>
+    </div>
+    <div class="gc-account__hero-actions">
+      <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary"><%= t('ecommerce.globalcanasta.store.main.hero_cta_primary') %></a>
+      <a href="<%= engine.referral_path %>" class="gc-btn gc-btn--outline"><%= t('ecommerce.globalcanasta.store.header.my_referral_program') %></a>
+    </div>
+  </div>
+
+  <% if @points_transactions.blank? %>
+    <div class="gc-empty">
+      <div class="gc-empty__icon"><%= gc_icon :star, size: 32 %></div>
+      <h2 class="gc-h3"><%= t('.empty_title', default: 'No points activity yet') %></h2>
+    </div>
+  <% else %>
+    <div class="gc-card gc-table--wrap">
+      <table class="gc-table gc-table--orders">
+        <thead>
+          <tr>
+            <th><%= t('.date') %></th>
+            <th><%= t('.points') %></th>
+            <th><%= t('.tx_type') %></th>
+            <th><%= t('.tx_id') %></th>
+            <th><span class="gc-sr-only"><%= t('.show') %></span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @points_transactions.each do |tx| %>
+            <tr>
+              <td data-label="<%= t('.date') %>"><%= tx.created_at.localtime.strftime("%d %b %Y") %></td>
+              <td data-label="<%= t('.points') %>" class="gc-num"><strong class="<%= tx.points.to_i < 0 ? 'gc-price--sale' : '' %>"><%= tx.points.to_i > 0 ? "+#{tx.points}" : tx.points %></strong></td>
+              <td data-label="<%= t('.tx_type') %>"><span class="gc-badge gc-badge--origin"><%= PointsTransaction.human_enum_name(:tx_type, tx.tx_type) %></span></td>
+              <td data-label="<%= t('.tx_id') %>" class="gc-mono"><%= tx.tx_id %></td>
+              <td class="gc-table__action">
+                <% if tx.tx_id && tx.tx_type.to_s == 'purchase' %>
+                  <%= link_to t('.show'), engine.order_path(tx.tx_id), class: "gc-btn gc-btn--outline gc-btn--sm" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</main>

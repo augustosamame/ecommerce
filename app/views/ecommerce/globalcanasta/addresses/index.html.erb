@@ -3,18 +3,18 @@
 <main class="gc-commerce gc-account gc-container" id="main-content">
   <header class="gc-commerce__head">
     <div>
-      <div class="gc-eyebrow"><%= t('ecommerce.expatshop.store.header.my_account') %></div>
-      <h1 class="gc-commerce__title"><%= t('ecommerce.addresses.index.title') %></h1>
+      <div class="gc-eyebrow"><%= t('ecommerce.globalcanasta.store.header.my_account') %></div>
+      <h1 class="gc-commerce__title"><%= t('ecommerce.globalcanasta.addresses.index.title') %></h1>
     </div>
-    <p class="gc-commerce__meta"><%= t('ecommerce.addresses.index.count', count: @addresses.size) %></p>
+    <p class="gc-commerce__meta"><%= t('ecommerce.globalcanasta.addresses.index.count', count: @addresses.size) %></p>
   </header>
 
   <% if @addresses.blank? %>
     <div class="gc-empty">
       <div class="gc-empty__icon"><%= gc_icon :map_pin, size: 32 %></div>
-      <h2 class="gc-h3"><%= t('ecommerce.addresses.index.empty_title') %></h2>
-      <p class="gc-muted"><%= t('ecommerce.addresses.index.empty_body') %></p>
-      <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary"><%= t('ecommerce.expatshop.store.main.hero_cta_primary') %></a>
+      <h2 class="gc-h3"><%= t('ecommerce.globalcanasta.addresses.index.empty_title') %></h2>
+      <p class="gc-muted"><%= t('ecommerce.globalcanasta.addresses.index.empty_body') %></p>
+      <a href="<%= engine.products_path %>" class="gc-btn gc-btn--primary"><%= t('ecommerce.globalcanasta.store.main.hero_cta_primary') %></a>
     </div>
   <% else %>
     <ul class="gc-addresses">
@@ -33,12 +33,12 @@
             <% detail = [address.street2, address.district, address.city].map(&:presence).compact.join(", ") %>
             <% if detail.present? %><p class="gc-address__detail"><%= detail %></p><% end %>
             <% if address.authorized_person.present? %>
-              <p class="gc-address__detail"><%= t('ecommerce.addresses.index.authorized_person') %>: <%= address.authorized_person %></p>
+              <p class="gc-address__detail"><%= t('ecommerce.globalcanasta.addresses.index.authorized_person') %>: <%= address.authorized_person %></p>
             <% end %>
-            <p class="gc-address__date"><%= t('ecommerce.addresses.index.added_on', date: address.created_at.localtime.strftime("%d %b %Y")) %></p>
+            <p class="gc-address__date"><%= t('ecommerce.globalcanasta.addresses.index.added_on', date: address.created_at.localtime.strftime("%d %b %Y")) %></p>
           </div>
           <%= link_to engine.address_path(address), method: :delete, class: "gc-icon-btn gc-icon-btn--lg gc-address__delete",
-                data: { confirm: t('ecommerce.addresses.index.are_you_sure') }, "aria-label": "#{t('ecommerce.addresses.index.delete')} ##{address.id}", title: t('ecommerce.addresses.index.delete') do %>
+                data: { confirm: t('ecommerce.globalcanasta.addresses.index.are_you_sure') }, "aria-label": "#{t('ecommerce.globalcanasta.addresses.index.delete')} ##{address.id}", title: t('ecommerce.globalcanasta.addresses.index.delete') do %>
             <%= gc_icon :trash, size: 16 %>
           <% end %>
         </li>

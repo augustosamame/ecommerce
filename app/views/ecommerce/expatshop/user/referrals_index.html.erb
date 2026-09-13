@@ -1,60 +1,103 @@
-<%# Referral programme: share link + referred users table. %>
-<% engine = Ecommerce::Engine.routes.url_helpers %>
-<main class="gc-commerce gc-account gc-container" id="main-content">
-  <header class="gc-commerce__head">
-    <div>
-      <div class="gc-eyebrow"><%= t('ecommerce.expatshop.store.header.my_referral_program') %></div>
-      <h1 class="gc-commerce__title"><%= t('.title') %></h1>
-    </div>
-  </header>
+    <main>
+      <!-- program label -->
+      <section class="recommendation-label">
+        <div>
+          <h3><%= t('.my_referrals') %></h3>
+        </div>
+      </section>
+      <section class="orders">
+        <div class="container">
+          <div class="program-details">
+            <div style="font-size: 20px;">
+              <span><%= "#{t('.my_referral_link')}: " %></span>
+              <span><%= link_to current_user.referral_link, current_user.referral_link, { id:'referral-link', style: 'color: blue; margin-left: 10px;'} %></span>
+              <span><p data-toggle="tooltip" id='markup-copy' class="glyphicon glyphicon-copy" style='margin-left: 20px;' aria-hidden="true" data-clipboard-target="#referral-link" title='<%= t(".copy") %>' >
+              
+            </p></span>
+            </div>
+            <p>
+              <%= t('.my_referral_instructions_1') %>
+            </p>
+            <p>
+              <%= t('.my_referral_instructions_2') %>
+            </p>
+          </div>
+          <!-- order table for desktop -->
+          <table class="hidden-xs">
+            <thead>
+              <tr>
+                <th><%= t('.date') %></th>
+                <th><%= t('.name') %></th>
+                <th><%= t('.points') %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= content_tag_for(:tr, @referrals) do |referred_user| %>
 
-  <div class="gc-referral">
-    <div class="gc-referral__copy">
-      <div class="gc-eyebrow gc-referral__eyebrow"><%= t('.my_referral_link') %></div>
-      <div class="gc-referral__link-row">
-        <%= link_to current_user.referral_link, current_user.referral_link, id: 'referral-link', class: "gc-referral__link gc-mono" %>
-        <button type="button" id="markup-copy" class="gc-btn gc-btn--accent" data-clipboard-target="#referral-link" title="<%= t('.copy') %>"><%= gc_icon :file, size: 16 %> <%= t('.copy') %></button>
-      </div>
-      <p class="gc-referral__text"><%= t('.my_referral_instructions_1') %></p>
-      <p class="gc-referral__text"><%= t('.my_referral_instructions_2') %></p>
-      <div class="gc-referral__code"><%= t('ecommerce.expatshop.store.header.my_referral_code') %> <strong class="gc-mono"><%= current_user.try(:referral_code) %></strong></div>
-    </div>
-  </div>
+                <tr>
+                   <th>
+                    <p><%= referred_user.created_at.localtime.strftime("%d-%b-%y") %></p>
+                  </th>
+                  <th>
+                    <p><%= "#{referred_user.first_name} #{referred_user.last_name}" %></p>
+                  </th>
+                  <th>
+                     <p><%= PointsTransaction.find_by(tx_type: 'referral', referred_user_id: referred_user.id).try(:points) %></p>
+                  </th>
+                </tr>
 
-  <% if @referrals.blank? %>
-    <div class="gc-empty">
-      <div class="gc-empty__icon"><%= gc_icon :gift, size: 32 %></div>
-      <h2 class="gc-h3"><%= t('.empty_title') %></h2>
-    </div>
-  <% else %>
-    <div class="gc-card gc-table--wrap">
-      <table class="gc-table gc-table--orders">
-        <thead>
-          <tr>
-            <th><%= t('.date') %></th>
-            <th><%= t('.name') %></th>
-            <th><%= t('.points') %></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @referrals.each do |referred_user| %>
-            <tr>
-              <td data-label="<%= t('.date') %>"><%= referred_user.created_at.localtime.strftime("%d %b %Y") %></td>
-              <td data-label="<%= t('.name') %>"><%= "#{referred_user.first_name} #{referred_user.last_name}" %></td>
-              <td data-label="<%= t('.points') %>" class="gc-num"><strong><%= PointsTransaction.find_by(tx_type: 'referral', referred_user_id: referred_user.id).try(:points) || 0 %></strong></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  <% end %>
-</main>
+              <% end %>
+            </tbody>
+          </table>
+          <!-- order table for mobile -->
+          <div class="visible-xs">
+            <table>
+              <thead>
+                <tr>
+                  <th>DATE</th>
+                  <th>NAME</th>
+                  <th>POINTS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    <p>17 - Sep - 2023</p>
+                  </th>
+                  <th>
+                    <p>Maria Collantes</p>
+                  </th>
+                  <th>
+                    <p>10</p>
+                  </th>
+                </tr>
+                <tr>
+                  <th>
+                    <p>15 - Ago - 2023</p>
+                  </th>
+                  <th>
+                    <p>Jorge Guerero</p>
+                  </th>
+                  <th>
+                    <p>20</p>
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
 
 <script>
   $(document).ready(function(){
     var clipboard = new ClipboardJS('#markup-copy');
-    clipboard.on('success', function(e) {
-      Swal({ type: 'info', title: '<%= j t(".clipboard_message") %>', text: "" });
+      clipboard.on('success', function(e) {
+      Swal({
+          type: 'info',
+          title: '<%= t(".clipboard_message") %>',
+          text: ""
+        });
       e.clearSelection();
     });
   });

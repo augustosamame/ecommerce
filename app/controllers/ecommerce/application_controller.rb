@@ -17,10 +17,15 @@ module Ecommerce
     before_action :set_always_on_banner
     #before_render :set_controller_meta_tags
 
-    layout "ecommerce/#{Ecommerce.ecommerce_layout}"
+    # Resolved per request: the host decides the theme (see Ecommerce.host_themes).
+    layout :ecommerce_storefront_layout
     # Storefront view helpers for the GlobalCanasta redesign (icons, logo,
     # discount %). Explicit because isolated engines don't `helper :all`.
     helper Ecommerce::GlobalcanastaHelper
+
+    def ecommerce_storefront_layout
+      "ecommerce/#{Ecommerce.ecommerce_layout}"
+    end
 
     def store_location_for(resource_or_scope, location)
       # Skip storing if the request is for a JSON response or other background request

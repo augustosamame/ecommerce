@@ -1,0 +1,65 @@
+<div class="new-address">
+  <p><%= t('.create_a_new_address') %></p>
+
+  <%= simple_form_for(@address, remote: true) do |f| %>
+    <%= f.error_notification %>
+
+    <%= f.input :name, collection: ["Home", "Doorman", "Office", "Warehouse", "Other"], prompt: t('.select_type_of_address'), input_html: {class: 'nullify-form-control-height'}, label: t('.type') %>
+
+    <%= f.input :street, input_html: { maxlength: 85 }, label: "#{t('.street')} *" %>
+
+    <%= f.input :district, collection: @districts, prompt: t('.select_district'), label: "#{t('.district')} *" %>
+
+    <%= f.input :city, as: :hidden, input_html: {value: "Lima"}, label: t('.city')  %>
+    <%= f.input :state, as: :hidden, input_html: {value: "Lima"}, label: t('.state') %>
+    <%= f.input :country, as: :hidden, input_html: {value: "Peru"}, label: "Peru" %>
+    <%= f.input :shipping_or_billing, as: :hidden, input_html: {value: "shipping"} %>
+
+    <%= f.button :submit, t('.save_address'), class: "gc-btn gc-btn--primary checkout-new-adress-button", id: "save-address-button", style: "margin-bottom: 10px;" %>
+    <span class="hide-ok-label" id="submit-address-ok"><%= t('.address_has_been_saved') %></span>
+
+    <p class="checkout-p" id="mandatory-address-id"><%= t('.mandatory_field') %></p>
+
+  <div id="map_partial" class= "">
+    <%= render :partial => "ecommerce/addresses/google_map" %>
+  </div>
+
+  <div style="display: none;">
+    <%= f.label :raw_address, 'Raw Address' %>
+    <%= f.text_field :raw_address, class: "form-control" %>
+
+    <%= f.label :latitude %>
+    <%= f.text_field :latitude, class: "form-control" %>
+    <%= f.label :longitude %>
+    <%= f.text_field :longitude, class: "form-control" %>
+  </div>
+
+<% end %>
+</div>
+
+<script>
+  $("#address_street, #address_district").on("change", function(){
+       $.ajax({
+          url: '<%= "addresses/update_map" %>',
+          type: 'PATCH',
+          dataType: 'script',
+          data: $.param({
+            address: {
+              street: $("#address_street").val(),
+              district: $("#address_district").val()
+            }
+          }),
+          success:function(data){
+              //console.log('success');
+          },
+          error:function(data){
+              //console.log('error');
+          }
+      });
+  });
+</script>
+
+
+
+
+

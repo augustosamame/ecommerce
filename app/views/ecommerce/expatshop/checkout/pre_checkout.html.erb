@@ -1,41 +1,97 @@
-<%# Cross-sell step between cart and checkout: compact product cards
-    (no stepper, "Add" only) plus a proceed button. %>
-<% engine = Ecommerce::Engine.routes.url_helpers %>
-<main class="gc-commerce gc-container pre-checkout-page" id="main-content">
-  <header class="gc-commerce__head gc-commerce__head--stack">
-    <div>
-      <div class="gc-eyebrow"><%= t('.you_might_also_like') %></div>
-      <h1 class="gc-commerce__title"><%= t('.you_might_also_like_reccomendations') %></h1>
+<section class="recommendation-label">
+  <div>
+    <h3 style="text-transform: uppercase;"><%= t('.you_might_also_like') %></h3>
+    <p>
+      <%= t('.you_might_also_like_reccomendations') %>
+    </p>
+  </div>
+</section>
+<!-- products -->
+<%# .pre-checkout-page scopes the cross-sell card fixes in checkout-page/checkout.css
+    to this screen only. Do not remove this class: without it the shared product
+    card styles (24px prices, button width reserved for +/- qty controls) clip the
+    "Agregar" button and blow up the prices on mobile. %>
+<main class="pre-checkout-page">
+  <section class="products product-recommendation section-background">
+    <div class="container">
+      <div class="pagination list-center" style="display:none;">
+          <%= paginate @products %>
+      </div>
+      <div class="row products product-index-container">
+
+        <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item, locals: { pre_checkout: true } %>
+
+      </div>
     </div>
-    <%= button_to t('.not_interested_proceed_to_checkout'), engine.checkout_path, method: :get, class: "gc-btn gc-btn--secondary continue-checkout-button", form_class: "gc-inline-form" %>
-  </header>
-
-  <div class="pagination list-center" style="display:none;">
-    <%= paginate @products %>
-  </div>
-  <div class="gc-product-grid product-index-container">
-    <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/product/product", collection: @products, as: :item, locals: { pre_checkout: true } %>
-  </div>
-  <div class="page-load-status gc-listing__status" aria-live="polite"></div>
-
-  <div class="gc-commerce__cta-row">
-    <%= button_to t('.not_interested_proceed_to_checkout'), engine.checkout_path, method: :get, class: "gc-btn gc-btn--secondary gc-btn--lg continue-checkout-button", form_class: "gc-inline-form" %>
-  </div>
+    <div class="continue-checkout">
+      <%= button_to t('.not_interested_proceed_to_checkout'), checkout_path, method: :get, class: "continue-checkout-button" %>
+    </div>
+  </section>
 </main>
 
 <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js"></script>
+<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+
 <script>
 $(document).ready(function(){
-  if (!$('nav.pagination a[rel=next]').length) return;
+
   var $container = $('.product-index-container').infiniteScroll({
+    // options
     path: 'nav.pagination a[rel=next]',
     append: '.product',
     history: 'push',
     status: '.page-load-status',
-    scrollThreshold: 400
+    scrollThreshold: 10
   });
-  $container.on('request.infiniteScroll', function() { $('.spinner').show(); });
-  $container.on('append.infiniteScroll', function() { $('.spinner').hide(); });
-  $container.on('error.infiniteScroll', function() { $('.spinner').hide(); });
+
+  $container.on( 'request.infiniteScroll', function( event, response, path, items ) {
+    var $loading = $('.spinner').show();
+  });
+
+  $container.on( 'append.infiniteScroll', function( event, response, path, items ) {
+    //console.log("appended infinite scroll");
+    var $loading = $('.spinner').hide();
+    $container.isotope('appended', $(items));
+    $container.imagesLoaded(function() {
+      //console.log('images loaded');
+      $container.isotope('layout');
+      // bindPlusMinusButtons();
+    })
+    //noo_masonry();
+    //noo_masonry2();
+  });
 });
+
+</script>
+
+<script>
+  $(document).ready(function(){
+    bindPlusMinusButtons();
+  });
+
+  function bindPlusMinusButtons() {
+    $('body').on('click', ".devtech_plus_class", function(e) {
+      var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
+      var inStockValueElement = $(e.currentTarget).parent().children(".devtech_plus_class").children(".devtech_plus_a_class").attr('id');
+      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
+      var inStockValue = parseInt(inStockValueElement.substr(inStockValueElement.indexOf('_qty') + 4));
+      if (parseInt(quantityElement.val()) < inStockValue ) {
+        quantityElement.val(parseInt(quantityElement.val()) + 1);
+        outOfStockTextElement.hide();
+      } else {
+        outOfStockTextElement.show();
+      }
+      e.preventDefault();
+    });
+
+    $(".devtech_minus_class").click(function(e) {
+      var quantityElement = $(e.currentTarget).parent().children(".quantity").children(".cart_item_quantity").children(":input");
+      var outOfStockTextElement = $(e.currentTarget).parent().children(".out_of_stock").children(".out_of_stock_text_class");
+      outOfStockTextElement.hide();
+      if (parseInt(quantityElement.val()) > 1) {
+        quantityElement.val(parseInt(quantityElement.val()) - 1);
+      }
+      e.preventDefault();
+    });
+  }
 </script>

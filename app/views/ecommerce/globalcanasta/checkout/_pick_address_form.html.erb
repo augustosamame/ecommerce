@@ -1,0 +1,9 @@
+<%= simple_form_for(@picked_address, remote: true, html: {id: "address-pick-form"} ) do |g| %>
+  
+    <%= g.input :id, as: :select, collection: @checkout_addresses, label_method: lambda { |obj| obj.friendly_street_select}, label: false, prompt: t('.pick_an_address'), input_html: {class: "cursor-pointer select nullify-form-control-height"} %>
+
+
+  <div class="form-actions", style="margin-bottom: 30px;">
+    <%= g.button :submit, t('.pick_an_address'), class: "gc-btn gc-btn--outline mt-1", style: "display: none;" %>
+  </div>
+<% end %>

@@ -1,0 +1,40 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+@media (max-width: 768px) {
+  .orders table {
+    margin: 18px 0;
+  }
+  .orders table tr th {
+    background-color: var(--label-color);
+  }
+  .orders table tr td {
+    text-align: center;
+  }
+  .orders table tr th,
+  .orders table tr td {
+    font-size: 15px;
+  }
+  .orders table tr td p {
+    margin: 0;
+  }
+  .orders table tr td a {
+    color: #1100f4;
+  }
+  .orders .slick-track {
+    margin: 0;
+  }
+  .orders .slick-slide {
+    margin-right: 10px;
+  }
+  .orders .slick-next {
+    right: 0;
+  }
+  .orders .mobile-table table th {
+    background-color: var(--label-color);
+  }
+}

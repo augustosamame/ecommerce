@@ -1,0 +1,33 @@
+<%# Testimonials index: 3-up video cards, infinite scroll appends .product. %>
+<main class="gc-commerce gc-container" id="main-content">
+  <header class="gc-commerce__head">
+    <div>
+      <div class="gc-eyebrow"><%= t('ecommerce.globalcanasta.store.main.testimonials_eyebrow') %></div>
+      <h1 class="gc-commerce__title"><%= t('ecommerce.globalcanasta.store.main.customer_testimonials') %></h1>
+    </div>
+  </header>
+  <div class="pagination list-center" style="display:none;">
+    <%= paginate @testimonials %>
+  </div>
+  <div class="gc-testimonials product-index-container">
+    <%= render partial: "ecommerce/#{Ecommerce.ecommerce_layout}/testimonial/testimonial", collection: @testimonials, as: :item %>
+  </div>
+  <div class="page-load-status gc-listing__status" aria-live="polite"></div>
+</main>
+
+<script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js"></script>
+<script>
+$(document).ready(function(){
+  if (!$('nav.pagination a[rel=next]').length) return;
+  var $container = $('.product-index-container').infiniteScroll({
+    path: 'nav.pagination a[rel=next]',
+    append: '.product',
+    history: 'push',
+    status: '.page-load-status',
+    scrollThreshold: 400
+  });
+  $container.on('request.infiniteScroll', function() { $('.spinner').show(); });
+  $container.on('append.infiniteScroll', function() { $('.spinner').hide(); });
+  $container.on('error.infiniteScroll', function() { $('.spinner').hide(); });
+});
+</script>

@@ -1,26 +1,15 @@
-<%# ---------------------------------------------------------------------
-    Checkout. Left: address (or guest form). Right: order summary panel,
-    payment options, delivery notes, place-order. Every id / class the
-    checkout JS (below) reads is preserved: #subtotal, #shipping-amount,
-    #combo-discount-amount, #coupon-amount, #payment-amount, #pay_in_soles,
-    #pay_in_points, #points-amount, #payment-amount-in-soles, #dni-required,
-    #coupon-code/.coupon-apply/#coupon-error, #factura-*, #radio_form,
-    input[name=payment_method], #delivery-instructions, #accept_marketing,
-    #pay-now-button, #guest-block-home, #pay-in-soles-section,
-    #new-address-button/#delete-address-button/#new-address-container,
-    .direction-btn, .combo-subtotal-hidden, .coupon-subtotal-hidden.
-    --------------------------------------------------------------------- %>
-<% engine = Ecommerce::Engine.routes.url_helpers %>
-<main class="gc-commerce gc-checkout gc-container" id="main-content">
-  <header class="gc-commerce__head">
-    <h1 class="gc-commerce__title"><%= t('.checkout_title', default: 'Checkout') %></h1>
-    <a href="<%= engine.cart_path(@cart.id) %>" class="gc-btn gc-btn--ghost"><%= gc_icon :chevron_left, size: 16 %> <%= t('.back_to_cart', default: 'Back to cart') %></a>
-  </header>
-
-  <section class="checkout">
-    <div class="gc-checkout__grid checkout-row">
-      <%# ---------- Left: address / guest ---------- %>
-      <div class="gc-checkout__left checkout-left-col">
+<main>
+<!-- cart label -->
+<section class="recommendation-label">
+  <div>
+    <h3>CHECKOUT</h3>
+  </div>
+</section>
+<!-- cart -->
+<section class="checkout">
+  <div class="container-fluid">
+    <div class="row checkout-row">
+      <div class="col-md-6 checkout-left-col">
         <% if @guest_checkout %>
           <%# On mobile this block is relocated under "Pagar en Soles" via JS; %>
           <%# guest-block-home is its desktop position. %>
@@ -28,226 +17,291 @@
             <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/guest_form" %>
           </div>
         <% else %>
-          <div class="gc-card gc-card__body gc-form gc-checkout__address">
-            <h2 class="gc-h3"><%= t('.shipping_address') %></h2>
-            <div class="have-address">
-              <p class="gc-small gc-muted"><%= t('.pick_address') %></p>
-              <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
-            </div>
-            <div class="direction-btn gc-checkout__address-btns">
-              <button id="new-address-button" class="gc-btn gc-btn--outline checkout-address-button"><%= t('.new_address') %></button>
-              <button id="delete-address-button" class="gc-btn gc-btn--ghost checkout-address-button"><%= t('.delete_address') %></button>
-            </div>
-            <div id="new-address-container" style="display: none;">
-              <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
-            </div>
+          <h3><%= t('.shipping_address') %></h3>
+          <div class="have-address">
+            <p><%= t('.pick_address') %></p>
+
+            <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/pick_address_form" %>
+          </div>
+          <div class="direction-btn">
+            <button id="new-address-button" class="checkout-address-button"><%= t('.new_address') %></button>
+            <button id="delete-address-button" class="checkout-address-button"><%= t('.delete_address') %></button>
+          </div>
+
+          <div id="new-address-container" style="display: none;">
+            <%= render "ecommerce/#{Ecommerce.ecommerce_layout}/checkout/new_address_form" %>
           </div>
         <% end %>
-
-        <div class="gc-panel gc-panel--list gc-checkout__promises gc-desktop-only">
-          <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('ecommerce.expatshop.store.main.promise_2') %></div>
-          <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('ecommerce.expatshop.store.main.promise_3') %></div>
-          <div><span class="gc-diamond" aria-hidden="true">◆</span><%= t('ecommerce.expatshop.store.main.promise_4') %></div>
-        </div>
       </div>
 
-      <%# ---------- Right: order + payment ---------- %>
-      <div class="gc-checkout__right checkout-right-col">
-        <div class="gc-summary mini-cart">
-          <h2 class="gc-h3 gc-summary__title"><%= t('.your_order') %></h2>
-          <div class="mini-cart-title gc-summary__cols">
-            <span class="gc-label"><%= t('.products') %></span>
-            <span class="gc-label">Total</span>
-          </div>
-          <ul class="mini-car-items-container gc-summary__items">
-            <% @cart.cart_items.each do |item| %>
-              <li class="mini-cart-items gc-summary__item">
-                <div class="mini-cart-item gc-summary__item-info">
-                  <span class="gc-summary__item-name"><%= item.product.name %> <span class="gc-faint">× <%= item.quantity %></span></span>
-                  <% if item.product.weight.to_f > 0 %><span class="checkout-weight-p gc-small gc-faint"><%= friendly_cart_weight(item.product.weight) %></span><% end %>
-                </div>
-                <span class="cart-price-p gc-num"><%= session_price(item.line_total(@current_user)) %></span>
-              </li>
-            <% end %>
-          </ul>
 
-          <dl class="gc-summary__rows">
-            <div class="checkout-p-text checkout-p-text-mobile">
-              <dt><%= t('.subtotal_dollars') %></dt>
-              <dd class="gc-num"><span><%= session_currency_symbol %></span> <span id="subtotal"><%= @cart_subtotal %></span></dd>
+      <div class="col-md-6 checkout-right-col">
+        <p class="hidden-xs"><%= t('.your_order') %></p>
+        <div class="mini-cart">
+          <p class="visible-xs"><%= t('.your_order') %></p>
+          <div class="mini-cart-title d-flex space-between">
+            <p><%= t('.products') %></p>
+            <p>TOTAL</p>
+          </div>
+          <div class="mini-car-items-container">
+            <% @cart.cart_items.each do |item| %>
+              <div class="mini-cart-items d-flex space-between">
+                <div class="mini-cart-item width-80">
+                  <p><%= item.product.name %> <span> (x<%= item.quantity %>) </span></p>
+                  <% if item.product.weight == 0 %>
+                    <p></p>
+                  <% else %>
+                    <p class="checkout-weight-p"><%= item.product.weight %>g</p>
+                  <% end %>
+                </div>
+                <p class="cart-price-p"><%= session_price(item.line_total(@current_user)) %></p>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border checkout-p-text-mobile">
+            <%= t('.subtotal_dollars') %>
+            <div>
+              <span style="display: inline;">
+                <%= session_currency_symbol %>
+              </span>
+              <span id="subtotal" style="display: inline;">
+                <%= @cart_subtotal %>
+              </span>
             </div>
-            <div class="checkout-p-text checkout-p-text-mobile">
-              <dt><%= t('.shipping') %> <span id="free-shipping-text" class="amount gc-badge gc-badge--stock" style="display: none;"><%= t('.free_shipping') %></span></dt>
-              <dd class="gc-num"><span><%= session_currency_symbol %></span> <span id="shipping-amount">0.00</span></dd>
+          </div>
+
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border checkout-p-text-mobile">
+            <%= t('.shipping') %>
+            <span id="free-shipping-text" class="amount" style="color: red; font-size: 24px; display: none;"><%= t('.free_shipping') %></span>
+            <div>
+              <span style="display: inline;">
+                <%= session_currency_symbol %>
+              </span>
+              <span id="shipping-amount" style="display: inline;">
+                0.00
+              </span>
             </div>
-            <div class="checkout-p-text checkout-p-text-mobile gc-summary__discount <%= (@combo_total_discount_usd && @combo_total_discount_usd > 0) ? '' : 'combo-subtotal-hidden' %>" id="combo-discount-subtotal-id">
-              <dt><%= t('.combo_discount_line') %></dt>
-              <dd class="gc-num"><span><%= session_currency_symbol %></span> <span id="combo-discount-amount">-<%= @combo_total_discount_usd ? sprintf('%.2f', @combo_total_discount_usd) : '0.00' %></span></dd>
+          </div>
+
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border checkout-p-text-mobile <%= (@combo_total_discount_usd && @combo_total_discount_usd > 0) ? '' : 'combo-subtotal-hidden' %>  >" id="combo-discount-subtotal-id">
+            <%= t('.combo_discount_line') %>
+            <div>
+              <span style="display: inline;">
+                <%= session_currency_symbol %>
+              </span>
+              <span id="combo-discount-amount" style="display: inline;">
+                -<%= @combo_total_discount_usd ? sprintf('%.2f', @combo_total_discount_usd) : 0.00 %>
+              </span>
             </div>
-            <div class="checkout-p-text checkout-p-text-mobile gc-summary__discount coupon-subtotal-hidden" id="coupon-subtotal-id">
-              <dt><%= t('.coupon_line') %></dt>
-              <dd class="gc-num"><span><%= session_currency_symbol %></span> <span id="coupon-amount">0.00</span></dd>
+          </div>
+
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border coupon-subtotal-hidden checkout-p-text-mobile" id="coupon-subtotal-id">
+            <%= t('.coupon_line') %>
+            <div>
+              <span style="display: inline;">
+                <%= session_currency_symbol %>
+              </span>
+              <span id="coupon-amount" style="display: inline;">
+                0.00
+              </span>
             </div>
-          </dl>
-          <div class="gc-summary__total checkout-p-text checkout-p-text-mobile">
-            <div><dt><%= t('.total_dollars') %></dt><dd class="gc-price gc-num"><span><%= session_currency_symbol %></span> <span id="payment-amount"><%= @cart_subtotal_after_discount %></span></dd></div>
+          </div>
+
+          <div class="d-flex space-between checkout-p-text checkout-p-text-bottom-border checkout-p-text-mobile">
+            <%= t('.total_dollars') %>
+            <div>
+              <span style="display: inline;">
+                <%= session_currency_symbol %>
+              </span>
+              <span id="payment-amount" style="display: inline;">
+                <%= @cart_subtotal_after_discount %>
+              </span>
+            </div>
           </div>
 
           <% if current_user && current_user.points.to_i > 0 %>
-            <label class="gc-check gc-checkout__option checkout-pay-in-points-p" for="pay_in_points">
-              <%= check_box_tag("pay_in_points", "0", false, class: "pay_in_points_checkbox") %>
-              <span><%= t('.pay_in_points') %> <span class="gc-faint">(<span id="points-amount"><%= current_user.try(:points) %></span> pts)</span></span>
-            </label>
+
+            <div class="d-flex space-between" style="margin-top: 20px;">
+              <div class="checkout-pay-in-points-p">
+                <%= check_box_tag("pay_in_points", "0", false, class: "pay_in_points_checkbox") %>
+                <label for="pay_in_points" style="font-size: 18px; margin-left: 20px; margin-bottom: 0px;">
+                <%= t('.pay_in_points') %>
+                
+                <label style="font-size: 18px; color: #333">( <span id="points-amount"><%= current_user.try(:points) %></span> pts )</label>
+              </label>
+              </div>
+
+            </div>
+
           <% end %>
+
         </div>
 
-        <div id="pay-in-soles-section" class="pay-in-soles gc-checkout__soles checkout-p-text-mobile">
-          <label class="gc-check checkout-pay-in-soles-p" for="pay_in_soles">
+        <div id="pay-in-soles-section" class="pay-in-soles d-flex space-between checkout-p-text-mobile" style="padding-bottom: 30px;">
+          <div class="checkout-pay-in-soles-p d-flex" style="align-items: center;">
             <%= check_box_tag("pay_in_soles", "0", false, class: "pay_in_soles_checkbox") %>
-            <span><%= t('.pay_in_soles') %></span>
-          </label>
-          <div class="checkout-pay-in-soles-p gc-num gc-checkout__soles-amount">
-            <span>S/</span> <span id="payment-amount-in-soles"><%= @cart_subtotal_after_discount * @exchange_rate %></span>
+            <%= t('.pay_in_soles') %>
+          </div>
+          <div>
+            <div class="checkout-pay-in-soles-p">
+              <span>S/.</span>
+              <span id="payment-amount-in-soles">
+                <%= @cart_subtotal_after_discount * @exchange_rate %>
+              </span>
+            </div>
           </div>
         </div>
 
-        <%# DNI: for guests this lives in the guest form (left column); logged-in %>
-        <%# users keep it here so they can edit their stored doc_id. %>
-        <% if @dni_required && !@guest_checkout %>
-          <div class="commerce-checkout-payment gc-card gc-card__body gc-form gc-checkout__block">
+         <%# DNI: for guests this lives in the guest form (left column); logged-in %>
+         <%# users keep it here so they can edit their stored doc_id. %>
+         <% if @dni_required && !@guest_checkout %>
+          <div class="commerce-checkout-payment">
             <ul class="payment_methods">
-              <li class="wc_payment_method payment_method_card">
-                <p class="over-700-text gc-small gc-muted"><%= t('.text_over_700') %></p>
-                <div class="payment_box payment_method_cheque gc-field">
-                  <label class="gc-field__label" for="dni-required"><%= t('.docs_over_700') %></label>
-                  <input type="text" name="dni_required" id="dni-required" class="gc-input" value="<%= @current_doc_id %>" />
+
+              <li class="wc_payment_method payment_method_card" style="margin-left: 10px;">
+                <p class="over-700-text"> <%= t('.text_over_700') %> </p>
+
+                <div class="payment_box payment_method_cheque">
+
+                    <label style="font-size: 20px; margin-right: 20px;" for="dni_required">
+                      <%= t('.docs_over_700') %>
+                    </label>
+                    <input type="text" name="dni_required" id="dni-required" value="<%= @current_doc_id %>" />
+
                 </div>
+
               </li>
             </ul>
           </div>
         <% end %>
 
         <% if @coupons_active %>
-          <div class="coupon gc-card gc-card__body gc-form gc-checkout__block checkout-p-text-mobile">
-            <p class="gc-checkout__block-title"><%= gc_icon :gift, size: 16 %> <%= t('.enter_coupon_1') %></p>
-            <form action="" class="gc-checkout__coupon">
-              <label for="coupon-code" class="gc-field__label"><%= t('.enter_coupon_2') %></label>
-              <div class="gc-checkout__coupon-row">
-                <% if @always_on_coupon_redeemable %>
-                  <input type="text" id="coupon-code" class="gc-input gc-mono" value="<%= @always_on_coupon.coupon_code %>" readonly style="text-transform: uppercase;" />
-                <% else %>
-                  <input type="text" name="" id="coupon-code" class="gc-input gc-mono" style="text-transform: uppercase;" />
-                  <button class="coupon-apply gc-btn gc-btn--outline"><%= t('.apply_coupon') %></button>
-                <% end %>
-              </div>
+          <div class="coupon checkout-p-text-mobile">
+            <p><%= fa_icon "tags" %><%= t('.enter_coupon_1') %></p>
+            <form action="">
+              <label for="coupon-code"><%= t('.enter_coupon_2') %></label>
+              <% if @always_on_coupon_redeemable %>
+                <input type="text" id="coupon-code" value="<%= @always_on_coupon.coupon_code %>" readonly style="text-transform: uppercase; background-color: #f5f5f5;" />
+              <% else %>
+                <input type="text" name="" id="coupon-code" style="text-transform: uppercase;" />
+                <button class="coupon-apply"><%= t('.apply_coupon') %></button>
+              <% end %>
             </form>
-            <label id="coupon-error" class="gc-field__error" style="display: block; margin-top: 8px;"></label>
+            <label id="coupon-error" style="display: block; font-size: 16px; color: red; margin-top: 10px;"></label>
           </div>
         <% end %>
 
-        <%# Factura (electronic invoice) is a session/account feature: a guest has %>
-        <%# no saved factura record and no signed-in context to enter one, so the %>
-        <%# whole block is hidden for guests (they receive a boleta). %>
-        <% unless @guest_checkout %>
-          <div class="pay-in-soles gc-card gc-card__body gc-checkout__block checkout-p-text-mobile">
-            <div class="checkout-receipt-div">
-              <label class="checkout-receipt-div-inner gc-check" for="factura-checkbox">
-                <%= check_box_tag("pay_in_soles", "0", false, class: "factura_checkbox", id: "factura-checkbox") %>
-                <span><%= t('.i_need_a_factura') %></span>
-              </label>
-              <div id="factura-info-display" class="gc-checkout__factura">
-                <div id="factura-info-saved" class="gc-small gc-muted" style="<%= @info_factura_available ? '' : 'display: none;' %>">
-                  <p>RUC: <span id="factura-vat-display" class="gc-mono"><%= @factura_vat %></span></p>
-                  <p>Razón Social: <span id="factura-razon-social-display"><%= @factura_razon_social %></span></p>
-                  <p><%= t('.address') %>: <span id="factura-address-display"><%= @factura_address %></span>, <span id="factura-city-display"><%= @factura_city %></span></p>
-                  <button type="button" class="checkout-receipt-button gc-btn gc-btn--ghost" id="factura-edit-button"><%= t('.click_here_to_setup_factura_info') %></button>
-                </div>
-                <button type="button" class="checkout-receipt-button gc-btn gc-btn--ghost" id="factura-setup-button" style="<%= @info_factura_available ? 'display: none;' : '' %>"><%= t('.click_here_to_setup_factura_info') %></button>
+         <%# Factura (electronic invoice) is a session/account feature: a guest has %>
+         <%# no saved factura record and no signed-in context to enter one, so the %>
+         <%# whole block is hidden for guests (they receive a boleta). %>
+         <% unless @guest_checkout %>
+         <div class="pay-in-soles d-flex space-between checkout-p-text-mobile" style="padding-bottom: 20px;">
+          <div class="checkout-receipt-div">
+            <div class="checkout-receipt-div-inner">
+              <%= check_box_tag("pay_in_soles", "0", false, class: "factura_checkbox", id: "factura-checkbox") %>
+              <%= t('.i_need_a_factura') %>
+            </div>
+            <div style="margin-left: 30px;" id="factura-info-display">
+              <div id="factura-info-saved" style="<%= @info_factura_available ? '' : 'display: none;' %>">
+                <p>RUC: <span id="factura-vat-display"><%= @factura_vat %></span></p>
+                <p>Razón Social: <span id="factura-razon-social-display"><%= @factura_razon_social %></span></p>
+                <p><%= t('.address') %>: <span id="factura-address-display"><%= @factura_address %></span>, <span id="factura-city-display"><%= @factura_city %></span></p>
+                <button type="button" class="checkout-receipt-button" id="factura-edit-button"><%= t('.click_here_to_setup_factura_info') %></button>
               </div>
+              <button type="button" class="checkout-receipt-button" id="factura-setup-button" style="<%= @info_factura_available ? 'display: none;' : '' %>"><%= t('.click_here_to_setup_factura_info') %></button>
             </div>
           </div>
+        </div>
         <% end %>
 
-        <form id="radio_form" class="gc-checkout__payment">
-          <div class="payment gc-card gc-card__body">
-            <h2 class="gc-h3 gc-checkout__block-title"><%= t('.select_payment') %></h2>
+        <form id="radio_form">
+          <div class="payment">
+            <p style="margin-bottom: 25px;"><%= t('.select_payment') %></p>
 
-            <label class="payment-method gc-pay-option">
-              <input type="radio" name="payment_method" value="card" id="payment_method_card" />
-              <span class="gc-pay-option__body">
-                <span class="gc-pay-option__label"><%= t('.credit_debit_card') %></span>
-                <span class="payment-img gc-pay-option__marks"><%= image_tag "ecommerce/img/expatshop/credit_card_icons.png", alt: "Visa, Mastercard, Amex, Diners" %></span>
-              </span>
-            </label>
+              <div class="payment-method">
+                <input type="radio" name="payment_method" value="card" id="payment_method_card" />
+                <label for="credit"><%= t('.credit_debit_card') %></label>
+                <div class="payment-img">
+                  <%= image_tag "ecommerce/img/expatshop/credit_card_icons.png", class: "img-responsive" %>
+                </div>
 
-            <label class="payment-method gc-pay-option">
-              <input type="radio" name="payment_method" value="yape" id="payment_method_yape" />
-              <span class="gc-pay-option__body">
-                <span class="gc-pay-option__label"><%= t('.yape') %></span>
-                <span class="payment-img gc-pay-option__marks gc-pay-option__marks--sm"><%= image_tag "ecommerce/img/expatshop/yape.png", alt: "Yape", class: "yape-img" %></span>
-              </span>
-            </label>
+              </div>
 
-            <label class="payment-method gc-pay-option">
-              <input type="radio" name="payment_method" value="mobile_banking" id="payment_method_mobile_banking" />
-              <span class="gc-pay-option__body">
-                <span class="gc-pay-option__label"><%= t('.mobile_banking') %></span>
-                <span class="payment-img gc-pay-option__marks"><%= image_tag "ecommerce/img/expatshop/bancos.png", alt: "" %></span>
-                <span class="payment-img gc-pay-option__marks gc-pay-option__marks--sm"><%= image_tag "ecommerce/img/expatshop/via_pagoefectivo.png", alt: "PagoEfectivo" %></span>
-              </span>
-            </label>
+              <div class="payment-method">
+                <input type="radio" name="payment_method" value="yape" id="payment_method_card" />
+                <label for="credit"><%= t('.yape') %></label>
+                <div class="payment-img" style="width: 120px;">
+                  <%= image_tag "ecommerce/img/expatshop/yape.png", class: "img-responsive yape-img" %>
+                </div>
+              </div>
 
-            <label class="internal-process gc-pay-option">
-              <input type="radio" name="payment_method" id="payment_method_manual" value="manual" />
-              <span class="gc-pay-option__body">
-                <span class="gc-pay-option__label"><%= t('.manual_payment') %></span>
-                <span class="gc-small gc-muted"><%= @payment_manual.pre_message %></span>
-              </span>
-            </label>
+              <div class="payment-method">
+                <input type="radio" name="payment_method" value="mobile_banking" id="payment_method_card" />
+                <label for="credit"><%= t('.mobile_banking') %></label>
+                <div class="payment-img">
+                  <%= image_tag "ecommerce/img/expatshop/bancos.png", class: "img-responsive" %>
+                </div>
+                <div class="payment-img" style="width: 161px; margin: 15 0 0 20;">
+                  <%= image_tag "ecommerce/img/expatshop/via_pagoefectivo.png", class: "img-responsive" %>
+                </div>
+              </div>
 
-            <div class="instructions gc-field gc-checkout__instructions">
-              <label class="gc-field__label" for="delivery-instructions"><%= t('.delivery_instructions') %></label>
-              <textarea name="" id="delivery-instructions" rows="4" class="gc-input gc-checkout__textarea"></textarea>
+        
+              <div class="internal-process d-flex">
+                <input type="radio" name="payment_method" id="payment_method_manual" value="manual" />
+                <div>
+                  <p><%= t('.manual_payment') %></p>
+                  <p><%= @payment_manual.pre_message %></p>
+                </div>
+              </div>
+
+            <div class="instructions">
+              <p><%= t('.delivery_instructions') %></p>
+              <textarea name="" id="delivery-instructions" rows="6"></textarea>
             </div>
-            <label class="receive-sms gc-check gc-checkout__option" for="accept_marketing">
+            <div class="receive-sms d-flex">
               <input type="checkbox" name="" checked id="accept_marketing" />
-              <span><%= t('.accept_marketing') %></span>
-            </label>
+              <p>
+                <%= t('.accept_marketing') %>
+              </p>
+            </div>
           </div>
-          <button id="pay-now-button" class="gc-btn gc-btn--secondary gc-btn--lg gc-btn--block gc-checkout__pay" onclick="return gtag_report_conversion()"><%= t('.place_order') %></button>
+          <button id ="pay-now-button" onclick="return gtag_report_conversion()"><%= t('.place_order') %></button>
         </form>
       </div>
     </div>
-  </section>
-
-  <div id="factura-modal-backdrop" class="gc-modal__scrim" style="display: none;"></div>
-  <div id="factura-modal" class="gc-modal gc-form" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="gc-factura-title">
-    <h2 class="gc-h3" id="gc-factura-title"><%= I18n.t('devise.registrations.edit.invoice_information', default: 'Información para Factura') %></h2>
-    <p class="gc-small gc-muted"><%= I18n.t('devise.registrations.edit.fill_in_all_fields', default: 'Llene todos los campos') %></p>
-    <div id="factura-modal-error" class="gc-flash gc-flash--error" style="display: none;"></div>
-    <div class="form-group">
-      <label for="factura-vat">RUC</label>
-      <input type="text" id="factura-vat" class="form-control gc-input gc-mono" value="<%= @factura_vat %>" maxlength="11" />
-    </div>
-    <div class="form-group">
-      <label for="factura-razon-social">Razón Social</label>
-      <input type="text" id="factura-razon-social" class="form-control gc-input" value="<%= @factura_razon_social %>" />
-    </div>
-    <div class="form-group">
-      <label for="factura-address"><%= t('.address') %></label>
-      <input type="text" id="factura-address" class="form-control gc-input" value="<%= @factura_address %>" />
-    </div>
-    <div class="form-group">
-      <label for="factura-city">Ciudad</label>
-      <input type="text" id="factura-city" class="form-control gc-input" value="<%= @factura_city %>" />
-    </div>
-    <div class="gc-modal__actions">
-      <button type="button" id="factura-modal-cancel" class="gc-btn gc-btn--ghost">Cancelar</button>
-      <button type="button" id="factura-modal-save" class="gc-btn gc-btn--primary">Guardar</button>
-    </div>
   </div>
-</main>
+</section>
 
+<div id="factura-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9998;"></div>
+<div id="factura-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 25px; border-radius: 6px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 9999; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto;">
+  <h4 style="margin-top: 0;"><%= I18n.t('devise.registrations.edit.invoice_information', default: 'Información para Factura') %></h4>
+  <p style="font-size: 14px; color: #666;"><%= I18n.t('devise.registrations.edit.fill_in_all_fields', default: 'Llene todos los campos') %></p>
+  <div id="factura-modal-error" style="color: red; font-size: 14px; display: none; margin-bottom: 10px;"></div>
+  <div class="form-group">
+    <label for="factura-vat">RUC</label>
+    <input type="text" id="factura-vat" class="form-control" value="<%= @factura_vat %>" maxlength="11" />
+  </div>
+  <div class="form-group">
+    <label for="factura-razon-social">Razón Social</label>
+    <input type="text" id="factura-razon-social" class="form-control" value="<%= @factura_razon_social %>" />
+  </div>
+  <div class="form-group">
+    <label for="factura-address"><%= t('.address') %></label>
+    <input type="text" id="factura-address" class="form-control" value="<%= @factura_address %>" />
+  </div>
+  <div class="form-group">
+    <label for="factura-city">Ciudad</label>
+    <input type="text" id="factura-city" class="form-control" value="<%= @factura_city %>" />
+  </div>
+  <div style="text-align: right; margin-top: 15px;">
+    <button type="button" id="factura-modal-cancel" class="btn btn-default" style="margin-right: 10px;">Cancelar</button>
+    <button type="button" id="factura-modal-save" class="btn btn-primary">Guardar</button>
+  </div>
+</div>
+
+</main>
 
 <!-- Incluyendo .js de Culqi Checkout-->
 <!--<script src="https://checkout.culqi.com/v2"></script> -->
@@ -897,7 +951,7 @@ $( document ).ready(function() {
                 billetera: $('input[name=payment_method]:checked').val() === 'mobile_banking',
               },
               style: {
-                logo: '<%= request.base_url %>/images/globalcanasta-logo.png'
+                logo: 'https://s3.amazonaws.com/v1-devtechperu-expatshop-dev/static/images/expatshop_logo_circular_280x280.png'
               },
               appearance: {
                 menuType: 'sliderTop'

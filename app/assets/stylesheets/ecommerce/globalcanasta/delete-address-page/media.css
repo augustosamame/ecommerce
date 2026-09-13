@@ -1,0 +1,19 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+@media (max-width: 768px) {
+  .delete-address table th {
+    padding: 15px;
+  }
+  .delete-address table tr th,
+  .delete-address table tr td {
+    font-size: 11px;
+  }
+  .delete-address table tr th {
+    background-color: var(--label-color) !important;
+  }
+}

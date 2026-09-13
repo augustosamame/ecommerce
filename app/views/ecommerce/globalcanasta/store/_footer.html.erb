@@ -1,0 +1,75 @@
+<%# GlobalCanasta footer. Desktop: 4 columns on cream above a 1px rule.
+    Mobile: single navy block with cream text and the logo on a cream chip. %>
+<% engine = Ecommerce::Engine.routes.url_helpers %>
+<footer class="gc-footer <%= @hidden_footer ? 'hidden-footer' : '' %>" id="gc-footer">
+  <div class="gc-container">
+    <div class="gc-footer__grid">
+      <div class="gc-footer__brand">
+        <a href="<%= root_path %>" class="gc-footer__logo-wrap"><%= gc_logo(height: 40, css: "gc-footer__logo") %></a>
+        <div class="gc-footer__legal">
+          <p class="gc-footer__slogan"><%= t('.slogan_1') %></p>
+          <%= Ecommerce.company_legal_name %> · RUC <%= Ecommerce.company_vat %><br>
+          <%= t('.slogan_2') %><br>
+          <span class="gc-footer__note"><%= t('.slogan_3') %></span>
+        </div>
+        <div class="gc-footer__social">
+          <a href="<%= gc_whatsapp_url %>" target="_blank" rel="noopener" class="gc-footer__social-btn" aria-label="WhatsApp"><%= gc_icon :whatsapp, size: 17 %></a>
+          <a href="https://www.instagram.com/expatshop.pe/" target="_blank" rel="noopener" class="gc-footer__social-btn" aria-label="Instagram"><%= gc_icon :instagram, size: 17 %></a>
+          <a href="https://www.facebook.com/expatshop.pe/" target="_blank" rel="noopener" class="gc-footer__social-btn" aria-label="Facebook"><%= gc_icon :facebook, size: 17 %></a>
+        </div>
+      </div>
+
+      <nav class="gc-footer__col" aria-label="<%= t('.product_categories', default: 'Categories') %>">
+        <div class="gc-label gc-footer__title"><%= t('.product_categories', default: 'Categories') %></div>
+        <ul class="gc-footer__links">
+          <% @primary_menu_categories.reject { |c| c.id == 47 || (c.id == 30 && !@banana_permission) }.first(6).each do |category| %>
+            <li><%= link_to gc_category_name(category), engine.products_path(category_id: category.id) %></li>
+          <% end %>
+          <li><%= link_to gc_t('.new_arrivals', 'New arrivals'), engine.products_path(filter: 'new_products') %></li>
+        </ul>
+      </nav>
+
+      <nav class="gc-footer__col" aria-label="<%= t('.customer_zone') %>">
+        <div class="gc-label gc-footer__title"><%= t('.customer_zone') %></div>
+        <ul class="gc-footer__links">
+          <% if @current_user && current_user.admin? %>
+            <li><a href="<%= engine.backoffice_dashboard_path %>" class="gc-menu__item--admin">Backoffice</a></li>
+          <% end %>
+          <li><%= link_to t('.my_orders', default: 'My orders'), engine.orders_path %></li>
+          <li><%= link_to t('.my_addresses', default: 'My addresses'), engine.addresses_path %></li>
+          <li><%= link_to t('.my_points', default: 'My points'), engine.points_path %></li>
+          <li><%= link_to t('.referral_program', default: 'Referral programme'), engine.referral_path %></li>
+          <li><%= link_to t('.who_we_are'), engine.about_us_path %></li>
+          <li><%= link_to t('.shipping_policy'), engine.shipping_policy_path %></li>
+          <li><%= link_to t('.contact_us_menu'), engine.contact_us_path %></li>
+        </ul>
+      </nav>
+
+      <div class="gc-footer__col gc-footer__newsletter">
+        <div class="gc-label gc-footer__title"><%= gc_t('.newsletter_title', 'Get the shelf list') %></div>
+        <p class="gc-footer__intro"><%= gc_t('.newsletter_intro', 'New arrivals, once a week.') %></p>
+        <%= form_tag engine.contact_us_path, method: :post, class: "gc-footer__form" do %>
+          <%= hidden_field_tag "contact_message[name]", "Newsletter" %>
+          <%= hidden_field_tag "contact_message[phone]", "-" %>
+          <%= hidden_field_tag "contact_message[message]", "Newsletter subscription request" %>
+          <label for="gc-newsletter-email" class="gc-sr-only"><%= t('.email') %></label>
+          <input type="email" name="contact_message[email]" id="gc-newsletter-email" class="gc-input" placeholder="you@email.com" required>
+          <button type="submit" class="gc-btn gc-btn--secondary"><%= gc_t('.join', 'Join') %></button>
+        <% end %>
+        <div class="gc-footer__legal-links">
+          <%= link_to t('.terms_and_conditions'), engine.terms_and_conditions_path %> ·
+          <a href="https://expatshop.perulibrodereclamaciones.com/" target="_blank" rel="noopener"><strong>Libro de Reclamaciones</strong></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="gc-footer__bottom">
+      <span class="gc-footer__copy">© <%= Date.current.year %> <%= gc_brand_name %> · Importados para el Perú</span>
+      <div class="gc-footer__payments">
+        <%= image_tag "ecommerce/img/expatshop/credit_card_icons.png", alt: gc_t('.payment_methods', 'Payment methods'), class: "gc-footer__cards" %>
+        <span class="gc-footer__payment">PAGOEFECTIVO</span>
+        <span class="gc-footer__payment">YAPE</span>
+      </div>
+    </div>
+  </div>
+</footer>

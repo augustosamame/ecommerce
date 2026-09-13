@@ -235,7 +235,7 @@ module Ecommerce
       def set_index_meta_tags
         index_url = "#{request.base_url}/store/products"
         set_meta_tags title: "Products",
-                      description: "GlobalCanasta product list - imported products from around the world to Perú",
+                      description: "#{Ecommerce.site_name} product list - imported products from around the world to Perú",
                       canonical: index_url,
                       og: {
                         title: :full_title,
