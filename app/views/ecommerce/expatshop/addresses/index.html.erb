@@ -19,7 +19,9 @@
   <% else %>
     <ul class="gc-addresses">
       <% @addresses.each do |address| %>
-        <% type_label = t("activerecord.attributes.ecommerce/address.address_types.#{address.address_type}", default: address.address_type.to_s.humanize) %>
+        <%# address_type is nil on legacy rows: fall back to the free-text name, then "other" %>
+        <% type_key = address.address_type.presence %>
+        <% type_label = type_key ? t("activerecord.attributes.ecommerce/address.address_types.#{type_key}", default: type_key.to_s.humanize) : (address.name.presence || t("activerecord.attributes.ecommerce/address.address_types.other")) %>
         <li class="gc-address gc-card">
           <div class="gc-address__icon"><%= gc_icon :map_pin, size: 20 %></div>
           <div class="gc-address__body">
