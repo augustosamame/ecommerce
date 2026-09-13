@@ -4,7 +4,7 @@
   <header class="gc-commerce__head">
     <div>
       <div class="gc-eyebrow"><%= t('ecommerce.expatshop.store.header.my_referral_program') %></div>
-      <h1 class="gc-commerce__title"><%= t('.my_referrals') %></h1>
+      <h1 class="gc-commerce__title"><%= t('.title') %></h1>
     </div>
   </header>
 
@@ -24,7 +24,7 @@
   <% if @referrals.blank? %>
     <div class="gc-empty">
       <div class="gc-empty__icon"><%= gc_icon :gift, size: 32 %></div>
-      <h2 class="gc-h3"><%= t('.empty_title', default: 'No referrals yet — share your link!') %></h2>
+      <h2 class="gc-h3"><%= t('.empty_title') %></h2>
     </div>
   <% else %>
     <div class="gc-card gc-table--wrap">

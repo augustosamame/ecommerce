@@ -319,7 +319,26 @@ en-PE:
           about_us_p_html: "<p>Born out of frustration from the lack of global products available in Peru at affordable pricing, we are a wholesale importer of products, offering international products at a reasonable price directly to Peruvian customers.</p><p>We carry a reasonable amount of stock of all our consumer products in Peru and deliver products Same-Day or Next-Day depending on the time the order is placed on our platform.</p><p>Our aim is to import high quality international consumer products at comparable price points to those available in the home country of said products. In particular our focus is on products that are currently not available in Peru and/or over priced in the Peruvian market. We also offer locally produced goods on our online platform, at better prices by working directly with the manufacturer, especially products that we think would be highly appealing to our customer base.</p>"
           business_objective: "Business Objective"
           business_objective_p_html: "<p>1.      To disrupt the market by importing selected high demand products and selling them directly to our target consumers (as opposed to using traditional channels), thus keeping our prices at international & locally competitive rates.</p><p>2.      To create a market for products unavailable in the Peruvian arena and provide alternative consumer goods options to those offered locally.</p><p>3.      To provide a robust solution to the inconvenience of bringing certain products as personal items from abroad.</p>"
+        wishlist:
+          show:
+            title: "Wishlist"
+          eyebrow: "Can't find it?"
+          title: "Make a wish"
+          intro: "Let us know which product, from anywhere in the world, you would like us to carry."
+          product_name: "Product name"
+          brand: "Brand"
+          country: "Country of origin"
+          attributes: "Colour, size, flavour?"
+          comment: "Anything else about this product"
+          name: "Your name"
+          email: "Your email"
+          phone: "Your phone"
+          required: "Required fields"
+          send: "Send my wish"
+        terms_and_conditions:
+          terms_and_conditions: "Terms & conditions"
         contact_us:
+          whatsapp_hint: "Faster on WhatsApp — we answer between 9 am and 7 pm."
           send_us_a_message: "Send Us A Message"
           name: "Name"
           email: "Email"
@@ -378,6 +397,8 @@ en-PE:
           search_placeholder: "Search Products"
           related_products: "Related Products"
           related_eyebrow: "Goes well with"
+          next: "Next"
+          previous: "Previous"
           view_media: "View media"
           brand: "Brand"
           weight: "Weight"
@@ -422,6 +443,9 @@ en-PE:
           shipping: "Shipping"
           free_shipping: "(Free shipping on orders over $30)"
           i_need_a_factura: "I need a Factura"
+          back_to_cart: "Back to cart"
+          checkout_title: "Checkout"
+          order_creation_failed: "We couldn't create your order"
           enter_invoice_data: "Click here to enter invoice data"
           text_over_700: "SUNAT requires DNI / CE / Passport"
           pay_in_soles: "PAY IN SOLES"
@@ -474,6 +498,7 @@ en-PE:
           district: "District"
           select_district: "Select District"
         new_address_form:
+          create_a_new_address: "Create a New Address"
           type: "Type"
           select_type_of_address: "Select Type of Address"
           street: "Street (max 85 chars)"
@@ -487,6 +512,7 @@ en-PE:
           location_on_map: "Location on Map"
       user:
         points_index:
+          empty_title: "No points activity yet"
           title: "My Points"
           my_points: "My Points"
           date: "Date"
@@ -504,12 +530,14 @@ en-PE:
           my_referral_instructions_2: "You can see all yor friends that have signed up using your link and any points you've earned from their purchases in the following table:"
           copy: "Copy"
           clipboard_message: "Link copied to Clipboard"
+          empty_title: "No referrals yet — share your link!"
       address:
         index:
           title: "Delete Shipping Address"
       order:
         show:
           order: "ORDER"
+          cancel_confirm: "Are you sure? This will cancel the order and cannot be undone."
           order_status: "ORDER STATUS"
           order_total: "Order Total"
           payment: "Payment"
@@ -542,10 +570,14 @@ en-PE:
           show: "Show"
           cancel: "Cancel"
           my_order: "View Order"
+          empty_title: "No orders yet"
           order: "Order"
       wishlist:
         show:
           title: "Wishlist"
+          empty_title: "No favourites yet"
+          empty_body: "Tap the heart on any product to keep it here."
+          remove: "Remove"
           image: "Image"
           price: "Price"
           quantity: "Quantity"

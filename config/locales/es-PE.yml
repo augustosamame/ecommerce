@@ -197,6 +197,8 @@ es-PE:
           search_placeholder: "Buscar Productos"
           related_products: "Productos Relacionados"
           related_eyebrow: "Combina bien con"
+          next: "Siguiente"
+          previous: "Anterior"
           view_media: "Ver imagen"
           brand: "Marca"
           weight: "Peso"
@@ -240,6 +242,10 @@ es-PE:
           total_dollars: "Total Dólares"
           shipping: "Costo de Envío"
           i_need_a_factura: "Necesito Factura"
+          back_to_cart: "Volver al carrito"
+          checkout_title: "Finalizar compra"
+          free_shipping: "(Envío gratis en pedidos superiores a $30)"
+          order_creation_failed: "No se pudo crear el pedido"
           enter_invoice_data: "Haga click para ingresar factura"
           text_over_700: "SUNAT requiere DNI, CE o Pasaporte"
           pay_in_soles: "PAGAR EN SOLES"
@@ -307,6 +313,7 @@ es-PE:
           location_on_map: "Ubicación en Mapa"
       user:
         points_index:
+          empty_title: "Aún no tienes movimientos de puntos"
           title: "Mis Puntos"
           my_points: "Mis Puntos"
           date: "Fecha"
@@ -324,9 +331,11 @@ es-PE:
           my_referral_instructions_2: "Podrá ver todos los amigos que se han registrado utilizando su enlace, y los puntos que ha ganado por sus compras, en la siguiente tabla:"
           copy: "Copiar"
           clipboard_message: "Enlace copiado al Portapapeles"
+          empty_title: "Aún no tienes referidos: ¡comparte tu enlace!"
       order:
         show:
           order: "PEDIDO"
+          cancel_confirm: "¿Estás seguro? Esta acción anulará el pedido y no se puede deshacer."
           order_status: "ESTADO DEL PEDIDO"
           order_total: "Total del Pedido"
           payment: "Pago"
@@ -359,6 +368,7 @@ es-PE:
           show: "Ver"
           cancel: "Anular"
           my_order: "Ver Pedido"
+          empty_title: "Aún no tienes pedidos"
           order: "Pedido"
       cart:
         show:
@@ -396,6 +406,9 @@ es-PE:
       wishlist:
         show:
           title: "Lista de Deseos"
+          empty_title: "Aún no tienes favoritos"
+          empty_body: "Toca el corazón en cualquier producto para guardarlo aquí."
+          remove: "Eliminar"
           image: "Imagen"
           price: "Precio"
           quantity: "Cantidad"
@@ -480,6 +493,19 @@ es-PE:
         wishlist:
           show:
             title: "Lista de Deseos"
+          eyebrow: "¿No lo encuentras?"
+          title: "Pide un deseo"
+          intro: "Cuéntanos qué producto, de cualquier parte del mundo, te gustaría que trajéramos."
+          product_name: "Nombre del producto"
+          brand: "Marca"
+          country: "País de origen"
+          attributes: "¿Color, tamaño, sabor?"
+          comment: "Algo más sobre este producto"
+          name: "Tu nombre"
+          email: "Tu correo electrónico"
+          phone: "Tu teléfono"
+          required: "Campos obligatorios"
+          send: "Enviar mi deseo"
         cart:
           items: "Ítems"
           items_in_shopping_cart: "ítems en el Carrito"
@@ -561,7 +587,10 @@ es-PE:
           about_us_p_html: "<p>Nacemos de la frustración de no poder encontrar en el Perú, ciertos productos extranjeros a precios cómodos.  Somos un importador mayorista de productos de consumo masivo que ofrecemos directamente  al consumidor peruano productos extranjeros a precios razonables.</p><p>Manejamos un buen stock  en el Perú de todos los productos que importamos y hacemos la entrega de los mismos el mismo día o al día siguiente dependiendo de la hora en que se coloque el pedido en nuestra plataforma.</p><p>Nuestro objetivo es importar productos de consumo de alta calidad con un nivel de precios  comparables a los precios de su país de origen.  En especial nos focalizaremos en aquellos productos que no se encuentran fácilmente en Perú y/o  si se encuentran con precios muy elevados.  También ofrecemos en nuestra plataforma virtual, algunos productos nacionales, especialmente aquellos que consideramos que son de interés para nuestros clientes, los que encontraran con precios muy atractivos, ya que trabajamos directamente con productores locales.</p>"
           business_objective: "Objetivo del Negocio"
           business_objective_p_html: "<p>1. Alterar el mercado importando productos seleccionados de alta demanda y venderlos directamente a nuestro público objetivo (en lugar de utilizar los canales tradicionales)</p><p>2. Crear un mercado para aquellos productos que no se encuentran disponibles en el mercado peruano y brindar otra alternativa  para aquellos que si se ofrecen localmente.</p><p>3. Brindar una buena solución al inconveniente que resulta  traer ciertos productos del extranjero, en la valija, como artículos personales.</p>"
+        terms_and_conditions:
+          terms_and_conditions: "Términos y condiciones"
         contact_us:
+          whatsapp_hint: "Más rápido por WhatsApp: respondemos de 9 am a 7 pm."
           send_us_a_message: "Envíanos un Mensaje"
           name: "Nombre"
           email: "Email"
