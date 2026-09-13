@@ -97,8 +97,14 @@
 }
 @media (max-width: 767px) {
   .gc-pdp__conversion { margin-left: 0; flex-basis: 100%; }
+  /* Mobile: stepper + favourite on one row, full-width add-to-cart below.
+     The form is flattened so its children can interleave with the fav button. */
   .gc-pdp__actions { flex-wrap: wrap; }
-  .gc-pdp__form { flex-wrap: wrap; }
+  .gc-pdp__form { display: contents; }
+  .gc-pdp__form .gc-stepper--lg { order: 1; flex: 1 1 auto; justify-content: space-between; }
+  .gc-pdp__fav-form, .gc-pdp__actions > .gc-pdp__fav { order: 2; }
+  .gc-pdp__fav { width: var(--gc-control-h-mobile); height: var(--gc-control-h-mobile); }
+  .gc-pdp__add { order: 3; }
   .gc-pdp__form .gc-stepper--lg .gc-stepper__btn { height: var(--gc-control-h-mobile); }
   .gc-pdp__form .gc-stepper--lg .gc-stepper__value, .gc-pdp__form .gc-stepper--lg input { height: var(--gc-control-h-mobile); }
   .gc-pdp__add { height: var(--gc-control-h-mobile); font-size: 15px; flex-basis: 100%; }

@@ -362,6 +362,8 @@ en-PE:
           search: "Search"
           search_placeholder: "Search Products"
           related_products: "Related Products"
+          related_eyebrow: "Goes well with"
+          view_media: "View media"
           brand: "Brand"
           weight: "Weight"
           availability: "Availability"

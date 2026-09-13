@@ -189,6 +189,8 @@ es-PE:
           search: "Buscar"
           search_placeholder: "Buscar Productos"
           related_products: "Productos Relacionados"
+          related_eyebrow: "Combina bien con"
+          view_media: "Ver imagen"
           brand: "Marca"
           weight: "Peso"
           availability: "Disponibilidad"
