@@ -23,7 +23,7 @@
         <div class="gc-label gc-footer__title"><%= t('.product_categories', default: 'Categories') %></div>
         <ul class="gc-footer__links">
           <% @primary_menu_categories.reject { |c| c.id == 47 || (c.id == 30 && !@banana_permission) }.first(6).each do |category| %>
-            <li><%= link_to category.name, engine.products_path(category_id: category.id) %></li>
+            <li><%= link_to gc_category_name(category), engine.products_path(category_id: category.id) %></li>
           <% end %>
           <li><%= link_to gc_t('.new_arrivals', 'New arrivals'), engine.products_path(filter: 'new_products') %></li>
         </ul>

@@ -2,4 +2,4 @@
 <%= render "ecommerce/expatshop/store/category_tiles",
       eyebrow: @category.try(:name),
       title: t('ecommerce.expatshop.store.header.categories'),
-      tiles: @categories.map { |c| { name: c.image_popular_homepage_overlay_text.presence || c.name, image: c.image_popular_homepage.homepage.url, url: engine.sub_categories_m_path(parent_category: c.id) } } %>
+      tiles: @categories.map { |c| { name: c.image_popular_homepage_overlay_text.presence || gc_category_name(c), image: c.image_popular_homepage.homepage.url, url: engine.sub_categories_m_path(parent_category: c.id) } } %>

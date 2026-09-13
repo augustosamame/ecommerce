@@ -153,7 +153,7 @@
           <% mobile_categories.each do |category| %>
             <a href="<%= engine.products_path(category_id: category.id) %>" class="gc-origin-row__item <%= category.highlighted? ? 'is-highlighted' : '' %>">
               <span class="gc-origin-row__circle"><img src="<%= category.image.medium_400.url %>" alt="" loading="lazy"></span>
-              <span class="gc-origin-row__label"><%= category.name %></span>
+              <span class="gc-origin-row__label"><%= gc_category_name(category) %></span>
             </a>
           <% end %>
         </div>
@@ -239,7 +239,7 @@
     </div>
     <div class="gc-mosaic">
       <% mosaic_categories.each_with_index do |category, i| %>
-        <% label = session[:locale] == 'en-PE' ? (category.mosaic_label_en.presence || category.name) : (category.mosaic_label_es.presence || category.mosaic_label_en.presence || category.name) %>
+        <% label = session[:locale] == 'en-PE' ? (category.mosaic_label_en.presence || gc_category_name(category)) : (category.mosaic_label_es.presence || category.mosaic_label_en.presence || gc_category_name(category)) %>
         <a href="<%= engine.products_path(category_id: category.id) %>" class="gc-mosaic__tile <%= i % 5 == 0 ? 'gc-mosaic__tile--wide' : '' %>" style="background-image:url('<%= category.image_popular_homepage.homepage.url %>')">
           <span class="gc-mosaic__caption">
             <span class="gc-mosaic__name"><%= label %></span>

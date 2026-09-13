@@ -61,6 +61,18 @@ module Ecommerce
                 class: ["gc-logo", css].compact.join(" "), style: "height:#{height}px;"
     end
 
+    # Category name in the current locale, falling back to any translation
+    # (imported/legacy categories often only carry Spanish).
+    def gc_category_name(category)
+      name = category.name.presence
+      return name if name
+      if category.respond_to?(:translations)
+        translated = category.translations.map(&:name).compact.map(&:presence).compact.first
+        return translated if translated
+      end
+      category.read_attribute(:name).presence || "—"
+    end
+
     def gc_brand_name
       "GlobalCanasta"
     end
