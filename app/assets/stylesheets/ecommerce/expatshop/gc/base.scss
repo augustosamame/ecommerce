@@ -232,7 +232,9 @@ ul { list-style: none; margin: 0; padding: 0; }
 .gc-field__label--strong { font-size: var(--gc-text-xs); font-weight: 600; }
 .gc-field__label .gc-optional { font-weight: 400; color: var(--gc-ink-faint); }
 .gc-field__hint { font-size: var(--gc-text-2xs); color: var(--gc-ink-faint); }
-.gc-field__error { font-size: var(--gc-text-xs); color: var(--gc-red); }
+.gc-field__error,
+.gc-form label.gc-field__error { font-size: var(--gc-text-sm); font-weight: 600; color: var(--gc-red); }
+.gc-field__error:empty { display: none !important; }
 
 .gc-input,
 .gc-form input[type="text"],
