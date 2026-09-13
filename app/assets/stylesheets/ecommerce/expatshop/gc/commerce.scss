@@ -84,7 +84,7 @@
 .gc-summary__rows dt { color: var(--gc-ink-muted); font-weight: 400; }
 .gc-summary__rows dd { margin: 0; color: var(--gc-text); text-align: right; }
 .gc-summary__discount dd { color: var(--gc-green); }
-.gc-summary__note { font-size: var(--gc-text-2xs); color: var(--gc-ink-faint); max-width: 60%; }
+.gc-summary__rows dd.gc-summary__note { white-space: normal; flex: 0 1 60%; font-size: var(--gc-text-2xs); color: var(--gc-ink-faint); line-height: 1.4; }
 .gc-summary__total { display: flex; flex-direction: column; gap: 2px; padding-top: 12px; border-top: 1px solid var(--gc-sand); }
 .gc-summary__total dt { font-weight: 600; color: var(--gc-text); }
 .gc-summary__total dd { margin: 0; }
@@ -201,7 +201,7 @@
   .gc-line__qty .gc-stepper__btn { height: var(--gc-control-h-mobile); width: 44px; }
   .gc-line__qty .gc-stepper input { height: var(--gc-control-h-mobile); }
   .gc-summary { padding: var(--gc-space-4); }
-  .gc-summary__note { max-width: 50%; }
+  .gc-summary__rows dd.gc-summary__note { flex-basis: 55%; }
   .gc-commerce__cta-row .gc-btn { width: 100%; }
   .gc-table--orders thead { display: none; }
   .gc-table--orders tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; padding: 14px; border-bottom: 1px solid var(--gc-border); }
