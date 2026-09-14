@@ -6,8 +6,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <meta name="theme-color" content="#F8F5EF"/>
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <%# Served through the asset pipeline: production does not serve public/ statically. %>
+  <%= favicon_link_tag "ecommerce/img/globalcanasta/favicon.ico", sizes: "any" %>
+  <%= favicon_link_tag "ecommerce/img/globalcanasta/apple-touch-icon.png", rel: "apple-touch-icon", type: "image/png" %>
   <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM Instructions"/>
 <% end %>
 
