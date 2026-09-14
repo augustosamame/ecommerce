@@ -1,2 +1,2 @@
 $("#js_now_flash").html('<%= j render partial: "ecommerce/application/js_now_flash" %>');
-show_stock_alert('<%= session[:locale] %>')
+show_stock_alert('<%= j t("ecommerce.globalcanasta.product.stock_alert.alert_set") %>')

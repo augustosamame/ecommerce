@@ -658,6 +658,9 @@ en-PE:
         orders:
           payment_error: "Error during payment processing. Please review your order and try again."
       product:
+        stock_alert:
+          alert_set: "We will alert you when the product is back in stock."
+          signed_out: "You must sign in or register to create a stock alert."
         index:
           home: "Home"
           all_products: "All products"

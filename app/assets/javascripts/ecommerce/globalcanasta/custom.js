@@ -11,36 +11,14 @@ function fly_to_cart() {
   });
 };
 
-function show_stock_alert(lang) {
-  if (lang == 'es-PE') {
-    Swal({
-      type: 'info',
-      title: 'Le avisaremos cuando el producto esté nuevamente en Stock',
-      text: ""
-    });
-  } else {
-    Swal({
-      type: 'info',
-      title: 'We will alert you when product is back in stock',
-      text: ""
-    });
-  }
+// Titles arrive already translated from product/stock_alert*.js.erb
+// (I18n.locale), so the copy follows the store language, not the session.
+function show_stock_alert(title) {
+  Swal({ type: 'info', title: title, text: "" });
 };
 
-function show_stock_alert_signed_out(lang) {
-  if (lang == 'es-PE') {
-    Swal({
-      type: 'error',
-      title: 'Debe iniciar sesión o registrarse para crear alertas de stock.',
-      text: ""
-    });
-  } else {
-    Swal({
-      type: 'error',
-      title: 'You must sign in or register to generate a stock alert.',
-      text: ""
-    });
-  }
+function show_stock_alert_signed_out(title) {
+  Swal({ type: 'error', title: title, text: "" });
 };
 
 function add_to_cart_no_stock() {
