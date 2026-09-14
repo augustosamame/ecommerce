@@ -388,8 +388,17 @@
               sources: [{ type: originalSource.type, src: originalSource.src }]
             });
 
+            // Match the mini player's box to the clip's orientation.
+            function fitPipToVideo() {
+              var w = pipPlayerInstance.videoWidth(), h = pipPlayerInstance.videoHeight();
+              if (!w || !h) return;
+              customPipContainer.classList.toggle('custom-pip-container--landscape', w > h);
+            }
+            pipPlayerInstance.on('loadedmetadata', fitPipToVideo);
+
             pipPlayerInstance.ready(function() {
               console.log('PIP player ready:', pipPlayerInstance.id());
+              fitPipToVideo();
 
               pipPlayerInstance.load();
               pipPlayerInstance.currentTime(player.currentTime());
@@ -511,6 +520,7 @@
             }
           }
           customPipContainer.style.display = 'none';
+          customPipContainer.classList.remove('custom-pip-container--landscape');
           customPipContainer.innerHTML = '';
           customPipContainer.appendChild(closeButton);
           isPipActive = false;

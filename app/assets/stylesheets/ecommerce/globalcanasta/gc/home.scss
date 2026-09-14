@@ -237,11 +237,16 @@
   text-shadow: 0 1px 2px rgba(0,0,0,.5);
 }
 .video-js.vjs-fullscreen .vjs-title-overlay { font-size: 24px; padding: 15px; text-align: center; left: 50%; transform: translateX(-50%); width: 80%; max-width: 177.78vh; }
+/* Mini player shown once a playing video scrolls out of view. Portrait by
+   default; JS flips it to --landscape from the clip's real dimensions so a
+   16:9 video is never letterboxed into a 9:16 box. */
 .custom-pip-container {
-  position: fixed; bottom: 88px; right: 16px; width: 178px; height: 313px; z-index: 9999; display: none;
-  box-shadow: var(--gc-shadow-fab); border-radius: var(--gc-radius-lg); overflow: hidden;
+  position: fixed; bottom: 88px; right: 16px; width: 200px; height: 356px; z-index: 9999; display: none;
+  box-shadow: var(--gc-shadow-fab); border-radius: var(--gc-radius-lg); overflow: hidden; background: #000;
 }
+.custom-pip-container--landscape { width: 320px; height: 180px; }
 .custom-pip-container .video-js { width: 100% !important; height: 100% !important; padding-top: 0 !important; }
+.custom-pip-container .vjs-tech { position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: cover; }
 .custom-pip-container .vjs-overlay { transform: scale(0.5); transform-origin: bottom left; bottom: 25px !important; }
 .custom-pip-container .overlay-product-card { width: 80px; height: 45px; }
 .custom-pip-container .overlay-product-title, .custom-pip-container .overlay-product-price,
@@ -379,5 +384,6 @@
   .gc-press__title { font-size: 24px; }
   .gc-press__actions .gc-btn { flex: 1 1 100%; }
   .gc-section-header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
-  .custom-pip-container { bottom: 88px; right: 12px; width: 140px; height: 246px; }
+  .custom-pip-container { bottom: 88px; right: 12px; width: 180px; height: 320px; }
+  .custom-pip-container--landscape { width: 280px; height: 158px; }
 }
