@@ -44,6 +44,10 @@ module Ecommerce
           end
         when "discounted_products"
           @products = Product.where('ecommerce_products.price_cents != ecommerce_products.discounted_price_cents').includes(:translations).active.order(:product_order).then { |scope| listing_filters(scope) }.page(params[:page])
+        else
+          # Unknown filter (stale links, crawlers): rendering the index with
+          # @products nil raised in product_list_json_ld. Show the full listing.
+          redirect_to products_path and return
         end
         render "ecommerce/#{Ecommerce.ecommerce_layout}/product/index" and return
       end

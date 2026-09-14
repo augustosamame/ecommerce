@@ -295,7 +295,7 @@ module Ecommerce
       {
         "@context" => "https://schema.org",
         "@type" => "ItemList",
-        "itemListElement" => products.each_with_index.map do |product, index|
+        "itemListElement" => Array(products).each_with_index.map do |product, index|
           item_data = product_json_ld(product)
           item_data.delete("@context")
           {
