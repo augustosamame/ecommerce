@@ -7,14 +7,14 @@
   justify-content: center;
   gap: 10px;
   padding: 10px var(--gc-page-padding);
-  background: var(--gc-burgundy);
+  background: var(--gc-navy);
   color: var(--gc-cream);
   font-size: var(--gc-text-xs);
   letter-spacing: .02em;
   text-align: center;
   line-height: 1.4;
 }
-.gc-promo--link:hover { color: var(--gc-cream); background: var(--gc-burgundy-hover); }
+.gc-promo--link:hover { color: var(--gc-cream); background: var(--gc-navy-hover); }
 .gc-promo__text { display: inline; }
 .gc-promo__text strong, .gc-promo__text b { font-weight: 600; }
 .gc-promo__text p { margin: 0; display: inline; }
