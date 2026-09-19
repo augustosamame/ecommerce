@@ -15,7 +15,7 @@
         <%= link_to current_user.referral_link, current_user.referral_link, id: 'referral-link', class: "gc-referral__link gc-mono" %>
         <button type="button" id="markup-copy" class="gc-btn gc-btn--accent" data-clipboard-target="#referral-link" title="<%= t('.copy') %>"><%= gc_icon :file, size: 16 %> <%= t('.copy') %></button>
       </div>
-      <p class="gc-referral__text"><%= t('.my_referral_instructions_1') %></p>
+      <p class="gc-referral__text"><%= t('.my_referral_instructions_1', brand: gc_brand_name) %></p>
       <p class="gc-referral__text"><%= t('.my_referral_instructions_2') %></p>
       <div class="gc-referral__code"><%= t('ecommerce.globalcanasta.store.header.my_referral_code') %> <strong class="gc-mono"><%= current_user.try(:referral_code) %></strong></div>
     </div>

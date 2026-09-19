@@ -88,10 +88,14 @@ module Ecommerce
                   "aria-hidden" => "true", focusable: "false")
     end
 
-    # New wordmark. logo.png is the client JPEG comp with its white box keyed
+    # Storefront wordmark. The theme is shared by every host (expatshop.pe,
+    # globalcanasta.com/.pe); only the logo and name follow the requested host
+    # via Ecommerce.brand_logo / site_name (see Ecommerce.host_themes). The
+    # GlobalCanasta logo.png is the client JPEG comp with its white box keyed
     # out (see logo.jpeg for the original); replace with the SVG when supplied.
-    def gc_logo(height: 44, css: nil, alt: "GlobalCanasta")
-      image_tag "ecommerce/img/globalcanasta/logo.png", alt: alt,
+    def gc_logo(height: 44, css: nil, alt: nil)
+      image_tag Ecommerce.brand_logo.presence || "ecommerce/img/globalcanasta/logo.png",
+                alt: alt || gc_brand_name,
                 class: ["gc-logo", css].compact.join(" "), style: "height:#{height}px;"
     end
 
@@ -108,7 +112,7 @@ module Ecommerce
     end
 
     def gc_brand_name
-      "GlobalCanasta"
+      Ecommerce.site_name.presence || "GlobalCanasta"
     end
 
     def gc_whatsapp_url

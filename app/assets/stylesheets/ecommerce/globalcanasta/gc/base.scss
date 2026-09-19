@@ -74,7 +74,11 @@ ul { list-style: none; margin: 0; padding: 0; }
   padding-right: var(--gc-page-padding);
 }
 .gc-container--wide { max-width: var(--gc-container-wide); }
+/* The legacy ecommerce/application sheet (loaded by the base layout) adds
+   `section { padding: 25px 0 50px }`; that 50px stacked on top of the section
+   gap, so the gap is owned here and the legacy bottom padding zeroed. */
 .gc-section { padding-top: var(--gc-section-gap); }
+section.gc-section { padding-bottom: 0; }
 .gc-section--flush { padding-top: 0; }
 .gc-section-header {
   display: flex;

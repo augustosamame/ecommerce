@@ -25,6 +25,9 @@ module Ecommerce
   mattr_accessor :ecommerce_layout
   mattr_accessor :site_name
   mattr_accessor :ecommerce_devise_layout
+  # Asset path (or URL) of the storefront wordmark; nil falls back to the
+  # theme's own logo. Overridable per host like site_name.
+  mattr_accessor :brand_logo
 
   # Several domains resolve to this one app and each can get its own storefront
   # theme. Keys are host patterns (String fragment or Regexp), values are the
@@ -32,9 +35,8 @@ module Ecommerce
   # being served, e.g.
   #
   #   Ecommerce.host_themes = {
-  #     /(^|\.)globalcanasta\./ => { ecommerce_layout: "globalcanasta",
-  #                                  ecommerce_devise_layout: "devise_globalcanasta",
-  #                                  site_name: "GlobalCanasta" }
+  #     /(^|\.)globalcanasta\./ => { site_name: "GlobalCanasta",
+  #                                  brand_logo: "ecommerce/img/globalcanasta/logo.png" }
   #   }
   #
   # The overrides live in Ecommerce::ThemeContext (reset per request), so the
@@ -104,7 +106,7 @@ module Ecommerce
 
   # Must come after every mattr_accessor above: these readers replace the
   # generated ones so the host theme can override them per request.
-  HOST_THEME_SETTINGS = %i[ecommerce_layout ecommerce_devise_layout site_name meta_tags_store_main_description].freeze
+  HOST_THEME_SETTINGS = %i[ecommerce_layout ecommerce_devise_layout site_name brand_logo meta_tags_store_main_description].freeze
 
   HOST_THEME_SETTINGS.each do |setting|
     define_singleton_method(setting) do

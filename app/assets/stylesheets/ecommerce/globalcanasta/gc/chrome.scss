@@ -183,8 +183,6 @@
 .gc-catnav__link:hover { color: var(--gc-burgundy); border-bottom-color: var(--gc-sand); }
 .gc-catnav__link.is-active { color: var(--gc-burgundy); font-weight: 600; border-bottom-color: var(--gc-gold); }
 .gc-catnav__link.is-highlighted { color: var(--gc-gold); font-weight: 600; }
-.gc-catnav__link--new { color: var(--gc-red); font-weight: 600; }
-.gc-catnav__link--offers { color: var(--gc-burgundy); }
 .gc-catnav__link--frequent { color: var(--gc-navy); }
 
 /* Drawer */
@@ -272,16 +270,42 @@ body.gc-drawer-open { overflow: hidden; }
 /* ---------- Mobile <768 ---------- */
 @media (max-width: 767px) {
   .gc-header__bar { gap: 12px; padding-top: 12px; padding-bottom: 12px; }
-  .gc-header__logo { flex: 1; min-width: 0; }
-  .gc-header__logo-img { height: 36px !important; object-fit: contain; object-position: left; }
+  .gc-header__logo { flex: 1; min-width: 0; justify-content: center; }
+  .gc-header__logo-img { height: 40px !important; max-width: 100%; object-fit: contain; object-position: center; }
   .gc-header__search { display: none; }
   .gc-header__selects { display: none; }
   .gc-header__search-mobile { display: block; padding: 12px 0; }
-  /* pills wrap into rows rather than scrolling off-screen */
+  /* Design handoff option 5a: equal-width pills, two per row. A grid of
+     identical 40px cells (never min-height / wrapping — that brings back the
+     ragged rows); over-long labels ellipsis and keep the full name in title. */
   .gc-catnav { overflow: visible; margin: 0; padding: 0; }
-  .gc-catnav__list { flex-wrap: wrap; gap: 8px; padding: 0 0 14px; width: auto; min-width: 0; }
-  .gc-catnav__link { border: 1px solid var(--gc-sand); border-radius: var(--gc-radius-pill); padding: 8px 12px; background: var(--gc-white); font-size: var(--gc-text-xs); line-height: 1.2; }
-  .gc-catnav__link.is-active { border-color: var(--gc-burgundy); background: var(--gc-burgundy); color: var(--gc-cream); }
+  .gc-catnav__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 4px 0 18px;
+    width: auto;
+    min-width: 0;
+  }
+  .gc-catnav__list > li { min-width: 0; }
+  .gc-catnav__link {
+    display: grid;
+    align-content: center;
+    height: 40px;
+    padding: 0 12px;
+    text-align: center;
+    background: var(--gc-white);
+    border: 1px solid var(--gc-sand);
+    border-radius: var(--gc-radius-pill);
+    font: 400 13px/1.2 var(--gc-font-ui);
+    color: var(--gc-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .gc-catnav__link:hover { color: var(--gc-text); }
+  .gc-catnav__link:active { background: var(--gc-surface-alt); }
+  .gc-catnav__link.is-active { border-color: var(--gc-burgundy); background: var(--gc-burgundy); color: var(--gc-cream); font-weight: 600; }
+  .gc-catnav__link.is-highlighted { border-color: var(--gc-gold); }
 }
 
 /* ---------- WhatsApp FAB ---------- */

@@ -7,7 +7,7 @@
       <div class="gc-footer__brand">
         <a href="<%= root_path %>" class="gc-footer__logo-wrap"><%= gc_logo(height: 40, css: "gc-footer__logo") %></a>
         <div class="gc-footer__legal">
-          <p class="gc-footer__slogan"><%= t('.slogan_1') %></p>
+          <p class="gc-footer__slogan"><%= t('.slogan_1', brand: gc_brand_name) %></p>
           <%= Ecommerce.company_legal_name %> · RUC <%= Ecommerce.company_vat %><br>
           <%= t('.slogan_2') %><br>
           <span class="gc-footer__note"><%= t('.slogan_3') %></span>

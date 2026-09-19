@@ -105,16 +105,14 @@
           <li><a href="<%= engine.products_path %>" class="gc-catnav__link <%= active_all_products_category() == 'active' ? 'is-active' : '' %>"><%= t('.all_products') %></a></li>
           <% @primary_menu_categories.each do |category| %>
             <% if category.id == 47 %>
-              <li><%= link_to gc_category_name(category), engine.products_path(filter: 'new_products'), class: "gc-catnav__link #{match_active_category(category) == 'active' ? 'is-active' : ''} #{category.highlighted? ? 'is-highlighted' : ''}" %></li>
+              <li><%= link_to gc_category_name(category), engine.products_path(filter: 'new_products'), title: gc_category_name(category), class: "gc-catnav__link #{match_active_category(category) == 'active' ? 'is-active' : ''} #{category.highlighted? ? 'is-highlighted' : ''}" %></li>
             <% else %>
               <% unless category.id == 30 && !@banana_permission %>
-                <li><%= link_to gc_category_name(category), engine.products_path(category_id: category.id), class: "gc-catnav__link #{match_active_category(category) == 'active' ? 'is-active' : ''} #{category.highlighted? ? 'is-highlighted' : ''}" %></li>
+                <li><%= link_to gc_category_name(category), engine.products_path(category_id: category.id), title: gc_category_name(category), class: "gc-catnav__link #{match_active_category(category) == 'active' ? 'is-active' : ''} #{category.highlighted? ? 'is-highlighted' : ''}" %></li>
               <% end %>
             <% end %>
           <% end %>
           <li class="gc-catnav__spacer" aria-hidden="true"></li>
-          <li><a href="<%= engine.products_path(filter: 'new_products') %>" class="gc-catnav__link gc-catnav__link--new"><%= gc_t('.new_arrivals', 'New arrivals') %></a></li>
-          <li><a href="<%= engine.products_path(filter: 'discounted_products') %>" class="gc-catnav__link gc-catnav__link--offers"><%= gc_t('.offers', 'Offers') %></a></li>
           <% if current_user %>
             <li><a href="<%= engine.favorites_path %>" class="gc-catnav__link gc-catnav__link--frequent"><%= t('.favorite_products') %></a></li>
           <% end %>

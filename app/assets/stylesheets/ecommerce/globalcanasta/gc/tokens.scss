@@ -82,7 +82,7 @@
   --gc-space-24: 96px;
 
   /* Section rhythm: between sections / inside / between blocks */
-  --gc-section-gap: var(--gc-space-24);
+  --gc-section-gap: var(--gc-space-16);
   --gc-block-gap: var(--gc-space-10);
 
   /* ---- Layout ---- */
@@ -140,7 +140,7 @@
     --gc-text-title: 28px;
     --gc-page-padding: 20px;
     --gc-gutter: 20px;
-    --gc-section-gap: var(--gc-space-16);
+    --gc-section-gap: var(--gc-space-14);
     --gc-block-gap: var(--gc-space-6);
   }
 }
@@ -152,7 +152,7 @@
     --gc-text-title: 26px;
     --gc-page-padding: 16px;
     --gc-gutter: 16px;
-    --gc-section-gap: var(--gc-space-14);
+    --gc-section-gap: var(--gc-space-10);
     --gc-block-gap: var(--gc-space-6);
   }
 }
