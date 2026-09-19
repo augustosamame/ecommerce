@@ -3,7 +3,13 @@
     <div class="container-fluid">
       <div class="row">
         <div class="lavaggio_grid col-xs-4 t_o1">
-          <%= f.association :product, collection: Ecommerce::Product.all.order(:name), input_html: { class: "product_picker"}, label: false, required: false %>
+          <%# Hidden id + autocomplete (see _form): a full-catalog <select>
+              per line made the order edit page unusable on mobile. %>
+          <%= f.hidden_field :product_id, class: "product_id" %>
+          <% product = f.object.product %>
+          <input type="text" class="form-control product_search"
+                 value="<%= product && (product.name.presence || product.translations.map(&:name).find(&:present?)) %>"
+                 placeholder="Search product..." autocomplete="off">
         </div>
         <div class="lavaggio_grid col-xs-2 t_o1">
           <%= f.input :quantity, label: false, input_html: { class: "quantity_picker" } %>

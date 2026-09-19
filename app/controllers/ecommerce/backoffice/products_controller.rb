@@ -37,15 +37,19 @@ module Ecommerce
                 .distinct
 
       with_categories = ActiveModel::Type::Boolean.new.cast(params[:with_categories])
+      scope = scope.includes(:translations)
       scope = scope.includes(:taggings) if with_categories
 
       results = scope.map do |product|
-        label = product.name
+        # The backoffice runs in en-PE; a product created only in Spanish has
+        # no name in that locale and came back as null. Fall back to any.
+        name = product.name.presence || product.translations.map(&:name).find(&:present?)
+        label = name
         if with_categories
           cats = product.category_list.to_a
           label = "#{label} - #{cats.join(',')}" if cats.any?
         end
-        { id: product.id, label: label, value: product.name }
+        { id: product.id, label: label, value: name }
       end
       render json: results
     end

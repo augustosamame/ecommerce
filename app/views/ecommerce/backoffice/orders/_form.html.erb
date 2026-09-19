@@ -2,7 +2,16 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :user, :label_method => lambda { |user| "#{user.name}" }  %>
+    <%# AJAX autocomplete instead of f.association: that rendered EVERY user
+        in the system as an <option>, and with the per-line product selects
+        the edit page was ~1.7 MB of HTML — mobile browsers hung ~60 s
+        building native pickers for it. Same pattern as the header search. %>
+    <%= f.hidden_field :user_id, id: "order_user_id" %>
+    <div class="form-group string optional">
+      <label class="control-label string optional" for="order_user_search">User</label>
+      <input type="text" id="order_user_search" class="form-control string optional"
+             value="<%= @backoffice_order.user&.name %>" placeholder="Search customer by name or email..." autocomplete="off">
+    </div>
     <%= f.input :stage, collection: Ecommerce::Order.stages.keys %>
     <%= f.input :shipping_address_id, readonly: true %>
     <%= f.input :billing_address_id, readonly: true %>
@@ -31,3 +40,32 @@
     <%= f.button :submit, class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<script>
+$(document).ready(function () {
+  var BO_BASE = "/<%= Ecommerce.engine_alias_endpoint %>/backoffice";
+  function ajaxSource(url) {
+    return function (request, response) { $.getJSON(url, { term: request.term }, response); };
+  }
+  $("#order_user_search").autocomplete({
+    minLength: 2, delay: 250,
+    source: ajaxSource(BO_BASE + "/users/autocomplete"),
+    select: function (e, ui) { $("#order_user_id").val(ui.item.id); }
+  }).on("input", function () { if (!this.value) $("#order_user_id").val(""); });
+
+  // Per-line product picker; cocoon-inserted rows get their own instance.
+  function initProductSearch(scope) {
+    $(scope).find(".product_search").each(function () {
+      var input = $(this);
+      var hidden = input.closest(".nested-fields").find(".product_id");
+      input.autocomplete({
+        minLength: 2, delay: 250,
+        source: ajaxSource(BO_BASE + "/products/autocomplete"),
+        select: function (e, ui) { hidden.val(ui.item.id); }
+      }).on("input", function () { if (!this.value) hidden.val(""); });
+    });
+  }
+  initProductSearch("#backoffice_order_items");
+  $("#backoffice_order_items").on("cocoon:after-insert", function (e, inserted) { initProductSearch(inserted); });
+});
+</script>
