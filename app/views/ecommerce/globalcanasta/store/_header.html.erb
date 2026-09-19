@@ -2,10 +2,9 @@
     One markup tree, three layouts via CSS:
       ≥1024  two rows (utility row + category row), currency/locale selects
       768–1023 single row + scrollable category strip
-      <768   hamburger · logo · favourites · cart, search on its own row.
+      <768   hamburger · logo · account · cart, search on its own row.
     Currency and locale live inside the drawer below 1024 (deliberate). %>
 <% engine = Ecommerce::Engine.routes.url_helpers %>
-<% wishlist_url = current_user ? (session[:wishlist_id] ? engine.wishlist_path(session[:wishlist_id]) : engine.favorites_path) : main_app.new_user_session_path %>
 
 <%= render 'ecommerce/globalcanasta/store/top_promo' %>
 
@@ -42,13 +41,12 @@
 
       <nav class="gc-header__actions" aria-label="<%= gc_t('.account_navigation', 'Account') %>">
         <a href="<%= gc_whatsapp_url %>" target="_blank" rel="noopener" class="gc-header__action gc-header__action--wa">
-          <span class="gc-header__action-icon gc-header__action-icon--green"><%= gc_icon :whatsapp, size: 18 %></span>
+          <span class="gc-header__action-icon"><%= gc_whatsapp_logo(size: 26) %></span>
           <span class="gc-header__action-label">WhatsApp</span>
         </a>
-
-        <a href="<%= wishlist_url %>" class="gc-header__action gc-header__action--fav" aria-label="<%= gc_t('.favourites', 'Favourites') %>">
-          <span class="gc-header__action-icon"><%= gc_icon :heart, size: 18 %></span>
-          <span class="gc-header__action-label"><%= gc_t('.favourites', 'Favourites') %></span>
+        <%# Phones: single account icon (desktop menu is hidden there) %>
+        <a href="<%= current_user ? engine.my_account_path : main_app.new_user_session_path %>" class="gc-header__action gc-header__action--account-mobile" aria-label="<%= t('.my_account') %>">
+          <span class="gc-header__action-icon"><%= gc_icon :user, size: 18 %></span>
         </a>
 
         <% if current_user %>

@@ -61,6 +61,7 @@
 .gc-header__action:hover { color: var(--gc-burgundy); }
 .gc-header__action-icon { display: inline-flex; color: var(--gc-burgundy); }
 .gc-header__action-icon--green { color: var(--gc-green); }
+.gc-header__action--account-mobile { display: none; }
 .gc-header__cart { flex: 0 0 auto; }
 
 /* Account menu */
@@ -243,9 +244,8 @@ body.gc-drawer-open { overflow: hidden; }
 @media (max-width: 1279px) {
   .gc-header__bar { gap: var(--gc-space-4); }
   .gc-header__actions { gap: 10px; }
-  .gc-header__action--wa .gc-header__action-label,
-  .gc-header__action--fav .gc-header__action-label { display: none; }
-  .gc-header__action--wa, .gc-header__action--fav { width: var(--gc-control-h); justify-content: center; border-radius: var(--gc-radius-pill); }
+  .gc-header__action--wa .gc-header__action-label { display: none; }
+  .gc-header__action--wa { width: var(--gc-control-h); justify-content: center; border-radius: var(--gc-radius-pill); }
   .gc-catnav__list { gap: 18px; }
 }
 
@@ -259,7 +259,7 @@ body.gc-drawer-open { overflow: hidden; }
   .gc-header__actions { gap: 6px; }
   .gc-header__action--wa, .gc-header__action--account { display: none; }
   .gc-header__action-label { display: none; }
-  .gc-header__action--fav { width: var(--gc-control-h); height: var(--gc-control-h); justify-content: center; border-radius: var(--gc-radius-pill); }
+  .gc-header__action--account-mobile { display: inline-flex; width: var(--gc-control-h); height: var(--gc-control-h); justify-content: center; border-radius: var(--gc-radius-pill); }
   .gc-minicart__btn { width: var(--gc-control-h); padding: 0; gap: 0; position: relative; }
   .gc-minicart__label { display: none; }
   .gc-minicart__count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; font-size: 11px; }
@@ -273,7 +273,7 @@ body.gc-drawer-open { overflow: hidden; }
 @media (max-width: 767px) {
   .gc-header__bar { gap: 12px; padding-top: 12px; padding-bottom: 12px; }
   .gc-header__logo { flex: 1; min-width: 0; }
-  .gc-header__logo-img { height: 28px !important; object-fit: contain; object-position: left; }
+  .gc-header__logo-img { height: 36px !important; object-fit: contain; object-position: left; }
   .gc-header__search { display: none; }
   .gc-header__selects { display: none; }
   .gc-header__search-mobile { display: block; padding: 12px 0; }
