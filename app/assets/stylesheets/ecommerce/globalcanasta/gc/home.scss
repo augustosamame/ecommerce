@@ -1,44 +1,22 @@
 /* GlobalCanasta home page */
 
-/* ---------- Hero carousel ---------- */
-/* The whole hero (copy + media) is one slide; slides sit in a scroll-snap
-   track so they are swipeable and the JS only drives arrows/dots/autoplay.
-   Media keeps its own ratio via object-fit: cover — a square crop beside
-   copy, a wide 21:9 crop when the slide is media-only. */
+/* ---------- Hero ---------- */
+/* Fixed copy on the left, square image carousel on the right. The images sit
+   in a scroll-snap track (swipeable); JS only drives arrows/dots/autoplay. */
 .gc-hero {
-  position: relative;
   max-width: var(--gc-container);
   margin: 0 auto;
-  padding: var(--gc-space-8) var(--gc-page-padding) var(--gc-space-8);
-}
-.gc-hero--mobile { display: none; }
-.gc-hero__track {
-  display: flex;
-  align-items: center; /* slides keep their own height; shorter ones sit centred */
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  border-radius: var(--gc-radius-xl);
-}
-.gc-hero__track::-webkit-scrollbar { display: none; }
-.gc-hero__slide {
-  flex: 0 0 100%;
-  width: 100%;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  padding: var(--gc-space-6) var(--gc-page-padding) var(--gc-space-8);
   display: grid;
-  align-items: stretch;
-  min-width: 0;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gc-space-10);
+  align-items: center;
 }
-.gc-hero__slide--split { grid-template-columns: 1fr 1fr; gap: var(--gc-space-10); }
-.gc-hero__slide--media { grid-template-columns: 1fr; }
 .gc-hero__copy {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 26px;
-  padding: var(--gc-space-10) 0;
   min-width: 0;
 }
 .gc-hero__title {
@@ -65,44 +43,33 @@
 .gc-hero__stats dt { font-family: var(--gc-font-display); font-size: 26px; color: var(--gc-navy); font-weight: 400; line-height: 1.2; }
 .gc-hero__stats dd { font-size: var(--gc-text-xs); color: var(--gc-ink-muted); margin: 0; }
 
-.gc-hero__media {
-  position: relative;
+.gc-hero__media { min-width: 0; }
+.gc-hero__media--mobile { display: none; }
+.gc-hero__track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   border-radius: var(--gc-radius-xl);
   background: repeating-linear-gradient(135deg, #E8E1D5 0 12px, #EFE9DE 12px 24px);
-  overflow: hidden;
-  min-width: 0;
 }
-/* align-self: center keeps the box sized from its width; stretched to the
-   row height (set by the tallest slide) the aspect ratio would widen it
-   past the track instead. */
-.gc-hero__slide--split .gc-hero__media { aspect-ratio: 1 / 1; width: 100%; align-self: center; }
+.gc-hero__track::-webkit-scrollbar { display: none; }
+.gc-hero__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  aspect-ratio: 1 / 1;           /* desktop: always square */
+  overflow: hidden;
+}
 .gc-hero__slide-link, .gc-hero__placeholder { display: block; position: absolute; inset: 0; }
 .gc-hero__img { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* Media-only slides are never cropped: the banner keeps its own ratio and
-   defines the slide height (wide, 16:9, mobile-portrait… all fit). */
-.gc-hero__slide--media .gc-hero__media { width: 100%; aspect-ratio: auto; }
-.gc-hero__slide--media .gc-hero__slide-link { position: relative; inset: auto; }
-.gc-hero__slide--media .gc-hero__img { height: auto; object-fit: initial; }
-.gc-hero__slide--media .gc-hero__placeholder { position: relative; aspect-ratio: 21 / 9; }
-.gc-hero__quote {
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  width: 280px;
-  max-width: calc(100% - 40px);
-  margin: 0;
-  padding: 18px 22px;
-  background: var(--gc-cream);
-  border: 1px solid var(--gc-border);
-  border-radius: var(--gc-radius-lg);
-  box-shadow: var(--gc-shadow-raised);
-  z-index: 3;
-}
-.gc-hero__quote blockquote { margin: 0; padding: 0; border: none; font-family: var(--gc-font-display); font-style: italic; font-size: 17px; line-height: 1.4; color: var(--gc-burgundy); }
-.gc-hero__quote figcaption { font-size: var(--gc-text-xs); color: var(--gc-ink-muted); margin-top: 8px; }
 
-.gc-hero__controls { display: flex; align-items: center; justify-content: center; gap: 20px; padding: var(--gc-space-6) 0 0; }
-.gc-hero__dots { display: flex; justify-content: center; gap: 8px; }
+.gc-hero__controls { display: flex; align-items: center; justify-content: center; gap: 20px; padding: var(--gc-space-5) 0 0; }
+.gc-hero__dots { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
 .gc-hero__dot { width: 10px; height: 10px; padding: 0; border-radius: 50%; border: 1px solid var(--gc-burgundy); background: transparent; cursor: pointer; transition: background-color var(--gc-duration-fast) var(--gc-ease); }
 .gc-hero__dot.is-active { background: var(--gc-burgundy); }
 
@@ -334,15 +301,12 @@
 
 /* ---------- Tablet ---------- */
 @media (max-width: 1023px) {
-  .gc-hero { padding-top: var(--gc-space-6); padding-bottom: var(--gc-space-6); }
+  .gc-hero { padding-top: var(--gc-space-4); padding-bottom: var(--gc-space-6); grid-template-columns: 1fr; gap: var(--gc-space-5); }
   .gc-hero__controls { padding-top: var(--gc-space-4); }
-  .gc-hero__slide--split { grid-template-columns: 1fr; gap: var(--gc-space-5); }
-  .gc-hero__copy { padding: 28px 0 8px; gap: 18px; }
+  .gc-hero__copy { padding: 0; gap: 18px; }
   .gc-hero__title { font-size: var(--gc-text-hero); }
   .gc-hero__body { font-size: var(--gc-text-body); max-width: 520px; }
   .gc-hero__stats { display: none; }
-  .gc-hero__slide--split .gc-hero__media { aspect-ratio: 16 / 9; }
-  .gc-hero__quote { display: none; }
   .gc-hero__controls .gc-icon-btn { display: none; }
   .gc-band__inner { flex-wrap: wrap; gap: 12px 24px; padding-top: 16px; padding-bottom: 16px; font-size: var(--gc-text-xs); }
   .gc-band__item { flex: 1 1 40%; }
@@ -357,15 +321,21 @@
 
 /* ---------- Mobile ---------- */
 @media (max-width: 767px) {
-  .gc-hero__copy { padding: 8px 0 20px; gap: 14px; }
+  .gc-hero { padding-top: 14px; }
+  .gc-hero__copy { padding: 0; gap: 14px; }
   .gc-band__inner { padding: 16px; border-radius: var(--gc-radius-md); }
   .gc-hero__body { font-size: 15px; line-height: 1.55; }
   .gc-hero__actions { gap: 10px; }
   .gc-hero__actions .gc-btn { flex: 1 1 calc(50% - 5px); padding: 0 12px; font-size: 14px; }
-  .gc-hero__slide--split .gc-hero__media { aspect-ratio: 390 / 220; }
+  /* Phones: the mobile banner set keeps its own ratio (designed for phones) */
+  .gc-hero__slide { aspect-ratio: auto; }
+  .gc-hero__slide-link { position: relative; inset: auto; }
+  .gc-hero__img { height: auto; object-fit: initial; }
+  .gc-hero__placeholder { position: relative; aspect-ratio: 1 / 1; }
+  .gc-hero__track { align-items: center; }
   /* Mobile banner set replaces the desktop one when the backoffice has one */
-  .gc-hero--desktop:has(+ .gc-hero--mobile) { display: none; }
-  .gc-hero--mobile { display: block; }
+  .gc-hero__media--desktop:has(+ .gc-hero__media--mobile) { display: none; }
+  .gc-hero__media--mobile { display: block; }
   /* Phones: stack the promises so nothing is clipped */
   .gc-band__inner { flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px 18px; }
   .gc-band__item { flex: 0 0 auto; white-space: normal; align-items: flex-start; line-height: 1.35; }

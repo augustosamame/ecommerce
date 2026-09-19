@@ -3,7 +3,7 @@
 <% if @always_on_banner %>
   <% banner_message = (session[:locale] == 'es-PE' ? @always_on_banner.message_es : @always_on_banner.message_en).to_s %>
   <% if @always_on_banner.link_url.present? %>
-    <a href="<%= @always_on_banner.link_url %>" class="gc-promo gc-promo--link top_promo_link">
+    <a href="<%= gc_local_url(@always_on_banner.link_url) %>" class="gc-promo gc-promo--link top_promo_link">
       <span class="gc-promo__text top_promo"><%= banner_message.html_safe %></span>
     </a>
   <% else %>
