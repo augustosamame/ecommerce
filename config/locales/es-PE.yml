@@ -865,6 +865,8 @@ es-PE:
           hero_body: "Miles de productos de despensa traídos a precio de origen: conservas francesas, cerveza alemana, especias de la India, salsas japonesas. Stock inmediato en Lima, en tu puerta mañana."
           hero_cta_primary: "Ver la despensa"
           hero_cta_secondary: "Explorar por país"
+          mobile_tagline_eyebrow: "Desde el 2018"
+          mobile_tagline_sub: "Stock inmediato. Delivery al día siguiente (lun a vie)."
           hero_slides: "Banners"
           stat_products: "productos en stock"
           stat_countries: "países de origen"

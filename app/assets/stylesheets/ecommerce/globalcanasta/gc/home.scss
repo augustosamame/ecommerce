@@ -43,6 +43,7 @@
 .gc-hero__stats dt { font-family: var(--gc-font-display); font-size: 26px; color: var(--gc-navy); font-weight: 400; line-height: 1.2; }
 .gc-hero__stats dd { font-size: var(--gc-text-xs); color: var(--gc-ink-muted); margin: 0; }
 
+.gc-hero__tagline { display: none; }
 .gc-hero__media { min-width: 0; }
 .gc-hero__media--mobile { display: none; }
 .gc-hero__track {
@@ -327,12 +328,15 @@
   .gc-hero__body { font-size: 15px; line-height: 1.55; }
   .gc-hero__actions { gap: 10px; }
   .gc-hero__actions .gc-btn { flex: 1 1 calc(50% - 5px); padding: 0 12px; font-size: 14px; }
-  /* Phones: the mobile banner set keeps its own ratio (designed for phones) */
-  .gc-hero__slide { aspect-ratio: auto; }
-  .gc-hero__slide-link { position: relative; inset: auto; }
-  .gc-hero__img { height: auto; object-fit: initial; }
-  .gc-hero__placeholder { position: relative; aspect-ratio: 1 / 1; }
-  .gc-hero__track { align-items: center; }
+  /* Phones: centred tagline + the mobile banner set in a fixed 4:5 frame;
+     taller/shorter uploads are cropped top and bottom, never resized. */
+  .gc-hero { gap: 14px; }
+  .gc-hero__copy { display: none; }
+  .gc-hero__tagline { display: block; text-align: center; padding: 6px 0 2px; }
+  .gc-hero__tagline-pre { font-size: var(--gc-text-sm); color: var(--gc-ink-muted); }
+  .gc-hero__tagline-title { font-family: var(--gc-font-display); font-style: italic; font-size: 28px; line-height: 1.15; color: var(--gc-burgundy); margin: 4px 0 6px; }
+  .gc-hero__tagline-sub { font-size: var(--gc-text-sm); color: var(--gc-ink-soft); margin: 0; }
+  .gc-hero__slide { aspect-ratio: 4 / 5; }
   /* Mobile banner set replaces the desktop one when the backoffice has one */
   .gc-hero__media--desktop:has(+ .gc-hero__media--mobile) { display: none; }
   .gc-hero__media--mobile { display: block; }

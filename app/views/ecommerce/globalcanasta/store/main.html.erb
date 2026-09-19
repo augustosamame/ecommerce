@@ -37,6 +37,12 @@
       sets render as two tracks toggled by CSS; only the image rotates. %>
   <% title_lines = gc_hero_copy(:title).to_s.split(/\r?\n/).map(&:strip).reject(&:blank?) %>
   <section class="gc-hero" aria-labelledby="gc-hero-title">
+    <%# Phones: the classic centred tagline instead of the editable story block %>
+    <div class="gc-hero__tagline gc-mobile-only">
+      <div class="gc-hero__tagline-pre"><%= t('.mobile_tagline_eyebrow') %></div>
+      <p class="gc-hero__tagline-title"><%= t('.hero_title_1') %><br><%= t('.hero_title_2') %></p>
+      <p class="gc-hero__tagline-sub"><%= t('.mobile_tagline_sub') %></p>
+    </div>
     <div class="gc-hero__copy">
       <% if (pre = gc_hero_copy(:pre_header)).present? %><div class="gc-eyebrow"><%= pre %></div><% end %>
       <h1 class="gc-hero__title" id="gc-hero-title"><%= title_lines.first %><% title_lines.drop(1).each do |line| %><br><em><%= line %></em><% end %></h1>
