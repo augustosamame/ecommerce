@@ -10,6 +10,9 @@
           <div class="col-xs-7">
             <strong style="font-size: 16px;">Orden #<%= order.id %></strong><br>
             <span style="font-size: 14px;"><%= order.user.name %></span><br>
+            <% if (razon_social = @razon_social_by_order_id[order.id.to_s]).present? %>
+              <small><%= razon_social %></small><br>
+            <% end %>
             <small class="text-muted"><%= order.created_at.strftime("%d/%m %H:%M") %></small>
           </div>
           <div class="col-xs-5 text-right">
@@ -42,6 +45,7 @@
         <tr>
           <th>ID</th>
           <th>Usuario</th>
+          <th>Razón Social</th>
           <th>Monto</th>
           <th>Estado</th>
           <th>Fecha</th>
@@ -53,6 +57,7 @@
           <tr>
             <td><%= order.id %></td>
             <td><%= order.user.name %></td>
+            <td><%= @razon_social_by_order_id[order.id.to_s] %></td>
             <td><%= number_to_currency(order.amount) %></td>
             <td>
               <span class="label label-<%= order.stage == 'stage_delivered' ? 'success' : 'default' %>">

@@ -11,16 +11,28 @@ module Ecommerce
                                        .order(created_at: :desc)
                                        .limit(50)
 
+      # Razón social of the comprobante the invoicing platform emitted for
+      # each web order (invoice.external_ref == order id). Soft-referenced
+      # so the engine still boots in hosts without the invoicing app.
+      invoice_class = "Invoicing::Invoice".safe_constantize
+      @razon_social_by_order_id = if invoice_class
+        invoice_class.where(source: :expatshop, external_ref: @recent_orders.map { |o| o.id.to_s })
+                     .where.not(status: :voided)
+                     .includes(:client)
+                     .order(id: :asc)
+                     .each_with_object({}) { |inv, h| h[inv.external_ref] = inv.client&.razon_social }
+      else
+        {}
+      end
+
       # Manual comprobantes/guías from the host's invoicing platform (same
       # DB) also get delivered by these drivers, but have no order to hang
-      # photos on. Soft-referenced so the engine still boots in hosts
-      # without the invoicing app.
-      invoice_class = "Invoicing::Invoice".safe_constantize
+      # photos on.
       @manual_invoices = if invoice_class
         invoice_class.where(source: :manual, invoice_type: [:boleta, :factura])
                      .where.not(status: :voided)
                      .where("created_at > ?", 30.days.ago)
-                     .includes(:client, :proof_of_delivery_images)
+                     .includes(:client, :guias, :proof_of_delivery_images)
                      .order(id: :desc).limit(30)
       else
         []

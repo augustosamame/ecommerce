@@ -9,7 +9,15 @@
   </div>
   <% docs.each do |doc, doc_type| %>
     <% pods = doc.proof_of_delivery_images.to_a %>
-    <% address = doc_type == "guia" ? doc.llegada_direccion : doc.client&.primary_address&.full_line %>
+    <%# Drivers need the delivery point: for a comprobante that's the
+        llegada of its (latest non-voided) guía; the client's fiscal address
+        is only a fallback when no guía carries one. %>
+    <% address = if doc_type == "guia"
+                   doc.llegada_direccion
+                 else
+                   doc.guias.reject(&:voided?).max_by(&:id)&.llegada_direccion.presence ||
+                     doc.client&.primary_address&.full_line
+                 end %>
     <div class="panel panel-default" style="margin-bottom: 10px;">
       <div class="panel-body" style="padding: 10px;">
         <div class="row">
