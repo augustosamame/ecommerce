@@ -16,15 +16,14 @@
     <!-- BEGIN SIDEBAR MENU -->
     <p class="menu-title sm">BACKOFFICE <span class="pull-right"><a href="javascript:;"><i class="material-icons">refresh</i></a></span></p>
     <ul>
-      <% if current_user.driver? %>
-        <li class="<%= class_string({ start: true, active: controller.controller_name == 'recent_orders'}) %>" >
-          <a href="<%= backoffice_recent_orders_path %>"> <i class="material-icons">local_shipping</i> <span class="title">Órdenes Recientes</span></a>
-        </li>
-      <% else %>
+      <% unless current_user.driver? %>
         <li class="<%= class_string({ start: true, active: controller.controller_name == 'dashboard'}) %>" >
           <a href="<%= backoffice_dashboard_path %>"> <i class="material-icons">adjust</i> <span class="title"><%= t('.dashboard_title') %></span></a>
         </li>
       <% end %>
+      <li class="<%= class_string({ start: true, active: controller.controller_name == 'recent_orders'}) %>" >
+        <a href="<%= backoffice_recent_orders_path %>"> <i class="material-icons">local_shipping</i> <span class="title">Órdenes Recientes</span></a>
+      </li>
 
       <% if current_user.admin? %>
         <li>

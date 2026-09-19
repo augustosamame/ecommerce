@@ -46,8 +46,10 @@ module Ecommerce
 
     private
 
+    # Any backoffice role (admin/auxiliary/driver — already gated by
+    # Backoffice::BaseController#authorize_role) can view and upload POD photos.
     def ensure_driver_access
-      redirect_to main_app.root_path unless current_user&.driver? || current_user&.admin?
+      redirect_to main_app.root_path unless current_user&.driver? || current_user&.admin? || current_user&.auxiliary?
     end
   end
 end
