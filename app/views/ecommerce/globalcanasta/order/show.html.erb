@@ -22,7 +22,7 @@
         </div>
         <ul class="gc-lines gc-lines--flush">
           <% @order.order_items.each do |item| %>
-            <li class="gc-line">
+            <li class="gc-line gc-line--order">
               <span class="gc-line__thumb"><%= image_tag item.product.image.thumb_100.url, alt: "" %></span>
               <div class="gc-line__info">
                 <span class="gc-line__name"><%= item.product.name %></span>

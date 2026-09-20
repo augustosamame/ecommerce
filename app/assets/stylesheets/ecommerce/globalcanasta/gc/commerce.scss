@@ -206,9 +206,15 @@
   .gc-line--wish .gc-line__qty .gc-btn { height: var(--gc-control-h-mobile); }
   .gc-line--wish .gc-line__remove { order: 4; }
   .gc-line__thumb { width: 64px; height: 64px; }
-  .gc-line__info { flex-basis: calc(100% - 80px); }
+  /* Cart lines wrap (info row, then stepper + total row); order lines have no
+     stepper so thumb · info · total stay on one row with the total never
+     squeezed under the name. */
+  .gc-line__form .gc-line__info { flex-basis: calc(100% - 80px); }
   .gc-line__qty { order: 3; }
-  .gc-line__total { order: 4; flex: 1; min-width: 0; align-items: flex-end; white-space: nowrap; }
+  .gc-line__form .gc-line__total { order: 4; flex: 1; min-width: 0; align-items: flex-end; white-space: nowrap; }
+  .gc-line--order .gc-line__info { flex: 1 1 auto; min-width: 0; }
+  .gc-line--order .gc-line__total { flex: 0 0 auto; min-width: 0; white-space: nowrap; }
+  .gc-line--order .gc-line__name { font-size: 14px; }
   .gc-line__total .gc-price { font-size: 17px; }
   .gc-line__remove { order: 5; }
   .gc-line__qty .gc-stepper__btn { height: var(--gc-control-h-mobile); width: 44px; }
