@@ -56,7 +56,8 @@
         <td><%= backoffice_order.delivery_comments %></td>
         <td><% if backoffice_order.respond_to?(:platform) && backoffice_order.platform.present? %>
           <span class="label <%= backoffice_order.app? ? 'label-info' : 'label-default' %>"><%= backoffice_order.platform.capitalize %></span>
-        <% end %></td>
+        <% end %>
+        <% if backoffice_order.globalcanasta_purchase %><span class="label label-success" title="Placed on globalcanasta.com / GlobalCanasta app">GlobalCanasta</span><% end %></td>
         <td><%= backoffice_order.status %></td>
         <td><%= link_to "<i class='material-icons'>visibility</i>".html_safe, backoffice_order_path(backoffice_order) %></td>
         <td><%= link_to "<i class='material-icons'>edit</i>".html_safe, edit_backoffice_order_path(backoffice_order) %></td>

@@ -28,6 +28,11 @@ module Ecommerce
   # Asset path (or URL) of the storefront wordmark; nil falls back to the
   # theme's own logo. Overridable per host like site_name.
   mattr_accessor :brand_logo
+  # Which store brand a request belongs to (:expatshop / :globalcanasta).
+  # Per host through host_themes; orders created during the request are
+  # stamped with it (Order#globalcanasta_purchase) and emails follow the order.
+  mattr_accessor :store_brand
+  self.store_brand = :expatshop
 
   # Several domains resolve to this one app and each can get its own storefront
   # theme. Keys are host patterns (String fragment or Regexp), values are the
@@ -106,7 +111,7 @@ module Ecommerce
 
   # Must come after every mattr_accessor above: these readers replace the
   # generated ones so the host theme can override them per request.
-  HOST_THEME_SETTINGS = %i[ecommerce_layout ecommerce_devise_layout site_name brand_logo meta_tags_store_main_description].freeze
+  HOST_THEME_SETTINGS = %i[ecommerce_layout ecommerce_devise_layout site_name brand_logo store_brand meta_tags_store_main_description].freeze
 
   HOST_THEME_SETTINGS.each do |setting|
     define_singleton_method(setting) do
@@ -133,6 +138,10 @@ module Ecommerce
   # Name of the theme currently being served (defaults to ecommerce_layout).
   def self.current_theme
     ecommerce_layout
+  end
+
+  def self.globalcanasta_brand?
+    store_brand.to_s == "globalcanasta"
   end
 
   class << self

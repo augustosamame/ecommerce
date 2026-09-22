@@ -19,6 +19,10 @@ module Ecommerce
     monetize :amount_cents, :shipping_amount_cents, :discount_amount_cents, with_model_currency: :currency
 
     before_create :stamp_usd_equivalent
+    # Requests on a GlobalCanasta host (or from the GlobalCanasta app) set the
+    # brand in Ecommerce::ThemeContext; stamp it so reporting and emails can
+    # tell the two storefronts apart.
+    before_create { self.globalcanasta_purchase = true if Ecommerce.globalcanasta_brand? }
 
     after_commit :notify_new_order, on: :create
     after_commit :create_and_notify_interakt_order_event, on: :create
