@@ -123,8 +123,16 @@ module Ecommerce
       request.body = data_to_send.to_json
 
       response = http.request(request)
-      Rails.logger.info("Culqi Order Response: #{response.body}")
-      render json: JSON.parse(response.body)
+      Rails.logger.info("Culqi Order Response: #{response.code} #{response.body}")
+      body = JSON.parse(response.body) rescue {}
+      # Forward Culqi's status: a 4xx body has no "id", and the checkout must
+      # not open the popup without an order (it would degrade to card-only).
+      if body["id"].present?
+        render json: body
+      else
+        Rails.logger.error("Culqi Order creation failed: #{response.code} #{response.body}")
+        render json: body, status: :unprocessable_entity
+      end
     rescue => e
       render json: { error: e.message }, status: :unprocessable_entity
     end

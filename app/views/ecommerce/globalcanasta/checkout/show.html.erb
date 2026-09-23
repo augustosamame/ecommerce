@@ -292,14 +292,33 @@ $( document ).ready(function() {
     
   });
 
-  $('#radio_form').change(function() {
-    selected_value = $("input[name = 'payment_method']:checked").val();
-    if (selected_value === 'yape') {
-      console.log('clicked yape');
+  // Culqi only issues orders in PEN, and an order is required for Yape and for
+  // Banca Móvil / Agente / Billetera (PagoEfectivo). Picking one of those
+  // forces "pagar en soles"; leaving it in USD made the order request fail and
+  // the popup silently fell back to a card-only form.
+  var PEN_ONLY_METHODS = ['yape', 'mobile_banking'];
+
+  function force_soles_for_payment_method() {
+    var method = $("input[name='payment_method']:checked").val();
+    if (PEN_ONLY_METHODS.indexOf(method) === -1) return false;
+    if (!$('#pay_in_soles').prop('checked')) {
       $('#pay_in_soles').prop('checked', true);
       recalculate_checkout_totals();
     }
-    })
+    return true;
+  }
+
+  $('#radio_form').change(function() {
+    force_soles_for_payment_method();
+  })
+
+  // The same methods must not be switched back to dollars from the checkbox.
+  $('#pay_in_soles').on('change', function() {
+    if (!$(this).prop('checked') && PEN_ONLY_METHODS.indexOf($("input[name='payment_method']:checked").val()) !== -1) {
+      $(this).prop('checked', true);
+      recalculate_checkout_totals();
+    }
+  });
 
   if (<%= !@not_in_stock_array.blank? %>) {
     Swal({
@@ -833,13 +852,19 @@ $( document ).ready(function() {
       }
 
     if (!errors_present) {
-      if (($('input[name=payment_method]:checked').val() == "card") || 
-          ($('input[name=payment_method]:checked').val() == "yape") || 
-          ($('input[name=payment_method]:checked').val() == "mobile_banking")) {
+      var selected_payment_method = $('input[name=payment_method]:checked').val();
+
+      if ((selected_payment_method == "card") ||
+          (selected_payment_method == "yape") ||
+          (selected_payment_method == "mobile_banking")) {
+
+        // Belt and braces: Yape / Banca Móvil can only be charged in soles.
+        force_soles_for_payment_method();
+        var culqi_currency = ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD";
 
         const data_to_send = {
           amount: Number(culqi_payment_amount),
-          currency_code: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+          currency_code: culqi_currency,
           cart_id: '<%= @cart.id %>',
           client_details: {
             first_name: client_first_name,
@@ -858,6 +883,19 @@ $( document ).ready(function() {
             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
           },
           success: function(data) {
+            // Culqi answers 4xx with an error object; our endpoint forwards the
+            // body, so an unusable response reaches us here. Without an order id
+            // the popup can only offer a card, which is how a Banca Móvil
+            // checkout ended up showing the card form.
+            if (!data || !data.id) {
+              console.error('Culqi order not created:', data);
+              Swal({
+                type: 'error',
+                title: '<%= t('.order_creation_failed') %>',
+                text: (data && (data.user_message || data.merchant_message)) || ''
+              });
+              return;
+            }
             console.log(data.id, '<= Culqi Order Id');
             culqi_order_id = data.id;
             // Always (re-)assign the public key right before opening the popup.
@@ -871,7 +909,7 @@ $( document ).ready(function() {
             Culqi.settings({
               title: '<%= t('ecommerce.processor.culqi.payment_popup_title', site_name: Ecommerce.site_name) %>',
               amount: Number(culqi_payment_amount),
-              currency: ($('#pay_in_soles').prop('checked')) ? "PEN" : "USD",
+              currency: culqi_currency,
               description: '<%= "#{t('ecommerce.processor.culqi.order_label')}: #{@cart.id}" %>',
               order: data.id
             });
@@ -890,11 +928,11 @@ $( document ).ready(function() {
               lang: "auto",
               installments: false, // Habilitar o deshabilitar el campo de cuotas
               paymentMethods: {
-                tarjeta: $('input[name=payment_method]:checked').val() === 'card',
-                yape: $('input[name=payment_method]:checked').val() === 'yape', 
-                bancaMovil: $('input[name=payment_method]:checked').val() === 'mobile_banking',
-                agente: $('input[name=payment_method]:checked').val() === 'mobile_banking',
-                billetera: $('input[name=payment_method]:checked').val() === 'mobile_banking',
+                tarjeta: selected_payment_method === 'card',
+                yape: selected_payment_method === 'yape',
+                bancaMovil: selected_payment_method === 'mobile_banking',
+                agente: selected_payment_method === 'mobile_banking',
+                billetera: selected_payment_method === 'mobile_banking',
               },
               style: {
                 logo: '<%= request.base_url %>/images/globalcanasta-logo.png'
