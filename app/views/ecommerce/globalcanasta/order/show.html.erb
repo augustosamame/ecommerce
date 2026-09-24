@@ -137,6 +137,15 @@
 <script src="https://checkout.culqi.com/js/v4"></script>
 
 <script>
+  // Culqi's v4 checkout SDK overwrites the global `$` with an object of its
+  // own, so every jQuery call after this point — including the engine bundle
+  // that the layout loads at the end of the page — died with
+  // "TypeError: $ is not a function". Hand `$` back to jQuery; Culqi keeps
+  // working through its own `Culqi` / `Culqi3DS` globals.
+  if (window.jQuery) { window.$ = window.jQuery; }
+</script>
+
+<script>
   Culqi3DS.publicKey = "<%= Culqi.public_key %>";
 </script>
 
