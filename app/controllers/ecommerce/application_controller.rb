@@ -8,6 +8,7 @@ module Ecommerce
     before_action :set_platform_context
     before_action :merge_abilities
     before_action :add_stretched_to_body_tag
+    before_action :bounce_bots_from_private_pages
     before_action :set_cart
     before_action :ensure_free_product_in_cart
     before_action :calculate_combo_discounts
@@ -199,7 +200,7 @@ module Ecommerce
     # propagate immediately.
     def ensure_free_product_in_cart
       @free_product_coupon_product_ids = []
-      return unless @cart && @cart.status == 'active'
+      return unless @cart && @cart.persisted? && @cart.status == 'active'
 
       coupon = Ecommerce::Coupon.active_free_product_for(:web)
       return unless coupon&.free_product_id
@@ -258,7 +259,18 @@ module Ecommerce
     end
 
 
+    # Crawlers don't keep cookies, so every bot request used to INSERT a row
+    # into ecommerce_carts: 437k of the 440k carts in production are empty
+    # anonymous ones. Bots now get an in-memory cart — the header mini-cart
+    # already skips a cart with no id — and nothing is written.
     def set_cart
+      if bot_request?
+        @cart = Cart.new(status: "active")
+        @cart_subtotal = 0
+        @cart_item_qty_total = 0
+        return
+      end
+
       if current_user
         @cart = Cart.where(user_id: current_user.id, status: "active").order(:id).last
         if @cart
@@ -283,6 +295,31 @@ module Ecommerce
       end
       @cart_item_qty_total = @cart.cart_items.sum(&:quantity)
       #flash[:error] = 'this is a flash error'
+    end
+
+    # Pages a crawler has no business indexing (and which need a persisted
+    # cart to render). A bot that follows an old cart link is sent home once
+    # instead of being handed a brand-new cart.
+    BOT_BLOCKED_CONTROLLERS = %w[carts cart_items checkout orders wishlists wishlist_items].freeze
+
+    def bot_request?
+      return @bot_request if defined?(@bot_request)
+      # A blank user agent counts as a bot for the browser gem, but real
+      # customers do arrive without one (privacy browsers, corporate proxies).
+      # Only treat a request as a bot when it names itself one, so nobody can
+      # lose their cart over a stripped header.
+      @bot_request = begin
+        request.user_agent.present? && helpers.browser.bot?
+      rescue StandardError
+        false
+      end
+    end
+    helper_method :bot_request?
+
+    def bounce_bots_from_private_pages
+      return unless bot_request?
+      return unless BOT_BLOCKED_CONTROLLERS.include?(controller_name)
+      redirect_to main_app.root_path, status: :moved_permanently
     end
 
     def set_wishlist
