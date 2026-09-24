@@ -292,22 +292,6 @@ $( document ).ready(function() {
     
   });
 
-  // Culqi only issues orders in PEN, and an order is required for Yape and for
-  // Banca Móvil / Agente / Billetera (PagoEfectivo). Picking one of those
-  // forces "pagar en soles"; leaving it in USD made the order request fail and
-  // the popup silently fell back to a card-only form.
-  var PEN_ONLY_METHODS = ['yape', 'mobile_banking'];
-
-  function force_soles_for_payment_method() {
-    var method = $("input[name='payment_method']:checked").val();
-    if (PEN_ONLY_METHODS.indexOf(method) === -1) return false;
-    if (!$('#pay_in_soles').prop('checked')) {
-      $('#pay_in_soles').prop('checked', true);
-      recalculate_checkout_totals();
-    }
-    return true;
-  }
-
   $('#radio_form').change(function() {
     force_soles_for_payment_method();
   })
@@ -406,6 +390,22 @@ $( document ).ready(function() {
 </script>
 
 <script>
+
+  // Culqi only issues orders in PEN, and an order is required for Yape and for
+  // Banca Móvil / Agente / Billetera (PagoEfectivo). Picking one of those
+  // forces "pagar en soles"; leaving it in USD made the order request fail and
+  // the popup silently fell back to a card-only form.
+  var PEN_ONLY_METHODS = ['yape', 'mobile_banking'];
+
+  function force_soles_for_payment_method() {
+    var method = $("input[name='payment_method']:checked").val();
+    if (PEN_ONLY_METHODS.indexOf(method) === -1) return false;
+    if (!$('#pay_in_soles').prop('checked')) {
+      $('#pay_in_soles').prop('checked', true);
+      recalculate_checkout_totals();
+    }
+    return true;
+  }
 
   var payment_amount = ($('#payment-amount').html() * 100).toFixed(2);
   var culqi_payment_amount = Number(($('#payment-amount').html() * 100).toFixed(2));
