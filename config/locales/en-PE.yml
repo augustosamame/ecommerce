@@ -755,6 +755,7 @@ en-PE:
           back_to_cart: "Back to cart"
           checkout_title: "Checkout"
           order_creation_failed: "We couldn't create your order"
+          unexpected_error: "Something went wrong and we could not process your order. Please try again; if it keeps happening, message us on WhatsApp at +51 989 080 023."
           enter_invoice_data: "Click here to enter invoice data"
           text_over_700: "SUNAT requires DNI / CE / Passport"
           pay_in_soles: "PAY IN SOLES"

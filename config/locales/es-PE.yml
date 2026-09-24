@@ -553,6 +553,7 @@ es-PE:
           checkout_title: "Finalizar compra"
           free_shipping: "(Envío gratis en pedidos superiores a $30)"
           order_creation_failed: "No se pudo crear el pedido"
+          unexpected_error: "Ocurrió un error inesperado y no pudimos procesar tu pedido. Vuelve a intentarlo; si el problema continúa, escríbenos por WhatsApp al +51 989 080 023."
           enter_invoice_data: "Haga click para ingresar factura"
           text_over_700: "SUNAT requiere DNI, CE o Pasaporte"
           pay_in_soles: "PAGAR EN SOLES"

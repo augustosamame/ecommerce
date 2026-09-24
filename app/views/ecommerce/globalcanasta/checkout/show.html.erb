@@ -695,7 +695,25 @@ $( document ).ready(function() {
     });
   }
 
+  // Last-resort handler: the pay button must never look dead. Any unexpected
+  // JS error (or a failed stock check) tells the customer what happened and
+  // where to get help instead of silently swallowing the click — a scoping
+  // slip once left the button doing nothing at all for every payment method.
+  function checkout_unexpected_error(err, context) {
+    console.error('checkout failed (' + context + '):', err);
+    if (typeof Rollbar !== 'undefined' && Rollbar.error) {
+      try { Rollbar.error('checkout ' + context, err); } catch (e) {}
+    }
+    $('#pay-now-button').prop('disabled', false);
+    Swal({
+      type: 'error',
+      title: '<%= t('.order_not_placed') %>',
+      text: "<%= j t('.unexpected_error') %>"
+    });
+  }
+
   $('#pay-now-button').on('click', async function(e) {
+    try {
     // Shipping-race guard, transparent version: instead of blocking the user
     // with a dialog, quietly make sure shipping is resolved and then continue
     // the payment automatically.
@@ -725,12 +743,22 @@ $( document ).ready(function() {
       dataType: "json",
       success: function(data) {
         if (data.in_stock) {
-          process_payment(e)
+          // process_payment is async: without this catch an exception inside it
+          // becomes an unhandled rejection and the click dies silently.
+          Promise.resolve(process_payment(e)).catch(function(err) {
+            checkout_unexpected_error(err, 'process_payment');
+          });
         } else {
           window.location.replace("<%= checkout_path %>");
         }
+      },
+      error: function(xhr, status, err) {
+        checkout_unexpected_error(err || status, 'check_stock');
       }
     });
+    } catch (err) {
+      checkout_unexpected_error(err, 'pay_button');
+    }
    });
 
 
