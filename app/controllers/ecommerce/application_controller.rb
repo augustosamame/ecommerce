@@ -42,6 +42,7 @@ module Ecommerce
       @combo_discount_array = []
       @friendly_combo_discount_array = []
       @combo_injected_product_ids = []
+      @combo_injected_cart_item_ids = []
 
       my_cart = Cart.where(id: session[:cart_id], status: "active").order(:id).last
       if my_cart
@@ -132,6 +133,7 @@ module Ecommerce
             if combo_added
               if combo_discount.inject_product_two && combo_discount.product_id_2.present?
                 @combo_injected_product_ids << combo_discount.product_id_2
+                @combo_injected_cart_item_ids.concat(my_cart.combo_bonus_items(combo_discount).map(&:id))
               end
 
               line_discount = 0
@@ -219,12 +221,18 @@ module Ecommerce
     # for a given line. True for combo-injected free products AND for the
     # Free Product coupon line — keep the single check so we don't sprinkle
     # array unions across templates.
+    # Combo locks are per cart row, not per product: in a same-product combo
+    # the customer's own (trigger) row must stay editable.
     helper_method :cart_item_locked?
     def cart_item_locked?(item)
       return false unless item
-      pid = item.respond_to?(:product_id) ? item.product_id : item
-      @combo_injected_product_ids.to_a.include?(pid) ||
-        @free_product_coupon_product_ids.to_a.include?(pid)
+      if item.respond_to?(:product_id)
+        @combo_injected_cart_item_ids.to_a.include?(item.id) ||
+          @free_product_coupon_product_ids.to_a.include?(item.product_id)
+      else
+        @combo_injected_product_ids.to_a.include?(item) ||
+          @free_product_coupon_product_ids.to_a.include?(item)
+      end
     end
 
     def set_controller_meta_tags

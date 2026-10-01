@@ -18,31 +18,15 @@ module Ecommerce
       @product = Product.find(@cart_item.product_id)
       if @product.in_stock?
         @cart_item.cart_id = @cart.id
-        found_same_product = @cart.cart_items.find_by(product_id: @cart_item.product_id)
+        # Oldest row is the customer's own; a later row of the same product is
+        # a combo-injected bonus (see Cart#combo_bonus_items).
+        found_same_product = @cart.cart_items.where(product_id: @cart_item.product_id).order(:id).first
         if found_same_product
           new_quantity = found_same_product.quantity += @cart_item.quantity
           new_quantity = @product.total_quantity if new_quantity > @product.total_quantity
           found_same_product.update(quantity: new_quantity)
-          @combo_discount_exists = ComboDiscount.where(status: "active", product_id_1: @product.id, inject_product_two: true).try(:first)
-          if @combo_discount_exists.present?
-            @number_of_combos = (found_same_product.quantity / @combo_discount_exists.qty_product_1).floor
-            if @number_of_combos > 0
-              @cart_item_two = CartItem.new(cart_id: @cart.id, product_id: @combo_discount_exists.product_id_2, quantity: @combo_discount_exists.qty_product_2 * @number_of_combos)
-              @cart_item_two.save
-              @combo_discount_applied = true
-            end
-          end
         else
-          #check if added item is a combo discount with force add and if so, add the second product to the cart
-          @combo_discount_exists = ComboDiscount.where(status: "active", product_id_1: @product.id, inject_product_two: true).try(:first)
-          if @combo_discount_exists.present?
-            @number_of_combos = (@cart_item.quantity / @combo_discount_exists.qty_product_1).floor
-            if @number_of_combos > 0
-              @cart_item_two = CartItem.new(cart_id: @cart.id, product_id: @combo_discount_exists.product_id_2, quantity: @combo_discount_exists.qty_product_2 * @number_of_combos)
-              @cart_item_two.save
-              @combo_discount_applied = true
-            end
-          end
+          # Saved before the bonus is injected so the customer's row is the oldest.
           @cart_item.save
           #will only save to facebook the first unique cart item
           FacebookConversionsWorker.perform_async('AddToCart', {
@@ -53,6 +37,8 @@ module Ecommerce
             event_source_url: "https://expatshop.pe/store/cart"
           }) if Rails.env == "production"
         end
+        #if the added item triggers a combo discount with force add, add (or resize) the second product in the cart
+        @combo_discount_applied = @cart.sync_combo_bonus(@product.id)
         #refresh with latest cart so it will be repainted properly
         set_cart
         calculate_combo_discounts
@@ -77,16 +63,21 @@ module Ecommerce
     def update
       # Free Product coupon line is locked at qty 1 — silently no-op so the UI
       # disable + this backend guard stay aligned against direct POSTs.
-      if @cart_item.free_product_line?
+      # Same for a combo-injected bonus row: its quantity follows the trigger.
+      if @cart_item.free_product_line? || combo_bonus_row?(@cart_item)
         redirect_to @cart_item.cart and return
       end
-      @cart_item.update(quantity: cart_item_params[:quantity]) unless cart_item_params[:quantity].nil?
+      unless cart_item_params[:quantity].nil?
+        @cart_item.update(quantity: cart_item_params[:quantity])
+        @cart_item.cart.sync_combo_bonus(@cart_item.product_id)
+      end
       redirect_to @cart_item.cart, notice: t('.cart_updated')
     end
 
     def destroy
       # Free Product coupon line cannot be removed while the coupon is active.
-      if @cart_item.free_product_line?
+      # Neither can a combo-injected bonus row while its trigger is in the cart.
+      if @cart_item.free_product_line? || combo_bonus_row?(@cart_item)
         respond_to do |format|
           format.js { render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/show" }
           format.html { redirect_to cart_path(@cart) }
@@ -95,10 +86,7 @@ module Ecommerce
       end
 
       # If removing a trigger product, also remove its combo-injected free product
-      combo = ComboDiscount.where(status: "active", product_id_1: @cart_item.product_id, inject_product_two: true).first
-      if combo&.product_id_2.present?
-        @cart.cart_items.where(product_id: combo.product_id_2).destroy_all
-      end
+      @cart_item.cart.remove_combo_bonus(@cart_item.product_id)
       @cart_item.destroy
       set_cart
       calculate_combo_discounts
@@ -120,6 +108,11 @@ module Ecommerce
 
       def set_cart_item
         @cart_item = CartItem.find(params[:id])
+      end
+
+      # Set by the calculate_combo_discounts before_action.
+      def combo_bonus_row?(cart_item)
+        @combo_injected_cart_item_ids.to_a.include?(cart_item.id)
       end
 
       def set_menu_items
