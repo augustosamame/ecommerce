@@ -112,14 +112,18 @@ en-PE:
       add_to_cart_label: "Add to Cart"
       view_products_label: "View Products"
     carts:
+      show:
+        inactive_removed: "%{products} is no longer available and was removed from your cart."
       clear:
         cart_cleared: "All items have been removed from the cart."
     cart_items:
       create:
         product_out_of_stock: "Product Out of Stock"
+        product_not_available: "This product is no longer available"
         qty: "Qty"
         added_to_cart: "Added to Cart"
       update:
+        product_not_available: "This product is no longer available"
         cart_updated: "Cart Updated"
       destroy:
         item_deleted: "Item Deleted"
@@ -695,6 +699,7 @@ en-PE:
           no_products_body: "Try another category or clear the filters."
           browse_all: "Browse all products"
         show:
+          not_available: "No longer available"
           add_to_cart: "Add to cart"
           alert_me: "Notify me when back in stock"
           categories: "Categories: "

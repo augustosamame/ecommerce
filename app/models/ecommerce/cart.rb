@@ -40,6 +40,18 @@ module Ecommerce
     # Call BEFORE destroying the trigger row of `product_id`: in a same-product
     # combo the bonus would otherwise become the oldest row and be mistaken
     # for the customer's own.
+    # Drops rows whose product was deactivated after it was added (and any
+    # combo bonus they injected). Returns the removed product names.
+    # Free Product coupon lines are left alone: ensure_free_product_in_cart
+    # would re-add them on the next request.
+    def remove_inactive_items
+      cart_items.includes(:product).select { |cart_item| cart_item.product&.inactive? && !cart_item.free_product_line? }.map do |cart_item|
+        remove_combo_bonus(cart_item.product_id)
+        cart_item.destroy
+        cart_item.product.name
+      end
+    end
+
     def remove_combo_bonus(product_id)
       combo = injecting_combo_for(product_id)
       combo_bonus_items(combo).each(&:destroy) if combo

@@ -98,14 +98,18 @@ es-PE:
       add_to_cart_label: "Agr al Carrito"
       view_products_label: "Ver Productos"
     carts:
+      show:
+        inactive_removed: "%{products} ya no está disponible y fue eliminado de tu carrito."
       clear:
         cart_cleared: "Todos los productos han sido eliminados del carrito."
     cart_items:
       create:
         product_out_of_stock: "Producto Fuera de Stock"
+        product_not_available: "Este producto ya no está disponible"
         qty: "Cant"
         added_to_cart: "Agregado al Carrito"
       update:
+        product_not_available: "Este producto ya no está disponible"
         cart_updated: "Carrito actualizado"
       destroy:
         item_deleted: "Ítem eliminado"
@@ -493,6 +497,7 @@ es-PE:
           no_products_body: "Prueba con otra categoría o limpia los filtros."
           browse_all: "Ver todos los productos"
         show:
+          not_available: "No disponible"
           add_to_cart: "Agregar al carrito"
           alert_me: "Avísame cuando vuelva a haber stock"
           categories: "Categorías: "

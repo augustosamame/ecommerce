@@ -252,6 +252,7 @@ module Ecommerce
       pen_price = (usd_price * rate).round(2)
       pen_regular = (usd_regular * rate).round(2)
       availability = product.in_stock? ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+      availability = "https://schema.org/Discontinued" if product.inactive?
       product_url = "#{base_url}/store/products/#{product.permalink}"
 
       usd_offer = {

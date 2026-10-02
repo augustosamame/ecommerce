@@ -78,7 +78,9 @@
     <div class="gc-pdp__details">
       <div class="gc-pdp__badges">
         <% if origin.present? %><span class="gc-badge gc-badge--origin"><%= origin %></span><% end %>
-        <% if @product.in_stock? %>
+        <% if @product.inactive? %>
+          <span class="gc-badge gc-badge--muted"><%= t('.not_available') %></span>
+        <% elsif @product.in_stock? %>
           <span class="gc-badge gc-badge--stock"><%= @product.total_quantity.to_i > 0 && @product.total_quantity.to_i < 50 ? "#{@product.total_quantity} #{t('.in_stock').downcase}" : t('.in_stock') %></span>
         <% else %>
           <span class="gc-badge gc-badge--muted"><%= t('.out_of_stock') %></span>
@@ -101,7 +103,9 @@
       </div>
 
       <div class="gc-pdp__actions add-to-cart-btn-group">
-        <% if @product.in_stock? %>
+        <% if @product.inactive? %>
+          <button type="button" class="gc-btn gc-btn--outline gc-btn--lg gc-btn--block" disabled><%= t('.not_available') %></button>
+        <% elsif @product.in_stock? %>
           <%= simple_form_for @cart_item, remote: true, html: { class: "cart-form gc-pdp__form", id: "gc-pdp-form" } do |f| %>
             <div class="gc-stepper gc-stepper--lg" data-gc-max="<%= @product.total_quantity %>">
               <button type="button" class="gc-stepper__btn" data-gc-step="-1" id="devtech_minus" aria-label="<%= t('.decrease') %>">−</button>
@@ -154,7 +158,7 @@
         <% end %>
         <p><strong>SKU:</strong> <%= @product.id %></p>
         <p><strong><%= t('.availability', default: 'Availability') %>:</strong>
-          <%= @product.in_stock? ? t('.in_stock', default: 'In Stock') : t('.out_of_stock') %>
+          <%= @product.inactive? ? t('.not_available') : (@product.in_stock? ? t('.in_stock', default: 'In Stock') : t('.out_of_stock')) %>
         </p>
         <% if @product.weight.present? && @product.weight > 0 %>
           <p><strong><%= t('.weight', default: 'Weight') %>:</strong> <%= friendly_cart_weight(@product.weight) %></p>
@@ -187,7 +191,7 @@
 </main>
 
 <%# ---------- Mobile sticky add-to-cart bar ---------- %>
-<% if @product.in_stock? %>
+<% if @product.active? && @product.in_stock? %>
   <div class="gc-sticky-bar" id="gc-sticky-bar">
     <div class="gc-sticky-bar__price">
       <span class="gc-price gc-num"><%= product_session_price(@product, "current_price") %></span>

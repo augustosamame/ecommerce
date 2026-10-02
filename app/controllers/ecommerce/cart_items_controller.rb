@@ -16,6 +16,15 @@ module Ecommerce
       @combo_discount_applied = false
       @cart_item = CartItem.new(cart_item_params)
       @product = Product.find(@cart_item.product_id)
+      # Inactive products stay reachable by direct URL (search engines) but can't be bought.
+      unless @product.active?
+        respond_to do |format|
+          format.js { flash.now[:notice] = "NOW_FLASH_#{t('.product_not_available')}"; render "ecommerce/#{Ecommerce.ecommerce_layout}/cart_items/no_stock"  }
+
+          format.html {redirect_to cart_path(@cart), notice: t('.product_not_available') }
+        end
+        return
+      end
       if @product.in_stock?
         @cart_item.cart_id = @cart.id
         # Oldest row is the customer's own; a later row of the same product is
@@ -66,6 +75,9 @@ module Ecommerce
       # Same for a combo-injected bonus row: its quantity follows the trigger.
       if @cart_item.free_product_line? || combo_bonus_row?(@cart_item)
         redirect_to @cart_item.cart and return
+      end
+      if @cart_item.product.inactive?
+        redirect_to @cart_item.cart, notice: t('.product_not_available') and return
       end
       unless cart_item_params[:quantity].nil?
         @cart_item.update(quantity: cart_item_params[:quantity])

@@ -9,6 +9,12 @@ module Ecommerce
 
     # GET /carts/1
     def show
+      # Redirect so the cart totals and combo discounts are recalculated without the removed rows.
+      removed = @cart.remove_inactive_items
+      if removed.any?
+        redirect_to cart_path(@cart), notice: t('.inactive_removed', products: removed.join(', ')) and return
+      end
+
       @cart_qty_subtotal = @cart.cart_items.includes(:product).sum(:quantity)
       @cart_subtotal = 0
       @cart.cart_items.includes(:product).each do |cart_item|
